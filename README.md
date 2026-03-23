@@ -29,10 +29,18 @@ A custom VMware Aria Operations management pack that collects resource attribute
   - [Step 12 — Build the .pak File](#step-12--build-the-pak-file)
   - [Step 13 — Deploy to Aria Operations](#step-13--deploy-to-aria-operations)
 - [Path B: Integration SDK (Code-Based)](#path-b-integration-sdk-code-based)
-  - [Step 1 — Install the SDK](#step-1--install-the-sdk)
-  - [Step 2 — Configure Credentials](#step-2--configure-credentials)
-  - [Step 3 — Test Locally](#step-3--test-locally)
-  - [Step 4 — Build and Deploy](#step-4--build-and-deploy)
+  - [Step 1 — Install Prerequisites](#step-1--install-prerequisites)
+  - [Step 2 — Clone the Repository](#step-2--clone-the-repository)
+  - [Step 3 — Install Python Dependencies](#step-3--install-python-dependencies)
+  - [Step 4 — Configure Credentials](#step-4--configure-credentials)
+  - [Step 5 — Understand the Project Structure](#step-5--understand-the-project-structure)
+  - [Step 6 — Customize What Gets Collected](#step-6--customize-what-gets-collected-optional)
+  - [Step 7 — Test Locally](#step-7--test-locally)
+  - [Step 8 — Build the .pak File](#step-8--build-the-pak-file)
+  - [Step 9 — Deploy to Aria Operations](#step-9--deploy-to-aria-operations)
+  - [Step 10 — Configure the Adapter Instance](#step-10--configure-the-adapter-instance)
+  - [Step 11 — Verify Collection](#step-11--verify-collection)
+  - [Step 12 — Iterate and Redeploy](#step-12--iterate-and-redeploy)
 - [Azure Gov Endpoint Reference](#azure-gov-endpoint-reference)
 - [Collected Resource Types](#collected-resource-types)
 - [Troubleshooting](#troubleshooting)
@@ -396,19 +404,38 @@ For each relationship:
 
 ## Path B: Integration SDK (Code-Based)
 
-This is the recommended path for production Azure Gov environments. The code in this repository handles `nextLink` pagination, token refresh, rate-limiting, and multi-subscription enumeration automatically.
+This is the **recommended path** for production Azure Gov environments. The Python code in this repository handles `nextLink` cursor pagination, OAuth2 token refresh, rate-limit retry with exponential backoff, and multi-subscription enumeration — none of which the MP Builder GUI supports natively.
 
-### Step 1 — Install the SDK
+### Step 1 — Install Prerequisites
+
+**Python 3.8+** and **Docker** are required. Docker is used by `mp-test` to simulate the Aria Operations collector environment locally.
 
 ```bash
+# Install the VCF Operations Integration SDK
 pip install vmware-aria-operations-integration-sdk
+
+# Verify installation
+mp-build --version
 ```
 
-Requires Python 3.8+ and Docker (for `mp-test`).
+### Step 2 — Clone the Repository
 
-### Step 2 — Configure Credentials
+```bash
+git clone https://github.com/mattmiller03/Aria-MP-Builder.git
+cd Aria-MP-Builder
+```
 
-Edit `Azure/connections.json` with your Azure Gov service principal details:
+### Step 3 — Install Python Dependencies
+
+```bash
+pip install -r Azure/app/requirements.txt
+```
+
+This installs the `requests` library used by the adapter for all Azure REST API calls.
+
+### Step 4 — Configure Credentials
+
+Create (or edit) `Azure/connections.json` with your Azure Gov service principal:
 
 ```json
 {
@@ -430,25 +457,267 @@ Edit `Azure/connections.json` with your Azure Gov service principal details:
 }
 ```
 
-> **Security:** `connections.json` is in `.gitignore` and will not be committed to the repository.
+| Field | Description |
+|-------|-------------|
+| `tenant_id` | Directory (tenant) ID from your Azure Gov Entra ID |
+| `client_id` | Application (client) ID from the app registration |
+| `client_secret` | Client secret value (not the secret ID) |
+| `subscription_id` | Target subscription GUID, or leave blank `""` to collect from all accessible subscriptions |
+| `cloud_environment` | `"government"` for Azure Gov, `"commercial"` for standard Azure |
 
-### Step 3 — Test Locally
+> **Security:** `connections.json` is listed in `.gitignore` and will never be committed to the repository. Do not remove it from `.gitignore`.
+
+### Step 5 — Understand the Project Structure
+
+```
+Azure/
+├── app/
+│   ├── adapter.py              ← Main entry point (collect, test, get_adapter_definition)
+│   ├── constants.py            ← Adapter keys, Azure Gov endpoints, API versions, object type keys
+│   ├── auth.py                 ← OAuth2 client credentials flow (login.microsoftonline.us)
+│   ├── azure_client.py         ← REST client with nextLink pagination + rate-limit retry
+│   ├── collectors/
+│   │   ├── __init__.py         ← Re-exports all collector functions
+│   │   ├── subscriptions.py    ← Enumerates Azure subscriptions
+│   │   ├── resource_groups.py  ← Resource groups per subscription
+│   │   ├── virtual_machines.py ← VMs with instance view (power state)
+│   │   ├── disks.py            ← Managed disks (IOPS, size, SKU)
+│   │   ├── network_interfaces.py ← NICs (IPs, MAC, NSG, subnet)
+│   │   ├── virtual_networks.py ← VNets and subnets
+│   │   ├── storage_accounts.py ← Storage accounts (endpoints, tier)
+│   │   ├── load_balancers.py   ← Load balancers (frontends, backends)
+│   │   ├── key_vaults.py       ← Key Vaults (soft delete, purge protection)
+│   │   ├── sql_databases.py    ← SQL servers + databases
+│   │   └── app_services.py     ← Web apps and function apps
+│   └── requirements.txt
+├── conf/
+│   └── describe.xml            ← Adapter object model (auto-generated by mp-build)
+├── resources/
+│   └── resources.properties    ← Localization keys
+├── manifest.txt                ← Pack metadata (name, version, adapter_kinds)
+├── eula.txt                    ← License agreement
+└── connections.json            ← Local test credentials (git-ignored)
+```
+
+**How the collection flow works:**
+
+```
+adapter.py collect()
+  │
+  ├─ auth.py ── POST login.microsoftonline.us/{tenant}/oauth2/v2.0/token
+  │              └─ Returns Bearer access_token (cached, auto-refreshed)
+  │
+  ├─ azure_client.py ── GET management.usgovcloudapi.net/...
+  │                      ├─ Follows nextLink pagination automatically
+  │                      ├─ Retries on HTTP 429 (respects Retry-After)
+  │                      └─ Retries on 5xx with exponential backoff
+  │
+  └─ collectors/* ── Each collector:
+       ├─ Calls azure_client.get_all() for its resource type
+       ├─ Creates Aria Operations objects with properties
+       └─ Defines parent→child relationships
+```
+
+### Step 6 — Customize What Gets Collected (Optional)
+
+#### Add or Remove Resource Types
+
+Each collector is a standalone module. To disable a resource type, comment it out in `adapter.py`:
+
+```python
+# In the collect() function, comment out any collector you don't need:
+# collect_sql_servers_and_databases(client, result, ADAPTER_KIND, subscriptions)
+# collect_app_services(client, result, ADAPTER_KIND, subscriptions)
+```
+
+Also remove the corresponding object type definition from `get_adapter_definition()` in the same file.
+
+#### Add New Properties to an Existing Collector
+
+To collect additional attributes from a resource (e.g., add `priority` to load balancer rules):
+
+1. Open the collector file (e.g., `Azure/app/collectors/load_balancers.py`)
+2. Add `obj.with_property("your_new_property", props.get("yourField", ""))` in the collection loop
+3. Open `Azure/app/adapter.py` and add the matching definition:
+   ```python
+   lb.define_string_property("your_new_property", "Your New Property")
+   ```
+4. Rebuild — the SDK auto-generates `describe.xml` from `get_adapter_definition()`
+
+#### Add a New Resource Type
+
+To add a completely new Azure resource (e.g., Azure Cosmos DB):
+
+1. Create `Azure/app/collectors/cosmos_db.py` following the pattern of existing collectors
+2. Add the object type key in `constants.py`:
+   ```python
+   OBJ_COSMOS_DB = "azure_cosmos_db"
+   ```
+3. Add the API version in `constants.py`:
+   ```python
+   "cosmos_db": "2024-05-15",
+   ```
+4. Define the object type in `get_adapter_definition()` in `adapter.py`
+5. Import and call the collector in the `collect()` function in `adapter.py`
+6. Export it from `collectors/__init__.py`
+
+#### Switch to Commercial Azure
+
+Change `cloud_environment` to `"commercial"` in `connections.json`. The adapter automatically switches endpoints:
+
+| Setting | Government | Commercial |
+|---------|-----------|------------|
+| ARM endpoint | `management.usgovcloudapi.net` | `management.azure.com` |
+| Auth endpoint | `login.microsoftonline.us` | `login.microsoftonline.com` |
+| Token scope | `management.usgovcloudapi.net/.default` | `management.azure.com/.default` |
+
+#### Change API Versions
+
+If an API version isn't available in Azure Gov yet, edit `Azure/app/constants.py`:
+
+```python
+API_VERSIONS = {
+    "virtual_machines": "2024-07-01",   # Lower this if Azure Gov returns 400
+    "disks": "2024-03-02",
+    # ...
+}
+```
+
+Azure Gov API versions may lag 1-2 releases behind commercial Azure. If you get a `400 Bad Request` or `NoRegisteredProviderFound`, try the previous stable version.
+
+### Step 7 — Test Locally
 
 ```bash
 cd Azure
 mp-test
 ```
 
-This spins up a local container, runs the adapter against your Azure Gov environment, and displays collected objects, properties, and relationships.
+This command:
+1. Spins up a Docker container simulating the Aria Operations collector
+2. Reads credentials from `connections.json`
+3. Calls `test()` to validate connectivity
+4. Calls `collect()` to run a full collection cycle
+5. Displays all discovered objects, properties, metrics, and relationships
 
-### Step 4 — Build and Deploy
+**Expected output** (example):
+
+```
+Testing connection...
+  ✓ Successfully connected. Found 2 subscription(s).
+
+Running collection...
+  Collecting subscriptions...         2 found
+  Collecting resource groups...       8 found
+  Collecting virtual machines...     15 found
+  Collecting disks...                23 found
+  Collecting network interfaces...   18 found
+  Collecting virtual networks...      4 found
+  Collecting storage accounts...      6 found
+  Collecting load balancers...        2 found
+  Collecting key vaults...            3 found
+  Collecting SQL servers...           1 found (2 databases)
+  Collecting app services...          4 found
+
+Collection complete: 86 objects, 1,240 properties, 78 relationships
+```
+
+**If the test fails:**
+
+| Error | Fix |
+|-------|-----|
+| `Connection refused` | Check Docker is running |
+| `401 Unauthorized` | Verify tenant_id, client_id, client_secret in connections.json |
+| `403 Forbidden` | Service principal needs Reader role on the subscription |
+| `Module not found` | Run `pip install -r Azure/app/requirements.txt` |
+
+### Step 8 — Build the .pak File
 
 ```bash
 cd Azure
 mp-build
 ```
 
-This generates a `.pak` file. Then follow [Step 13](#step-13--deploy-to-aria-operations) above to deploy it to Aria Operations.
+This command:
+1. Reads `get_adapter_definition()` from `adapter.py`
+2. Auto-generates `conf/describe.xml` from the definition (overwriting the manual version)
+3. Packages all files into a `.pak` archive (ZIP with deflate compression)
+4. Outputs the file (e.g., `AzureGovAdapter-1.0.0.pak`)
+
+> **Tip:** To inspect the `.pak` contents, rename it to `.zip` and extract.
+
+### Step 9 — Deploy to Aria Operations
+
+1. Log in to your **Aria Operations** instance
+2. Navigate to **Administration > Integrations** (or **Administration > Solutions**)
+3. Click **Add** and upload the `.pak` file
+4. **Check "Ignore the PAK file signature checking"** — SDK-built packs are unsigned
+5. Accept the EULA and wait for installation
+
+### Step 10 — Configure the Adapter Instance
+
+1. Go to **Administration > Integrations > Accounts > Add Account**
+2. Select **Azure Government Cloud** from the adapter type dropdown
+3. Fill in:
+
+| Field | Value |
+|-------|-------|
+| **Display Name** | `Azure Gov - Production` |
+| **Cloud Environment** | `government` (dropdown) |
+| **Credential Type** | `Azure Credentials` |
+| **Tenant ID** | Your Azure Gov tenant GUID |
+| **Client ID** | Your app registration client ID |
+| **Client Secret** | Your app registration client secret |
+| **Subscription ID** | Target subscription GUID (or leave blank for all) |
+
+4. Click **Validate Connection**
+   - Expected: `"Successfully connected. Found X subscription(s)."`
+5. Set **Collection Interval** (default 5 minutes; 10 minutes recommended for large environments)
+6. Select the **Collector/Group** to run the adapter on
+7. Click **Save**
+
+### Step 11 — Verify Collection
+
+1. **Wait 5-15 minutes** for the first collection cycles to complete
+2. Check the adapter status:
+   - **Administration > Integrations** — collector indicator should turn **green**
+   - If yellow/red, click the adapter and check the **Collection Status** tab for errors
+3. Navigate to **Inventory > Other Objects** or search for "Azure" to find your resources
+4. Click any object to see its collected properties:
+   - VM example: vm_size, power_state, os_type, image_sku, location, tags, etc.
+5. Check **Relationships** tab on any object to verify parent-child hierarchy:
+   ```
+   Subscription
+     └─ Resource Group
+          ├─ Virtual Machine
+          ├─ Disk
+          ├─ Network Interface
+          ├─ Virtual Network
+          │    └─ Subnet
+          ├─ Storage Account
+          ├─ Load Balancer
+          ├─ Key Vault
+          ├─ SQL Server
+          │    └─ SQL Database
+          └─ App Service
+   ```
+
+### Step 12 — Iterate and Redeploy
+
+When you modify collectors or add resource types:
+
+```bash
+# Make code changes
+# Test locally
+cd Azure && mp-test
+
+# Build new .pak
+mp-build
+
+# Upload new .pak to Aria Operations (same process as Step 9)
+# The existing adapter instance picks up the new version automatically
+```
+
+> **Version bumping:** Update the `"version"` field in `Azure/manifest.txt` before each redeploy (e.g., `1.0.0` → `1.1.0`). Aria Operations uses this to track pack versions.
 
 ---
 
