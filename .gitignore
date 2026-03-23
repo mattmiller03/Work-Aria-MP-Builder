@@ -1,0 +1,19 @@
+# Claude Code local settings
+.claude/
+
+# Azure credentials (contains tenant/client IDs)
+Azure/connections.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+*.pak
+
+# IDE
+.vscode/
+.idea/
+*.swp

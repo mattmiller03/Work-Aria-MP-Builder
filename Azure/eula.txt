@@ -1,0 +1,4 @@
+END USER LICENSE AGREEMENT
+
+This management pack is provided as-is for internal use.
+By installing this management pack, you agree to these terms.

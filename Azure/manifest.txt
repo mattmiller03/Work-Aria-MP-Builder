@@ -1,0 +1,13 @@
+{
+  "name": "Azure Government Cloud Management Pack",
+  "version": "1.0.0",
+  "vcops_minimum_version": "8.10.0",
+  "adapter_kinds": ["AzureGovAdapter"],
+  "description": "Collects resource attributes from Azure Government Cloud including VMs, Disks, Networks, Storage, Key Vaults, SQL, and App Services.",
+  "vendor": "Custom",
+  "eula_file": "eula.txt",
+  "pak_icon": "icon.png",
+  "pak_validation_script": "",
+  "install_script": "",
+  "platform": ["Linux"]
+}
