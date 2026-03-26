@@ -7,15 +7,13 @@
 #   chmod +x preflight_check.sh && ./preflight_check.sh
 # ============================================================================
 
-set -euo pipefail
-
 PASS=0
 FAIL=0
 WARN=0
 
-pass()  { echo "  [PASS]  $1"; ((PASS++)); }
-fail()  { echo "  [FAIL]  $1"; ((FAIL++)); }
-warn()  { echo "  [WARN]  $1"; ((WARN++)); }
+pass()  { echo "  [PASS]  $1"; PASS=$((PASS + 1)); }
+fail()  { echo "  [FAIL]  $1"; FAIL=$((FAIL + 1)); }
+warn()  { echo "  [WARN]  $1"; WARN=$((WARN + 1)); }
 header(){ echo ""; echo "=== $1 ==="; }
 
 # ---------- OS ----------
