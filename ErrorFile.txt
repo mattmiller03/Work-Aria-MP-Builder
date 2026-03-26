@@ -1,13 +1,3 @@
-DEPRECATION: Loading egg at /usr/lib/python3.11/site-packages/nagini-2.0-py3.11.egg is deprecated. pip 25.1 will enforce this behaviour change. A possible replacement is to use pip for package installation. Discussion can be found at https://github.com/pypa/pip/issues/12330
-Looking in links: /home/vropsssh/Aria-MP-Builder/aria-wheels
-Processing ./aria-wheels/vmware_aria_operations_integration_sdk-1.3.1-py3-none-any.whl
-Processing ./aria-wheels/gitpython-3.1.46-py3-none-any.whl (from vmware-aria-operations-integration-sdk)
-Processing ./aria-wheels/aenum-3.1.11-py3-none-any.whl (from vmware-aria-operations-integration-sdk)
-Processing ./aria-wheels/docker-7.1.0-py3-none-any.whl (from vmware-aria-operations-integration-sdk)
-Processing ./aria-wheels/httpx-0.23.3-py3-none-any.whl (from vmware-aria-operations-integration-sdk)
-Processing ./aria-wheels/importlib_metadata-5.2.0-py3-none-any.whl (from vmware-aria-operations-integration-sdk)
-Processing ./aria-wheels/importlib_resources-5.13.0-py3-none-any.whl (from vmware-aria-operations-integration-sdk)
-Processing ./aria-wheels/jsonschema_spec-0.1.6-py3-none-any.whl (from vmware-aria-operations-integration-sdk)
-INFO: pip is looking at multiple versions of vmware-aria-operations-integration-sdk to determine which version is compatible with other requirements. This could take a while.
-ERROR: Could not find a version that satisfies the requirement lxml<5.0.0,>=4.9.2 (from vmware-aria-operations-integration-sdk) (from versions: none)
-ERROR: No matching distribution found for lxml<5.0.0,>=4.9.2
+PS C:\Users\DMM0090> pip download "validators>=0.20.0,<0.21.0" --python-version 3.11 --platform manylinux2014_x86_64 --only-binary=:all: -d C:\aria-wheels
+ERROR: Could not find a version that satisfies the requirement validators<0.21.0,>=0.20.0 (from versions: 0.17.1, 0.18.0, 0.18.1, 0.18.2, 0.21.0, 0.21.1, 0.21.2, 0.22.0, 0.23.0, 0.23.1, 0.23.2, 0.24.0, 0.25.0, 0.26.0, 0.27.0, 0.28.0, 0.28.1, 0.28.2, 0.28.3, 0.29.0, 0.30.0, 0.31.0, 0.32.0, 0.33.0, 0.34.0, 0.35.0)
+ERROR: No matching distribution found for validators<0.21.0,>=0.20.0
