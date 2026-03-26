@@ -1,72 +1,54 @@
-vropsssh@daisv0tp003 [ ~/Aria-MP-Builder ]$ sudo pip install --no-index --find-links /home/vropsssh/Aria-MP-Builder/aria-wheels vmware-aria-operations-integration-sdk-lib
-[sudo] password for vropsssh: 
-DEPRECATION: Loading egg at /usr/lib/python3.11/site-packages/nagini-2.0-py3.11.egg is deprecated. pip 25.1 will enforce this behaviour change. A possible replacement is to use pip for package installation. Discussion can be found at https://github.com/pypa/pip/issues/12330
-Looking in links: /home/vropsssh/Aria-MP-Builder/aria-wheels
-Processing ./aria-wheels/vmware_aria_operations_integration_sdk_lib-1.1.0-py3-none-any.whl
-Processing ./aria-wheels/aenum-3.1.11-py3-none-any.whl (from vmware-aria-operations-integration-sdk-lib)
-INFO: pip is looking at multiple versions of vmware-aria-operations-integration-sdk-lib to determine which version is compatible with other requirements. This could take a while.
-ERROR: Could not find a version that satisfies the requirement cryptography==44.0.0 (from vmware-aria-operations-integration-sdk-lib) (from versions: none)
-ERROR: No matching distribution found for cryptography==44.0.0
-vropsssh@daisv0tp003 [ ~/Aria-MP-Builder ]$ sudo pip install --no-index --find-links /home/vropsssh/Aria-MP-Builder/aria-wheels vmware-aria-operations-integration-sdk
-DEPRECATION: Loading egg at /usr/lib/python3.11/site-packages/nagini-2.0-py3.11.egg is deprecated. pip 25.1 will enforce this behaviour change. A possible replacement is to use pip for package installation. Discussion can be found at https://github.com/pypa/pip/issues/12330
-Looking in links: /home/vropsssh/Aria-MP-Builder/aria-wheels
-Processing ./aria-wheels/vmware_aria_operations_integration_sdk-1.3.1-py3-none-any.whl
-Processing ./aria-wheels/gitpython-3.1.46-py3-none-any.whl (from vmware-aria-operations-integration-sdk)
-Processing ./aria-wheels/aenum-3.1.11-py3-none-any.whl (from vmware-aria-operations-integration-sdk)
-Processing ./aria-wheels/docker-7.1.0-py3-none-any.whl (from vmware-aria-operations-integration-sdk)
-Processing ./aria-wheels/httpx-0.23.3-py3-none-any.whl (from vmware-aria-operations-integration-sdk)
-Processing ./aria-wheels/importlib_metadata-5.2.0-py3-none-any.whl (from vmware-aria-operations-integration-sdk)
-Processing ./aria-wheels/importlib_resources-5.13.0-py3-none-any.whl (from vmware-aria-operations-integration-sdk)
-Processing ./aria-wheels/jsonschema_spec-0.1.6-py3-none-any.whl (from vmware-aria-operations-integration-sdk)
-Processing ./aria-wheels/lxml-4.9.4-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_24_x86_64.whl (from vmware-aria-operations-integration-sdk)
-Processing ./aria-wheels/openapi_core-0.15.0-py3-none-any.whl (from vmware-aria-operations-integration-sdk)
-Processing ./aria-wheels/openapi_schema_validator-0.2.3-py3-none-any.whl (from vmware-aria-operations-integration-sdk)
-Processing ./aria-wheels/openapi_spec_validator-0.4.0-py3-none-any.whl (from vmware-aria-operations-integration-sdk)
-Processing ./aria-wheels/pillow-10.4.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (from vmware-aria-operations-integration-sdk)
-Processing ./aria-wheels/prompt_toolkit-3.0.52-py3-none-any.whl (from vmware-aria-operations-integration-sdk)
-Processing ./aria-wheels/sen-0.6.2-py3-none-any.whl (from vmware-aria-operations-integration-sdk)
-Requirement already satisfied: setuptools<79.0.0,>=65.6.3 in /usr/lib/python3.11/site-packages (from vmware-aria-operations-integration-sdk) (69.0.3)
-Processing ./aria-wheels/validators-0.20.0.tar.gz (from vmware-aria-operations-integration-sdk)
-  Installing build dependencies ... done
-  Getting requirements to build wheel ... done
-  Preparing metadata (pyproject.toml) ... done
-Processing ./aria-wheels/vmware_aria_operations_integration_sdk_lib-1.1.0-py3-none-any.whl (from vmware-aria-operations-integration-sdk)
-Processing ./aria-wheels/xmlschema-2.4.0-py3-none-any.whl (from vmware-aria-operations-integration-sdk)
-Requirement already satisfied: requests>=2.26.0 in /usr/lib/python3.11/site-packages (from docker<8.0.0,>=7.1.0->vmware-aria-operations-integration-sdk) (2.28.1)
-Requirement already satisfied: urllib3>=1.26.0 in /usr/lib/python3.11/site-packages (from docker<8.0.0,>=7.1.0->vmware-aria-operations-integration-sdk) (1.26.19)
-Processing ./aria-wheels/gitdb-4.0.12-py3-none-any.whl (from GitPython<4.0.0,>=3.1.30->vmware-aria-operations-integration-sdk)
-Requirement already satisfied: certifi in /usr/lib/python3.11/site-packages (from httpx<0.24.0,>=0.23.0->vmware-aria-operations-integration-sdk) (2023.11.17)
-Processing ./aria-wheels/httpcore-0.16.3-py3-none-any.whl (from httpx<0.24.0,>=0.23.0->vmware-aria-operations-integration-sdk)
-Processing ./aria-wheels/rfc3986-1.5.0-py2.py3-none-any.whl (from rfc3986[idna2008]<2,>=1.3->httpx<0.24.0,>=0.23.0->vmware-aria-operations-integration-sdk)
-Processing ./aria-wheels/sniffio-1.3.1-py3-none-any.whl (from httpx<0.24.0,>=0.23.0->vmware-aria-operations-integration-sdk)
-Processing ./aria-wheels/zipp-3.23.0-py3-none-any.whl (from importlib-metadata<6.0.0,>=5.0.0->vmware-aria-operations-integration-sdk)
-Requirement already satisfied: PyYAML>=5.1 in /usr/lib/python3.11/site-packages (from jsonschema-spec<0.2.0,>=0.1.2->vmware-aria-operations-integration-sdk) (5.4.1)
-Requirement already satisfied: jsonschema<4.18.0,>=4.0.0 in /usr/lib/python3.11/site-packages (from jsonschema-spec<0.2.0,>=0.1.2->vmware-aria-operations-integration-sdk) (4.16.0)
-Processing ./aria-wheels/pathable-0.4.4-py3-none-any.whl (from jsonschema-spec<0.2.0,>=0.1.2->vmware-aria-operations-integration-sdk)
-Processing ./aria-wheels/requests-2.33.0-py3-none-any.whl (from docker<8.0.0,>=7.1.0->vmware-aria-operations-integration-sdk)
-Processing ./aria-wheels/isodate-0.7.2-py3-none-any.whl (from openapi-core<0.16.0,>=0.15.0->vmware-aria-operations-integration-sdk)
-Processing ./aria-wheels/more_itertools-10.8.0-py3-none-any.whl (from openapi-core<0.16.0,>=0.15.0->vmware-aria-operations-integration-sdk)
-Processing ./aria-wheels/parse-1.21.1-py2.py3-none-any.whl (from openapi-core<0.16.0,>=0.15.0->vmware-aria-operations-integration-sdk)
-Processing ./aria-wheels/typing_extensions-4.15.0-py3-none-any.whl (from openapi-core<0.16.0,>=0.15.0->vmware-aria-operations-integration-sdk)
-Processing ./aria-wheels/werkzeug-3.1.7-py3-none-any.whl (from openapi-core<0.16.0,>=0.15.0->vmware-aria-operations-integration-sdk)
-Processing ./aria-wheels/wcwidth-0.6.0-py3-none-any.whl (from prompt-toolkit<4.0.0,>=3.0.29->vmware-aria-operations-integration-sdk)
-Processing ./aria-wheels/urwid-3.0.5-py3-none-any.whl (from sen<0.7.0,>=0.6.2->vmware-aria-operations-integration-sdk)
-Processing ./aria-wheels/urwidtrees-1.0.4-py3-none-any.whl (from sen<0.7.0,>=0.6.2->vmware-aria-operations-integration-sdk)
-Processing ./aria-wheels/decorator-5.2.1-py3-none-any.whl (from validators<0.21.0,>=0.20.0->vmware-aria-operations-integration-sdk)
-INFO: pip is looking at multiple versions of vmware-aria-operations-integration-sdk-lib to determine which version is compatible with other requirements. This could take a while.
-ERROR: Could not find a version that satisfies the requirement cryptography==44.0.0 (from vmware-aria-operations-integration-sdk-lib) (from versions: none)
-ERROR: No matching distribution found for cryptography==44.0.0
-vropsssh@daisv0tp003 [ ~/Aria-MP-Builder ]$ sudo pip install --no-index --find-links /home/vropsssh/Aria-MP-Builder/aria-wheels requests                                    
-DEPRECATION: Loading egg at /usr/lib/python3.11/site-packages/nagini-2.0-py3.11.egg is deprecated. pip 25.1 will enforce this behaviour change. A possible replacement is to use pip for package installation. Discussion can be found at https://github.com/pypa/pip/issues/12330
-Looking in links: /home/vropsssh/Aria-MP-Builder/aria-wheels
-Requirement already satisfied: requests in /usr/lib/python3.11/site-packages (2.28.1)
-Requirement already satisfied: charset_normalizer<3,>=2 in /usr/lib/python3.11/site-packages (from requests) (2.1.1)
-Requirement already satisfied: idna<4,>=2.5 in /usr/lib/python3.11/site-packages (from requests) (3.3)
-Requirement already satisfied: urllib3<1.27,>=1.21.1 in /usr/lib/python3.11/site-packages (from requests) (1.26.19)
-Requirement already satisfied: certifi>=2017.4.17 in /usr/lib/python3.11/site-packages (from requests) (2023.11.17)
-WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable.It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
-vropsssh@daisv0tp003 [ ~/Aria-MP-Builder ]$ sudo pip install --no-index --find-links /home/vropsssh/Aria-MP-Builder/aria-wheels pip     
-DEPRECATION: Loading egg at /usr/lib/python3.11/site-packages/nagini-2.0-py3.11.egg is deprecated. pip 25.1 will enforce this behaviour change. A possible replacement is to use pip for package installation. Discussion can be found at https://github.com/pypa/pip/issues/12330
-Looking in links: /home/vropsssh/Aria-MP-Builder/aria-wheels
-Requirement already satisfied: pip in /usr/lib/python3.11/site-packages (24.3.1)
-WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable.It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+=== Operating System ===
+  [PASS]  Photon OS detected: VMware Photon OS 5.0
+PHOTON_BUILD_NUMBER=b9d98344d
+
+=== Python ===
+  [PASS]  Python 3.11.13 (>= 3.8 required)
+  [PASS]  pip found: pip 24.3.1 from /usr/lib/python3.11/site-packages/pip (python 3.11)
+
+=== Docker ===
+  [PASS]  Docker version 23.0.2, build 569dd73
+  [PASS]  Docker service is running
+  [PASS]  Current user can access Docker
+
+=== Git ===
+  [PASS]  git version 2.39.0
+
+=== VCF Operations Integration SDK ===
+  [PASS]  mp-build found: /usr/bin/mp-build
+  [PASS]  mp-test found: /usr/bin/mp-test
+  [PASS]  mp-init found: /usr/bin/mp-init
+
+=== Python Dependencies ===
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+AttributeError: module 'requests' has no attribute '__version__'
+  [PASS]  requests library installed: v
+
+=== Project Files ===
+  [FAIL]  app/adapter.py missing — repository may be incomplete
+  [FAIL]  app/auth.py missing — repository may be incomplete
+  [FAIL]  app/azure_client.py missing — repository may be incomplete
+  [FAIL]  app/constants.py missing — repository may be incomplete
+  [FAIL]  app/collectors/__init__.py missing — repository may be incomplete
+  [FAIL]  app/requirements.txt missing — repository may be incomplete
+  [FAIL]  conf/describe.xml missing — repository may be incomplete
+  [FAIL]  manifest.txt missing — repository may be incomplete
+  [FAIL]  resources/resources.properties missing — repository may be incomplete
+  [FAIL]  eula.txt missing — repository may be incomplete
+
+=== Credentials Configuration ===
+  [FAIL]  connections.json not found. Copy the template and fill in your Azure Gov credentials:
+         cp connections.json.example connections.json
+
+=== Network Connectivity (Azure Gov Endpoints) ===
+  [PASS]  Azure Gov Auth — login.microsoftonline.us:443 reachable
+  [PASS]  Azure Gov ARM — management.usgovcloudapi.net:443 reachable
+
+=== SUMMARY ===
+
+  Passed:   13
+  Failed:   11
+  Warnings: 0
+
+  ✗ 11 check(s) failed. Resolve the issues above before proceeding.
