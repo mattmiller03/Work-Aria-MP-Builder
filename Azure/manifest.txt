@@ -1,5 +1,5 @@
 {
-  "name": "Azure Government Cloud Management Pack",
+  "name": "AzureGovCloud",
   "version": "1.0.0",
   "vcops_minimum_version": "8.10.0",
   "adapter_kinds": ["AzureGovAdapter"],
