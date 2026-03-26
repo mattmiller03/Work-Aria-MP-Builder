@@ -2,16 +2,45 @@
   "connections": [
     {
       "name": "Azure Gov Test",
-      "credential": {
-        "type": "azure_gov_credential",
-        "tenant_id": "YOUR_TENANT_ID",
-        "client_id": "YOUR_CLIENT_ID",
-        "client_secret": "YOUR_CLIENT_SECRET",
-        "subscription_id": "YOUR_SUBSCRIPTION_ID"
+      "identifiers": {
+        "cloud_environment": {
+          "value": "government",
+          "part_of_uniqueness": false,
+          "required": true
+        },
+        "container_memory_limit": {
+          "value": "1024",
+          "part_of_uniqueness": false,
+          "required": true
+        }
       },
-      "configuration": {
-        "cloud_environment": "government"
-      }
+      "credential": {
+        "credential_kind_key": "azure_gov_credential",
+        "tenant_id": {
+          "value": "YOUR_TENANT_ID",
+          "required": true,
+          "password": false
+        },
+        "client_id": {
+          "value": "YOUR_CLIENT_ID",
+          "required": true,
+          "password": false
+        },
+        "client_secret": {
+          "value": "YOUR_CLIENT_SECRET",
+          "required": true,
+          "password": true
+        },
+        "subscription_id": {
+          "value": "YOUR_SUBSCRIPTION_ID",
+          "required": false,
+          "password": false
+        }
+      },
+      "certificates": null,
+      "suite_api_hostname": null,
+      "suite_api_username": null,
+      "suite_api_password": null
     }
   ]
 }
