@@ -56,3 +56,10 @@ sudo docker run --rm azuregovcloud-test:1.0.0 pip list | grep aria
 sudo find /usr/lib/python3.11/site-packages/vmware_aria_operations_integration_sdk/ -name "Dockerfile*" 2>/dev/null
 sudo cat /usr/lib/python3.11/site-packages/vmware_aria_operations_integration_sdk/container_versions.json 2>/dev/null
 sudo find /usr/lib/python3.11/site-packages/vmware_aria_operations_integration_sdk/ -type d -name "images" 2>/dev/null
+
+
+
+sudo grep -n "describe\|conf/" /usr/lib/python3.11/site-packages/vmware_aria_operations_integration_sdk/containerized_adapter_rest_api.py
+
+
+sudo docker run --rm azuregovcloud-test:1.0.0 cat /home/aria-ops-adapter-user/src/app/../../../conf/describe.xml 2>/dev/null || sudo docker run --rm azuregovcloud-test:1.0.0 find / -name "describe.xml" 2>/dev/null
