@@ -1,37 +1,38 @@
-sudo docker rmi azuregovcloud-test:1.0.0 2>/dev/null
-Untagged: azuregovcloud-test:1.0.0
-Deleted: sha256:d3a7126ae13efa24f6f04619e6f345909fd9ee2cbb3a825fc4da022589d63a77
-Deleted: sha256:c2ca1f08de195f9b059434dcd0d2edf58f44c23879acf71cbf471a96d732d66a
-Deleted: sha256:dc8672232892ebf05a1146227ae14519a455cfb2b9b921c8efa4c221b10dd2f7
-Deleted: sha256:97b822acc85069321c01fb80a82a42ac70ff425890c0d85976b62700c755c0c3
-Deleted: sha256:a51d1af60ad22fe15f07cb1f0b99ddba832e77b39184b68ed6ee9208902e3e73
-Deleted: sha256:cd2e49e8b9fa6be488ff78fc7507839a3c162e5c87739ede64fc0752873277b4
-Deleted: sha256:857475853fcd6ae5d7a7d38d554bd934e56a21236619a00d4e98112391808190
-Deleted: sha256:2b8fec898c9989694904cc2c806c1abce2f993242db0734d435b2db6b31e23fb
-Deleted: sha256:f498a3dfeadfcb1e322940d4728cf21a165ffb8b3c7a1f579caabddab72e8bcb
-Deleted: sha256:c5dc45cc662a504ac877f0c85ba5f62b17bd155ab95e355927d9f54cc191b6ce
-vropsssh@daisv0tp003 [ ~/Aria-MP-Builder/Azure ]$ sudo docker ps -a
-CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
-vropsssh@daisv0tp003 [ ~/Aria-MP-Builder/Azure ]$ sudo mp-test --port 8181
-/usr/lib/python3.11/site-packages/paramiko/pkey.py:83: CryptographyDeprecationWarning: TripleDES has been moved to cryptography.hazmat.decrepit.ciphers.algorithms.TripleDES and will be removed from cryptography.hazmat.primitives.ciphers.algorithms in 48.0.0.
-  "cipher": algorithms.TripleDES,
-/usr/lib/python3.11/site-packages/paramiko/transport.py:254: CryptographyDeprecationWarning: TripleDES has been moved to cryptography.hazmat.decrepit.ciphers.algorithms.TripleDES and will be removed from cryptography.hazmat.primitives.ciphers.algorithms in 48.0.0.
-  "class": algorithms.TripleDES,
-Building base image [Finished]
-Choose a connection:  Azure Gov Test
-Choose a method to test: Test Connection
-Building adapter [Finished]
-Waiting for adapter to start [Finished]
-500 Internal Server Error
+18:04:59,113 docker.utils.config DEBUG Trying paths: ['/root/.docker/config.json', '/root/.dockercfg']
+18:04:59,131 docker.utils.config DEBUG No config file found
+18:04:59,131 asyncio DEBUG Using selector: EpollSelector
+18:04:59,151 docker.utils.config DEBUG Trying paths: ['/root/.docker/config.json', '/root/.dockercfg']
+18:04:59,194 docker.utils.config DEBUG No config file found
+18:04:59,214 urllib3.connectionpool DEBUG http://localhost:None "GET /version HTTP/1.1" 200 797
+18:04:59,218 urllib3.connectionpool DEBUG http://localhost:None "GET /v1.42/images/base-adapter:python-1.2.0/json HTTP/1.1" 200 None
+18:05:00,878 docker.api.build DEBUG Looking for auth config
+18:05:00,878 docker.api.build DEBUG No auth config in memory - loading from filesystem
+18:05:00,878 docker.utils.config DEBUG Trying paths: ['/root/.docker/config.json', '/root/.dockercfg']
+18:05:00,878 docker.utils.config DEBUG No config file found
+18:05:00,878 docker.api.build DEBUG Sending auth config ()
+18:05:01,353 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.42/build?t=azuregovcloud-test%3A1.0.0&q=False&nocache=False&rm=True&forcerm=False&pull=False&labels=%7B%22mp-test%22%3A+%221774634699.1122127%22%7D HTTP/1.1" 200 None
+18:05:01,484 urllib3.connectionpool DEBUG http://localhost:None "GET /v1.42/images/ba0e2056d8ca/json HTTP/1.1" 200 None
+18:05:01,579 asyncio DEBUG Using selector: EpollSelector
+18:05:02,506 asyncio DEBUG Using selector: EpollSelector
+18:05:04,868 asyncio DEBUG Using selector: EpollSelector
+18:05:04,934 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.42/containers/create HTTP/1.1" 201 88
+18:05:04,935 urllib3.connectionpool DEBUG http://localhost:None "GET /v1.42/containers/92e044a3617491eb0eba3acfc9a69249ad749935deebb9d526ffc75aba430a77/json HTTP/1.1" 200 None
+18:05:05,236 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.42/containers/92e044a3617491eb0eba3acfc9a69249ad749935deebb9d526ffc75aba430a77/start HTTP/1.1" 204 0
+18:05:05,439 asyncio DEBUG Using selector: EpollSelector
+18:05:06,244 httpx._client DEBUG HTTP Request: GET http://localhost:8181/apiVersion "HTTP/1.1 200 OK"
+18:05:06,270 asyncio DEBUG Using selector: EpollSelector
+18:05:07,367 urllib3.connectionpool DEBUG http://localhost:None "GET /v1.42/containers/92e044a3617491eb0eba3acfc9a69249ad749935deebb9d526ffc75aba430a77/stats?stream=False HTTP/1.1" 200 1826
+18:05:07,421 httpx._client DEBUG HTTP Request: GET http://localhost:8181/adapterDefinition "HTTP/1.1 500 Internal Server Error"
+18:05:07,422 vmware_aria_operations_integration_sdk.describe ERROR 500 Internal Server Error
 {"type": "about:blank", "title": "Internal Server Error", "detail": "The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.", "status": 500}
-adapterDefinition endpoint returned 500.
-Running Endpoint URLs [Finished]
-Caught exception when retrieving SSL certificates: 404 Client Error for http+docker://localhost/v1.42/containers/33d9a98ab246e2f8b28d89adf1ee9607404292937d87561a1d6ed01ae7996522/stats?stream=False: Not Found ("No such container: 33d9a98ab246e2f8b28d89adf1ee9607404292937d87561a1d6ed01ae7996522").
-Error retrieving SSL certificates from 'endpointURLs'. Proceeding without certificates.
-
-^C^C
-Testing cancelled
-vropsssh@daisv0tp003 [ ~/Aria-MP-Builder/Azure ]$ ^C
-vropsssh@daisv0tp003 [ ~/Aria-MP-Builder/Azure ]$ sudo docker ps -a
-[sudo] password for vropsssh: 
-CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+18:05:07,423 vmware_aria_operations_integration_sdk.describe ERROR adapterDefinition endpoint returned 500.
+18:05:07,599 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.42/containers/92e044a3617491eb0eba3acfc9a69249ad749935deebb9d526ffc75aba430a77/kill HTTP/1.1" 204 0
+18:05:07,606 urllib3.connectionpool DEBUG http://localhost:None "DELETE /v1.42/containers/92e044a3617491eb0eba3acfc9a69249ad749935deebb9d526ffc75aba430a77?v=False&link=False&force=False HTTP/1.1" 204 0
+18:05:07,612 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.42/images/prune?filters=%7B%22label%22%3A+%5B%22mp-test%22%5D%7D HTTP/1.1" 200 125
+18:05:07,620 urllib3.connectionpool DEBUG http://localhost:None "GET /v1.42/containers/92e044a3617491eb0eba3acfc9a69249ad749935deebb9d526ffc75aba430a77/stats?stream=False HTTP/1.1" 404 98
+18:05:07,737 vmware_aria_operations_integration_sdk.mp_test WARNING Caught exception when retrieving SSL certificates: 404 Client Error for http+docker://localhost/v1.42/containers/92e044a3617491eb0eba3acfc9a69249ad749935deebb9d526ffc75aba430a77/stats?stream=False: Not Found ("No such container: 92e044a3617491eb0eba3acfc9a69249ad749935deebb9d526ffc75aba430a77").
+18:05:07,740 vmware_aria_operations_integration_sdk.mp_test WARNING Error retrieving SSL certificates from 'endpointURLs'. Proceeding without certificates.
+18:05:07,759 asyncio DEBUG Using selector: EpollSelector
+18:05:19,569 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.42/images/prune?filters=%7B%22label%22%3A+%5B%22mp-test%22%5D%7D HTTP/1.1" 200 42
+18:05:19,570 vmware_aria_operations_integration_sdk.mp_test DEBUG Ctrl C pressed by user
+18:05:19,572 vmware_aria_operations_integration_sdk.mp_test INFO Testing cancelled
