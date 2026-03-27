@@ -481,14 +481,51 @@ def test(adapter_instance):
 
 
 # ---------------------------------------------------------------------------
-# SDK Entry Point
+# SDK Entry Point — dispatches based on method arg from mp-test
 # ---------------------------------------------------------------------------
 
-if __name__ == "__main__":
-    from aria.ops.adapter import start_adapter
+def get_endpoints(adapter_instance):
+    """Return endpoint URLs for certificate validation."""
+    from aria.ops.result import EndpointResult
+    return EndpointResult()
 
-    start_adapter(
-        get_adapter_definition,
-        test,
-        collect,
-    )
+
+def main(argv):
+    import aria.ops.adapter_logging as adapter_logging
+    from aria.ops.adapter_instance import AdapterInstance
+    from aria.ops.definition.adapter_definition import AdapterDefinition
+    from aria.ops.timer import Timer
+
+    adapter_logging.setup_logging("adapter.log")
+    adapter_logging.rotate()
+    logger.info(f"Running adapter code with arguments: {argv}")
+
+    if len(argv) != 3:
+        logger.error("Arguments must be <method> <inputfile> <outputfile>")
+        sys.exit(1)
+
+    method = argv[0]
+    try:
+        if method == "test":
+            test(AdapterInstance.from_input()).send_results()
+        elif method == "endpoint_urls":
+            get_endpoints(AdapterInstance.from_input()).send_results()
+        elif method == "collect":
+            collect(AdapterInstance.from_input()).send_results()
+        elif method == "adapter_definition":
+            result = get_adapter_definition()
+            if isinstance(result, AdapterDefinition):
+                result.send_results()
+            else:
+                logger.error("get_adapter_definition did not return an AdapterDefinition")
+                sys.exit(1)
+        else:
+            logger.error(f"Command {method} not found")
+            sys.exit(1)
+    finally:
+        logger.info(Timer.graph())
+        sys.exit(0)
+
+
+if __name__ == "__main__":
+    main(sys.argv[1:])
