@@ -1,7 +1,31 @@
+sudo mp-test
 /usr/lib/python3.11/site-packages/paramiko/pkey.py:83: CryptographyDeprecationWarning: TripleDES has been moved to cryptography.hazmat.decrepit.ciphers.algorithms.TripleDES and will be removed from cryptography.hazmat.primitives.ciphers.algorithms in 48.0.0.
   "cipher": algorithms.TripleDES,
 /usr/lib/python3.11/site-packages/paramiko/transport.py:254: CryptographyDeprecationWarning: TripleDES has been moved to cryptography.hazmat.decrepit.ciphers.algorithms.TripleDES and will be removed from cryptography.hazmat.primitives.ciphers.algorithms in 48.0.0.
   "class": algorithms.TripleDES,
 Building base image [Finished]
-Unable to run container
-SDK message: 500 Server Error for http+docker://localhost/v1.42/build?t=azuregovcloud-test%3A1.0.0&q=False&nocache=False&rm=True&forcerm=False&pull=False&labels=%7B%22mp-test%22%3A+%221774616002.2218668%22%7D: Internal Server Error ("Cannot locate specified Dockerfile: Dockerfile")
+Unable to build container
+ERROR: Unable to build Docker file at /home/vropsssh/Aria-MP-Builder/Azure:
+ The command '/bin/sh -c pip install --no-cache-dir -r /tmp/requirements.txt' returned a non-zero code: 1
+Step 1/7 : FROM python:3.11-slim
+ ---> e67db9b14d09
+
+Step 2/7 : COPY app/requirements.txt /tmp/requirements.txt
+ ---> a2c36f9faa3d
+
+Step 3/7 : RUN pip install --no-cache-dir -r /tmp/requirements.txt
+ ---> Running in c9758678cd57
+
+WARNING: Retrying (Retry(total=4, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ConnectTimeoutError(<pip._vendor.urllib3.connection.HTTPSConnection object at 0x7fd3fb1e3f50>, 'Connection to pypi.org timed out. (connect timeout=15)')': /simple/requests/
+
+WARNING: Retrying (Retry(total=3, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ConnectTimeoutError(<pip._vendor.urllib3.connection.HTTPSConnection object at 0x7fd3fb1e1a10>, 'Connection to pypi.org timed out. (connect timeout=15)')': /simple/requests/
+
+WARNING: Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ConnectTimeoutError(<pip._vendor.urllib3.connection.HTTPSConnection object at 0x7fd3fb23efd0>, 'Connection to pypi.org timed out. (connect timeout=15)')': /simple/requests/
+
+WARNING: Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ConnectTimeoutError(<pip._vendor.urllib3.connection.HTTPSConnection object at 0x7fd3fb070250>, 'Connection to pypi.org timed out. (connect timeout=15)')': /simple/requests/
+
+WARNING: Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ConnectTimeoutError(<pip._vendor.urllib3.connection.HTTPSConnection object at 0x7fd3fb070a10>, 'Connection to pypi.org timed out. (connect timeout=15)')': /simple/requests/
+
+ERROR: Could not find a version that satisfies the requirement requests>=2.31.0 (from versions: none)
+
+ERROR: No matching distribution found for requests>=2.31.0
