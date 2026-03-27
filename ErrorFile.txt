@@ -1,4 +1,4 @@
-sudo mp-test --port 8181
+vropsssh@daisv0tp003 [ ~/Aria-MP-Builder/Azure ]$ sudo mp-test --port 8181
 /usr/lib/python3.11/site-packages/paramiko/pkey.py:83: CryptographyDeprecationWarning: TripleDES has been moved to cryptography.hazmat.decrepit.ciphers.algorithms.TripleDES and will be removed from cryptography.hazmat.primitives.ciphers.algorithms in 48.0.0.
   "cipher": algorithms.TripleDES,
 /usr/lib/python3.11/site-packages/paramiko/transport.py:254: CryptographyDeprecationWarning: TripleDES has been moved to cryptography.hazmat.decrepit.ciphers.algorithms.TripleDES and will be removed from cryptography.hazmat.primitives.ciphers.algorithms in 48.0.0.
@@ -9,19 +9,9 @@ Choose a method to test: Test Connection
 Building adapter [Finished]
 Waiting for adapter to start [Finished]
 Unable to run container
-SDK message: 409 Client Error for http+docker://localhost/v1.42/containers/f0694f12f0cee5279cfac707e1230b7f97615a9f458f98df9740fd7b70364369/kill: Conflict ("Cannot kill container: f0694f12f0cee5279cfac707e1230b7f97615a9f458f98df9740fd7b70364369: Container f0694f12f0cee5279cfac707e1230b7f97615a9f458f98df9740fd7b70364369 is not running")
+SDK message: 409 Client Error for http+docker://localhost/v1.42/containers/b04f1ba34d09b90603d2759ddd61d9151ad9fb5ee2442f87ba39d9a72cd2de2d/kill: Conflict ("Cannot kill container: b04f1ba34d09b90603d2759ddd61d9151ad9fb5ee2442f87ba39d9a72cd2de2d: Container b04f1ba34d09b90603d2759ddd61d9151ad9fb5ee2442f87ba39d9a72cd2de2d is not running")
 vropsssh@daisv0tp003 [ ~/Aria-MP-Builder/Azure ]$ sudo docker ps -a
-CONTAINER ID   IMAGE                      COMMAND               CREATED          STATUS                      PORTS     NAMES
-f0694f12f0ce   azuregovcloud-test:1.0.0   "python adapter.py"   31 seconds ago   Exited (1) 30 seconds ago             distracted_mahavira
-vropsssh@daisv0tp003 [ ~/Aria-MP-Builder/Azure ]$ docker logs f0694f12f0ce
-Traceback (most recent call last):
-  File "/adapter/adapter.py", line 531, in <module>
-    main(sys.argv[1:])
-  File "/adapter/adapter.py", line 495, in main
-    from aria.ops.adapter_instance import AdapterInstance
-  File "/usr/local/lib/python3.11/site-packages/aria/ops/adapter_instance.py", line 18, in <module>
-    class AdapterInstance(Object):  # type: ignore
-  File "/usr/local/lib/python3.11/site-packages/aria/ops/adapter_instance.py", line 143, in AdapterInstance
-    def from_input(cls, infile: str = sys.argv[-2]) -> AdapterInstance:
-                                      ~~~~~~~~^^^^
-IndexError: list index out of range
+CONTAINER ID   IMAGE                      COMMAND     CREATED          STATUS                      PORTS     NAMES
+b04f1ba34d09   azuregovcloud-test:1.0.0   "python3"   33 seconds ago   Exited (0) 33 seconds ago             eloquent_benz
+vropsssh@daisv0tp003 [ ~/Aria-MP-Builder/Azure ]$ docker logs b04f1ba34d09
+vropsssh@daisv0tp003 [ ~/Aria-MP-Builder/Azure ]$ 
