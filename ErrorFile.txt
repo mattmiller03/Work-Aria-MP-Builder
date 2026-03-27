@@ -1,3 +1,24 @@
-REPOSITORY           TAG         IMAGE ID       CREATED          SIZE
-azuregovcloud-test   1.0.0       bd7b45062cd6   11 minutes ago   165MB
-python               3.11-slim   e67db9b14d09   10 days ago      124MB
+vropsssh@asdf [ ~/Aria-MP-Builder/Azure ]$ sudo find /usr/lib/python3.11/site-packages/vmware_aria_operations_integration_sdk/ -name "Dockerfile*" 2>/dev/null
+vropsssh@asdf [ ~/Aria-MP-Builder/Azure ]$ sudo cat /usr/lib/python3.11/site-packages/vmware_aria_operations_integration_sdk/container_versions.json 2>/dev/null
+{
+    "base_image": {
+        "language": "Python",
+        "path": "base-python-adapter",
+        "version": "1.2.0"
+    },
+    "registry_url": "projects.packages.broadcom.com/vmware_aria_operations_integration_sdk",
+    "secondary_images": [
+        {
+            "language": "Java",
+            "path": "java-adapter",
+            "version": "1.2.0"
+        },
+        {
+            "language": "Powershell",
+            "path": "powershell-adapter",
+            "version": "1.1.0"
+        }
+    ]
+}vropsssh@adf [ ~/Aria-MP-Builder/Azure ]$sudo find /usr/lib/python3.11/site-packages/vmware_aria_operations_integration_sdk/ -type d -name "images" 2>/dev/null
+vropsssh@adf [ ~/Aria-MP-Builder/Azure ]$ ^C
+vropsssh@asdf[ ~/Aria-MP-Builder/Azure ]$ 
