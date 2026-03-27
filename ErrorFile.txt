@@ -1,31 +1,15 @@
 sudo mp-test
+[sudo] password for vropsssh: 
 /usr/lib/python3.11/site-packages/paramiko/pkey.py:83: CryptographyDeprecationWarning: TripleDES has been moved to cryptography.hazmat.decrepit.ciphers.algorithms.TripleDES and will be removed from cryptography.hazmat.primitives.ciphers.algorithms in 48.0.0.
   "cipher": algorithms.TripleDES,
 /usr/lib/python3.11/site-packages/paramiko/transport.py:254: CryptographyDeprecationWarning: TripleDES has been moved to cryptography.hazmat.decrepit.ciphers.algorithms.TripleDES and will be removed from cryptography.hazmat.primitives.ciphers.algorithms in 48.0.0.
   "class": algorithms.TripleDES,
 Building base image [Finished]
-Unable to build container
-ERROR: Unable to build Docker file at /home/vropsssh/Aria-MP-Builder/Azure:
- The command '/bin/sh -c pip install --no-cache-dir -r /tmp/requirements.txt' returned a non-zero code: 1
-Step 1/7 : FROM python:3.11-slim
- ---> e67db9b14d09
-
-Step 2/7 : COPY app/requirements.txt /tmp/requirements.txt
- ---> a2c36f9faa3d
-
-Step 3/7 : RUN pip install --no-cache-dir -r /tmp/requirements.txt
- ---> Running in c9758678cd57
-
-WARNING: Retrying (Retry(total=4, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ConnectTimeoutError(<pip._vendor.urllib3.connection.HTTPSConnection object at 0x7fd3fb1e3f50>, 'Connection to pypi.org timed out. (connect timeout=15)')': /simple/requests/
-
-WARNING: Retrying (Retry(total=3, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ConnectTimeoutError(<pip._vendor.urllib3.connection.HTTPSConnection object at 0x7fd3fb1e1a10>, 'Connection to pypi.org timed out. (connect timeout=15)')': /simple/requests/
-
-WARNING: Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ConnectTimeoutError(<pip._vendor.urllib3.connection.HTTPSConnection object at 0x7fd3fb23efd0>, 'Connection to pypi.org timed out. (connect timeout=15)')': /simple/requests/
-
-WARNING: Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ConnectTimeoutError(<pip._vendor.urllib3.connection.HTTPSConnection object at 0x7fd3fb070250>, 'Connection to pypi.org timed out. (connect timeout=15)')': /simple/requests/
-
-WARNING: Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ConnectTimeoutError(<pip._vendor.urllib3.connection.HTTPSConnection object at 0x7fd3fb070a10>, 'Connection to pypi.org timed out. (connect timeout=15)')': /simple/requests/
-
-ERROR: Could not find a version that satisfies the requirement requests>=2.31.0 (from versions: none)
-
-ERROR: No matching distribution found for requests>=2.31.0
+Choose a connection:  Azure Gov Test
+Choose a method to test: Test Connection
+Building adapter [Finished]
+Caught exception when retrieving SSL certificates: 500 Server Error for http+docker://localhost/v1.42/containers/7eb5fe4a6950db88766e683b7e68a673be6254711f8a8599a3d58b9578a49396/start: Internal Server Error ("driver failed programming external connectivity on endpoint fervent_cray (02903a2bfbffe65d4917801477ccac7bdfe58e2cb589f2722a7960e948972d64): Error starting userland proxy: listen tcp4 0.0.0.0:8080: bind: address already in use").
+Error retrieving SSL certificates from 'endpointURLs'. Proceeding without certificates.
+Building adapter [Finished]
+Unable to run container
+SDK message: 500 Server Error for http+docker://localhost/v1.42/containers/7eb5fe4a6950db88766e683b7e68a673be6254711f8a8599a3d58b9578a49396/start: Internal Server Error ("driver failed programming external connectivity on endpoint fervent_cray (02903a2bfbffe65d4917801477ccac7bdfe58e2cb589f2722a7960e948972d64): Error starting userland proxy: listen tcp4 0.0.0.0:8080: bind: address already in use")
