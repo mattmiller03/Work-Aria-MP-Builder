@@ -1,20 +1,45 @@
-vropsssh@daisv0tp003 [ ~/Aria-MP-Builder/Azure ]$ sudo mp-test --port 8181
+sudo mp-test --port 8181
 /usr/lib/python3.11/site-packages/paramiko/pkey.py:83: CryptographyDeprecationWarning: TripleDES has been moved to cryptography.hazmat.decrepit.ciphers.algorithms.TripleDES and will be removed from cryptography.hazmat.primitives.ciphers.algorithms in 48.0.0.
   "cipher": algorithms.TripleDES,
 /usr/lib/python3.11/site-packages/paramiko/transport.py:254: CryptographyDeprecationWarning: TripleDES has been moved to cryptography.hazmat.decrepit.ciphers.algorithms.TripleDES and will be removed from cryptography.hazmat.primitives.ciphers.algorithms in 48.0.0.
   "class": algorithms.TripleDES,
 Building base image [Finished]
-Choose a connection:  Azure Gov Test
-Choose a method to test: Test Connection
-Building adapter [Finished]
-Waiting for adapter to start [Finished]
-Unable to run container
-SDK message: 409 Client Error for http+docker://localhost/v1.42/containers/7c208501e6dc3cfcffc769f4c9f9ac9164805923a4495c0d67154d10c98f0c40/kill: Conflict ("Cannot kill container: 7c208501e6dc3cfcffc769f4c9f9ac9164805923a4495c0d67154d10c98f0c40: Container 7c208501e6dc3cfcffc769f4c9f9ac9164805923a4495c0d67154d10c98f0c40 is not running")
-vropsssh@daisv0tp003 [ ~/Aria-MP-Builder/Azure ]$ sudo docker ps -a
-CONTAINER ID   IMAGE                      COMMAND               CREATED          STATUS                      PORTS     NAMES
-7c208501e6dc   azuregovcloud-test:1.0.0   "python adapter.py"   28 seconds ago   Exited (1) 27 seconds ago             silly_swirles
-vropsssh@daisv0tp003 [ ~/Aria-MP-Builder/Azure ]$ docker logs 7c208501e6dc
-Traceback (most recent call last):
-  File "/adapter/adapter.py", line 488, in <module>
-    from aria.ops.adapter import start_adapter
-ModuleNotFoundError: No module named 'aria'
+Unable to build container
+ERROR: Unable to build Docker file at /home/vropsssh/Aria-MP-Builder/Azure:
+ The command '/bin/sh -c pip install --no-cache-dir --no-index --find-links /tmp/wheels/ -r /tmp/wheels/requirements.txt     && pip install --no-cache-dir --no-index --find-links /tmp/wheels/ vmware-aria-operations-integration-sdk-lib     && rm -rf /tmp/wheels' returned a non-zero code: 1
+Step 1/7 : FROM python:3.11-slim
+ ---> e67db9b14d09
+
+Step 2/7 : COPY app/wheels/ /tmp/wheels/
+ ---> f2462a38aaa3
+
+Step 3/7 : RUN pip install --no-cache-dir --no-index --find-links /tmp/wheels/ -r /tmp/wheels/requirements.txt     && pip install --no-cache-dir --no-index --find-links /tmp/wheels/ vmware-aria-operations-integration-sdk-lib     && rm -rf /tmp/wheels
+ ---> Running in 73b5d553e7ed
+
+Looking in links: /tmp/wheels/
+
+Processing /tmp/wheels/requests-2.33.0-py3-none-any.whl (from -r /tmp/wheels/requirements.txt (line 1))
+
+Processing /tmp/wheels/charset_normalizer-3.4.6-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (from requests>=2.31.0->-r /tmp/wheels/requirements.txt (line 1))
+
+Processing /tmp/wheels/idna-3.11-py3-none-any.whl (from requests>=2.31.0->-r /tmp/wheels/requirements.txt (line 1))
+
+Processing /tmp/wheels/urllib3-2.6.3-py3-none-any.whl (from requests>=2.31.0->-r /tmp/wheels/requirements.txt (line 1))
+
+Processing /tmp/wheels/certifi-2026.2.25-py3-none-any.whl (from requests>=2.31.0->-r /tmp/wheels/requirements.txt (line 1))
+
+Installing collected packages: urllib3, idna, charset_normalizer, certifi, requests
+
+Successfully installed certifi-2026.2.25 charset_normalizer-3.4.6 idna-3.11 requests-2.33.0 urllib3-2.6.3
+
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+
+Looking in links: /tmp/wheels/
+
+Processing /tmp/wheels/vmware_aria_operations_integration_sdk_lib-1.1.0-py3-none-any.whl
+
+INFO: pip is looking at multiple versions of vmware-aria-operations-integration-sdk-lib to determine which version is compatible with other requirements. This could take a while.
+
+ERROR: Could not find a version that satisfies the requirement aenum==3.1.11 (from vmware-aria-operations-integration-sdk-lib) (from versions: 3.1.17)
+
+ERROR: No matching distribution found for aenum==3.1.11
