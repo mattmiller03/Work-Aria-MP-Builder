@@ -1,24 +1,38 @@
-vropsssh@asdf [ ~/Aria-MP-Builder/Azure ]$ sudo find /usr/lib/python3.11/site-packages/vmware_aria_operations_integration_sdk/ -name "Dockerfile*" 2>/dev/null
-vropsssh@asdf [ ~/Aria-MP-Builder/Azure ]$ sudo cat /usr/lib/python3.11/site-packages/vmware_aria_operations_integration_sdk/container_versions.json 2>/dev/null
-{
-    "base_image": {
-        "language": "Python",
-        "path": "base-python-adapter",
-        "version": "1.2.0"
-    },
-    "registry_url": "projects.packages.broadcom.com/vmware_aria_operations_integration_sdk",
-    "secondary_images": [
-        {
-            "language": "Java",
-            "path": "java-adapter",
-            "version": "1.2.0"
-        },
-        {
-            "language": "Powershell",
-            "path": "powershell-adapter",
-            "version": "1.1.0"
-        }
-    ]
-}vropsssh@adf [ ~/Aria-MP-Builder/Azure ]$sudo find /usr/lib/python3.11/site-packages/vmware_aria_operations_integration_sdk/ -type d -name "images" 2>/dev/null
-vropsssh@adf [ ~/Aria-MP-Builder/Azure ]$ ^C
-vropsssh@asdf[ ~/Aria-MP-Builder/Azure ]$ 
+vropsssh@daisv0tp003 [ ~/Aria-MP-Builder/Azure ]$ sudo mp-test --port 8181
+/usr/lib/python3.11/site-packages/paramiko/pkey.py:83: CryptographyDeprecationWarning: TripleDES has been moved to cryptography.hazmat.decrepit.ciphers.algorithms.TripleDES and will be removed from cryptography.hazmat.primitives.ciphers.algorithms in 48.0.0.
+  "cipher": algorithms.TripleDES,
+/usr/lib/python3.11/site-packages/paramiko/transport.py:254: CryptographyDeprecationWarning: TripleDES has been moved to cryptography.hazmat.decrepit.ciphers.algorithms.TripleDES and will be removed from cryptography.hazmat.primitives.ciphers.algorithms in 48.0.0.
+  "class": algorithms.TripleDES,
+Building base image [Finished]
+Choose a connection:  Azure Gov Test
+Choose a method to test: Test Connection
+Building adapter [Finished]
+Waiting for adapter to start [Finished]
+Running Endpoint URLs [Finished]
+Caught exception when retrieving SSL certificates: No adapter instance found in describe. Ensure that an adapter instance resource kind (with attribute type=7) exists..
+Error retrieving SSL certificates from 'endpointURLs'. Proceeding without certificates.
+Running Connect [Finished]
+Unexpected error
+No adapter instance found in describe. Ensure that an adapter instance resource kind (with attribute type=7) exists.
+  File "/usr/lib/python3.11/site-packages/vmware_aria_operations_integration_sdk/mp_test.py", line 938, in main
+    asyncio.run(run(parser.parse_args()))
+  File "/usr/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/site-packages/vmware_aria_operations_integration_sdk/mp_test.py", line 406, in run
+    result_bundle = await method(
+                    ^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/site-packages/vmware_aria_operations_integration_sdk/mp_test.py", line 241, in run_connect
+    request, response, elapsed_time = await send_post_to_adapter(
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/site-packages/vmware_aria_operations_integration_sdk/containerized_adapter_rest_api.py", line 50, in send_post_to_adapter
+    json=await get_request_body(port, connection, send_cluster_connection_info),
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/site-packages/vmware_aria_operations_integration_sdk/containerized_adapter_rest_api.py", line 94, in get_request_body
+    raise Exception(
