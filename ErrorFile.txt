@@ -1,39 +1,25 @@
- sudo cat /home/vropsssh/Aria-MP-Builder/Azure/logs/$(ls -t /home/vropsssh/Aria-MP-Builder/Azure/logs/ | head -1)
-15:04:30,6 docker.utils.config DEBUG Trying paths: ['/root/.docker/config.json', '/root/.dockercfg']
-15:04:30,34 docker.utils.config DEBUG No config file found
-15:04:30,35 docker.utils.config DEBUG Trying paths: ['/root/.docker/config.json', '/root/.dockercfg']
-15:04:30,35 docker.utils.config DEBUG No config file found
-15:04:30,40 asyncio DEBUG Using selector: EpollSelector
-15:04:30,73 urllib3.connectionpool DEBUG http://localhost:None "GET /version HTTP/1.1" 200 797
-15:04:30,76 urllib3.connectionpool DEBUG http://localhost:None "GET /v1.42/images/base-adapter:python-1.2.0/json HTTP/1.1" 200 None
-15:04:31,676 docker.api.build DEBUG Looking for auth config
-15:04:31,677 docker.api.build DEBUG No auth config in memory - loading from filesystem
-15:04:31,677 docker.utils.config DEBUG Trying paths: ['/root/.docker/config.json', '/root/.dockercfg']
-15:04:31,677 docker.utils.config DEBUG No config file found
-15:04:31,677 docker.api.build DEBUG Sending auth config ()
-15:04:32,126 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.42/build?t=azuregovcloud-test%3A1.0.0&q=False&nocache=False&rm=True&forcerm=False&pull=False&labels=%7B%22mp-test%22%3A+%221774883070.0033257%22%7D HTTP/1.1" 200 None
-15:04:35,451 urllib3.connectionpool DEBUG http://localhost:None "GET /v1.42/images/19a735e0b138/json HTTP/1.1" 200 None
-15:04:35,576 asyncio DEBUG Using selector: EpollSelector
-15:04:38,240 asyncio DEBUG Using selector: EpollSelector
-15:04:39,856 asyncio DEBUG Using selector: EpollSelector
-15:04:39,894 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.42/containers/create HTTP/1.1" 201 88
-15:04:39,895 urllib3.connectionpool DEBUG http://localhost:None "GET /v1.42/containers/7d9d46e0f95187df62272bfe80ffaf188f04edebe35f34e06f80406241a895fd/json HTTP/1.1" 200 None
-15:04:40,149 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.42/containers/7d9d46e0f95187df62272bfe80ffaf188f04edebe35f34e06f80406241a895fd/start HTTP/1.1" 204 0
-15:04:40,248 asyncio DEBUG Using selector: EpollSelector
-15:04:40,978 httpx._client DEBUG HTTP Request: GET http://localhost:8181/apiVersion "HTTP/1.1 200 OK"
-15:04:40,991 asyncio DEBUG Using selector: EpollSelector
-15:04:42,42 urllib3.connectionpool DEBUG http://localhost:None "GET /v1.42/containers/7d9d46e0f95187df62272bfe80ffaf188f04edebe35f34e06f80406241a895fd/stats?stream=False HTTP/1.1" 200 1848
-15:04:42,83 httpx._client DEBUG HTTP Request: GET http://localhost:8181/adapterDefinition "HTTP/1.1 500 Internal Server Error"
-15:04:42,84 vmware_aria_operations_integration_sdk.describe ERROR 500 Internal Server Error
-{"type": "about:blank", "title": "Internal Server Error", "detail": "The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.", "status": 500}
-15:04:42,84 vmware_aria_operations_integration_sdk.describe ERROR adapterDefinition endpoint returned 500.
-15:04:42,251 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.42/containers/7d9d46e0f95187df62272bfe80ffaf188f04edebe35f34e06f80406241a895fd/kill HTTP/1.1" 204 0
-15:04:42,255 urllib3.connectionpool DEBUG http://localhost:None "DELETE /v1.42/containers/7d9d46e0f95187df62272bfe80ffaf188f04edebe35f34e06f80406241a895fd?v=False&link=False&force=False HTTP/1.1" 204 0
-15:04:42,257 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.42/images/prune?filters=%7B%22label%22%3A+%5B%22mp-test%22%5D%7D HTTP/1.1" 200 42
-15:04:42,294 urllib3.connectionpool DEBUG http://localhost:None "GET /v1.42/containers/7d9d46e0f95187df62272bfe80ffaf188f04edebe35f34e06f80406241a895fd/stats?stream=False HTTP/1.1" 404 98
-15:04:42,346 vmware_aria_operations_integration_sdk.mp_test WARNING Caught exception when retrieving SSL certificates: 404 Client Error for http+docker://localhost/v1.42/containers/7d9d46e0f95187df62272bfe80ffaf188f04edebe35f34e06f80406241a895fd/stats?stream=False: Not Found ("No such container: 7d9d46e0f95187df62272bfe80ffaf188f04edebe35f34e06f80406241a895fd").
-15:04:42,349 vmware_aria_operations_integration_sdk.mp_test WARNING Error retrieving SSL certificates from 'endpointURLs'. Proceeding without certificates.
-15:04:42,362 asyncio DEBUG Using selector: EpollSelector
-15:09:12,981 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.42/images/prune?filters=%7B%22label%22%3A+%5B%22mp-test%22%5D%7D HTTP/1.1" 200 42
-15:09:12,982 vmware_aria_operations_integration_sdk.mp_test DEBUG Ctrl C pressed by user
-15:09:12,984 vmware_aria_operations_integration_sdk.mp_test INFO Testing cancelled
+ sudo mp-test --port 8181
+/usr/lib/python3.11/site-packages/paramiko/pkey.py:83: CryptographyDeprecationWarning: TripleDES has been moved to cryptography.hazmat.decrepit.ciphers.algorithms.TripleDES and will be removed from cryptography.hazmat.primitives.ciphers.algorithms in 48.0.0.
+  "cipher": algorithms.TripleDES,
+/usr/lib/python3.11/site-packages/paramiko/transport.py:254: CryptographyDeprecationWarning: TripleDES has been moved to cryptography.hazmat.decrepit.ciphers.algorithms.TripleDES and will be removed from cryptography.hazmat.primitives.ciphers.algorithms in 48.0.0.
+  "class": algorithms.TripleDES,
+Building base image [Finished]
+Choose a connection:  Azure Gov Test
+Choose a method to test: Test Connection
+Building adapter [Finished]
+Waiting for adapter to start [Finished]
+500 Internal Server Error
+No result from adapter. Captured stdout:
+  2026-03-30 15:36:34,802 [ERROR] root: Cannot write to log file '/var/log/adapter.log'
+NoneType: None
+2026-03-30 15:36:34,803 [INFO] __main__: Running adapter code with arguments: ['adapter_definition', '/tmp/tmpxt_7f9sr/input_pipe', '/tmp/tmpxt_7f9sr/output_pipe']
+2026-03-30 15:36:34,803 [INFO] __main__: Timing Graph: 
+━━━━━━━━━┯━━━━━━━━┯━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Operation│Time    │t=0s                                                t=-1774884994.80s
+━━━━━━━━━┿━━━━━━━━┿━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━┷━━━━━━━━┷━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+adapterDefinition endpoint returned 500.
+Running Endpoint URLs [Finished]
+Caught exception when retrieving SSL certificates: 'limit'.
+Error retrieving SSL certificates from 'endpointURLs'. Proceeding without certificates.
