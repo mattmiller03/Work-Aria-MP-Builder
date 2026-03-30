@@ -82,8 +82,7 @@ def get_adapter_definition():
 
     # Subscription
     sub = definition.define_object_type(OBJ_SUBSCRIPTION, "Azure Subscription")
-    sub.define_string_property("subscription_id", "Subscription ID",
-                               is_part_of_uniqueness=True)
+    sub.define_string_identifier("subscription_id", "Subscription ID")
     sub.define_string_property("display_name", "Display Name")
     sub.define_string_property("state", "State")
     sub.define_string_property("tenant_id", "Tenant ID")
@@ -95,10 +94,8 @@ def get_adapter_definition():
     rg = definition.define_object_type(OBJ_RESOURCE_GROUP,
                                        "Azure Resource Group")
     rg.define_string_property("name", "Name")
-    rg.define_string_property("subscription_id", "Subscription ID",
-                              is_part_of_uniqueness=True)
-    rg.define_string_property("resource_group_name", "Resource Group Name",
-                              is_part_of_uniqueness=True)
+    rg.define_string_identifier("subscription_id", "Subscription ID")
+    rg.define_string_identifier("resource_group_name", "Resource Group Name")
     rg.define_string_property("location", "Location")
     rg.define_string_property("provisioning_state", "Provisioning State")
     rg.define_string_property("resource_id", "Resource ID")
@@ -106,12 +103,9 @@ def get_adapter_definition():
     # Virtual Machine
     vm = definition.define_object_type(OBJ_VIRTUAL_MACHINE,
                                        "Azure Virtual Machine")
-    vm.define_string_property("subscription_id", "Subscription ID",
-                              is_part_of_uniqueness=True)
-    vm.define_string_property("resource_group", "Resource Group",
-                              is_part_of_uniqueness=True)
-    vm.define_string_property("vm_name", "VM Name",
-                              is_part_of_uniqueness=True)
+    vm.define_string_identifier("subscription_id", "Subscription ID")
+    vm.define_string_identifier("resource_group", "Resource Group")
+    vm.define_string_identifier("vm_name", "VM Name")
     vm.define_string_property("resource_id", "Resource ID")
     vm.define_string_property("location", "Location")
     vm.define_string_property("vm_id", "VM ID")
@@ -140,12 +134,9 @@ def get_adapter_definition():
 
     # Disk
     disk = definition.define_object_type(OBJ_DISK, "Azure Disk")
-    disk.define_string_property("subscription_id", "Subscription ID",
-                                is_part_of_uniqueness=True)
-    disk.define_string_property("resource_group", "Resource Group",
-                                is_part_of_uniqueness=True)
-    disk.define_string_property("disk_name", "Disk Name",
-                                is_part_of_uniqueness=True)
+    disk.define_string_identifier("subscription_id", "Subscription ID")
+    disk.define_string_identifier("resource_group", "Resource Group")
+    disk.define_string_identifier("disk_name", "Disk Name")
     disk.define_string_property("resource_id", "Resource ID")
     disk.define_string_property("location", "Location")
     disk.define_string_property("sku_name", "SKU Name")
@@ -166,12 +157,9 @@ def get_adapter_definition():
     # Network Interface
     nic = definition.define_object_type(OBJ_NETWORK_INTERFACE,
                                         "Azure Network Interface")
-    nic.define_string_property("subscription_id", "Subscription ID",
-                               is_part_of_uniqueness=True)
-    nic.define_string_property("resource_group", "Resource Group",
-                               is_part_of_uniqueness=True)
-    nic.define_string_property("nic_name", "NIC Name",
-                               is_part_of_uniqueness=True)
+    nic.define_string_identifier("subscription_id", "Subscription ID")
+    nic.define_string_identifier("resource_group", "Resource Group")
+    nic.define_string_identifier("nic_name", "NIC Name")
     nic.define_string_property("resource_id", "Resource ID")
     nic.define_string_property("location", "Location")
     nic.define_string_property("mac_address", "MAC Address")
@@ -192,12 +180,9 @@ def get_adapter_definition():
     # Virtual Network
     vnet = definition.define_object_type(OBJ_VIRTUAL_NETWORK,
                                          "Azure Virtual Network")
-    vnet.define_string_property("subscription_id", "Subscription ID",
-                                is_part_of_uniqueness=True)
-    vnet.define_string_property("resource_group", "Resource Group",
-                                is_part_of_uniqueness=True)
-    vnet.define_string_property("vnet_name", "VNet Name",
-                                is_part_of_uniqueness=True)
+    vnet.define_string_identifier("subscription_id", "Subscription ID")
+    vnet.define_string_identifier("resource_group", "Resource Group")
+    vnet.define_string_identifier("vnet_name", "VNet Name")
     vnet.define_string_property("resource_id", "Resource ID")
     vnet.define_string_property("location", "Location")
     vnet.define_string_property("provisioning_state", "Provisioning State")
@@ -208,12 +193,9 @@ def get_adapter_definition():
 
     # Subnet
     subnet = definition.define_object_type(OBJ_SUBNET, "Azure Subnet")
-    subnet.define_string_property("subscription_id", "Subscription ID",
-                                  is_part_of_uniqueness=True)
-    subnet.define_string_property("vnet_id", "VNet ID",
-                                  is_part_of_uniqueness=True)
-    subnet.define_string_property("subnet_name", "Subnet Name",
-                                  is_part_of_uniqueness=True)
+    subnet.define_string_identifier("subscription_id", "Subscription ID")
+    subnet.define_string_identifier("vnet_id", "VNet ID")
+    subnet.define_string_identifier("subnet_name", "Subnet Name")
     subnet.define_string_property("resource_id", "Resource ID")
     subnet.define_string_property("address_prefix", "Address Prefix")
     subnet.define_string_property("provisioning_state", "Provisioning State")
@@ -224,12 +206,9 @@ def get_adapter_definition():
     # Storage Account
     sa = definition.define_object_type(OBJ_STORAGE_ACCOUNT,
                                        "Azure Storage Account")
-    sa.define_string_property("subscription_id", "Subscription ID",
-                              is_part_of_uniqueness=True)
-    sa.define_string_property("resource_group", "Resource Group",
-                              is_part_of_uniqueness=True)
-    sa.define_string_property("account_name", "Account Name",
-                              is_part_of_uniqueness=True)
+    sa.define_string_identifier("subscription_id", "Subscription ID")
+    sa.define_string_identifier("resource_group", "Resource Group")
+    sa.define_string_identifier("account_name", "Account Name")
     sa.define_string_property("resource_id", "Resource ID")
     sa.define_string_property("location", "Location")
     sa.define_string_property("kind", "Kind")
@@ -253,12 +232,9 @@ def get_adapter_definition():
     # Load Balancer
     lb = definition.define_object_type(OBJ_LOAD_BALANCER,
                                        "Azure Load Balancer")
-    lb.define_string_property("subscription_id", "Subscription ID",
-                              is_part_of_uniqueness=True)
-    lb.define_string_property("resource_group", "Resource Group",
-                              is_part_of_uniqueness=True)
-    lb.define_string_property("lb_name", "Load Balancer Name",
-                              is_part_of_uniqueness=True)
+    lb.define_string_identifier("subscription_id", "Subscription ID")
+    lb.define_string_identifier("resource_group", "Resource Group")
+    lb.define_string_identifier("lb_name", "Load Balancer Name")
     lb.define_string_property("resource_id", "Resource ID")
     lb.define_string_property("location", "Location")
     lb.define_string_property("sku_name", "SKU Name")
@@ -275,12 +251,9 @@ def get_adapter_definition():
 
     # Key Vault
     kv = definition.define_object_type(OBJ_KEY_VAULT, "Azure Key Vault")
-    kv.define_string_property("subscription_id", "Subscription ID",
-                              is_part_of_uniqueness=True)
-    kv.define_string_property("resource_group", "Resource Group",
-                              is_part_of_uniqueness=True)
-    kv.define_string_property("vault_name", "Vault Name",
-                              is_part_of_uniqueness=True)
+    kv.define_string_identifier("subscription_id", "Subscription ID")
+    kv.define_string_identifier("resource_group", "Resource Group")
+    kv.define_string_identifier("vault_name", "Vault Name")
     kv.define_string_property("resource_id", "Resource ID")
     kv.define_string_property("location", "Location")
     kv.define_string_property("vault_uri", "Vault URI")
@@ -300,12 +273,9 @@ def get_adapter_definition():
     # SQL Server
     sql_srv = definition.define_object_type(OBJ_SQL_SERVER,
                                             "Azure SQL Server")
-    sql_srv.define_string_property("subscription_id", "Subscription ID",
-                                   is_part_of_uniqueness=True)
-    sql_srv.define_string_property("resource_group", "Resource Group",
-                                   is_part_of_uniqueness=True)
-    sql_srv.define_string_property("server_name", "Server Name",
-                                   is_part_of_uniqueness=True)
+    sql_srv.define_string_identifier("subscription_id", "Subscription ID")
+    sql_srv.define_string_identifier("resource_group", "Resource Group")
+    sql_srv.define_string_identifier("server_name", "Server Name")
     sql_srv.define_string_property("resource_id", "Resource ID")
     sql_srv.define_string_property("location", "Location")
     sql_srv.define_string_property("fqdn", "Fully Qualified Domain Name")
@@ -320,12 +290,9 @@ def get_adapter_definition():
     # SQL Database
     sql_db = definition.define_object_type(OBJ_SQL_DATABASE,
                                            "Azure SQL Database")
-    sql_db.define_string_property("subscription_id", "Subscription ID",
-                                  is_part_of_uniqueness=True)
-    sql_db.define_string_property("server_name", "Server Name",
-                                  is_part_of_uniqueness=True)
-    sql_db.define_string_property("database_name", "Database Name",
-                                  is_part_of_uniqueness=True)
+    sql_db.define_string_identifier("subscription_id", "Subscription ID")
+    sql_db.define_string_identifier("server_name", "Server Name")
+    sql_db.define_string_identifier("database_name", "Database Name")
     sql_db.define_string_property("resource_id", "Resource ID")
     sql_db.define_string_property("location", "Location")
     sql_db.define_string_property("status", "Status")
@@ -343,12 +310,9 @@ def get_adapter_definition():
     # App Service
     app = definition.define_object_type(OBJ_APP_SERVICE,
                                         "Azure App Service")
-    app.define_string_property("subscription_id", "Subscription ID",
-                               is_part_of_uniqueness=True)
-    app.define_string_property("resource_group", "Resource Group",
-                               is_part_of_uniqueness=True)
-    app.define_string_property("app_name", "App Name",
-                               is_part_of_uniqueness=True)
+    app.define_string_identifier("subscription_id", "Subscription ID")
+    app.define_string_identifier("resource_group", "Resource Group")
+    app.define_string_identifier("app_name", "App Name")
     app.define_string_property("resource_id", "Resource ID")
     app.define_string_property("location", "Location")
     app.define_string_property("kind", "Kind")
