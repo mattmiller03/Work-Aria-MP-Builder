@@ -1,27 +1,11 @@
-vropsssh@daisv0tp003 [ ~/Aria-MP-Builder/Azure ]$ sudo docker build -t azuregovcloud-test:1.0.0 .DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
-            Install the buildx component to build images with BuildKit:
-            https://docs.docker.com/go/buildx/
-
-Sending build context to Docker daemon  53.21MB
-Step 1/7 : FROM base-adapter:python-1.2.0
- ---> 23597e988b10
-Step 2/7 : USER root
- ---> Using cache
- ---> f85a5c0fd276
-Step 3/7 : COPY app/wheels/ /tmp/wheels/
- ---> Using cache
- ---> 9e53d0295b36
-Step 4/7 : RUN pip install --no-cache-dir --no-index --find-links /tmp/wheels/ requests vmware-aria-operations-integration-sdk-lib && rm -rf /tmp/wheels
- ---> Using cache
- ---> 070cd40a1fc4
-Step 5/7 : USER aria-ops-adapter-user
- ---> Using cache
- ---> ecca744e1721
-Step 6/7 : COPY app/ /home/aria-ops-adapter-user/src/app/
- ---> Using cache
- ---> 8fabae129bfe
-Step 7/7 : WORKDIR /home/aria-ops-adapter-user/src/app
- ---> Using cache
- ---> 21757270ac62
-Successfully built 21757270ac62
-Successfully tagged azuregovcloud-test:1.0.0
+sudo docker run --rm --entrypoint /bin/bash azuregovcloud-test:1.0.0 -c "cd /home/aria-ops-adapter-user/src/app && python3 -c 'from adapter import get_adapter_definition; print(str(True))'"
+[sudo] password for vropsssh: 
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 936, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1073, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1130, in get_data
+PermissionError: [Errno 13] Permission denied: '/home/aria-ops-adapter-user/src/app/adapter.py'
