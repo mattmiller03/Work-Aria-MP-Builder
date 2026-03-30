@@ -1,44 +1,50 @@
-15:46:51,496 docker.utils.config DEBUG Trying paths: ['/root/.docker/config.json', '/root/.dockercfg']
-15:46:51,500 docker.utils.config DEBUG No config file found
-15:46:51,500 docker.utils.config DEBUG Trying paths: ['/root/.docker/config.json', '/root/.dockercfg']
-15:46:51,500 docker.utils.config DEBUG No config file found
-15:46:51,533 urllib3.connectionpool DEBUG http://localhost:None "GET /version HTTP/1.1" 200 797
-15:46:51,545 asyncio DEBUG Using selector: EpollSelector
-15:46:51,578 urllib3.connectionpool DEBUG http://localhost:None "GET /v1.42/images/base-adapter:python-1.2.0/json HTTP/1.1" 200 None
-15:46:53,203 docker.api.build DEBUG Looking for auth config
-15:46:53,204 docker.api.build DEBUG No auth config in memory - loading from filesystem
-15:46:53,204 docker.utils.config DEBUG Trying paths: ['/root/.docker/config.json', '/root/.dockercfg']
-15:46:53,204 docker.utils.config DEBUG No config file found
-15:46:53,204 docker.api.build DEBUG Sending auth config ()
-15:46:53,670 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.42/build?t=azuregovcloud-test%3A1.0.0&q=False&nocache=False&rm=True&forcerm=False&pull=False&labels=%7B%22mp-test%22%3A+%221774885611.4950485%22%7D HTTP/1.1" 200 None
-15:46:57,25 urllib3.connectionpool DEBUG http://localhost:None "GET /v1.42/images/a740aa8c97a4/json HTTP/1.1" 200 None
-15:46:57,86 asyncio DEBUG Using selector: EpollSelector
-15:46:58,251 asyncio DEBUG Using selector: EpollSelector
-15:46:59,365 asyncio DEBUG Using selector: EpollSelector
-15:46:59,389 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.42/containers/create HTTP/1.1" 201 88
-15:46:59,390 urllib3.connectionpool DEBUG http://localhost:None "GET /v1.42/containers/13de651c5e091cf0f4a13b09e3a082e9d343b958d84cf4cb9f678a15734c5773/json HTTP/1.1" 200 None
-15:46:59,618 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.42/containers/13de651c5e091cf0f4a13b09e3a082e9d343b958d84cf4cb9f678a15734c5773/start HTTP/1.1" 204 0
-15:46:59,730 asyncio DEBUG Using selector: EpollSelector
-15:47:00,399 httpx._client DEBUG HTTP Request: GET http://localhost:8181/apiVersion "HTTP/1.1 200 OK"
-15:47:00,413 asyncio DEBUG Using selector: EpollSelector
-15:47:01,469 urllib3.connectionpool DEBUG http://localhost:None "GET /v1.42/containers/13de651c5e091cf0f4a13b09e3a082e9d343b958d84cf4cb9f678a15734c5773/stats?stream=False HTTP/1.1" 200 1844
-15:47:01,765 httpx._client DEBUG HTTP Request: GET http://localhost:8181/adapterDefinition "HTTP/1.1 500 Internal Server Error"
-15:47:01,766 vmware_aria_operations_integration_sdk.describe ERROR 500 Internal Server Error
+16:11:05,423 urllib3.connectionpool DEBUG http://localhost:None "GET /version HTTP/1.1" 200 797
+16:11:05,430 asyncio DEBUG Using selector: EpollSelector
+16:11:05,453 urllib3.connectionpool DEBUG http://localhost:None "GET /v1.42/images/base-adapter:python-1.2.0/json HTTP/1.1" 200 None
+16:11:07,79 docker.api.build DEBUG Looking for auth config
+16:11:07,80 docker.api.build DEBUG No auth config in memory - loading from filesystem
+16:11:07,80 docker.utils.config DEBUG Trying paths: ['/root/.docker/config.json', '/root/.dockercfg']
+16:11:07,80 docker.utils.config DEBUG No config file found
+16:11:07,80 docker.api.build DEBUG Sending auth config ()
+16:11:07,553 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.42/build?t=azuregovcloud-test%3A1.0.0&q=False&nocache=False&rm=True&forcerm=False&pull=False&labels=%7B%22mp-test%22%3A+%221774887065.3884194%22%7D HTTP/1.1" 200 None
+16:11:07,681 urllib3.connectionpool DEBUG http://localhost:None "GET /v1.42/images/673b61eaa40b/json HTTP/1.1" 200 None
+16:11:07,842 asyncio DEBUG Using selector: EpollSelector
+16:11:09,513 asyncio DEBUG Using selector: EpollSelector
+16:11:11,57 asyncio DEBUG Using selector: EpollSelector
+16:11:11,100 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.42/containers/create HTTP/1.1" 201 88
+16:11:11,101 urllib3.connectionpool DEBUG http://localhost:None "GET /v1.42/containers/81febd50d947f0db947d82f596458e6b8e6dc9019024729a410c04b279eb094b/json HTTP/1.1" 200 None
+16:11:11,367 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.42/containers/81febd50d947f0db947d82f596458e6b8e6dc9019024729a410c04b279eb094b/start HTTP/1.1" 204 0
+16:11:11,475 asyncio DEBUG Using selector: EpollSelector
+16:11:12,183 httpx._client DEBUG HTTP Request: GET http://localhost:8181/apiVersion "HTTP/1.1 200 OK"
+16:11:12,202 asyncio DEBUG Using selector: EpollSelector
+16:11:13,289 urllib3.connectionpool DEBUG http://localhost:None "GET /v1.42/containers/81febd50d947f0db947d82f596458e6b8e6dc9019024729a410c04b279eb094b/stats?stream=False HTTP/1.1" 200 1746
+16:11:13,593 httpx._client DEBUG HTTP Request: GET http://localhost:8181/adapterDefinition "HTTP/1.1 500 Internal Server Error"
+16:11:13,594 vmware_aria_operations_integration_sdk.describe ERROR 500 Internal Server Error
 No result from adapter. Captured stdout:
-  2026-03-30 15:47:01,739 [ERROR] root: Cannot write to log file '/var/log/adapter.log'
+  2026-03-30 16:11:13,547 [ERROR] root: Cannot write to log file '/var/log/adapter.log'
 NoneType: None
-2026-03-30 15:47:01,739 [INFO] __main__: Running adapter code with arguments: ['adapter_definition', '/tmp/tmpcgsuc4ny/input_pipe', '/tmp/tmpcgsuc4ny/output_pipe']
-2026-03-30 15:47:01,739 [INFO] __main__: Timing Graph: 
+2026-03-30 16:11:13,547 [INFO] __main__: Running adapter code with arguments: ['adapter_definition', '/tmp/tmp80g950eq/input_pipe', '/tmp/tmp80g950eq/output_pipe']
+2026-03-30 16:11:13,567 [ERROR] __main__: Error in adapter_definition: GroupType.define_string_property() got an unexpected keyword argument 'is_part_of_uniqueness'
+Traceback (most recent call last):
+  File "/home/aria-ops-adapter-user/src/app/app/adapter.py", line 515, in main
+    result = get_adapter_definition()
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/aria-ops-adapter-user/src/app/app/adapter.py", line 85, in get_adapter_definition
+    sub.define_string_property("subscription_id", "Subscription ID",
+TypeError: GroupType.define_string_property() got an unexpected keyword argument 'is_part_of_uniqueness'
+2026-03-30 16:11:13,567 [INFO] __main__: Timing Graph: 
 â”â”â”â”â”â”â”â”â”â”¯â”â”â”â”â”â”â”â”â”¯â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
-Operationâ”‚Time    â”‚t=0s                                                t=-1774885621.74s
+Operationâ”‚Time    â”‚t=0s                                                t=-1774887073.57s
 â”â”â”â”â”â”â”â”â”â”¿â”â”â”â”â”â”â”â”â”¿â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 â”â”â”â”â”â”â”â”â”â”·â”â”â”â”â”â”â”â”â”·â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”"
 
-15:47:01,767 vmware_aria_operations_integration_sdk.describe ERROR adapterDefinition endpoint returned 500.
-15:47:01,920 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.42/containers/13de651c5e091cf0f4a13b09e3a082e9d343b958d84cf4cb9f678a15734c5773/kill HTTP/1.1" 204 0
-15:47:01,924 urllib3.connectionpool DEBUG http://localhost:None "DELETE /v1.42/containers/13de651c5e091cf0f4a13b09e3a082e9d343b958d84cf4cb9f678a15734c5773?v=False&link=False&force=False HTTP/1.1" 204 0
-15:47:01,926 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.42/images/prune?filters=%7B%22label%22%3A+%5B%22mp-test%22%5D%7D HTTP/1.1" 200 42
-15:47:01,972 urllib3.connectionpool DEBUG http://localhost:None "GET /v1.42/containers/13de651c5e091cf0f4a13b09e3a082e9d343b958d84cf4cb9f678a15734c5773/stats?stream=False HTTP/1.1" 404 98
-15:47:02,82 vmware_aria_operations_integration_sdk.mp_test WARNING Caught exception when retrieving SSL certificates: 404 Client Error for http+docker://localhost/v1.42/containers/13de651c5e091cf0f4a13b09e3a082e9d343b958d84cf4cb9f678a15734c5773/stats?stream=False: Not Found ("No such container: 13de651c5e091cf0f4a13b09e3a082e9d343b958d84cf4cb9f678a15734c5773").
-15:47:02,85 vmware_aria_operations_integration_sdk.mp_test WARNING Error retrieving SSL certificates from 'endpointURLs'. Proceeding without certificates.
-15:47:02,103 asyncio DEBUG Using selector: EpollSelector
+16:11:13,595 vmware_aria_operations_integration_sdk.describe ERROR adapterDefinition endpoint returned 500.
+16:11:13,779 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.42/containers/81febd50d947f0db947d82f596458e6b8e6dc9019024729a410c04b279eb094b/kill HTTP/1.1" 204 0
+16:11:13,784 urllib3.connectionpool DEBUG http://localhost:None "DELETE /v1.42/containers/81febd50d947f0db947d82f596458e6b8e6dc9019024729a410c04b279eb094b?v=False&link=False&force=False HTTP/1.1" 204 0
+16:11:13,790 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.42/images/prune?filters=%7B%22label%22%3A+%5B%22mp-test%22%5D%7D HTTP/1.1" 200 125
+16:11:13,791 urllib3.connectionpool DEBUG http://localhost:None "GET /v1.42/containers/81febd50d947f0db947d82f596458e6b8e6dc9019024729a410c04b279eb094b/stats?stream=False HTTP/1.1" 404 98
+16:11:13,935 vmware_aria_operations_integration_sdk.mp_test WARNING Caught exception when retrieving SSL certificates: 404 Client Error for http+docker://localhost/v1.42/containers/81febd50d947f0db947d82f596458e6b8e6dc9019024729a410c04b279eb094b/stats?stream=False: Not Found ("No such container: 81febd50d947f0db947d82f596458e6b8e6dc9019024729a410c04b279eb094b").
+16:11:13,937 vmware_aria_operations_integration_sdk.mp_test WARNING Error retrieving SSL certificates from 'endpointURLs'. Proceeding without certificates.
+16:11:13,956 asyncio DEBUG Using selector: EpollSelector
+16:11:34,455 vmware_aria_operations_integration_sdk.adapter_container ERROR HTTP Server did not start after 20 seconds
+16:11:34,457 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.42/images/prune?filters=%7B%22label%22%3A+%5B%22mp-test%22%5D%7D HTTP/1.1" 200 42
