@@ -346,11 +346,10 @@ def collect(adapter_instance):
 
     try:
         # Extract credentials and config
-        cred = adapter_instance.get_credential(CREDENTIAL_TYPE)
-        tenant_id = cred.get_credential_value(CREDENTIAL_TENANT_ID)
-        client_id = cred.get_credential_value(CREDENTIAL_CLIENT_ID)
-        client_secret = cred.get_credential_value(CREDENTIAL_CLIENT_SECRET)
-        target_sub = cred.get_credential_value(CREDENTIAL_SUBSCRIPTION_ID)
+        tenant_id = adapter_instance.get_credential_value(CREDENTIAL_TENANT_ID)
+        client_id = adapter_instance.get_credential_value(CREDENTIAL_CLIENT_ID)
+        client_secret = adapter_instance.get_credential_value(CREDENTIAL_CLIENT_SECRET)
+        target_sub = adapter_instance.get_credential_value(CREDENTIAL_SUBSCRIPTION_ID)
 
         cloud_env = adapter_instance.get_identifier_value(
             CONFIG_CLOUD_ENVIRONMENT, CLOUD_ENV_GOV
@@ -412,10 +411,9 @@ def test(adapter_instance):
     result = TestResult()
 
     try:
-        cred = adapter_instance.get_credential(CREDENTIAL_TYPE)
-        tenant_id = cred.get_credential_value(CREDENTIAL_TENANT_ID)
-        client_id = cred.get_credential_value(CREDENTIAL_CLIENT_ID)
-        client_secret = cred.get_credential_value(CREDENTIAL_CLIENT_SECRET)
+        tenant_id = adapter_instance.get_credential_value(CREDENTIAL_TENANT_ID)
+        client_id = adapter_instance.get_credential_value(CREDENTIAL_CLIENT_ID)
+        client_secret = adapter_instance.get_credential_value(CREDENTIAL_CLIENT_SECRET)
 
         cloud_env = adapter_instance.get_identifier_value(
             CONFIG_CLOUD_ENVIRONMENT, CLOUD_ENV_GOV
