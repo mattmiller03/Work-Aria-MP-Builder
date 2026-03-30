@@ -1,25 +1,44 @@
- sudo mp-test --port 8181
-/usr/lib/python3.11/site-packages/paramiko/pkey.py:83: CryptographyDeprecationWarning: TripleDES has been moved to cryptography.hazmat.decrepit.ciphers.algorithms.TripleDES and will be removed from cryptography.hazmat.primitives.ciphers.algorithms in 48.0.0.
-  "cipher": algorithms.TripleDES,
-/usr/lib/python3.11/site-packages/paramiko/transport.py:254: CryptographyDeprecationWarning: TripleDES has been moved to cryptography.hazmat.decrepit.ciphers.algorithms.TripleDES and will be removed from cryptography.hazmat.primitives.ciphers.algorithms in 48.0.0.
-  "class": algorithms.TripleDES,
-Building base image [Finished]
-Choose a connection:  Azure Gov Test
-Choose a method to test: Test Connection
-Building adapter [Finished]
-Waiting for adapter to start [Finished]
-500 Internal Server Error
+15:46:51,496 docker.utils.config DEBUG Trying paths: ['/root/.docker/config.json', '/root/.dockercfg']
+15:46:51,500 docker.utils.config DEBUG No config file found
+15:46:51,500 docker.utils.config DEBUG Trying paths: ['/root/.docker/config.json', '/root/.dockercfg']
+15:46:51,500 docker.utils.config DEBUG No config file found
+15:46:51,533 urllib3.connectionpool DEBUG http://localhost:None "GET /version HTTP/1.1" 200 797
+15:46:51,545 asyncio DEBUG Using selector: EpollSelector
+15:46:51,578 urllib3.connectionpool DEBUG http://localhost:None "GET /v1.42/images/base-adapter:python-1.2.0/json HTTP/1.1" 200 None
+15:46:53,203 docker.api.build DEBUG Looking for auth config
+15:46:53,204 docker.api.build DEBUG No auth config in memory - loading from filesystem
+15:46:53,204 docker.utils.config DEBUG Trying paths: ['/root/.docker/config.json', '/root/.dockercfg']
+15:46:53,204 docker.utils.config DEBUG No config file found
+15:46:53,204 docker.api.build DEBUG Sending auth config ()
+15:46:53,670 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.42/build?t=azuregovcloud-test%3A1.0.0&q=False&nocache=False&rm=True&forcerm=False&pull=False&labels=%7B%22mp-test%22%3A+%221774885611.4950485%22%7D HTTP/1.1" 200 None
+15:46:57,25 urllib3.connectionpool DEBUG http://localhost:None "GET /v1.42/images/a740aa8c97a4/json HTTP/1.1" 200 None
+15:46:57,86 asyncio DEBUG Using selector: EpollSelector
+15:46:58,251 asyncio DEBUG Using selector: EpollSelector
+15:46:59,365 asyncio DEBUG Using selector: EpollSelector
+15:46:59,389 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.42/containers/create HTTP/1.1" 201 88
+15:46:59,390 urllib3.connectionpool DEBUG http://localhost:None "GET /v1.42/containers/13de651c5e091cf0f4a13b09e3a082e9d343b958d84cf4cb9f678a15734c5773/json HTTP/1.1" 200 None
+15:46:59,618 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.42/containers/13de651c5e091cf0f4a13b09e3a082e9d343b958d84cf4cb9f678a15734c5773/start HTTP/1.1" 204 0
+15:46:59,730 asyncio DEBUG Using selector: EpollSelector
+15:47:00,399 httpx._client DEBUG HTTP Request: GET http://localhost:8181/apiVersion "HTTP/1.1 200 OK"
+15:47:00,413 asyncio DEBUG Using selector: EpollSelector
+15:47:01,469 urllib3.connectionpool DEBUG http://localhost:None "GET /v1.42/containers/13de651c5e091cf0f4a13b09e3a082e9d343b958d84cf4cb9f678a15734c5773/stats?stream=False HTTP/1.1" 200 1844
+15:47:01,765 httpx._client DEBUG HTTP Request: GET http://localhost:8181/adapterDefinition "HTTP/1.1 500 Internal Server Error"
+15:47:01,766 vmware_aria_operations_integration_sdk.describe ERROR 500 Internal Server Error
 No result from adapter. Captured stdout:
-  2026-03-30 15:36:34,802 [ERROR] root: Cannot write to log file '/var/log/adapter.log'
+  2026-03-30 15:47:01,739 [ERROR] root: Cannot write to log file '/var/log/adapter.log'
 NoneType: None
-2026-03-30 15:36:34,803 [INFO] __main__: Running adapter code with arguments: ['adapter_definition', '/tmp/tmpxt_7f9sr/input_pipe', '/tmp/tmpxt_7f9sr/output_pipe']
-2026-03-30 15:36:34,803 [INFO] __main__: Timing Graph: 
-━━━━━━━━━┯━━━━━━━━┯━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Operation│Time    │t=0s                                                t=-1774884994.80s
-━━━━━━━━━┿━━━━━━━━┿━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-━━━━━━━━━┷━━━━━━━━┷━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+2026-03-30 15:47:01,739 [INFO] __main__: Running adapter code with arguments: ['adapter_definition', '/tmp/tmpcgsuc4ny/input_pipe', '/tmp/tmpcgsuc4ny/output_pipe']
+2026-03-30 15:47:01,739 [INFO] __main__: Timing Graph: 
+â”â”â”â”â”â”â”â”â”â”¯â”â”â”â”â”â”â”â”â”¯â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+Operationâ”‚Time    â”‚t=0s                                                t=-1774885621.74s
+â”â”â”â”â”â”â”â”â”â”¿â”â”â”â”â”â”â”â”â”¿â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+â”â”â”â”â”â”â”â”â”â”·â”â”â”â”â”â”â”â”â”·â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”"
 
-adapterDefinition endpoint returned 500.
-Running Endpoint URLs [Finished]
-Caught exception when retrieving SSL certificates: 'limit'.
-Error retrieving SSL certificates from 'endpointURLs'. Proceeding without certificates.
+15:47:01,767 vmware_aria_operations_integration_sdk.describe ERROR adapterDefinition endpoint returned 500.
+15:47:01,920 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.42/containers/13de651c5e091cf0f4a13b09e3a082e9d343b958d84cf4cb9f678a15734c5773/kill HTTP/1.1" 204 0
+15:47:01,924 urllib3.connectionpool DEBUG http://localhost:None "DELETE /v1.42/containers/13de651c5e091cf0f4a13b09e3a082e9d343b958d84cf4cb9f678a15734c5773?v=False&link=False&force=False HTTP/1.1" 204 0
+15:47:01,926 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.42/images/prune?filters=%7B%22label%22%3A+%5B%22mp-test%22%5D%7D HTTP/1.1" 200 42
+15:47:01,972 urllib3.connectionpool DEBUG http://localhost:None "GET /v1.42/containers/13de651c5e091cf0f4a13b09e3a082e9d343b958d84cf4cb9f678a15734c5773/stats?stream=False HTTP/1.1" 404 98
+15:47:02,82 vmware_aria_operations_integration_sdk.mp_test WARNING Caught exception when retrieving SSL certificates: 404 Client Error for http+docker://localhost/v1.42/containers/13de651c5e091cf0f4a13b09e3a082e9d343b958d84cf4cb9f678a15734c5773/stats?stream=False: Not Found ("No such container: 13de651c5e091cf0f4a13b09e3a082e9d343b958d84cf4cb9f678a15734c5773").
+15:47:02,85 vmware_aria_operations_integration_sdk.mp_test WARNING Error retrieving SSL certificates from 'endpointURLs'. Proceeding without certificates.
+15:47:02,103 asyncio DEBUG Using selector: EpollSelector
