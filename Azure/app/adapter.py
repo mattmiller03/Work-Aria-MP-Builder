@@ -59,8 +59,8 @@ def get_adapter_definition():
     # -- Configuration parameter: cloud environment --
     definition.define_enum_parameter(
         CONFIG_CLOUD_ENVIRONMENT,
-        "Cloud Environment",
         values=[CLOUD_ENV_GOV, "commercial"],
+        label="Cloud Environment",
         default=CLOUD_ENV_GOV,
         description="Azure cloud environment (government or commercial)",
     )
