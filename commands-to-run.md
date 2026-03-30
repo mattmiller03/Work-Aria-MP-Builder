@@ -1,36 +1,21 @@
 # Commands to Run — Debug adapter 500 error
 
-Run these in order on the Photon server.
-
-## Step 1: Build the image manually so it doesn't get pruned
+## Test the adapter import inside the container
 
 ```bash
-cd /home/vropsssh/Aria-MP-Builder/Azure
-sudo docker build -t azuregovcloud-test:1.0.0 .
+sudo docker run --rm --entrypoint /bin/bash azuregovcloud-test:1.0.0 -c "cd /home/aria-ops-adapter-user/src/app && python3 -c 'from adapter import get_adapter_definition; print(str(True))'"
 ```
 
-## Step 2: Check where adapter.py is inside the container
+## If that fails, try a simpler test first
 
 ```bash
-sudo docker run --rm azuregovcloud-test:1.0.0 find / -name "adapter.py" 2>/dev/null
+sudo docker run --rm --entrypoint /bin/bash azuregovcloud-test:1.0.0 -c "cd /home/aria-ops-adapter-user/src/app && python3 -c 'import adapter; print(str(True))'"
 ```
 
-## Step 3: Try importing the adapter
+## If import adapter fails, check for syntax errors
 
 ```bash
-sudo docker run --rm --workdir /home/aria-ops-adapter-user/src/app azuregovcloud-test:1.0.0 python3 -c "from adapter import get_adapter_definition; print('OK')"
+sudo docker run --rm --entrypoint /bin/bash azuregovcloud-test:1.0.0 -c "cd /home/aria-ops-adapter-user/src/app && python3 -c 'import py_compile; py_compile.compile(str(\"adapter.py\"), doraise=True)'"
 ```
 
-## Step 4: If Step 3 fails, try the alternate path from Step 2
-
-```bash
-sudo docker run --rm --workdir /adapter azuregovcloud-test:1.0.0 python3 -c "from adapter import get_adapter_definition; print('OK')"
-```
-
-## Step 5: Check what pip packages are in the container
-
-```bash
-sudo docker run --rm azuregovcloud-test:1.0.0 pip list
-```
-
-## Step 6: Paste all output into ErrorFile.txt
+## Paste all output into ErrorFile.txt
