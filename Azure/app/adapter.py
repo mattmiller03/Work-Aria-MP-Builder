@@ -513,10 +513,14 @@ def main(argv):
             collect(AdapterInstance.from_input()).send_results()
         elif method == "adapter_definition":
             result = get_adapter_definition()
+            logger.info(f"adapter_definition returned: {type(result)}")
             result.send_results()
+            logger.info("send_results completed")
         else:
             logger.error(f"Command {method} not found")
             sys.exit(1)
+    except Exception as e:
+        logger.error(f"Error in {method}: {e}", exc_info=True)
     finally:
         logger.info(Timer.graph())
         sys.exit(0)
