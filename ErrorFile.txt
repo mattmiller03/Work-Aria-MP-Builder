@@ -1,2 +1,21 @@
-Unable to find image 'azuregovcloud-test:1.0.0' locally
-docker: Error response from daemon: Head "https://registry-1.docker.io/v2/library/azuregovcloud-test/manifests/1.0.0": Get "https://auth.docker.io/token?scope=repository%3Alibrary%2Fazuregovcloud-test%3Apull&service=registry.docker.io": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers).
+vropsssh@daisv0tp003 [ ~/Aria-MP-Builder/Azure ]$ sudo docker run --rm --entrypoint /bin/bash azuregovcloud-test:1.0.0 -c "cd /home/aria-ops-adapter-user/src/app && python3 -c 'import py_compile; py_compile.compile(str(\"adapter.py\"), doraise=True)'"
+vropsssh@daisv0tp003 [ ~/Aria-MP-Builder/Azure ]$ sudo docker run --rm --entrypoint /bin/bash azuregovcloud-test:1.0.0 -c "cd /home/aria-ops-adapter-user/src/app && python3 -c 'from adapter import get_adapter_definition; print(str(True))'"
+True
+vropsssh@daisv0tp003 [ ~/Aria-MP-Builder/Azure ]$ docker ps -a
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+vropsssh@daisv0tp003 [ ~/Aria-MP-Builder/Azure ]$ sudo mp-test --port 8181
+/usr/lib/python3.11/site-packages/paramiko/pkey.py:83: CryptographyDeprecationWarning: TripleDES has been moved to cryptography.hazmat.decrepit.ciphers.algorithms.TripleDES and will be removed from cryptography.hazmat.primitives.ciphers.algorithms in 48.0.0.
+  "cipher": algorithms.TripleDES,
+/usr/lib/python3.11/site-packages/paramiko/transport.py:254: CryptographyDeprecationWarning: TripleDES has been moved to cryptography.hazmat.decrepit.ciphers.algorithms.TripleDES and will be removed from cryptography.hazmat.primitives.ciphers.algorithms in 48.0.0.
+  "class": algorithms.TripleDES,
+Building base image [Finished]
+Choose a connection:  Azure Gov Test
+Choose a method to test: Test Connection
+Building adapter [Finished]
+Waiting for adapter to start [Finished]
+500 Internal Server Error
+{"type": "about:blank", "title": "Internal Server Error", "detail": "The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.", "status": 500}
+adapterDefinition endpoint returned 500.
+Running Endpoint URLs [Finished]
+Caught exception when retrieving SSL certificates: 404 Client Error for http+docker://localhost/v1.42/containers/68c7ab467f31c4a1d45f5f54b662bc6650d72ba054e4e7e99dc03aaa94c73894/stats?stream=False: Not Found ("No such container: 68c7ab467f31c4a1d45f5f54b662bc6650d72ba054e4e7e99dc03aaa94c73894").
+Error retrieving SSL certificates from 'endpointURLs'. Proceeding without certificates.
