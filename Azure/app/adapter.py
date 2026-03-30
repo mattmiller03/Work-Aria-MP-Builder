@@ -493,7 +493,6 @@ def get_endpoints(adapter_instance):
 def main(argv):
     import aria.ops.adapter_logging as adapter_logging
     from aria.ops.adapter_instance import AdapterInstance
-    from aria.ops.definition.adapter_definition import AdapterDefinition
     from aria.ops.timer import Timer
 
     adapter_logging.setup_logging("adapter.log")
@@ -514,11 +513,7 @@ def main(argv):
             collect(AdapterInstance.from_input()).send_results()
         elif method == "adapter_definition":
             result = get_adapter_definition()
-            if isinstance(result, AdapterDefinition):
-                result.send_results()
-            else:
-                logger.error("get_adapter_definition did not return an AdapterDefinition")
-                sys.exit(1)
+            result.send_results()
         else:
             logger.error(f"Command {method} not found")
             sys.exit(1)
