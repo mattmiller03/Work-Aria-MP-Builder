@@ -67,12 +67,20 @@ pip download "validators==0.18.2" -d C:\aria-wheels --no-deps
 pip download "aenum==3.1.11" -d C:\aria-wheels --no-deps
 ```
 
-### 2e: Transfer everything to the Photon server
+### 2e: Create target directory on Photon server
+
+```bash
+# SSH to the server first and create the directory
+sudo mkdir -p /opt/aria
+sudo chmod 777 /opt/aria
+```
+
+### 2f: Transfer everything to the Photon server
 
 ```powershell
-scp -r C:\aria-wheels vropsssh@<NEW-SERVER>:/home/vropsssh/aria-wheels
-scp C:\base-adapter.tar vropsssh@<NEW-SERVER>:/home/vropsssh/base-adapter.tar
-scp C:\python311slim.tar vropsssh@<NEW-SERVER>:/home/vropsssh/python311slim.tar
+scp -r C:\aria-wheels user@<NEW-SERVER>:/opt/aria/wheels
+scp C:\base-adapter.tar user@<NEW-SERVER>:/opt/aria/base-adapter.tar
+scp C:\python311slim.tar user@<NEW-SERVER>:/opt/aria/python311slim.tar
 ```
 
 ---
@@ -81,15 +89,15 @@ scp C:\python311slim.tar vropsssh@<NEW-SERVER>:/home/vropsssh/python311slim.tar
 
 ```bash
 # Load Docker images
-sudo docker load -i /home/vropsssh/python311slim.tar
-sudo docker load -i /home/vropsssh/base-adapter.tar
+sudo docker load -i /opt/aria/python311slim.tar
+sudo docker load -i /opt/aria/base-adapter.tar
 
 # Verify images loaded
 sudo docker images
 
 # Install the SDK and runtime library
-sudo pip install --no-index --find-links /home/vropsssh/aria-wheels vmware-aria-operations-integration-sdk
-sudo pip install --no-index --find-links /home/vropsssh/aria-wheels vmware-aria-operations-integration-sdk-lib
+sudo pip install --no-index --find-links /opt/aria/wheels vmware-aria-operations-integration-sdk
+sudo pip install --no-index --find-links /opt/aria/wheels vmware-aria-operations-integration-sdk-lib
 
 # Verify
 mp-build --version
@@ -101,7 +109,7 @@ mp-test --version
 ## Phase 4: Clone and Configure the Management Pack (on Photon server)
 
 ```bash
-cd /home/vropsssh
+cd /opt/aria
 git clone https://github.com/mattmiller03/Aria-MP-Builder.git
 cd Aria-MP-Builder
 
@@ -133,8 +141,8 @@ Replace the YOUR_* placeholders:
 ## Phase 5: Create the logs directory
 
 ```bash
-mkdir -p /home/vropsssh/Aria-MP-Builder/Azure/logs
-chmod 777 /home/vropsssh/Aria-MP-Builder/Azure/logs
+mkdir -p /opt/aria/Aria-MP-Builder/Azure/logs
+chmod 777 /opt/aria/Aria-MP-Builder/Azure/logs
 ```
 
 ---
@@ -142,7 +150,7 @@ chmod 777 /home/vropsssh/Aria-MP-Builder/Azure/logs
 ## Phase 6: Test
 
 ```bash
-cd /home/vropsssh/Aria-MP-Builder/Azure
+cd /opt/aria/Aria-MP-Builder/Azure
 
 # Find what port is free (8080 may be in use by MP Builder UI)
 sudo ss -tlnp | grep 8080
@@ -168,7 +176,7 @@ Successfully connected. Found X subscription(s).
 ## Phase 7: Build the .pak file
 
 ```bash
-cd /home/vropsssh/Aria-MP-Builder/Azure
+cd /opt/aria/Aria-MP-Builder/Azure
 sudo mp-build
 ```
 
