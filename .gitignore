@@ -13,6 +13,16 @@ dist/
 build/
 *.pak
 
+# Large binaries — transfer these out-of-band, not via git
+*.tar
+*.zip
+aria-wheels/
+wheels/
+Images/
+
+# Debug/scratch files
+ErrorFile.txt
+
 # IDE
 .vscode/
 .idea/
