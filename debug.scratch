@@ -1,10 +1,105 @@
-sudo tdnf install -y docker git gcc python3-devel libjpeg-turbo-devel zlib-devel libffi-devel openssl-devel make icu libunwind
-Refreshing metadata for: 'Photon OS CDROM'
-Package docker is already installed.    190511 100%
-marking gcc as user installed
-Package gcc is already installed.
-Package python3-devel is already installed.
-1. package openssl-devel-1.1.1i-2.ph4.x86_64 requires openssl = 1.1.1i-2.ph4, but none of the providers can be installed
-2. package git-2.30.0-2.ph4.x86_64 requires libcrypto.so.1.1()(64bit), but none of the providers can be installed
-Found 2 problem(s) while resolving
-Error(1301) : Solv general runtime error
+root@photon [ ~ ]# rpm -qa | grep -E "docker|gcc|python3|make|git|openssl-devel"
+libgcc-10.2.0-2.ph4.x86_64
+python3-3.10.11-5.ph4.x86_64
+python3-libs-3.10.11-5.ph4.x86_64
+python3-six-1.15.0-4.ph4.noarch
+python3-xml-3.10.11-5.ph4.x86_64
+python3-setuptools-65.5.1-1.ph4.noarch
+python3-attrs-20.3.0-3.ph4.noarch
+python3-pyasn1-0.4.8-2.ph4.noarch
+python3-idna-2.10-2.ph4.noarch
+python3-markupsafe-1.1.1-2.ph4.x86_64
+python3-jinja2-2.11.2-2.ph4.noarch
+python3-curses-3.10.11-5.ph4.x86_64
+python3-macros-3.10.11-5.ph4.noarch
+python3-urllib3-1.25.11-5.ph4.noarch
+python3-certifi-2023.11.17-1.ph4.noarch
+python3-hyperlink-20.0.1-3.ph4.noarch
+python3-pyasn1-modules-0.2.8-2.ph4.noarch
+python3-pyrsistent-0.17.3-3.ph4.x86_64
+python3-jsonschema-3.2.0-2.ph4.noarch
+python3-charset-normalizer-2.0.9-1.ph4.noarch
+python3-nocaselist-1.0.4-2.ph4.noarch
+python3-nocasedict-1.0.2-2.ph4.noarch
+python3-mock-4.0.3-2.ph4.noarch
+python3-pyserial-3.5-1.ph4.noarch
+python3-argparse-1.4.0-2.ph4.noarch
+python3-zope.interface-5.2.0-2.ph4.x86_64
+python3-netaddr-0.8.0-3.ph4.noarch
+python3-chardet-4.0.0-1.ph4.noarch
+python3-Pygments-2.9.0-2.ph4.noarch
+python3-lxml-4.9.1-1.ph4.x86_64
+python3-docutils-0.16-3.ph4.noarch
+python3-dateutil-2.8.1-3.ph4.noarch
+python3-pytz-deprecation-shim-0.1.0.post0-1.ph4.noarch
+python3-ecdsa-0.16.0-2.ph4.noarch
+python3-configobj-5.0.6-6.ph4.noarch
+python3-netifaces-0.10.9-3.ph4.x86_64
+python3-wcwidth-0.2.5-2.ph4.noarch
+python3-typing-3.7.4.3-2.ph4.noarch
+python3-M2Crypto-0.38.0-1.ph4.x86_64
+python3-pytz-2020.4-3.ph4.noarch
+python3-tzlocal-4.2-1.ph4.noarch
+python3-pyparsing-2.4.7-2.ph4.noarch
+python3-packaging-20.4-4.ph4.noarch
+python3-pyjsparser-2.7.1-3.ph4.noarch
+python3-pycparser-2.20-2.ph4.noarch
+python3-cffi-1.14.3-3.ph4.x86_64
+python3-bcrypt-3.2.0-2.ph4.x86_64
+python3-PyNaCl-1.4.0-2.ph4.x86_64
+python3-ptyprocess-0.6.0-7.ph4.noarch
+python3-prettytable-0.7.2-8.ph4.noarch
+python3-oauthlib-3.1.0-2.ph4.noarch
+python3-mistune-0.8.4-2.ph4.noarch
+python3-jsonpointer-2.0-3.ph4.noarch
+python3-jsonpatch-1.26-2.ph4.noarch
+python3-incremental-17.5.0-3.ph4.noarch
+python3-graphviz-0.14.2-2.ph4.noarch
+python3-automat-20.2.0-3.ph4.noarch
+python3-constantly-15.1.0-4.ph4.noarch
+python3-asn1crypto-1.4.0-2.ph4.noarch
+python3-cryptography-41.0.7-1.ph4.x86_64
+python3-pyOpenSSL-23.2.0-2.ph4.noarch
+python3-requests-2.26.0-2.ph4.noarch
+python3-service_identity-18.1.0-4.ph4.noarch
+python3-PyHamcrest-2.0.2-2.ph4.noarch
+python3-resolvelib-0.5.5-1.ph4.noarch
+python3-pycryptodome-3.12.0-3.ph4.x86_64
+python3-paramiko-2.10.3-4.ph4.noarch
+python3-ply-3.11-6.ph4.noarch
+python3-msgpack-1.0.2-1.ph4.x86_64
+libgcc-atomic-10.2.0-2.ph4.x86_64
+python3-PyYAML-5.4.1-3.ph4.x86_64
+python3-yamlloader-1.1.0-2.ph4.noarch
+docker-cli-24.0.5-3.ph4.x86_64
+docker-engine-24.0.5-3.ph4.x86_64
+docker-24.0.5-3.ph4.x86_64
+libgcc-devel-10.2.0-2.ph4.x86_64
+gcc-10.2.0-2.ph4.x86_64
+python3-numpy-1.23.4-1.ph4.x86_64
+python3-Js2Py-0.74-1.ph4.noarch
+python3-psycopg2-2.8.6-4.ph4.x86_64
+python3-rpm-4.16.1.3-18.ph4.x86_64
+python3-pywbem-1.1.2-4.ph4.noarch
+python3-devel-3.10.11-5.ph4.x86_64
+python3-CacheControl-0.12.6-2.ph4.noarch
+python3-Twisted-20.3.0-4.ph4.x86_64
+python3-m2r-0.2.1-3.ph4.noarch
+python3-pexpect-4.8.0-3.ph4.noarch
+python3-prompt_toolkit-3.0.8-2.ph4.noarch
+python3-distro-1.5.0-2.ph4.noarch
+python3-setuptools_scm-4.1.2-3.ph4.noarch
+python3-defusedxml-0.6.0-2.ph4.noarch
+python3-werkzeug-1.0.1-3.ph4.noarch
+python3-webob-1.8.6-2.ph4.noarch
+python3-simplejson-3.17.2-2.ph4.x86_64
+python3-psutil-5.7.3-3.ph4.x86_64
+python3-pam-1.8.4-2.ph4.noarch
+python3-ntplib-0.3.4-2.ph4.noarch
+python3-ipaddr-2.2.0-3.ph4.noarch
+python3-dnspython-2.0.0-2.ph4.noarch
+python3-typing-extensions-4.3.0-1.ph4.noarch
+python3-lockfile-0.12.2-5.ph4.noarch
+python3-libxml2-2.9.12-12.ph4.x86_64
+python3-atomicwrites-1.4.0-3.ph4.noarch
+make-4.3-2.ph4.x86_64
