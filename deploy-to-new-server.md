@@ -122,9 +122,7 @@ git clone https://github.com/vmware/vmware-aria-operations-integration-sdk.git C
 
 ```powershell
 cd C:\aria-sdk\images\base-python-adapter
-docker build -t base-adapter:python-1.2.0 .
-docker save base-adapter:python-1.2.0 -o C:\base-adapter.tar
-```
+docker build -t base-adapter:python-1.2.0 .7
 
 ### 3c: Save the Python base image (used inside the adapter container)
 
@@ -158,7 +156,8 @@ pip download vmware-aria-operations-integration-sdk -d C:\aria-wheels --no-deps
 pip download vmware-aria-operations-integration-sdk-lib -d C:\aria-wheels --no-deps
 
 # SDK dependencies — C extensions for Python 3.12 Linux
-pip download "lxml>=4.9.2,<5.0.0" --python-version 3.12 --platform manylinux2014_x86_64 --only-binary=:all: -d C:\aria-wheels
+# lxml 5.0.0 is the first version with Python 3.12 wheels (uses manylinux_2_28)
+pip download "lxml==5.0.0" --python-version 3.12 --platform manylinux_2_28_x86_64 --only-binary=:all: -d C:\aria-wheels
 pip download "Pillow>=9.3,<11.0" --python-version 3.12 --platform manylinux2014_x86_64 --only-binary=:all: -d C:\aria-wheels
 pip download "cryptography==44.0.0" --python-version 3.12 --platform manylinux2014_x86_64 --only-binary=:all: -d C:\aria-wheels
 pip download "cffi" --python-version 3.12 --platform manylinux2014_x86_64 --only-binary=:all: -d C:\aria-wheels
@@ -180,7 +179,7 @@ pip download "sniffio" -d C:\aria-wheels --no-deps
 pip download "rfc3986" -d C:\aria-wheels --no-deps
 pip download "anyio" -d C:\aria-wheels --no-deps
 pip download "importlib-metadata>=5.0.0,<6.0.0" -d C:\aria-wheels --no-deps
-pip download "importlib-resources" -d C:\aria-wheels --no-deps
+pip download "importlib-resources==5.13.0" -d C:\aria-wheels --no-deps
 pip download "zipp" -d C:\aria-wheels --no-deps
 pip download "jsonschema-spec" -d C:\aria-wheels --no-deps
 pip download "pathable" -d C:\aria-wheels --no-deps
@@ -264,29 +263,58 @@ If this fails, resolve the credential or firewall issue before proceeding — th
 
 ## Phase 5: Install Aria SDK (on Photon server)
 
+### 5a: Load Docker images
+
 ```bash
-# Load Docker images
 sudo docker load -i /opt/aria/python311slim.tar
 sudo docker load -i /opt/aria/base-adapter.tar
 
 # Verify images loaded
 sudo docker images
+```
 
-# Install the SDK and runtime library using Python 3.12
-sudo pip3.12 install --no-index --find-links /opt/aria/wheels vmware-aria-operations-integration-sdk
+### 5b: Install SDK CLI (without dependency checks to bypass lxml<5.0.0 pin)
+
+```bash
+sudo pip3.12 install --no-index --no-deps --find-links /opt/aria/wheels vmware-aria-operations-integration-sdk
+```
+
+### 5c: Install SDK runtime library
+
+```bash
 sudo pip3.12 install --no-index --find-links /opt/aria/wheels vmware-aria-operations-integration-sdk-lib
+```
 
-# The SDK installs mp-build/mp-test to Python 3.12's bin — add to PATH
+### 5d: Install lxml 5.0.0 separately (bypasses the SDK's <5.0.0 pin — functionally compatible)
+
+```bash
+sudo pip3.12 install --no-index --find-links /opt/aria/wheels lxml
+```
+
+### 5e: Install remaining SDK dependencies
+
+```bash
+sudo pip3.12 install --no-index --find-links /opt/aria/wheels Pillow cryptography cffi pyyaml gitpython docker httpx prompt-toolkit validators xmlschema
+```
+
+> **Note:** If any package fails with a missing dependency, download the specific
+> wheel on the Windows PC with `pip download "<package>" -d C:\aria-wheels --no-deps`,
+> transfer it to `/opt/aria/wheels/`, and retry.
+
+### 5f: Symlink SDK commands to PATH
+
+```bash
 sudo ln -sf /opt/python312/bin/mp-build /usr/local/bin/mp-build
 sudo ln -sf /opt/python312/bin/mp-test /usr/local/bin/mp-test
 sudo ln -sf /opt/python312/bin/mp-init /usr/local/bin/mp-init
+```
 
-# Verify
+### 5g: Verify
+
+```bash
 mp-build --version
 mp-test --version
 ```
-
-If pip fails with a missing package, see the Troubleshooting section at the bottom.
 
 ---
 
