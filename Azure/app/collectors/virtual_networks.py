@@ -6,6 +6,7 @@ from azure_client import AzureClient
 from constants import (
     API_VERSIONS, OBJ_VIRTUAL_NETWORK, OBJ_SUBNET, OBJ_RESOURCE_GROUP,
 )
+from helpers import make_identifiers, extract_resource_group
 
 logger = logging.getLogger(__name__)
 
@@ -26,18 +27,18 @@ def collect_virtual_networks(client: AzureClient, result, adapter_kind: str,
 
         for vnet in vnets:
             vnet_name = vnet["name"]
-            rg_name = _extract_rg(vnet.get("id", ""))
+            rg_name = extract_resource_group(vnet.get("id", ""))
             props = vnet.get("properties", {})
 
             vnet_obj = result.object(
                 adapter_kind=adapter_kind,
                 object_kind=OBJ_VIRTUAL_NETWORK,
                 name=vnet_name,
-                identifiers=[
+                identifiers=make_identifiers([
                     ("subscription_id", sub_id),
                     ("resource_group", rg_name),
                     ("vnet_name", vnet_name),
-                ],
+                ]),
             )
 
             vnet_obj.with_property("vnet_name", vnet_name)
@@ -70,18 +71,16 @@ def collect_virtual_networks(client: AzureClient, result, adapter_kind: str,
 
             # Relationship: VNet -> Resource Group
             if rg_name:
-                result.add_relationship(
-                    parent=result.object(
-                        adapter_kind=adapter_kind,
-                        object_kind=OBJ_RESOURCE_GROUP,
-                        name=rg_name,
-                        identifiers=[
-                            ("subscription_id", sub_id),
-                            ("resource_group_name", rg_name),
-                        ],
-                    ),
-                    child=vnet_obj,
+                rg_obj = result.object(
+                    adapter_kind=adapter_kind,
+                    object_kind=OBJ_RESOURCE_GROUP,
+                    name=rg_name,
+                    identifiers=make_identifiers([
+                        ("subscription_id", sub_id),
+                        ("resource_group_name", rg_name),
+                    ]),
                 )
+                vnet_obj.add_parent(rg_obj)
 
             # Subnets
             subnets = props.get("subnets", [])
@@ -93,11 +92,11 @@ def collect_virtual_networks(client: AzureClient, result, adapter_kind: str,
                     adapter_kind=adapter_kind,
                     object_kind=OBJ_SUBNET,
                     name=subnet_name,
-                    identifiers=[
+                    identifiers=make_identifiers([
                         ("subscription_id", sub_id),
                         ("vnet_id", vnet.get("id", "")),
                         ("subnet_name", subnet_name),
-                    ],
+                    ]),
                 )
 
                 subnet_obj.with_property("subnet_name", subnet_name)
@@ -122,7 +121,7 @@ def collect_virtual_networks(client: AzureClient, result, adapter_kind: str,
                                          ", ".join(svc_names))
 
                 # Relationship: Subnet -> VNet (parent)
-                result.add_relationship(parent=vnet_obj, child=subnet_obj)
+                subnet_obj.add_parent(vnet_obj)
 
                 total_subnets += 1
 
@@ -130,11 +129,3 @@ def collect_virtual_networks(client: AzureClient, result, adapter_kind: str,
 
     logger.info("Collected %d virtual networks, %d subnets",
                 total_vnets, total_subnets)
-
-
-def _extract_rg(resource_id: str) -> str:
-    parts = resource_id.split("/")
-    for i, part in enumerate(parts):
-        if part.lower() == "resourcegroups" and i + 1 < len(parts):
-            return parts[i + 1]
-    return ""

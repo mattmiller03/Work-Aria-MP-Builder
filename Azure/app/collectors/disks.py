@@ -4,6 +4,7 @@ import logging
 
 from azure_client import AzureClient
 from constants import API_VERSIONS, OBJ_DISK, OBJ_RESOURCE_GROUP
+from helpers import make_identifiers, extract_resource_group
 
 logger = logging.getLogger(__name__)
 
@@ -23,7 +24,7 @@ def collect_disks(client: AzureClient, result, adapter_kind: str,
 
         for disk in disks:
             disk_name = disk["name"]
-            rg_name = _extract_rg(disk.get("id", ""))
+            rg_name = extract_resource_group(disk.get("id", ""))
             props = disk.get("properties", {})
             sku = disk.get("sku", {})
 
@@ -31,11 +32,11 @@ def collect_disks(client: AzureClient, result, adapter_kind: str,
                 adapter_kind=adapter_kind,
                 object_kind=OBJ_DISK,
                 name=disk_name,
-                identifiers=[
+                identifiers=make_identifiers([
                     ("subscription_id", sub_id),
                     ("resource_group", rg_name),
                     ("disk_name", disk_name),
-                ],
+                ]),
             )
 
             obj.with_property("disk_name", disk_name)
@@ -73,27 +74,17 @@ def collect_disks(client: AzureClient, result, adapter_kind: str,
 
             # Relationship: Disk -> Resource Group
             if rg_name:
-                result.add_relationship(
-                    parent=result.object(
-                        adapter_kind=adapter_kind,
-                        object_kind=OBJ_RESOURCE_GROUP,
-                        name=rg_name,
-                        identifiers=[
-                            ("subscription_id", sub_id),
-                            ("resource_group_name", rg_name),
-                        ],
-                    ),
-                    child=obj,
+                rg_obj = result.object(
+                    adapter_kind=adapter_kind,
+                    object_kind=OBJ_RESOURCE_GROUP,
+                    name=rg_name,
+                    identifiers=make_identifiers([
+                        ("subscription_id", sub_id),
+                        ("resource_group_name", rg_name),
+                    ]),
                 )
+                obj.add_parent(rg_obj)
 
         total += len(disks)
 
     logger.info("Collected %d disks", total)
-
-
-def _extract_rg(resource_id: str) -> str:
-    parts = resource_id.split("/")
-    for i, part in enumerate(parts):
-        if part.lower() == "resourcegroups" and i + 1 < len(parts):
-            return parts[i + 1]
-    return ""

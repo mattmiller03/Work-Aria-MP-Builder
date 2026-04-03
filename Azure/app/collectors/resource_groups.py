@@ -4,6 +4,7 @@ import logging
 
 from azure_client import AzureClient
 from constants import API_VERSIONS, OBJ_RESOURCE_GROUP, OBJ_SUBSCRIPTION
+from helpers import make_identifiers
 
 logger = logging.getLogger(__name__)
 
@@ -32,10 +33,10 @@ def collect_resource_groups(client: AzureClient, result, adapter_kind: str,
                 adapter_kind=adapter_kind,
                 object_kind=OBJ_RESOURCE_GROUP,
                 name=rg_name,
-                identifiers=[
+                identifiers=make_identifiers([
                     ("subscription_id", sub_id),
                     ("resource_group_name", rg_name),
-                ],
+                ]),
             )
 
             obj.with_property("name", rg_name)
@@ -51,15 +52,13 @@ def collect_resource_groups(client: AzureClient, result, adapter_kind: str,
                     obj.with_property(f"tag_{key}", value)
 
             # Relationship: Resource Group -> Subscription (parent)
-            result.add_relationship(
-                parent=result.object(
-                    adapter_kind=adapter_kind,
-                    object_kind=OBJ_SUBSCRIPTION,
-                    name=sub.get("displayName", sub_id),
-                    identifiers=[("subscription_id", sub_id)],
-                ),
-                child=obj,
+            sub_obj = result.object(
+                adapter_kind=adapter_kind,
+                object_kind=OBJ_SUBSCRIPTION,
+                name=sub.get("displayName", sub_id),
+                identifiers=make_identifiers([("subscription_id", sub_id)]),
             )
+            obj.add_parent(sub_obj)
 
     total = sum(len(rgs) for rgs in all_rgs.values())
     logger.info("Collected %d resource groups across %d subscriptions",

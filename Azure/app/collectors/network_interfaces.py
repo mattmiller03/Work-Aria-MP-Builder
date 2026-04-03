@@ -4,6 +4,7 @@ import logging
 
 from azure_client import AzureClient
 from constants import API_VERSIONS, OBJ_NETWORK_INTERFACE, OBJ_RESOURCE_GROUP
+from helpers import make_identifiers, extract_resource_group
 
 logger = logging.getLogger(__name__)
 
@@ -23,18 +24,18 @@ def collect_network_interfaces(client: AzureClient, result, adapter_kind: str,
 
         for nic in nics:
             nic_name = nic["name"]
-            rg_name = _extract_rg(nic.get("id", ""))
+            rg_name = extract_resource_group(nic.get("id", ""))
             props = nic.get("properties", {})
 
             obj = result.object(
                 adapter_kind=adapter_kind,
                 object_kind=OBJ_NETWORK_INTERFACE,
                 name=nic_name,
-                identifiers=[
+                identifiers=make_identifiers([
                     ("subscription_id", sub_id),
                     ("resource_group", rg_name),
                     ("nic_name", nic_name),
-                ],
+                ]),
             )
 
             obj.with_property("nic_name", nic_name)
@@ -100,27 +101,17 @@ def collect_network_interfaces(client: AzureClient, result, adapter_kind: str,
 
             # Relationship: NIC -> Resource Group
             if rg_name:
-                result.add_relationship(
-                    parent=result.object(
-                        adapter_kind=adapter_kind,
-                        object_kind=OBJ_RESOURCE_GROUP,
-                        name=rg_name,
-                        identifiers=[
-                            ("subscription_id", sub_id),
-                            ("resource_group_name", rg_name),
-                        ],
-                    ),
-                    child=obj,
+                rg_obj = result.object(
+                    adapter_kind=adapter_kind,
+                    object_kind=OBJ_RESOURCE_GROUP,
+                    name=rg_name,
+                    identifiers=make_identifiers([
+                        ("subscription_id", sub_id),
+                        ("resource_group_name", rg_name),
+                    ]),
                 )
+                obj.add_parent(rg_obj)
 
         total += len(nics)
 
     logger.info("Collected %d network interfaces", total)
-
-
-def _extract_rg(resource_id: str) -> str:
-    parts = resource_id.split("/")
-    for i, part in enumerate(parts):
-        if part.lower() == "resourcegroups" and i + 1 < len(parts):
-            return parts[i + 1]
-    return ""

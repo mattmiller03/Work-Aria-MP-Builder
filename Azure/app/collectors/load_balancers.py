@@ -4,6 +4,7 @@ import logging
 
 from azure_client import AzureClient
 from constants import API_VERSIONS, OBJ_LOAD_BALANCER, OBJ_RESOURCE_GROUP
+from helpers import make_identifiers, extract_resource_group
 
 logger = logging.getLogger(__name__)
 
@@ -23,7 +24,7 @@ def collect_load_balancers(client: AzureClient, result, adapter_kind: str,
 
         for lb in lbs:
             lb_name = lb["name"]
-            rg_name = _extract_rg(lb.get("id", ""))
+            rg_name = extract_resource_group(lb.get("id", ""))
             props = lb.get("properties", {})
             sku = lb.get("sku", {})
 
@@ -31,11 +32,11 @@ def collect_load_balancers(client: AzureClient, result, adapter_kind: str,
                 adapter_kind=adapter_kind,
                 object_kind=OBJ_LOAD_BALANCER,
                 name=lb_name,
-                identifiers=[
+                identifiers=make_identifiers([
                     ("subscription_id", sub_id),
                     ("resource_group", rg_name),
                     ("lb_name", lb_name),
-                ],
+                ]),
             )
 
             obj.with_property("lb_name", lb_name)
@@ -80,27 +81,17 @@ def collect_load_balancers(client: AzureClient, result, adapter_kind: str,
 
             # Relationship: LB -> Resource Group
             if rg_name:
-                result.add_relationship(
-                    parent=result.object(
-                        adapter_kind=adapter_kind,
-                        object_kind=OBJ_RESOURCE_GROUP,
-                        name=rg_name,
-                        identifiers=[
-                            ("subscription_id", sub_id),
-                            ("resource_group_name", rg_name),
-                        ],
-                    ),
-                    child=obj,
+                rg_obj = result.object(
+                    adapter_kind=adapter_kind,
+                    object_kind=OBJ_RESOURCE_GROUP,
+                    name=rg_name,
+                    identifiers=make_identifiers([
+                        ("subscription_id", sub_id),
+                        ("resource_group_name", rg_name),
+                    ]),
                 )
+                obj.add_parent(rg_obj)
 
         total += len(lbs)
 
     logger.info("Collected %d load balancers", total)
-
-
-def _extract_rg(resource_id: str) -> str:
-    parts = resource_id.split("/")
-    for i, part in enumerate(parts):
-        if part.lower() == "resourcegroups" and i + 1 < len(parts):
-            return parts[i + 1]
-    return ""

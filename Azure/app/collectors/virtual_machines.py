@@ -4,6 +4,7 @@ import logging
 
 from azure_client import AzureClient
 from constants import API_VERSIONS, OBJ_VIRTUAL_MACHINE, OBJ_RESOURCE_GROUP
+from helpers import make_identifiers, extract_resource_group
 
 logger = logging.getLogger(__name__)
 
@@ -26,18 +27,18 @@ def collect_virtual_machines(client: AzureClient, result, adapter_kind: str,
 
         for vm in vms:
             vm_name = vm["name"]
-            rg_name = _extract_resource_group(vm.get("id", ""))
+            rg_name = extract_resource_group(vm.get("id", ""))
             props = vm.get("properties", {})
 
             obj = result.object(
                 adapter_kind=adapter_kind,
                 object_kind=OBJ_VIRTUAL_MACHINE,
                 name=vm_name,
-                identifiers=[
+                identifiers=make_identifiers([
                     ("subscription_id", sub_id),
                     ("resource_group", rg_name),
                     ("vm_name", vm_name),
-                ],
+                ]),
             )
 
             # Core properties
@@ -126,31 +127,21 @@ def collect_virtual_machines(client: AzureClient, result, adapter_kind: str,
 
             # Relationship: VM -> Resource Group (parent)
             if rg_name:
-                result.add_relationship(
-                    parent=result.object(
-                        adapter_kind=adapter_kind,
-                        object_kind=OBJ_RESOURCE_GROUP,
-                        name=rg_name,
-                        identifiers=[
-                            ("subscription_id", sub_id),
-                            ("resource_group_name", rg_name),
-                        ],
-                    ),
-                    child=obj,
+                rg_obj = result.object(
+                    adapter_kind=adapter_kind,
+                    object_kind=OBJ_RESOURCE_GROUP,
+                    name=rg_name,
+                    identifiers=make_identifiers([
+                        ("subscription_id", sub_id),
+                        ("resource_group_name", rg_name),
+                    ]),
                 )
+                obj.add_parent(rg_obj)
 
         total += len(vms)
 
     logger.info("Collected %d virtual machines", total)
 
-
-def _extract_resource_group(resource_id: str) -> str:
-    """Extract resource group name from an Azure resource ID."""
-    parts = resource_id.split("/")
-    for i, part in enumerate(parts):
-        if part.lower() == "resourcegroups" and i + 1 < len(parts):
-            return parts[i + 1]
-    return ""
 
 
 def _extract_power_state(instance_view: dict) -> str:

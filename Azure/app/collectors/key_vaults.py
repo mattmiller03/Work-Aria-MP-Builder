@@ -4,6 +4,7 @@ import logging
 
 from azure_client import AzureClient
 from constants import API_VERSIONS, OBJ_KEY_VAULT, OBJ_RESOURCE_GROUP
+from helpers import make_identifiers
 
 logger = logging.getLogger(__name__)
 
@@ -38,11 +39,11 @@ def collect_key_vaults(client: AzureClient, result, adapter_kind: str,
                     adapter_kind=adapter_kind,
                     object_kind=OBJ_KEY_VAULT,
                     name=vault_name,
-                    identifiers=[
+                    identifiers=make_identifiers([
                         ("subscription_id", sub_id),
                         ("resource_group", rg_name),
                         ("vault_name", vault_name),
-                    ],
+                    ]),
                 )
 
                 obj.with_property("vault_name", vault_name)
@@ -78,18 +79,16 @@ def collect_key_vaults(client: AzureClient, result, adapter_kind: str,
                         obj.with_property(f"tag_{key}", value)
 
                 # Relationship: Key Vault -> Resource Group
-                result.add_relationship(
-                    parent=result.object(
-                        adapter_kind=adapter_kind,
-                        object_kind=OBJ_RESOURCE_GROUP,
-                        name=rg_name,
-                        identifiers=[
-                            ("subscription_id", sub_id),
-                            ("resource_group_name", rg_name),
-                        ],
-                    ),
-                    child=obj,
+                rg_obj = result.object(
+                    adapter_kind=adapter_kind,
+                    object_kind=OBJ_RESOURCE_GROUP,
+                    name=rg_name,
+                    identifiers=make_identifiers([
+                        ("subscription_id", sub_id),
+                        ("resource_group_name", rg_name),
+                    ]),
                 )
+                obj.add_parent(rg_obj)
 
                 total += 1
 

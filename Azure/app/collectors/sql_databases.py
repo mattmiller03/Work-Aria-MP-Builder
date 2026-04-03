@@ -6,6 +6,7 @@ from azure_client import AzureClient
 from constants import (
     API_VERSIONS, OBJ_SQL_SERVER, OBJ_SQL_DATABASE, OBJ_RESOURCE_GROUP,
 )
+from helpers import make_identifiers, extract_resource_group
 
 logger = logging.getLogger(__name__)
 
@@ -28,18 +29,18 @@ def collect_sql_servers_and_databases(client: AzureClient, result,
 
         for server in servers:
             srv_name = server["name"]
-            rg_name = _extract_rg(server.get("id", ""))
+            rg_name = extract_resource_group(server.get("id", ""))
             srv_props = server.get("properties", {})
 
             srv_obj = result.object(
                 adapter_kind=adapter_kind,
                 object_kind=OBJ_SQL_SERVER,
                 name=srv_name,
-                identifiers=[
+                identifiers=make_identifiers([
                     ("subscription_id", sub_id),
                     ("resource_group", rg_name),
                     ("server_name", srv_name),
-                ],
+                ]),
             )
 
             srv_obj.with_property("server_name", srv_name)
@@ -66,18 +67,16 @@ def collect_sql_servers_and_databases(client: AzureClient, result,
 
             # Relationship: SQL Server -> Resource Group
             if rg_name:
-                result.add_relationship(
-                    parent=result.object(
-                        adapter_kind=adapter_kind,
-                        object_kind=OBJ_RESOURCE_GROUP,
-                        name=rg_name,
-                        identifiers=[
-                            ("subscription_id", sub_id),
-                            ("resource_group_name", rg_name),
-                        ],
-                    ),
-                    child=srv_obj,
+                rg_obj = result.object(
+                    adapter_kind=adapter_kind,
+                    object_kind=OBJ_RESOURCE_GROUP,
+                    name=rg_name,
+                    identifiers=make_identifiers([
+                        ("subscription_id", sub_id),
+                        ("resource_group_name", rg_name),
+                    ]),
                 )
+                srv_obj.add_parent(rg_obj)
 
             # List databases on this server
             databases = client.get_all(
@@ -99,11 +98,11 @@ def collect_sql_servers_and_databases(client: AzureClient, result,
                     adapter_kind=adapter_kind,
                     object_kind=OBJ_SQL_DATABASE,
                     name=db_name,
-                    identifiers=[
+                    identifiers=make_identifiers([
                         ("subscription_id", sub_id),
                         ("server_name", srv_name),
                         ("database_name", db_name),
-                    ],
+                    ]),
                 )
 
                 db_obj.with_property("database_name", db_name)
@@ -136,18 +135,10 @@ def collect_sql_servers_and_databases(client: AzureClient, result,
                         db_obj.with_property(f"tag_{key}", value)
 
                 # Relationship: Database -> SQL Server (parent)
-                result.add_relationship(parent=srv_obj, child=db_obj)
+                db_obj.add_parent(srv_obj)
                 total_dbs += 1
 
         total_servers += len(servers)
 
     logger.info("Collected %d SQL servers, %d databases",
                 total_servers, total_dbs)
-
-
-def _extract_rg(resource_id: str) -> str:
-    parts = resource_id.split("/")
-    for i, part in enumerate(parts):
-        if part.lower() == "resourcegroups" and i + 1 < len(parts):
-            return parts[i + 1]
-    return ""

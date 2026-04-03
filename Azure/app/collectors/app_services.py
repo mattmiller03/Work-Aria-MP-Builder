@@ -4,6 +4,7 @@ import logging
 
 from azure_client import AzureClient
 from constants import API_VERSIONS, OBJ_APP_SERVICE, OBJ_RESOURCE_GROUP
+from helpers import make_identifiers, extract_resource_group
 
 logger = logging.getLogger(__name__)
 
@@ -23,18 +24,18 @@ def collect_app_services(client: AzureClient, result, adapter_kind: str,
 
         for app in apps:
             app_name = app["name"]
-            rg_name = _extract_rg(app.get("id", ""))
+            rg_name = extract_resource_group(app.get("id", ""))
             props = app.get("properties", {})
 
             obj = result.object(
                 adapter_kind=adapter_kind,
                 object_kind=OBJ_APP_SERVICE,
                 name=app_name,
-                identifiers=[
+                identifiers=make_identifiers([
                     ("subscription_id", sub_id),
                     ("resource_group", rg_name),
                     ("app_name", app_name),
-                ],
+                ]),
             )
 
             obj.with_property("app_name", app_name)
@@ -84,27 +85,17 @@ def collect_app_services(client: AzureClient, result, adapter_kind: str,
 
             # Relationship: App -> Resource Group
             if rg_name:
-                result.add_relationship(
-                    parent=result.object(
-                        adapter_kind=adapter_kind,
-                        object_kind=OBJ_RESOURCE_GROUP,
-                        name=rg_name,
-                        identifiers=[
-                            ("subscription_id", sub_id),
-                            ("resource_group_name", rg_name),
-                        ],
-                    ),
-                    child=obj,
+                rg_obj = result.object(
+                    adapter_kind=adapter_kind,
+                    object_kind=OBJ_RESOURCE_GROUP,
+                    name=rg_name,
+                    identifiers=make_identifiers([
+                        ("subscription_id", sub_id),
+                        ("resource_group_name", rg_name),
+                    ]),
                 )
+                obj.add_parent(rg_obj)
 
         total += len(apps)
 
     logger.info("Collected %d app services", total)
-
-
-def _extract_rg(resource_id: str) -> str:
-    parts = resource_id.split("/")
-    for i, part in enumerate(parts):
-        if part.lower() == "resourcegroups" and i + 1 < len(parts):
-            return parts[i + 1]
-    return ""
