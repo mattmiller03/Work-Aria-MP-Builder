@@ -431,9 +431,7 @@ def test(adapter_instance):
             api_version="2022-12-01",
         )
 
-        result.with_message(
-            f"Successfully connected. Found {len(subs)} subscription(s)."
-        )
+        logger.info(f"Successfully connected. Found {len(subs)} subscription(s).")
 
     except Exception as e:
         logger.error("Connection test failed: %s", e, exc_info=True)
