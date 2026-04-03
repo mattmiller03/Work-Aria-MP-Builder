@@ -46,7 +46,7 @@ OBJ_APP_SERVICE = "azure_app_service"
 API_VERSIONS = {
     "subscriptions": "2022-12-01",
     "resource_groups": "2021-04-01",
-    "virtual_machines": "2023-07-01",
+    "virtual_machines": "2023-03-01",
     "disks": "2023-04-02",
     "network_interfaces": "2023-05-01",
     "virtual_networks": "2023-05-01",

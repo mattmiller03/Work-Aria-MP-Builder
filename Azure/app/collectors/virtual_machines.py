@@ -18,12 +18,20 @@ def collect_virtual_machines(client: AzureClient, result, adapter_kind: str,
     for sub in subscriptions:
         sub_id = sub["subscriptionId"]
 
-        # List all VMs in subscription with instance view for power state
-        vms = client.get_all(
-            path=f"/subscriptions/{sub_id}/providers/Microsoft.Compute/virtualMachines",
-            api_version=API_VERSIONS["virtual_machines"],
-            params={"$expand": "instanceView"},
-        )
+        # List all VMs in subscription
+        # Try with instanceView first, fall back without it
+        try:
+            vms = client.get_all(
+                path=f"/subscriptions/{sub_id}/providers/Microsoft.Compute/virtualMachines",
+                api_version=API_VERSIONS["virtual_machines"],
+                params={"$expand": "instanceView"},
+            )
+        except Exception:
+            logger.warning("instanceView expand failed for sub %s, retrying without", sub_id)
+            vms = client.get_all(
+                path=f"/subscriptions/{sub_id}/providers/Microsoft.Compute/virtualMachines",
+                api_version=API_VERSIONS["virtual_machines"],
+            )
 
         for vm in vms:
             vm_name = vm["name"]

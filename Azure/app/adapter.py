@@ -377,18 +377,25 @@ def collect(adapter_instance):
         rgs_by_sub = collect_resource_groups(client, result, ADAPTER_KIND,
                                              subscriptions)
 
-        # 3. All resource collectors
-        collect_virtual_machines(client, result, ADAPTER_KIND, subscriptions)
-        collect_disks(client, result, ADAPTER_KIND, subscriptions)
-        collect_network_interfaces(client, result, ADAPTER_KIND, subscriptions)
-        collect_virtual_networks(client, result, ADAPTER_KIND, subscriptions)
-        collect_storage_accounts(client, result, ADAPTER_KIND, subscriptions)
-        collect_load_balancers(client, result, ADAPTER_KIND, subscriptions)
-        collect_key_vaults(client, result, ADAPTER_KIND, subscriptions,
-                           rgs_by_sub)
-        collect_sql_servers_and_databases(client, result, ADAPTER_KIND,
-                                         subscriptions)
-        collect_app_services(client, result, ADAPTER_KIND, subscriptions)
+        # 3. All resource collectors — each wrapped independently
+        #    so one failure doesn't prevent other resource types from collecting
+        collectors = [
+            ("Virtual Machines", lambda: collect_virtual_machines(client, result, ADAPTER_KIND, subscriptions)),
+            ("Disks", lambda: collect_disks(client, result, ADAPTER_KIND, subscriptions)),
+            ("Network Interfaces", lambda: collect_network_interfaces(client, result, ADAPTER_KIND, subscriptions)),
+            ("Virtual Networks", lambda: collect_virtual_networks(client, result, ADAPTER_KIND, subscriptions)),
+            ("Storage Accounts", lambda: collect_storage_accounts(client, result, ADAPTER_KIND, subscriptions)),
+            ("Load Balancers", lambda: collect_load_balancers(client, result, ADAPTER_KIND, subscriptions)),
+            ("Key Vaults", lambda: collect_key_vaults(client, result, ADAPTER_KIND, subscriptions, rgs_by_sub)),
+            ("SQL Databases", lambda: collect_sql_servers_and_databases(client, result, ADAPTER_KIND, subscriptions)),
+            ("App Services", lambda: collect_app_services(client, result, ADAPTER_KIND, subscriptions)),
+        ]
+
+        for name, collector_fn in collectors:
+            try:
+                collector_fn()
+            except Exception as e:
+                logger.error("Collector %s failed: %s", name, e, exc_info=True)
 
     except Exception as e:
         logger.error("Collection failed: %s", e, exc_info=True)
