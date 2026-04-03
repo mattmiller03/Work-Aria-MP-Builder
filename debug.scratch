@@ -1,26 +1,5 @@
-root@photon [ ~ ]# mp-build --version
-Traceback (most recent call last):
-  File "/usr/local/bin/mp-build", line 5, in <module>
-    from vmware_aria_operations_integration_sdk.mp_build import main
-  File "/opt/python312/lib/python3.12/site-packages/vmware_aria_operations_integration_sdk/mp_build.py", line 20, in <module>
-    import httpx
-  File "/opt/python312/lib/python3.12/site-packages/httpx/__init__.py", line 2, in <module>
-    from ._api import delete, get, head, options, patch, post, put, request, stream
-  File "/opt/python312/lib/python3.12/site-packages/httpx/_api.py", line 4, in <module>
-    from ._client import Client
-  File "/opt/python312/lib/python3.12/site-packages/httpx/_client.py", line 9, in <module>
-    from ._auth import Auth, BasicAuth, FunctionAuth
-  File "/opt/python312/lib/python3.12/site-packages/httpx/_auth.py", line 10, in <module>
-    from ._models import Request, Response
-  File "/opt/python312/lib/python3.12/site-packages/httpx/_models.py", line 10, in <module>
-    from ._content import ByteStream, UnattachedStream, encode_request, encode_response
-  File "/opt/python312/lib/python3.12/site-packages/httpx/_content.py", line 18, in <module>
-    from ._multipart import MultipartStream
-  File "/opt/python312/lib/python3.12/site-packages/httpx/_multipart.py", line 7, in <module>
-    from ._types import (
-  File "/opt/python312/lib/python3.12/site-packages/httpx/_types.py", line 5, in <module>
-    import ssl
-  File "/opt/python312/lib/python3.12/ssl.py", line 100, in <module>
-    import _ssl             # if we can't import it, let the error propagate
-    ^^^^^^^^^^^
-ModuleNotFoundError: No module named '_ssl'
+root@photon [ ~ ]# rpm -qa | grep openssl-devel
+root@photon [ ~ ]# rpm -qa | grep openssl
+openssl-3.0.9-8.ph4.x86_64
+openssl-fips-provider-3.0.8-1.ph4.x86_64
+openssl-c_rehash-3.0.9-8.ph4.x86_64
