@@ -1,0 +1,2657 @@
+17:45:46,697 urllib3.connectionpool DEBUG http://localhost:None "GET /version HTTP/1.1" 200 800
+17:45:46,701 urllib3.connectionpool DEBUG http://localhost:None "GET /v1.43/images/base-adapter:python-1.2.0/json HTTP/1.1" 200 None
+17:45:46,706 asyncio DEBUG Using selector: EpollSelector
+17:45:46,928 docker.api.build DEBUG Looking for auth config
+17:45:46,928 docker.api.build DEBUG No auth config in memory - loading from filesystem
+17:45:46,928 docker.utils.config DEBUG Trying paths: ['/root/.docker/config.json', '/root/.dockercfg']
+17:45:46,928 docker.utils.config DEBUG No config file found
+17:45:46,928 docker.api.build DEBUG Sending auth config ()
+17:45:46,976 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.43/build?t=azuregovcloud-test%3A1.0.0&q=False&nocache=False&rm=True&forcerm=False&pull=False&labels=%7B%22mp-test%22%3A+%221775238346.6895647%22%7D HTTP/1.1" 200 None
+17:45:47,15 urllib3.connectionpool DEBUG http://localhost:None "GET /v1.43/images/53e2120e00b3/json HTTP/1.1" 200 None
+17:45:47,176 asyncio DEBUG Using selector: EpollSelector
+17:45:48,494 asyncio DEBUG Using selector: EpollSelector
+17:45:51,178 asyncio DEBUG Using selector: EpollSelector
+17:45:51,197 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.43/containers/create HTTP/1.1" 201 88
+17:45:51,199 urllib3.connectionpool DEBUG http://localhost:None "GET /v1.43/containers/12fdd99fcfec9076cb68abd4744beeb510242a9dfda41a4854a38a13ff35faea/json HTTP/1.1" 200 None
+17:45:51,374 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.43/containers/12fdd99fcfec9076cb68abd4744beeb510242a9dfda41a4854a38a13ff35faea/start HTTP/1.1" 204 0
+17:45:51,413 asyncio DEBUG Using selector: EpollSelector
+17:45:52,41 httpx._client DEBUG HTTP Request: GET http://localhost:8080/apiVersion "HTTP/1.1 200 OK"
+17:45:52,58 asyncio DEBUG Using selector: EpollSelector
+17:45:53,115 urllib3.connectionpool DEBUG http://localhost:None "GET /v1.43/containers/12fdd99fcfec9076cb68abd4744beeb510242a9dfda41a4854a38a13ff35faea/stats?stream=False HTTP/1.1" 200 1902
+17:45:53,421 httpx._client DEBUG HTTP Request: GET http://localhost:8080/adapterDefinition "HTTP/1.1 200 OK"
+17:45:55,123 urllib3.connectionpool DEBUG http://localhost:None "GET /v1.43/containers/12fdd99fcfec9076cb68abd4744beeb510242a9dfda41a4854a38a13ff35faea/stats?stream=False HTTP/1.1" 200 1909
+17:45:55,124 sen.util DEBUG getting stats for interface 'eth0'
+17:45:55,391 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.43/containers/12fdd99fcfec9076cb68abd4744beeb510242a9dfda41a4854a38a13ff35faea/kill HTTP/1.1" 204 0
+17:45:55,397 urllib3.connectionpool DEBUG http://localhost:None "DELETE /v1.43/containers/12fdd99fcfec9076cb68abd4744beeb510242a9dfda41a4854a38a13ff35faea?v=False&link=False&force=False HTTP/1.1" 204 0
+17:45:55,400 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.43/images/prune?filters=%7B%22label%22%3A+%5B%22mp-test%22%5D%7D HTTP/1.1" 200 125
+17:45:55,400 vmware_aria_operations_integration_sdk.mp_test INFO {
+    "adapter_instance": {
+        "attributes": [],
+        "groups": [],
+        "identifiers": [
+            {
+                "default": "government",
+                "description": "Azure cloud environment (government or commercial)",
+                "display_order": 0,
+                "enum": true,
+                "enum_values": [
+                    {
+                        "display_order": 0,
+                        "key": "government",
+                        "label": "government"
+                    },
+                    {
+                        "display_order": 1,
+                        "key": "commercial",
+                        "label": "commercial"
+                    }
+                ],
+                "ident_type": 1,
+                "key": "cloud_environment",
+                "label": "Cloud Environment",
+                "required": true,
+                "type": "string"
+            }
+        ],
+        "key": "AzureGovAdapter_adapter_instance",
+        "label": "Azure Government Cloud Adapter Instance"
+    },
+    "adapter_key": "AzureGovAdapter",
+    "adapter_label": "Azure Government Cloud",
+    "credential_types": [
+        {
+            "fields": [
+                {
+                    "display_order": 0,
+                    "enum": false,
+                    "key": "tenant_id",
+                    "label": "Tenant ID (Directory ID)",
+                    "password": false,
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "display_order": 1,
+                    "enum": false,
+                    "key": "client_id",
+                    "label": "Client ID (Application ID)",
+                    "password": false,
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "display_order": 2,
+                    "enum": false,
+                    "key": "client_secret",
+                    "label": "Client Secret",
+                    "password": true,
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "display_order": 3,
+                    "enum": false,
+                    "key": "subscription_id",
+                    "label": "Subscription ID (leave blank for all)",
+                    "password": false,
+                    "required": false,
+                    "type": "string"
+                }
+            ],
+            "key": "azure_gov_credential",
+            "label": "Azure Credentials"
+        }
+    ],
+    "describe_version": 1,
+    "object_types": [
+        {
+            "attributes": [
+                {
+                    "dashboard_order": 0,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "display_name",
+                    "label": "Display Name",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 1,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "state",
+                    "label": "State",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 2,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "tenant_id",
+                    "label": "Tenant ID",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 3,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "location_placement_id",
+                    "label": "Location Placement ID",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 4,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "quota_id",
+                    "label": "Quota ID",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 5,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "spending_limit",
+                    "label": "Spending Limit",
+                    "unit": null
+                }
+            ],
+            "groups": [],
+            "identifiers": [
+                {
+                    "default": null,
+                    "description": null,
+                    "display_order": 0,
+                    "enum": false,
+                    "ident_type": 1,
+                    "key": "subscription_id",
+                    "label": "Subscription ID",
+                    "length": 512,
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "key": "azure_subscription",
+            "label": "Azure Subscription"
+        },
+        {
+            "attributes": [
+                {
+                    "dashboard_order": 0,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "name",
+                    "label": "Name",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 1,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "location",
+                    "label": "Location",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 2,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "provisioning_state",
+                    "label": "Provisioning State",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 3,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "resource_id",
+                    "label": "Resource ID",
+                    "unit": null
+                }
+            ],
+            "groups": [],
+            "identifiers": [
+                {
+                    "default": null,
+                    "description": null,
+                    "display_order": 0,
+                    "enum": false,
+                    "ident_type": 1,
+                    "key": "subscription_id",
+                    "label": "Subscription ID",
+                    "length": 512,
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "default": null,
+                    "description": null,
+                    "display_order": 1,
+                    "enum": false,
+                    "ident_type": 1,
+                    "key": "resource_group_name",
+                    "label": "Resource Group Name",
+                    "length": 512,
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "key": "azure_resource_group",
+            "label": "Azure Resource Group"
+        },
+        {
+            "attributes": [
+                {
+                    "dashboard_order": 0,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "resource_id",
+                    "label": "Resource ID",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 1,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "location",
+                    "label": "Location",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 2,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "vm_id",
+                    "label": "VM ID",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 3,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "vm_size",
+                    "label": "VM Size",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 4,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "provisioning_state",
+                    "label": "Provisioning State",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 5,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "power_state",
+                    "label": "Power State",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 6,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "computer_name",
+                    "label": "Computer Name",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 7,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "admin_username",
+                    "label": "Admin Username",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 8,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "os_type",
+                    "label": "OS Type",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 9,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "image_publisher",
+                    "label": "Image Publisher",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 10,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "image_offer",
+                    "label": "Image Offer",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 11,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "image_sku",
+                    "label": "Image SKU",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 12,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "image_version",
+                    "label": "Image Version",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 13,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "os_disk_name",
+                    "label": "OS Disk Name",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 14,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "os_disk_size_gb",
+                    "label": "OS Disk Size (GB)",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 15,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "os_disk_caching",
+                    "label": "OS Disk Caching",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 16,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "os_disk_storage_type",
+                    "label": "OS Disk Storage Type",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 17,
+                    "data_type": "float",
+                    "is_discrete": false,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "data_disk_count",
+                    "label": "Data Disk Count",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 18,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "network_interface_ids",
+                    "label": "Network Interface IDs",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 19,
+                    "data_type": "float",
+                    "is_discrete": false,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "nic_count",
+                    "label": "NIC Count",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 20,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "secure_boot_enabled",
+                    "label": "Secure Boot Enabled",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 21,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "vtpm_enabled",
+                    "label": "vTPM Enabled",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 22,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "boot_diagnostics_enabled",
+                    "label": "Boot Diagnostics Enabled",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 23,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "availability_zone",
+                    "label": "Availability Zone",
+                    "unit": null
+                }
+            ],
+            "groups": [],
+            "identifiers": [
+                {
+                    "default": null,
+                    "description": null,
+                    "display_order": 0,
+                    "enum": false,
+                    "ident_type": 1,
+                    "key": "subscription_id",
+                    "label": "Subscription ID",
+                    "length": 512,
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "default": null,
+                    "description": null,
+                    "display_order": 1,
+                    "enum": false,
+                    "ident_type": 1,
+                    "key": "resource_group",
+                    "label": "Resource Group",
+                    "length": 512,
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "default": null,
+                    "description": null,
+                    "display_order": 2,
+                    "enum": false,
+                    "ident_type": 1,
+                    "key": "vm_name",
+                    "label": "VM Name",
+                    "length": 512,
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "key": "azure_virtual_machine",
+            "label": "Azure Virtual Machine"
+        },
+        {
+            "attributes": [
+                {
+                    "dashboard_order": 0,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "resource_id",
+                    "label": "Resource ID",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 1,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "location",
+                    "label": "Location",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 2,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "sku_name",
+                    "label": "SKU Name",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 3,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "sku_tier",
+                    "label": "SKU Tier",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 4,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "disk_size_gb",
+                    "label": "Disk Size (GB)",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 5,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "disk_iops_read_write",
+                    "label": "Disk IOPS Read/Write",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 6,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "disk_mbps_read_write",
+                    "label": "Disk MBps Read/Write",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 7,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "disk_state",
+                    "label": "Disk State",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 8,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "os_type",
+                    "label": "OS Type",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 9,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "time_created",
+                    "label": "Time Created",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 10,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "provisioning_state",
+                    "label": "Provisioning State",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 11,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "encryption_type",
+                    "label": "Encryption Type",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 12,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "network_access_policy",
+                    "label": "Network Access Policy",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 13,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "availability_zone",
+                    "label": "Availability Zone",
+                    "unit": null
+                }
+            ],
+            "groups": [],
+            "identifiers": [
+                {
+                    "default": null,
+                    "description": null,
+                    "display_order": 0,
+                    "enum": false,
+                    "ident_type": 1,
+                    "key": "subscription_id",
+                    "label": "Subscription ID",
+                    "length": 512,
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "default": null,
+                    "description": null,
+                    "display_order": 1,
+                    "enum": false,
+                    "ident_type": 1,
+                    "key": "resource_group",
+                    "label": "Resource Group",
+                    "length": 512,
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "default": null,
+                    "description": null,
+                    "display_order": 2,
+                    "enum": false,
+                    "ident_type": 1,
+                    "key": "disk_name",
+                    "label": "Disk Name",
+                    "length": 512,
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "key": "azure_disk",
+            "label": "Azure Disk"
+        },
+        {
+            "attributes": [
+                {
+                    "dashboard_order": 0,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "resource_id",
+                    "label": "Resource ID",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 1,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "location",
+                    "label": "Location",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 2,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "mac_address",
+                    "label": "MAC Address",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 3,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "is_primary",
+                    "label": "Is Primary",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 4,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "enable_ip_forwarding",
+                    "label": "IP Forwarding Enabled",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 5,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "provisioning_state",
+                    "label": "Provisioning State",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 6,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "nsg_id",
+                    "label": "NSG ID",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 7,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "attached_vm_id",
+                    "label": "Attached VM ID",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 8,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "private_ip_addresses",
+                    "label": "Private IP Addresses",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 9,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "private_ip_allocation_method",
+                    "label": "IP Allocation Method",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 10,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "subnet_ids",
+                    "label": "Subnet IDs",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 11,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "public_ip_ids",
+                    "label": "Public IP IDs",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 12,
+                    "data_type": "float",
+                    "is_discrete": false,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "ip_config_count",
+                    "label": "IP Config Count",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 13,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "dns_servers",
+                    "label": "DNS Servers",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 14,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "applied_dns_servers",
+                    "label": "Applied DNS Servers",
+                    "unit": null
+                }
+            ],
+            "groups": [],
+            "identifiers": [
+                {
+                    "default": null,
+                    "description": null,
+                    "display_order": 0,
+                    "enum": false,
+                    "ident_type": 1,
+                    "key": "subscription_id",
+                    "label": "Subscription ID",
+                    "length": 512,
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "default": null,
+                    "description": null,
+                    "display_order": 1,
+                    "enum": false,
+                    "ident_type": 1,
+                    "key": "resource_group",
+                    "label": "Resource Group",
+                    "length": 512,
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "default": null,
+                    "description": null,
+                    "display_order": 2,
+                    "enum": false,
+                    "ident_type": 1,
+                    "key": "nic_name",
+                    "label": "NIC Name",
+                    "length": 512,
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "key": "azure_network_interface",
+            "label": "Azure Network Interface"
+        },
+        {
+            "attributes": [
+                {
+                    "dashboard_order": 0,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "resource_id",
+                    "label": "Resource ID",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 1,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "location",
+                    "label": "Location",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 2,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "provisioning_state",
+                    "label": "Provisioning State",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 3,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "address_prefixes",
+                    "label": "Address Prefixes",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 4,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "dns_servers",
+                    "label": "DNS Servers",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 5,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "ddos_protection_enabled",
+                    "label": "DDoS Protection Enabled",
+                    "unit": null
+                }
+            ],
+            "groups": [],
+            "identifiers": [
+                {
+                    "default": null,
+                    "description": null,
+                    "display_order": 0,
+                    "enum": false,
+                    "ident_type": 1,
+                    "key": "subscription_id",
+                    "label": "Subscription ID",
+                    "length": 512,
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "default": null,
+                    "description": null,
+                    "display_order": 1,
+                    "enum": false,
+                    "ident_type": 1,
+                    "key": "resource_group",
+                    "label": "Resource Group",
+                    "length": 512,
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "default": null,
+                    "description": null,
+                    "display_order": 2,
+                    "enum": false,
+                    "ident_type": 1,
+                    "key": "vnet_name",
+                    "label": "VNet Name",
+                    "length": 512,
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "key": "azure_virtual_network",
+            "label": "Azure Virtual Network"
+        },
+        {
+            "attributes": [
+                {
+                    "dashboard_order": 0,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "resource_id",
+                    "label": "Resource ID",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 1,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "address_prefix",
+                    "label": "Address Prefix",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 2,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "provisioning_state",
+                    "label": "Provisioning State",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 3,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "nsg_id",
+                    "label": "NSG ID",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 4,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "route_table_id",
+                    "label": "Route Table ID",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 5,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "service_endpoints",
+                    "label": "Service Endpoints",
+                    "unit": null
+                }
+            ],
+            "groups": [],
+            "identifiers": [
+                {
+                    "default": null,
+                    "description": null,
+                    "display_order": 0,
+                    "enum": false,
+                    "ident_type": 1,
+                    "key": "subscription_id",
+                    "label": "Subscription ID",
+                    "length": 512,
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "default": null,
+                    "description": null,
+                    "display_order": 1,
+                    "enum": false,
+                    "ident_type": 1,
+                    "key": "vnet_id",
+                    "label": "VNet ID",
+                    "length": 512,
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "default": null,
+                    "description": null,
+                    "display_order": 2,
+                    "enum": false,
+                    "ident_type": 1,
+                    "key": "subnet_name",
+                    "label": "Subnet Name",
+                    "length": 512,
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "key": "azure_subnet",
+            "label": "Azure Subnet"
+        },
+        {
+            "attributes": [
+                {
+                    "dashboard_order": 0,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "resource_id",
+                    "label": "Resource ID",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 1,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "location",
+                    "label": "Location",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 2,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "kind",
+                    "label": "Kind",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 3,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "sku_name",
+                    "label": "SKU Name",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 4,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "sku_tier",
+                    "label": "SKU Tier",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 5,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "provisioning_state",
+                    "label": "Provisioning State",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 6,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "creation_time",
+                    "label": "Creation Time",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 7,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "access_tier",
+                    "label": "Access Tier",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 8,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "https_only",
+                    "label": "HTTPS Only",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 9,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "minimum_tls_version",
+                    "label": "Minimum TLS Version",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 10,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "allow_blob_public_access",
+                    "label": "Allow Blob Public Access",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 11,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "endpoint_blob",
+                    "label": "Blob Endpoint",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 12,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "endpoint_queue",
+                    "label": "Queue Endpoint",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 13,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "endpoint_table",
+                    "label": "Table Endpoint",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 14,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "endpoint_file",
+                    "label": "File Endpoint",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 15,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "encryption_key_source",
+                    "label": "Encryption Key Source",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 16,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "network_default_action",
+                    "label": "Network Default Action",
+                    "unit": null
+                }
+            ],
+            "groups": [],
+            "identifiers": [
+                {
+                    "default": null,
+                    "description": null,
+                    "display_order": 0,
+                    "enum": false,
+                    "ident_type": 1,
+                    "key": "subscription_id",
+                    "label": "Subscription ID",
+                    "length": 512,
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "default": null,
+                    "description": null,
+                    "display_order": 1,
+                    "enum": false,
+                    "ident_type": 1,
+                    "key": "resource_group",
+                    "label": "Resource Group",
+                    "length": 512,
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "default": null,
+                    "description": null,
+                    "display_order": 2,
+                    "enum": false,
+                    "ident_type": 1,
+                    "key": "account_name",
+                    "label": "Account Name",
+                    "length": 512,
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "key": "azure_storage_account",
+            "label": "Azure Storage Account"
+        },
+        {
+            "attributes": [
+                {
+                    "dashboard_order": 0,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "resource_id",
+                    "label": "Resource ID",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 1,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "location",
+                    "label": "Location",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 2,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "sku_name",
+                    "label": "SKU Name",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 3,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "sku_tier",
+                    "label": "SKU Tier",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 4,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "provisioning_state",
+                    "label": "Provisioning State",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 5,
+                    "data_type": "float",
+                    "is_discrete": false,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "frontend_ip_count",
+                    "label": "Frontend IP Count",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 6,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "frontend_names",
+                    "label": "Frontend Names",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 7,
+                    "data_type": "float",
+                    "is_discrete": false,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "backend_pool_count",
+                    "label": "Backend Pool Count",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 8,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "backend_pool_names",
+                    "label": "Backend Pool Names",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 9,
+                    "data_type": "float",
+                    "is_discrete": false,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "rule_count",
+                    "label": "Rule Count",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 10,
+                    "data_type": "float",
+                    "is_discrete": false,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "probe_count",
+                    "label": "Probe Count",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 11,
+                    "data_type": "float",
+                    "is_discrete": false,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "inbound_nat_rule_count",
+                    "label": "Inbound NAT Rule Count",
+                    "unit": null
+                }
+            ],
+            "groups": [],
+            "identifiers": [
+                {
+                    "default": null,
+                    "description": null,
+                    "display_order": 0,
+                    "enum": false,
+                    "ident_type": 1,
+                    "key": "subscription_id",
+                    "label": "Subscription ID",
+                    "length": 512,
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "default": null,
+                    "description": null,
+                    "display_order": 1,
+                    "enum": false,
+                    "ident_type": 1,
+                    "key": "resource_group",
+                    "label": "Resource Group",
+                    "length": 512,
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "default": null,
+                    "description": null,
+                    "display_order": 2,
+                    "enum": false,
+                    "ident_type": 1,
+                    "key": "lb_name",
+                    "label": "Load Balancer Name",
+                    "length": 512,
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "key": "azure_load_balancer",
+            "label": "Azure Load Balancer"
+        },
+        {
+            "attributes": [
+                {
+                    "dashboard_order": 0,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "resource_id",
+                    "label": "Resource ID",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 1,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "location",
+                    "label": "Location",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 2,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "vault_uri",
+                    "label": "Vault URI",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 3,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "tenant_id",
+                    "label": "Tenant ID",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 4,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "sku_family",
+                    "label": "SKU Family",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 5,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "sku_name",
+                    "label": "SKU Name",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 6,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "soft_delete_enabled",
+                    "label": "Soft Delete Enabled",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 7,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "purge_protection_enabled",
+                    "label": "Purge Protection Enabled",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 8,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "rbac_authorization_enabled",
+                    "label": "RBAC Authorization Enabled",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 9,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "soft_delete_retention_days",
+                    "label": "Soft Delete Retention Days",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 10,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "network_default_action",
+                    "label": "Network Default Action",
+                    "unit": null
+                }
+            ],
+            "groups": [],
+            "identifiers": [
+                {
+                    "default": null,
+                    "description": null,
+                    "display_order": 0,
+                    "enum": false,
+                    "ident_type": 1,
+                    "key": "subscription_id",
+                    "label": "Subscription ID",
+                    "length": 512,
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "default": null,
+                    "description": null,
+                    "display_order": 1,
+                    "enum": false,
+                    "ident_type": 1,
+                    "key": "resource_group",
+                    "label": "Resource Group",
+                    "length": 512,
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "default": null,
+                    "description": null,
+                    "display_order": 2,
+                    "enum": false,
+                    "ident_type": 1,
+                    "key": "vault_name",
+                    "label": "Vault Name",
+                    "length": 512,
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "key": "azure_key_vault",
+            "label": "Azure Key Vault"
+        },
+        {
+            "attributes": [
+                {
+                    "dashboard_order": 0,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "resource_id",
+                    "label": "Resource ID",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 1,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "location",
+                    "label": "Location",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 2,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "fqdn",
+                    "label": "Fully Qualified Domain Name",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 3,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "state",
+                    "label": "State",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 4,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "version",
+                    "label": "Version",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 5,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "admin_login",
+                    "label": "Admin Login",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 6,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "public_network_access",
+                    "label": "Public Network Access",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 7,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "minimal_tls_version",
+                    "label": "Minimal TLS Version",
+                    "unit": null
+                }
+            ],
+            "groups": [],
+            "identifiers": [
+                {
+                    "default": null,
+                    "description": null,
+                    "display_order": 0,
+                    "enum": false,
+                    "ident_type": 1,
+                    "key": "subscription_id",
+                    "label": "Subscription ID",
+                    "length": 512,
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "default": null,
+                    "description": null,
+                    "display_order": 1,
+                    "enum": false,
+                    "ident_type": 1,
+                    "key": "resource_group",
+                    "label": "Resource Group",
+                    "length": 512,
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "default": null,
+                    "description": null,
+                    "display_order": 2,
+                    "enum": false,
+                    "ident_type": 1,
+                    "key": "server_name",
+                    "label": "Server Name",
+                    "length": 512,
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "key": "azure_sql_server",
+            "label": "Azure SQL Server"
+        },
+        {
+            "attributes": [
+                {
+                    "dashboard_order": 0,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "resource_id",
+                    "label": "Resource ID",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 1,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "location",
+                    "label": "Location",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 2,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "status",
+                    "label": "Status",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 3,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "database_id",
+                    "label": "Database ID",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 4,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "sku_name",
+                    "label": "SKU Name",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 5,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "sku_tier",
+                    "label": "SKU Tier",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 6,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "sku_capacity",
+                    "label": "SKU Capacity",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 7,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "max_size_bytes",
+                    "label": "Max Size (Bytes)",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 8,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "collation",
+                    "label": "Collation",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 9,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "creation_date",
+                    "label": "Creation Date",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 10,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "current_service_objective",
+                    "label": "Current Service Objective",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 11,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "zone_redundant",
+                    "label": "Zone Redundant",
+                    "unit": null
+                }
+            ],
+            "groups": [],
+            "identifiers": [
+                {
+                    "default": null,
+                    "description": null,
+                    "display_order": 0,
+                    "enum": false,
+                    "ident_type": 1,
+                    "key": "subscription_id",
+                    "label": "Subscription ID",
+                    "length": 512,
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "default": null,
+                    "description": null,
+                    "display_order": 1,
+                    "enum": false,
+                    "ident_type": 1,
+                    "key": "server_name",
+                    "label": "Server Name",
+                    "length": 512,
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "default": null,
+                    "description": null,
+                    "display_order": 2,
+                    "enum": false,
+                    "ident_type": 1,
+                    "key": "database_name",
+                    "label": "Database Name",
+                    "length": 512,
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "key": "azure_sql_database",
+            "label": "Azure SQL Database"
+        },
+        {
+            "attributes": [
+                {
+                    "dashboard_order": 0,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "resource_id",
+                    "label": "Resource ID",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 1,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "location",
+                    "label": "Location",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 2,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "kind",
+                    "label": "Kind",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 3,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "is_function_app",
+                    "label": "Is Function App",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 4,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "state",
+                    "label": "State",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 5,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "default_host_name",
+                    "label": "Default Host Name",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 6,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "https_only",
+                    "label": "HTTPS Only",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 7,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "enabled",
+                    "label": "Enabled",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 8,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "host_names",
+                    "label": "Host Names",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 9,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "server_farm_id",
+                    "label": "App Service Plan ID",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 10,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "availability_state",
+                    "label": "Availability State",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 11,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "last_modified_time",
+                    "label": "Last Modified Time",
+                    "unit": null
+                },
+                {
+                    "dashboard_order": 12,
+                    "data_type": "string",
+                    "is_discrete": true,
+                    "is_impact": false,
+                    "is_key_attribute": false,
+                    "is_kpi": false,
+                    "is_property": true,
+                    "is_rate": false,
+                    "key": "outbound_ip_addresses",
+                    "label": "Outbound IP Addresses",
+                    "unit": null
+                }
+            ],
+            "groups": [],
+            "identifiers": [
+                {
+                    "default": null,
+                    "description": null,
+                    "display_order": 0,
+                    "enum": false,
+                    "ident_type": 1,
+                    "key": "subscription_id",
+                    "label": "Subscription ID",
+                    "length": 512,
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "default": null,
+                    "description": null,
+                    "display_order": 1,
+                    "enum": false,
+                    "ident_type": 1,
+                    "key": "resource_group",
+                    "label": "Resource Group",
+                    "length": 512,
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "default": null,
+                    "description": null,
+                    "display_order": 2,
+                    "enum": false,
+                    "ident_type": 1,
+                    "key": "app_name",
+                    "label": "App Name",
+                    "length": 512,
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "key": "azure_app_service",
+            "label": "Azure App Service"
+        }
+    ],
+    "schema_version": 1
+}
+
+Avg CPU % | Avg Memory Usage % | Memory Limit | Network I/O          | Block I/O    
+----------+--------------------+--------------+----------------------+--------------
+15.4 %    | 4.3 %              | 1.0 GiB      | 1.99 KiB / 68.92 KiB | 0.0 B / 0.0 B
+
+Request completed in 0.31 seconds.
+
+17:45:55,412 openapi_spec_validator.decorators DEBUG Attaching x-scope to {'$ref': '#/components/schemas/AdapterDefinition'}
+17:45:55,412 openapi_spec_validator.decorators DEBUG Attaching x-scope to {'$ref': '#/components/schemas/ObjectDefinition'}
+17:45:55,412 openapi_spec_validator.decorators DEBUG Attaching x-scope to {'$ref': '#/components/schemas/GroupDefinition'}
+17:45:55,413 openapi_spec_validator.decorators DEBUG Attaching x-scope to {'$ref': '#/components/schemas/AttributeDefinition'}
+17:45:55,414 openapi_spec_validator.decorators DEBUG Attaching x-scope to {'$ref': '#/components/schemas/IdentifierDefinition'}
+17:45:55,415 openapi_spec_validator.decorators DEBUG Attaching x-scope to {'$ref': '#/components/schemas/AttributeDefinition'}
+17:45:55,416 openapi_spec_validator.decorators DEBUG Attaching x-scope to {'$ref': '#/components/schemas/CredentialDefinition'}
+17:45:55,417 openapi_spec_validator.decorators DEBUG Attaching x-scope to {'$ref': '#/components/schemas/ObjectDefinition'}
+17:45:55,418 openapi_spec_validator.decorators DEBUG Attaching x-scope to {'$ref': '#/components/schemas/GroupDefinition', 'x-scope': ['', '#/components/schemas/AdapterDefinition', '#/components/schemas/ObjectDefinition']}
+17:45:55,418 openapi_spec_validator.decorators DEBUG Ref #/components/schemas/GroupDefinition already has scope attached
+17:45:55,418 openapi_spec_validator.decorators DEBUG Attaching x-scope to {'$ref': '#/components/schemas/AttributeDefinition', 'x-scope': ['', '#/components/schemas/AdapterDefinition', '#/components/schemas/ObjectDefinition', '#/components/schemas/GroupDefinition']}
+17:45:55,418 openapi_spec_validator.decorators DEBUG Ref #/components/schemas/AttributeDefinition already has scope attached
+17:45:55,419 openapi_spec_validator.decorators DEBUG Attaching x-scope to {'$ref': '#/components/schemas/IdentifierDefinition', 'x-scope': ['', '#/components/schemas/AdapterDefinition', '#/components/schemas/ObjectDefinition']}
+17:45:55,419 openapi_spec_validator.decorators DEBUG Ref #/components/schemas/IdentifierDefinition already has scope attached
+17:45:55,420 openapi_spec_validator.decorators DEBUG Attaching x-scope to {'$ref': '#/components/schemas/AttributeDefinition', 'x-scope': ['', '#/components/schemas/AdapterDefinition', '#/components/schemas/ObjectDefinition']}
+17:45:55,420 openapi_spec_validator.decorators DEBUG Ref #/components/schemas/AttributeDefinition already has scope attached
+17:45:55,425 openapi_spec_validator.decorators DEBUG Attaching x-scope to {'$ref': '#/components/schemas/GroupDefinition'}
+17:45:55,425 openapi_spec_validator.decorators DEBUG Attaching x-scope to {'$ref': '#/components/schemas/AttributeDefinition', 'x-scope': ['', '#/components/schemas/AdapterDefinition', '#/components/schemas/ObjectDefinition', '#/components/schemas/GroupDefinition']}
+17:45:55,425 openapi_spec_validator.decorators DEBUG Ref #/components/schemas/AttributeDefinition already has scope attached
+17:45:55,426 openapi_spec_validator.decorators DEBUG Attaching x-scope to {'$ref': '#/components/schemas/AttributeDefinition', 'x-scope': ['', '#/components/schemas/AdapterDefinition', '#/components/schemas/ObjectDefinition', '#/components/schemas/GroupDefinition']}
+17:45:55,426 openapi_spec_validator.decorators DEBUG Ref #/components/schemas/AttributeDefinition already has scope attached
+17:45:55,427 openapi_spec_validator.decorators DEBUG Attaching x-scope to {'$ref': '#/components/schemas/GroupDefinition', 'x-scope': ['', '#/components/schemas/AdapterDefinition', '#/components/schemas/ObjectDefinition']}
+17:45:55,427 openapi_spec_validator.decorators DEBUG Ref #/components/schemas/GroupDefinition already has scope attached
+17:45:55,427 openapi_spec_validator.decorators DEBUG Attaching x-scope to {'$ref': '#/components/schemas/AttributeDefinition', 'x-scope': ['', '#/components/schemas/AdapterDefinition', '#/components/schemas/ObjectDefinition', '#/components/schemas/GroupDefinition']}
+17:45:55,427 openapi_spec_validator.decorators DEBUG Ref #/components/schemas/AttributeDefinition already has scope attached
+17:45:55,428 openapi_spec_validator.decorators DEBUG Attaching x-scope to {'$ref': '#/components/schemas/IdentifierDefinition', 'x-scope': ['', '#/components/schemas/AdapterDefinition', '#/components/schemas/ObjectDefinition']}
+17:45:55,428 openapi_spec_validator.decorators DEBUG Ref #/components/schemas/IdentifierDefinition already has scope attached
+17:45:55,429 openapi_spec_validator.decorators DEBUG Attaching x-scope to {'$ref': '#/components/schemas/AttributeDefinition', 'x-scope': ['', '#/components/schemas/AdapterDefinition', '#/components/schemas/ObjectDefinition']}
+17:45:55,429 openapi_spec_validator.decorators DEBUG Ref #/components/schemas/AttributeDefinition already has scope attached
+17:45:55,430 openapi_spec_validator.decorators DEBUG Attaching x-scope to {'$ref': '#/components/schemas/ObjectDefinition', 'x-scope': ['', '#/components/schemas/AdapterDefinition']}
+17:45:55,430 openapi_spec_validator.decorators DEBUG Ref #/components/schemas/ObjectDefinition already has scope attached
+17:45:55,430 openapi_spec_validator.decorators DEBUG Attaching x-scope to {'$ref': '#/components/schemas/GroupDefinition', 'x-scope': ['', '#/components/schemas/AdapterDefinition', '#/components/schemas/ObjectDefinition']}
+17:45:55,430 openapi_spec_validator.decorators DEBUG Ref #/components/schemas/GroupDefinition already has scope attached
+17:45:55,431 openapi_spec_validator.decorators DEBUG Attaching x-scope to {'$ref': '#/components/schemas/AttributeDefinition', 'x-scope': ['', '#/components/schemas/AdapterDefinition', '#/components/schemas/ObjectDefinition', '#/components/schemas/GroupDefinition']}
+17:45:55,431 openapi_spec_validator.decorators DEBUG Ref #/components/schemas/AttributeDefinition already has scope attached
+17:45:55,432 openapi_spec_validator.decorators DEBUG Attaching x-scope to {'$ref': '#/components/schemas/IdentifierDefinition', 'x-scope': ['', '#/components/schemas/AdapterDefinition', '#/components/schemas/ObjectDefinition']}
+17:45:55,432 openapi_spec_validator.decorators DEBUG Ref #/components/schemas/IdentifierDefinition already has scope attached
+17:45:55,433 openapi_spec_validator.decorators DEBUG Attaching x-scope to {'$ref': '#/components/schemas/AttributeDefinition', 'x-scope': ['', '#/components/schemas/AdapterDefinition', '#/components/schemas/ObjectDefinition']}
+17:45:55,433 openapi_spec_validator.decorators DEBUG Ref #/components/schemas/AttributeDefinition already has scope attached
+17:45:55,434 openapi_spec_validator.decorators DEBUG Attaching x-scope to {'$ref': '#/components/schemas/CredentialDefinition', 'x-scope': ['', '#/components/schemas/AdapterDefinition']}
+17:45:55,434 openapi_spec_validator.decorators DEBUG Ref #/components/schemas/CredentialDefinition already has scope attached
+17:45:55,435 openapi_spec_validator.decorators DEBUG Attaching x-scope to {'$ref': '#/components/schemas/ObjectDefinition', 'x-scope': ['', '#/components/schemas/AdapterDefinition']}
+17:45:55,435 openapi_spec_validator.decorators DEBUG Ref #/components/schemas/ObjectDefinition already has scope attached
+17:45:55,435 openapi_spec_validator.decorators DEBUG Attaching x-scope to {'$ref': '#/components/schemas/GroupDefinition', 'x-scope': ['', '#/components/schemas/AdapterDefinition', '#/components/schemas/ObjectDefinition']}
+17:45:55,435 openapi_spec_validator.decorators DEBUG Ref #/components/schemas/GroupDefinition already has scope attached
+17:45:55,435 openapi_spec_validator.decorators DEBUG Attaching x-scope to {'$ref': '#/components/schemas/AttributeDefinition', 'x-scope': ['', '#/components/schemas/AdapterDefinition', '#/components/schemas/ObjectDefinition', '#/components/schemas/GroupDefinition']}
+17:45:55,435 openapi_spec_validator.decorators DEBUG Ref #/components/schemas/AttributeDefinition already has scope attached
+17:45:55,436 openapi_spec_validator.decorators DEBUG Attaching x-scope to {'$ref': '#/components/schemas/IdentifierDefinition', 'x-scope': ['', '#/components/schemas/AdapterDefinition', '#/components/schemas/ObjectDefinition']}
+17:45:55,436 openapi_spec_validator.decorators DEBUG Ref #/components/schemas/IdentifierDefinition already has scope attached
+17:45:55,437 openapi_spec_validator.decorators DEBUG Attaching x-scope to {'$ref': '#/components/schemas/AttributeDefinition', 'x-scope': ['', '#/components/schemas/AdapterDefinition', '#/components/schemas/ObjectDefinition']}
+17:45:55,438 openapi_spec_validator.decorators DEBUG Ref #/components/schemas/AttributeDefinition already has scope attached
+17:45:55,439 openapi_spec_validator.validators DEBUG Dereferencing {'/adapterDefinition': {'get': {'summary': 'Retrieve the data model for collection', 'responses': {'200': {'description': 'OK', 'content': {'application/json': {'schema': {'$ref': '#/components/schemas/AdapterDefinition', 'x-scope': ['']}}}}, '204': {'description': 'No Adapter Definition returned', 'content': {'application/json': {'schema': {'type': 'object'}}}}}, 'operationId': 'definition', 'description': 'Get Adapter Definition'}, 'parameters': []}}
+17:45:55,439 openapi_spec_validator.validators DEBUG Dereferencing {'get': {'summary': 'Retrieve the data model for collection', 'responses': {'200': {'description': 'OK', 'content': {'application/json': {'schema': {'$ref': '#/components/schemas/AdapterDefinition', 'x-scope': ['']}}}}, '204': {'description': 'No Adapter Definition returned', 'content': {'application/json': {'schema': {'type': 'object'}}}}}, 'operationId': 'definition', 'description': 'Get Adapter Definition'}, 'parameters': []}
+17:45:55,439 openapi_spec_validator.validators DEBUG Dereferencing {'get': {'summary': 'Retrieve the data model for collection', 'responses': {'200': {'description': 'OK', 'content': {'application/json': {'schema': {'$ref': '#/components/schemas/AdapterDefinition', 'x-scope': ['']}}}}, '204': {'description': 'No Adapter Definition returned', 'content': {'application/json': {'schema': {'type': 'object'}}}}}, 'operationId': 'definition', 'description': 'Get Adapter Definition'}, 'parameters': []}
+17:45:55,439 openapi_spec_validator.validators DEBUG Dereferencing {'summary': 'Retrieve the data model for collection', 'responses': {'200': {'description': 'OK', 'content': {'application/json': {'schema': {'$ref': '#/components/schemas/AdapterDefinition', 'x-scope': ['']}}}}, '204': {'description': 'No Adapter Definition returned', 'content': {'application/json': {'schema': {'type': 'object'}}}}}, 'operationId': 'definition', 'description': 'Get Adapter Definition'}
+17:45:55,439 openapi_spec_validator.validators DEBUG Dereferencing {'schemas': {'AttributeDefinition': {'type': 'object', 'title': 'Attribute Definition', 'description': "Defines an attribute's metadata", 'properties': {'key': {'type': 'string'}, 'label': {'type': 'string'}, 'unit': {'type': 'string', 'nullable': True}, 'is_rate': {'type': 'boolean', 'default': False}, 'is_discrete': {'type': 'boolean', 'default': False}, 'is_kpi': {'type': 'boolean', 'default': False}, 'is_impact': {'type': 'boolean', 'default': False}, 'is_key_attribute': {'type': 'boolean', 'default': False}, 'dashboard_order': {'type': 'integer', 'format': 'int32'}, 'data_type': {'type': 'string'}, 'is_property': {'type': 'boolean'}}, 'required': ['key', 'label', 'is_rate', 'is_discrete', 'is_kpi', 'is_impact', 'is_key_attribute', 'dashboard_order', 'data_type', 'is_property']}, 'CredentialDefinition': {'type': 'object', 'title': 'Credential Definition', 'description': 'Defines what credential fields are present on a given credential type', 'properties': {'key': {'type': 'string'}, 'label': {'type': 'string'}, 'fields': {'type': 'array', 'items': {'type': 'object', 'properties': {'key': {'type': 'string'}, 'label': {'type': 'string'}, 'required': {'type': 'boolean', 'default': True}, 'password': {'type': 'boolean', 'default': False}, 'enum': {'type': 'boolean', 'default': False}, 'enum_values': {'type': 'array', 'items': {'type': 'object', 'properties': {'key': {'type': 'string'}, 'label': {'type': 'string'}, 'display_order': {'type': 'integer', 'format': 'int32', 'minimum': 0}}}}, 'default': {'type': 'string', 'nullable': True}, 'display_order': {'type': 'integer', 'format': 'int32'}, 'type': {'type': 'string', 'default': 'string'}}, 'required': ['key', 'label', 'required', 'password', 'enum', 'display_order', 'type']}}}}, 'IdentifierDefinition': {'type': 'object', 'title': 'Identifier Definition', 'description': 'Defines what identifiers are present on a given object type', 'properties': {'key': {'type': 'string'}, 'label': {'type': 'string'}, 'description': {'type': 'string'}, 'required': {'type': 'boolean', 'default': True}, 'ident_type': {'type': 'integer', 'format': 'int32', 'default': 1}, 'enum': {'type': 'boolean', 'default': False}, 'enum_values': {'type': 'array', 'items': {'type': 'object', 'properties': {'key': {'type': 'string'}, 'label': {'type': 'string'}, 'display_order': {'type': 'integer', 'format': 'int32', 'minimum': 0}}}}, 'display_order': {'type': 'integer', 'format': 'int32'}, 'type': {'type': 'string'}, 'length': {'type': 'integer', 'nullable': True}, 'default': {'type': 'string', 'nullable': True}}, 'required': ['key', 'label', 'required', 'ident_type', 'enum', 'display_order', 'type']}, 'GroupDefinition': {'title': 'Group Definition', 'type': 'object', 'description': 'Definition of a group of attributes and subgroups', 'properties': {'attributes': {'type': 'array', 'items': {'$ref': '#/components/schemas/AttributeDefinition', 'x-scope': ['', '#/components/schemas/AdapterDefinition', '#/components/schemas/ObjectDefinition', '#/components/schemas/GroupDefinition']}}, 'groups': {'type': 'array', 'items': {'$ref': '#/components/schemas/GroupDefinition', 'x-scope': ['']}}}}, 'ObjectDefinition': {'title': 'Object Definition', 'type': 'object', 'description': 'Definition of an object type', 'properties': {'key': {'type': 'string'}, 'label': {'type': 'string'}, 'identifiers': {'type': 'array', 'items': {'$ref': '#/components/schemas/IdentifierDefinition', 'x-scope': ['', '#/components/schemas/AdapterDefinition', '#/components/schemas/ObjectDefinition']}}, 'attributes': {'type': 'array', 'items': {'$ref': '#/components/schemas/AttributeDefinition', 'x-scope': ['', '#/components/schemas/AdapterDefinition', '#/components/schemas/ObjectDefinition']}}, 'groups': {'type': 'array', 'items': {'$ref': '#/components/schemas/GroupDefinition', 'x-scope': ['', '#/components/schemas/AdapterDefinition', '#/components/schemas/ObjectDefinition']}}}, 'required': ['key', 'label', 'identifiers', 'groups']}, 'AdapterDefinition': {'title': 'Adapter Definition', 'type': 'object', 'description': 'Definition of the object model returned in CollectResult', 'properties': {'schema_version': {'type': 'integer', 'format': 'int32'}, 'adapter_key': {'type': 'string'}, 'adapter_label': {'type': 'string'}, 'describe_version': {'type': 'integer', 'format': 'int32'}, 'adapter_instance': {'$ref': '#/components/schemas/ObjectDefinition', 'x-scope': ['', '#/components/schemas/AdapterDefinition']}, 'credential_types': {'type': 'array', 'items': {'$ref': '#/components/schemas/CredentialDefinition', 'x-scope': ['', '#/components/schemas/AdapterDefinition']}}, 'object_types': {'type': 'array', 'items': {'$ref': '#/components/schemas/ObjectDefinition', 'x-scope': ['', '#/components/schemas/AdapterDefinition']}}}, 'required': ['adapter_key', 'adapter_label', 'describe_version', 'adapter_instance', 'credential_types', 'object_types']}}}
+17:45:55,439 openapi_spec_validator.validators DEBUG Dereferencing {'AttributeDefinition': {'type': 'object', 'title': 'Attribute Definition', 'description': "Defines an attribute's metadata", 'properties': {'key': {'type': 'string'}, 'label': {'type': 'string'}, 'unit': {'type': 'string', 'nullable': True}, 'is_rate': {'type': 'boolean', 'default': False}, 'is_discrete': {'type': 'boolean', 'default': False}, 'is_kpi': {'type': 'boolean', 'default': False}, 'is_impact': {'type': 'boolean', 'default': False}, 'is_key_attribute': {'type': 'boolean', 'default': False}, 'dashboard_order': {'type': 'integer', 'format': 'int32'}, 'data_type': {'type': 'string'}, 'is_property': {'type': 'boolean'}}, 'required': ['key', 'label', 'is_rate', 'is_discrete', 'is_kpi', 'is_impact', 'is_key_attribute', 'dashboard_order', 'data_type', 'is_property']}, 'CredentialDefinition': {'type': 'object', 'title': 'Credential Definition', 'description': 'Defines what credential fields are present on a given credential type', 'properties': {'key': {'type': 'string'}, 'label': {'type': 'string'}, 'fields': {'type': 'array', 'items': {'type': 'object', 'properties': {'key': {'type': 'string'}, 'label': {'type': 'string'}, 'required': {'type': 'boolean', 'default': True}, 'password': {'type': 'boolean', 'default': False}, 'enum': {'type': 'boolean', 'default': False}, 'enum_values': {'type': 'array', 'items': {'type': 'object', 'properties': {'key': {'type': 'string'}, 'label': {'type': 'string'}, 'display_order': {'type': 'integer', 'format': 'int32', 'minimum': 0}}}}, 'default': {'type': 'string', 'nullable': True}, 'display_order': {'type': 'integer', 'format': 'int32'}, 'type': {'type': 'string', 'default': 'string'}}, 'required': ['key', 'label', 'required', 'password', 'enum', 'display_order', 'type']}}}}, 'IdentifierDefinition': {'type': 'object', 'title': 'Identifier Definition', 'description': 'Defines what identifiers are present on a given object type', 'properties': {'key': {'type': 'string'}, 'label': {'type': 'string'}, 'description': {'type': 'string'}, 'required': {'type': 'boolean', 'default': True}, 'ident_type': {'type': 'integer', 'format': 'int32', 'default': 1}, 'enum': {'type': 'boolean', 'default': False}, 'enum_values': {'type': 'array', 'items': {'type': 'object', 'properties': {'key': {'type': 'string'}, 'label': {'type': 'string'}, 'display_order': {'type': 'integer', 'format': 'int32', 'minimum': 0}}}}, 'display_order': {'type': 'integer', 'format': 'int32'}, 'type': {'type': 'string'}, 'length': {'type': 'integer', 'nullable': True}, 'default': {'type': 'string', 'nullable': True}}, 'required': ['key', 'label', 'required', 'ident_type', 'enum', 'display_order', 'type']}, 'GroupDefinition': {'title': 'Group Definition', 'type': 'object', 'description': 'Definition of a group of attributes and subgroups', 'properties': {'attributes': {'type': 'array', 'items': {'$ref': '#/components/schemas/AttributeDefinition', 'x-scope': ['', '#/components/schemas/AdapterDefinition', '#/components/schemas/ObjectDefinition', '#/components/schemas/GroupDefinition']}}, 'groups': {'type': 'array', 'items': {'$ref': '#/components/schemas/GroupDefinition', 'x-scope': ['']}}}}, 'ObjectDefinition': {'title': 'Object Definition', 'type': 'object', 'description': 'Definition of an object type', 'properties': {'key': {'type': 'string'}, 'label': {'type': 'string'}, 'identifiers': {'type': 'array', 'items': {'$ref': '#/components/schemas/IdentifierDefinition', 'x-scope': ['', '#/components/schemas/AdapterDefinition', '#/components/schemas/ObjectDefinition']}}, 'attributes': {'type': 'array', 'items': {'$ref': '#/components/schemas/AttributeDefinition', 'x-scope': ['', '#/components/schemas/AdapterDefinition', '#/components/schemas/ObjectDefinition']}}, 'groups': {'type': 'array', 'items': {'$ref': '#/components/schemas/GroupDefinition', 'x-scope': ['', '#/components/schemas/AdapterDefinition', '#/components/schemas/ObjectDefinition']}}}, 'required': ['key', 'label', 'identifiers', 'groups']}, 'AdapterDefinition': {'title': 'Adapter Definition', 'type': 'object', 'description': 'Definition of the object model returned in CollectResult', 'properties': {'schema_version': {'type': 'integer', 'format': 'int32'}, 'adapter_key': {'type': 'string'}, 'adapter_label': {'type': 'string'}, 'describe_version': {'type': 'integer', 'format': 'int32'}, 'adapter_instance': {'$ref': '#/components/schemas/ObjectDefinition', 'x-scope': ['', '#/components/schemas/AdapterDefinition']}, 'credential_types': {'type': 'array', 'items': {'$ref': '#/components/schemas/CredentialDefinition', 'x-scope': ['', '#/components/schemas/AdapterDefinition']}}, 'object_types': {'type': 'array', 'items': {'$ref': '#/components/schemas/ObjectDefinition', 'x-scope': ['', '#/components/schemas/AdapterDefinition']}}}, 'required': ['adapter_key', 'adapter_label', 'describe_version', 'adapter_instance', 'credential_types', 'object_types']}}
+17:45:55,439 openapi_spec_validator.validators DEBUG Dereferencing {'type': 'object', 'title': 'Attribute Definition', 'description': "Defines an attribute's metadata", 'properties': {'key': {'type': 'string'}, 'label': {'type': 'string'}, 'unit': {'type': 'string', 'nullable': True}, 'is_rate': {'type': 'boolean', 'default': False}, 'is_discrete': {'type': 'boolean', 'default': False}, 'is_kpi': {'type': 'boolean', 'default': False}, 'is_impact': {'type': 'boolean', 'default': False}, 'is_key_attribute': {'type': 'boolean', 'default': False}, 'dashboard_order': {'type': 'integer', 'format': 'int32'}, 'data_type': {'type': 'string'}, 'is_property': {'type': 'boolean'}}, 'required': ['key', 'label', 'is_rate', 'is_discrete', 'is_kpi', 'is_impact', 'is_key_attribute', 'dashboard_order', 'data_type', 'is_property']}
+17:45:55,439 openapi_spec_validator.validators DEBUG Dereferencing {'type': 'object', 'title': 'Credential Definition', 'description': 'Defines what credential fields are present on a given credential type', 'properties': {'key': {'type': 'string'}, 'label': {'type': 'string'}, 'fields': {'type': 'array', 'items': {'type': 'object', 'properties': {'key': {'type': 'string'}, 'label': {'type': 'string'}, 'required': {'type': 'boolean', 'default': True}, 'password': {'type': 'boolean', 'default': False}, 'enum': {'type': 'boolean', 'default': False}, 'enum_values': {'type': 'array', 'items': {'type': 'object', 'properties': {'key': {'type': 'string'}, 'label': {'type': 'string'}, 'display_order': {'type': 'integer', 'format': 'int32', 'minimum': 0}}}}, 'default': {'type': 'string', 'nullable': True}, 'display_order': {'type': 'integer', 'format': 'int32'}, 'type': {'type': 'string', 'default': 'string'}}, 'required': ['key', 'label', 'required', 'password', 'enum', 'display_order', 'type']}}}}
+17:45:55,439 openapi_spec_validator.validators DEBUG Dereferencing {'type': 'object', 'title': 'Identifier Definition', 'description': 'Defines what identifiers are present on a given object type', 'properties': {'key': {'type': 'string'}, 'label': {'type': 'string'}, 'description': {'type': 'string'}, 'required': {'type': 'boolean', 'default': True}, 'ident_type': {'type': 'integer', 'format': 'int32', 'default': 1}, 'enum': {'type': 'boolean', 'default': False}, 'enum_values': {'type': 'array', 'items': {'type': 'object', 'properties': {'key': {'type': 'string'}, 'label': {'type': 'string'}, 'display_order': {'type': 'integer', 'format': 'int32', 'minimum': 0}}}}, 'display_order': {'type': 'integer', 'format': 'int32'}, 'type': {'type': 'string'}, 'length': {'type': 'integer', 'nullable': True}, 'default': {'type': 'string', 'nullable': True}}, 'required': ['key', 'label', 'required', 'ident_type', 'enum', 'display_order', 'type']}
+17:45:55,439 openapi_spec_validator.validators DEBUG Dereferencing {'title': 'Group Definition', 'type': 'object', 'description': 'Definition of a group of attributes and subgroups', 'properties': {'attributes': {'type': 'array', 'items': {'$ref': '#/components/schemas/AttributeDefinition', 'x-scope': ['', '#/components/schemas/AdapterDefinition', '#/components/schemas/ObjectDefinition', '#/components/schemas/GroupDefinition']}}, 'groups': {'type': 'array', 'items': {'$ref': '#/components/schemas/GroupDefinition', 'x-scope': ['']}}}}
+17:45:55,439 openapi_spec_validator.validators DEBUG Dereferencing {'title': 'Object Definition', 'type': 'object', 'description': 'Definition of an object type', 'properties': {'key': {'type': 'string'}, 'label': {'type': 'string'}, 'identifiers': {'type': 'array', 'items': {'$ref': '#/components/schemas/IdentifierDefinition', 'x-scope': ['', '#/components/schemas/AdapterDefinition', '#/components/schemas/ObjectDefinition']}}, 'attributes': {'type': 'array', 'items': {'$ref': '#/components/schemas/AttributeDefinition', 'x-scope': ['', '#/components/schemas/AdapterDefinition', '#/components/schemas/ObjectDefinition']}}, 'groups': {'type': 'array', 'items': {'$ref': '#/components/schemas/GroupDefinition', 'x-scope': ['', '#/components/schemas/AdapterDefinition', '#/components/schemas/ObjectDefinition']}}}, 'required': ['key', 'label', 'identifiers', 'groups']}
+17:45:55,439 openapi_spec_validator.validators DEBUG Dereferencing {'title': 'Adapter Definition', 'type': 'object', 'description': 'Definition of the object model returned in CollectResult', 'properties': {'schema_version': {'type': 'integer', 'format': 'int32'}, 'adapter_key': {'type': 'string'}, 'adapter_label': {'type': 'string'}, 'describe_version': {'type': 'integer', 'format': 'int32'}, 'adapter_instance': {'$ref': '#/components/schemas/ObjectDefinition', 'x-scope': ['', '#/components/schemas/AdapterDefinition']}, 'credential_types': {'type': 'array', 'items': {'$ref': '#/components/schemas/CredentialDefinition', 'x-scope': ['', '#/components/schemas/AdapterDefinition']}}, 'object_types': {'type': 'array', 'items': {'$ref': '#/components/schemas/ObjectDefinition', 'x-scope': ['', '#/components/schemas/AdapterDefinition']}}}, 'required': ['adapter_key', 'adapter_label', 'describe_version', 'adapter_instance', 'credential_types', 'object_types']}
+17:45:55,440 openapi_spec_validator.validators DEBUG Dereferencing {'$ref': '#/components/schemas/AdapterDefinition', 'x-scope': ['']}
+17:45:55,473 vmware_aria_operations_integration_sdk.validation.describe_checks INFO Validating describe.xml
+17:45:55,474 vmware_aria_operations_integration_sdk.mp_test ERROR schema error: (<ValidationError: 'None for not nullable'>, <ValidationError: 'None for not nullable'>, <ValidationError: 'None for not nullable'>, <ValidationError: 'None for not nullable'>, <ValidationError: 'None for not nullable'>, <ValidationError: 'None for not nullable'>, <ValidationError: 'None for not nullable'>, <ValidationError: 'None for not nullable'>, <ValidationError: 'None for not nullable'>, <ValidationError: 'None for not nullable'>, <ValidationError: 'None for not nullable'>, <ValidationError: 'None for not nullable'>, <ValidationError: 'None for not nullable'>, <ValidationError: 'None for not nullable'>, <ValidationError: 'None for not nullable'>, <ValidationError: 'None for not nullable'>, <ValidationError: 'None for not nullable'>, <ValidationError: 'None for not nullable'>, <ValidationError: 'None for not nullable'>, <ValidationError: 'None for not nullable'>, <ValidationError: 'None for not nullable'>, <ValidationError: 'None for not nullable'>, <ValidationError: 'None for not nullable'>, <ValidationError: 'None for not nullable'>, <ValidationError: 'None for not nullable'>, <ValidationError: 'None for not nullable'>, <ValidationError: 'None for not nullable'>, <ValidationError: 'None for not nullable'>, <ValidationError: 'None for not nullable'>, <ValidationError: 'None for not nullable'>, <ValidationError: 'None for not nullable'>, <ValidationError: 'None for not nullable'>, <ValidationError: 'None for not nullable'>, <ValidationError: 'None for not nullable'>, <ValidationError: 'None for not nullable'>, <ValidationError: 'None for not nullable'>)
+17:45:55,475 vmware_aria_operations_integration_sdk.mp_test ERROR Unable to validate the response json: '<urlopen error [Errno 2] No such file or directory: '/opt/aria/Aria-MP-Builder/Azure/conf/describeSchema.xsd'>'
+17:45:55,477 vmware_aria_operations_integration_sdk.mp_test INFO All validation logs written to '/opt/aria/Aria-MP-Builder/Azure/logs/validation.log'
