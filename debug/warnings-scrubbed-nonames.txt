@@ -1,0 +1,8 @@
+ Property 'backend_pool_count' has an invalid data type. A string value was returned in the collection, but the attribute is defined as numeric in describe.xml.
+ Property 'data_disk_count' has an invalid data type. A string value was returned in the collection, but the attribute is defined as numeric in describe.xml.
+ Property 'frontend_ip_count' has an invalid data type. A string value was returned in the collection, but the attribute is defined as numeric in describe.xml.
+ Property 'inbound_nat_rule_count' has an invalid data type. A string value was returned in the collection, but the attribute is defined as numeric in describe.xml.
+ Property 'ip_config_count' has an invalid data type. A string value was returned in the collection, but the attribute is defined as numeric in describe.xml.
+ Property 'nic_count' has an invalid data type. A string value was returned in the collection, but the attribute is defined as numeric in describe.xml.
+ Property 'probe_count' has an invalid data type. A string value was returned in the collection, but the attribute is defined as numeric in describe.xml.
+ Property 'rule_count' has an invalid data type. A string value was returned in the collection, but the attribute is defined as numeric in describe.xml.
