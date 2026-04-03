@@ -1,18 +1,33 @@
-root@photon [ /opt/aria/Aria-MP-Builder/Azure ]# sudo mp-test --port 8080
-Building base image [Finished]
-Choose a connection:  Azure Gov Test
-Choose a method to test: Collect
-Building adapter [Finished]
-Waiting for adapter to start [Finished]
-Running Collect [Finished]
-Collection Failed: Collection failed: 502 Server Error: Bad Gateway for url: https://management.usgovcloudapi.net/subscriptions/988779d0-a914-4d28-8db2-56ae35c26853/providers/Microsoft.Compute/virtualMachines?api-version=2024-07-01&%24expand=instanceView
 
-Avg CPU %                   | Avg Memory Usage %         | Memory Limit | Network I/O             | Block I/O    
-----------------------------+----------------------------+--------------+-------------------------+--------------
-6.9 % (0.1% / 2.6% / 34.4%) | 6.3 % (4.3% / 7.1% / 7.1%) | 1.0 GiB      | 222.25 KiB / 103.81 KiB | 0.0 B / 0.0 B
+Table cell format is: 'total (min/median/max)'
 
-Collection completed in 10.61 seconds.
+Object Type                              | Count | Metrics | Properties             | Events | Parents           | Children            
+-----------------------------------------+-------+---------+------------------------+--------+-------------------+---------------------
+AzureGovAdapter::azure_subscription      | 6     | 0       | 42 (7 /7.0 /7 )        | 0      | 0                 | 526 (14 /82.5 /184 )
+AzureGovAdapter::azure_resource_group    | 797   | 0       | 4729 (0 /8 /15 )       | 0      | 526 (0 /1 /1 )    | 15469 (0 /4 /405 )  
+AzureGovAdapter::azure_virtual_machine   | 2036  | 0       | 67984 (26 /31.0 /58 )  | 0      | 2036 (1 /1.0 /1 ) | 0                   
+AzureGovAdapter::azure_disk              | 8305  | 0       | 184758 (16 /21 /47 )   | 0      | 8305 (1 /1 /1 )   | 0                   
+AzureGovAdapter::azure_network_interface | 4650  | 0       | 108482 (18 /23.0 /38 ) | 0      | 4650 (1 /1.0 /1 ) | 0                   
+AzureGovAdapter::azure_virtual_network   | 44    | 0       | 552 (9 /12.0 /17 )     | 0      | 44 (1 /1.0 /1 )   | 335 (1 /7.0 /29 )   
+AzureGovAdapter::azure_subnet            | 335   | 0       | 2345 (7 /7 /7 )        | 0      | 335 (1 /1 /1 )    | 0                   
+AzureGovAdapter::azure_storage_account   | 299   | 0       | 7333 (20 /26 /32 )     | 0      | 299 (1 /1 /1 )    | 0                   
+AzureGovAdapter::azure_load_balancer     | 31    | 0       | 601 (15 /19 /25 )      | 0      | 31 (1 /1 /1 )     | 0                   
+AzureGovAdapter::azure_key_vault         | 86    | 0       | 1477 (14 /17.0 /34 )   | 0      | 86 (1 /1.0 /1 )   | 0                   
+AzureGovAdapter::azure_sql_server        | 12    | 0       | 191 (14 /15.0 /21 )    | 0      | 12 (1 /1.0 /1 )   | 75 (0 /2.0 /24 )    
+AzureGovAdapter::azure_sql_database      | 75    | 0       | 1537 (18 /21 /27 )     | 0      | 75 (1 /1 /1 )     | 0                   
+AzureGovAdapter::azure_app_service       | 6     | 0       | 134 (19 /22.0 /27 )    | 0      | 6 (1 /1.0 /1 )    | 0                   
 
-No collection result was found.
-No collection result was found.
-All validation logs written to '/opt/aria/Aria-MP-Builder/Azure/logs/validation.log'
+Parent Type                            | Child Type                               | Count
+---------------------------------------+------------------------------------------+------
+AzureGovAdapter::azure_subscription    | AzureGovAdapter::azure_resource_group    | 526  
+AzureGovAdapter::azure_resource_group  | AzureGovAdapter::azure_storage_account   | 299  
+AzureGovAdapter::azure_resource_group  | AzureGovAdapter::azure_network_interface | 4650 
+AzureGovAdapter::azure_resource_group  | AzureGovAdapter::azure_key_vault         | 86   
+AzureGovAdapter::azure_resource_group  | AzureGovAdapter::azure_load_balancer     | 31   
+AzureGovAdapter::azure_resource_group  | AzureGovAdapter::azure_virtual_network   | 44   
+AzureGovAdapter::azure_resource_group  | AzureGovAdapter::azure_virtual_machine   | 2036 
+AzureGovAdapter::azure_resource_group  | AzureGovAdapter::azure_disk              | 8305 
+AzureGovAdapter::azure_resource_group  | AzureGovAdapter::azure_app_service       | 6    
+AzureGovAdapter::azure_resource_group  | AzureGovAdapter::azure_sql_server        | 12   
+AzureGovAdapter::azure_virtual_network | AzureGovAdapter::azure_subnet            | 335  
+AzureGovAdapter::azure_sql_server      | AzureGovAdapter::azure_sql_database      | 75 
