@@ -1,15 +1,26 @@
-PS C:\Temp\aria-sdk\images\base-python-adapter> docker build -t base-adapter:python-1.2.0 .
-[+] Building 0.8s (2/2) FINISHED                                                                   docker:desktop-linux
- => [internal] load build definition from Dockerfile                                                               0.1s
- => => transferring dockerfile: 857B                                                                               0.0s
- => ERROR [internal] load metadata for docker.io/library/python:3.11.12-slim-bookworm                              0.5s
-------
- > [internal] load metadata for docker.io/library/python:3.11.12-slim-bookworm:
-------
-Dockerfile:1
---------------------
-   1 | >>> FROM python:3.11.12-slim-bookworm
-   2 |
-   3 |     # Apply latest security patches for Debian packages
---------------------
-ERROR: failed to build: failed to solve: python:3.11.12-slim-bookworm: failed to resolve source metadata for docker.io/library/python:3.11.12-slim-bookworm: failed to do request: Head "https://registry-1.docker.io/v2/library/python/manifests/3.11.12-slim-bookworm": tls: failed to verify certificate: x509: a root or intermediate certificate is not authorized to sign for this name: DNS name "*.docker.com" is excluded by constraint "gocoastguard.com"
+root@photon [ ~ ]# mp-build --version
+Traceback (most recent call last):
+  File "/usr/local/bin/mp-build", line 5, in <module>
+    from vmware_aria_operations_integration_sdk.mp_build import main
+  File "/opt/python312/lib/python3.12/site-packages/vmware_aria_operations_integration_sdk/mp_build.py", line 20, in <module>
+    import httpx
+  File "/opt/python312/lib/python3.12/site-packages/httpx/__init__.py", line 2, in <module>
+    from ._api import delete, get, head, options, patch, post, put, request, stream
+  File "/opt/python312/lib/python3.12/site-packages/httpx/_api.py", line 4, in <module>
+    from ._client import Client
+  File "/opt/python312/lib/python3.12/site-packages/httpx/_client.py", line 9, in <module>
+    from ._auth import Auth, BasicAuth, FunctionAuth
+  File "/opt/python312/lib/python3.12/site-packages/httpx/_auth.py", line 10, in <module>
+    from ._models import Request, Response
+  File "/opt/python312/lib/python3.12/site-packages/httpx/_models.py", line 10, in <module>
+    from ._content import ByteStream, UnattachedStream, encode_request, encode_response
+  File "/opt/python312/lib/python3.12/site-packages/httpx/_content.py", line 18, in <module>
+    from ._multipart import MultipartStream
+  File "/opt/python312/lib/python3.12/site-packages/httpx/_multipart.py", line 7, in <module>
+    from ._types import (
+  File "/opt/python312/lib/python3.12/site-packages/httpx/_types.py", line 5, in <module>
+    import ssl
+  File "/opt/python312/lib/python3.12/ssl.py", line 100, in <module>
+    import _ssl             # if we can't import it, let the error propagate
+    ^^^^^^^^^^^
+ModuleNotFoundError: No module named '_ssl'
