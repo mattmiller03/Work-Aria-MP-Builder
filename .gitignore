@@ -10,7 +10,7 @@ __pycache__/
 *.pyo
 *.egg-info/
 dist/
-*.pak
+
 
 # Large binaries — transfer these out-of-band, not via git
 *.tar
