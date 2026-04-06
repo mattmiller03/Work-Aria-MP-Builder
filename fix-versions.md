@@ -90,3 +90,20 @@ If it still prompts for the registry path, we may need to create a config file. 
 
 cat /opt/aria/Aria-MP-Builder/Azure/config.json 2>/dev/null
 ls /opt/aria/Aria-MP-Builder/Azure/*.json
+
+
+The SDK insists on a registry login. Since you're air-gapped, let's set up a local registry that needs no authentication. First check if you have the registry image from the old server, or if it's bundled:
+
+
+sudo docker images | grep registry
+If nothing shows, we need to get the registry image. But there's a simpler workaround — create a fake Docker Hub login so mp-build stops complaining:
+
+
+# Create a Docker Hub account config (doesn't need to be real for local builds)
+mkdir -p /root/.docker
+echo '{"auths":{"https://index.docker.io/v1/":{"auth":"ZmFrZTpmYWtl"}}}' > /root/.docker/config.json
+
+# Now run mp-build with a Docker Hub path
+cd /opt/aria/Aria-MP-Builder/Azure
+sudo mp-build --no-ttl --registry-tag "azuregovcloud/adapter" --use-default-registry -P 8080
+The ZmFrZTpmYWtl is just base64 of fake:fake — the push will fail but by then the .pak should already be generated since --use-default-registry tells the pack to pull from Aria's internal registry at runtime anyway. The push step happens after the .pak is created.
