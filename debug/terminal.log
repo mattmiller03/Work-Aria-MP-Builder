@@ -65,3 +65,18 @@ options:
                         8080.
   --no-ttl              If this flag is present, certain features dependent on having a TTL will be disabled. All arguments will need to be passed as command line options. This is useful for running mp-build on a headless build
                         server
+
+
+
+                        The full path of a container registry refers to the combination of domain, port, and path to a container registry.                                                                                                                      
+Example:                                                                                                                                                                                                                                
+'projects.packages.broadcom.com:443/vmware_aria_operations_integration_sdk_mps/my-adapter:latest' breaks into:                                                                                                                          
+                                                                                                                                                                                                                                        
+- domain: projects.packages.broadcom.com                                                                                                                                                                                                
+- port: 443                                                                                                                                                                                                                             
+- path: vmware_aria_operations_integration_sdk_mps/my-adapter                                                                                                                                                                           
+- tag: latest                                                                                                                                                                                                                           
+                                                                                                                                                                                                                                        
+Port number is optional, and defaults to 443.                                                                                                                                                                                           
+Tag should be omitted from the full path.                                                                                                                                                                                               
+For Docker Hub repositories, simply specify the path.     
