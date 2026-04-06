@@ -136,3 +136,58 @@ Unable to build container
 192:    if not container_push_registry:
 193:        container_push_registry = container_registry
 196:    original_value = container_registry
+
+
+
+
+root@daisv0tp003 [ ~ ]# sudo tail -50 /storage/log/vcops/log/pakManager/vcopsPakManager.root.query.log 2>/dev/null
+2026-04-06T15:12:41 DEBUG [1502934] - vc_ops_logging.logDebug:266 - Locale language code: "en", territory code: "US"
+2026-04-06T15:12:41 DEBUG [1502934] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/AzureGovCloud-100/resources/resources_en_US.properties"
+2026-04-06T15:12:41 INFO [1502934] - vc_ops_logging.logInfo:271 - Resource file: "/storage/db/pakRepoLocal/AzureGovCloud-100/resources/resources_en_US.properties" does not exist
+2026-04-06T15:12:41 DEBUG [1502934] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/AzureGovCloud-100/resources/resources_en.properties"
+2026-04-06T15:12:41 INFO [1502934] - vc_ops_logging.logInfo:271 - Resource file: "/storage/db/pakRepoLocal/AzureGovCloud-100/resources/resources_en.properties" does not exist
+2026-04-06T15:12:41 DEBUG [1502934] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/AzureGovCloud-100/resources/resources.properties"
+2026-04-06T15:12:41 INFO [1502934] - vc_ops_logging.logInfo:271 - Resource file: "/storage/db/pakRepoLocal/AzureGovCloud-100/resources/resources.properties" does not exist
+2026-04-06T15:12:41 INFO [1502934] - vcopsPakManager.setupResourceBundle:365 - Failed to load the resource bundle, exception: Failed to find a resource file from list: /storage/db/pakRepoLocal/AzureGovCloud-100/resources/resources_en_US.properties, /storage/db/pakRepoLocal/AzureGovCloud-100/resources/resources_en.properties, /storage/db/pakRepoLocal/AzureGovCloud-100/resources/resources.properties
+2026-04-06T15:12:41 DEBUG [1502934] - vcopsPakManager.__init__:1700 - Added env variable: 'ALIVE_BASE' = '/usr/lib/vmware-vcops'
+2026-04-06T15:12:41 DEBUG [1502934] - vcopsPakManager.__init__:1700 - Added env variable: 'VCOPS_BASE' = '/usr/lib/vmware-vcops'
+2026-04-06T15:12:41 DEBUG [1502934] - vcopsPakManager.__init__:1700 - Added env variable: 'GEMFIRE_HOME' = '/usr/lib/vmware-vcops/gemfire'
+2026-04-06T15:12:41 DEBUG [1502934] - vcopsPakManager.__init__:1700 - Added env variable: 'JRE_HOME' = '/usr/java/default'
+2026-04-06T15:12:41 DEBUG [1502934] - vcopsPakManager.__init__:1700 - Added env variable: 'VCOPS_DATA' = '/data'
+2026-04-06T15:12:41 DEBUG [1502934] - vcopsPakManager.__init__:1700 - Added env variable: 'VCOPS_DATA_VCOPS' = '/data/vcops'
+2026-04-06T15:12:41 DEBUG [1502934] - vcopsPakManager.__init__:1700 - Added env variable: 'STORAGE' = '/storage'
+2026-04-06T15:12:41 DEBUG [1502934] - vcopsPakManager.__init__:1700 - Added env variable: 'STORAGE_LOG_VCOPS' = '/storage/log/vcops'
+2026-04-06T15:12:41 DEBUG [1502934] - vcopsPakManager.__init__:1700 - Added env variable: 'STORAGE_DB_VCOPS' = '/storage/db/vcops'
+2026-04-06T15:12:41 DEBUG [1502934] - vcopsPakManager.__init__:1700 - Added env variable: 'VMWARE_JAVA_HOME' = '/usr/java/default'
+2026-04-06T15:12:41 DEBUG [1502934] - vcopsPakManager.__init__:1700 - Added env variable: 'VMWARE_PYTHON_BIN' = '/usr/bin/python'
+2026-04-06T15:12:41 DEBUG [1502934] - vcopsPakManager.__init__:1700 - Added env variable: 'VMWARE_PYTHON_3_BIN' = '/usr/bin/python'
+2026-04-06T15:12:41 DEBUG [1502934] - vcopsPakManager.__init__:1700 - Added env variable: 'VMWARE_TCROOT' = '/usr/share/tomcat'
+2026-04-06T15:12:41 DEBUG [1502934] - vcopsPakManager.__init__:1700 - Added env variable: 'STORAGE_CORE_VCOPS' = '/storage/core'
+2026-04-06T15:12:41 DEBUG [1502934] - vcopsPakManager.__init__:1700 - Added env variable: 'VMWARE_VPOSTGRES_ROOT' = '/opt/vmware/vpostgres/current'
+2026-04-06T15:12:41 DEBUG [1502934] - vcopsPakManager.__init__:1700 - Added env variable: 'VCOPS_TEMP' = '/storage/db/tmp'
+2026-04-06T15:12:41 DEBUG [1502934] - vcopsPakManager.__init__:1700 - Added env variable: 'VCOPS_USER' = 'admin'
+2026-04-06T15:12:41 DEBUG [1502934] - vcopsPakManager.__init__:1700 - Added env variable: 'VCOPS_GROUP' = 'admin'
+2026-04-06T15:12:41 DEBUG [1502934] - vcopsPakManager.__init__:1700 - Added env variable: 'PAGER' = 'cat'
+2026-04-06T15:12:41 DEBUG [1502934] - vcopsPakManager.__init__:1700 - Added env variable: 'CASSANDRA_CONF' = '/usr/lib/vmware-vcops/user/conf/cassandra'
+2026-04-06T15:12:41 DEBUG [1502934] - vcopsPakManager.__init__:1700 - Added env variable: 'PGSSLCERT' = '/storage/vcops/user/conf/ssl/postgres_vcops_cert.pem'
+2026-04-06T15:12:41 DEBUG [1502934] - vcopsPakManager.__init__:1700 - Added env variable: 'PGSSLKEY' = '/storage/vcops/user/conf/ssl/postgres_vcops_key.pem'
+2026-04-06T15:12:41 DEBUG [1502934] - vcopsPakManager.QueryPakSignature:3776 - Entering Query Pak Signature
+2026-04-06T15:12:41 DEBUG [1502934] - vcopsPakSignatureValidation.read_signature_files:103 - Entering read signature files for pak file: "/storage/db/casa/pak/dist_pak_files/cargo/reservedTemp_2564795282717348599.pak"
+2026-04-06T15:12:41 WARNING [1502934] - vcopsPakSignatureValidation.read_signature_files:109 - "signature.mf" not found. Pak contains the following files: manifest.txt, icon.png, eula.txt, resources/, resources/resources.properties, adapter.zip
+2026-04-06T15:12:41 WARNING [1502934] - vcopsPakSignatureValidation.read_signature_files:116 - "signature.cert" not found. Pak contains the following files: manifest.txt, icon.png, eula.txt, resources/, resources/resources.properties, adapter.zip
+2026-04-06T15:12:41 INFO [1502934] - vcopsPakManager.QueryPakSignature:3799 - {
+    "invalid_reason": "The PAK file: /storage/db/casa/pak/dist_pak_files/cargo/reservedTemp_2564795282717348599.pak is not signed. It is missing required signature files signature.mf and signature.cert",
+    "is_signature_valid": false,
+    "is_signature_valid_certificate_untrusted": false,
+    "is_signed": false,
+    "pak_id": "AzureGovCloud-100",
+    "pak_version": "1.0.0",
+    "platform": [
+        "Linux"
+    ],
+    "system_update_type": null,
+    "vcopssuiteinstall_build_number": null,
+    "vcopssuiteinstall_build_type": null,
+    "vcopssuitevm_build_number": null,
+    "vcopssuitevm_build_type": null
+}
