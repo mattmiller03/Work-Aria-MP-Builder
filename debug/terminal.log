@@ -198,3 +198,41 @@ VERBOSE: Requested HTTP/1.1 POST with 25034-byte payload
 VERBOSE: Received HTTP/1.1 449-byte response of content type text/html
 Response status code does not indicate success: 405 (405).
 HTTP Status 405 – Method Not Allowedbody {font-family:Tahoma,Arial,sans-serif;} h1, h2, h3, b {color:white;background-color:#525D76;} h1 {font-size:22px;} h2 {font-size:16px;} h3 {font-size:14px;} p {font-size:12px;} a {color:black;} .line {height:1px;background-color:#525D76;border:none;}HTTP Status 405 – Method Not Allowed
+
+
+
+VERBOSE: Requested HTTP/1.1 POST with 25034-byte payload
+VERBOSE: Received HTTP/1.1 449-byte response of content type text/html
+Attempt A failed: Response status code does not indicate success: 405 (405).
+Details: HTTP Status 405 – Method Not Allowedbody {font-family:Tahoma,Arial,sans-serif;} h1, h2, h3, b {color:white;background-color:#525D76;} h1 {font-size:22px;} h2 {font-size:16px;} h3 {font-size:14px;} p {font-size:12px;} a {color:black;} .line {height:1px;background-color:#525D76;border:none;}HTTP Status 405 – Method Not Allowed
+VERBOSE: Requested HTTP/1.1 POST with 25279-byte payload
+VERBOSE: Received HTTP/1.1 183-byte response of content type text/html
+Attempt B failed: Response status code does not indicate success: 404 (404).
+Details:
+
+
+        Page Not Found
+
+
+        We apologize. The address you are pointing to doesn't exist.
+
+
+VERBOSE: Requested HTTP/1.1 PUT with 25034-byte payload
+VERBOSE: Received HTTP/1.1 449-byte response of content type text/html
+Attempt C failed: Response status code does not indicate success: 405 (405).
+Details: HTTP Status 405 – Method Not Allowedbody {font-family:Tahoma,Arial,sans-serif;} h1, h2, h3, b {color:white;background-color:#525D76;} h1 {font-size:22px;} h2 {font-size:16px;} h3 {font-size:14px;} p {font-size:12px;} a {color:black;} .line {height:1px;background-color:#525D76;border:none;}HTTP Status 405 – Method Not Allowed
+VERBOSE: Requested HTTP/1.1 POST with 25034-byte payload
+VERBOSE: Received HTTP/1.1 175-byte response of content type text/html
+Attempt D failed: Response status code does not indicate success: 500 (500).
+Details:
+
+
+        Internal Server Error
+
+
+        We apologize. Internal server error occurred.
+
+
+solution
+--------
+{@{id=AmazonAWSAdapter; name=VMware AWS Management Pack; version=8.17.2.24026462; description=Manage…
