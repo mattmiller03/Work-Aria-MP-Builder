@@ -92,3 +92,24 @@
 2026-04-06 13:24:50,656 swagger_server.controllers.controller INFO Request: definition
 2026-04-06 13:24:50,855 swagger_server.controllers.controller INFO Subprocess exited before reading input.
 2026-04-06 13:25:08,913 swagger_server.controllers.controller INFO Request: apiVersion
+2026-04-06 14:11:39,110 main INFO Port: 8080
+2026-04-06 14:11:39,128 connexion.middleware.main WARNING `ConnexionMiddleware.run` is optimized for development. For production, run using a dedicated ASGI server.
+2026-04-06 14:11:39,145 connexion.middleware.swagger_ui INFO Adding spec json: /openapi.json
+2026-04-06 14:11:39,147 connexion.options WARNING The swagger_ui directory could not be found.
+    Please install connexion with extra install: pip install connexion[swagger-ui]
+    or provide the path to your local installation by passing swagger_path=<your path>
+
+2026-04-06 14:11:40,179 swagger_server.controllers.controller INFO Request: apiVersion
+2026-04-06 14:11:40,364 swagger_server.controllers.controller INFO Request: definition
+2026-04-06 14:11:40,564 swagger_server.controllers.controller INFO Subprocess exited before reading input.
+2026-04-06 14:13:18,599 main INFO Port: 8080
+2026-04-06 14:13:18,615 connexion.middleware.main WARNING `ConnexionMiddleware.run` is optimized for development. For production, run using a dedicated ASGI server.
+2026-04-06 14:13:18,633 connexion.middleware.swagger_ui INFO Adding spec json: /openapi.json
+2026-04-06 14:13:18,635 connexion.options WARNING The swagger_ui directory could not be found.
+    Please install connexion with extra install: pip install connexion[swagger-ui]
+    or provide the path to your local installation by passing swagger_path=<your path>
+
+2026-04-06 14:13:19,747 swagger_server.controllers.controller INFO Request: apiVersion
+2026-04-06 14:13:19,936 swagger_server.controllers.controller INFO Request: definition
+2026-04-06 14:13:20,140 swagger_server.controllers.controller INFO Subprocess exited before reading input.
+2026-04-06 14:13:38,410 swagger_server.controllers.controller INFO Request: apiVersion

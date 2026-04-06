@@ -1,66 +1,66 @@
-09:20:37,247 asyncio DEBUG Using proactor: IocpProactor
-09:20:37,248 docker.utils.config DEBUG Trying paths: ['C:\\Users\\mille\\.docker\\config.json', 'C:\\Users\\mille\\.dockercfg']
-09:20:37,248 docker.utils.config DEBUG Found file at path: C:\Users\mille\.docker\config.json
-09:20:37,249 docker.auth DEBUG Found 'auths' section
-09:20:37,249 docker.auth DEBUG Auth data for docker.io is absent. Client might be using a credentials store instead.
-09:20:37,249 docker.auth DEBUG Auth data for https://index.docker.io/v1/ is absent. Client might be using a credentials store instead.
-09:20:37,249 docker.auth DEBUG Found 'credsStore' section
-09:20:37,291 urllib3.connectionpool DEBUG http://localhost:None "GET /version HTTP/1.1" 200 None
-09:20:37,293 docker.utils.config DEBUG Trying paths: ['C:\\Users\\mille\\.docker\\config.json', 'C:\\Users\\mille\\.dockercfg']
-09:20:37,295 docker.utils.config DEBUG Found file at path: C:\Users\mille\.docker\config.json
-09:20:37,295 docker.auth DEBUG Found 'auths' section
-09:20:37,295 docker.auth DEBUG Auth data for docker.io is absent. Client might be using a credentials store instead.
-09:20:37,298 docker.auth DEBUG Auth data for https://index.docker.io/v1/ is absent. Client might be using a credentials store instead.
-09:20:37,298 docker.auth DEBUG Found 'credsStore' section
-09:20:37,306 asyncio DEBUG Using proactor: IocpProactor
-09:20:37,334 urllib3.connectionpool DEBUG http://localhost:None "GET /version HTTP/1.1" 200 None
-09:20:37,561 urllib3.connectionpool DEBUG http://localhost:None "GET /v1.54/images/base-adapter:python-1.2.0/json HTTP/1.1" 200 None
-09:20:37,685 docker.api.build DEBUG Looking for auth config
-09:20:37,711 docker.auth DEBUG Looking for auth entry for 'https://index.docker.io/v1/'
-09:20:37,734 docker.auth DEBUG Looking for auth entry for 'https://dhi.io'
-09:20:37,755 docker.auth DEBUG Looking for auth entry for 'https://index.docker.io/v1/'
-09:20:37,777 docker.auth DEBUG Looking for auth entry for 'https://index.docker.io/v1/access-token'
-09:20:37,799 docker.auth DEBUG Looking for auth entry for 'https://index.docker.io/v1/refresh-token'
-09:20:37,823 docker.api.build DEBUG Sending auth config ('docker.io', 'https://index.docker.io/v1/', 'https://dhi.io', 'dhi.io', 'index.docker.io', 'https://index.docker.io/v1/access-token', 'https://index.docker.io/v1/refresh-token')
-09:20:38,89 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.54/build?t=azuregovcloud-test%3A1.0.0&q=False&nocache=False&rm=True&forcerm=False&pull=False&labels=%7B%22mp-test%22%3A+%221775481637.2933023%22%7D HTTP/1.1" 200 None
-09:20:40,520 urllib3.connectionpool DEBUG http://localhost:None "GET /v1.54/images/7f1acabf2a3c/json HTTP/1.1" 200 None
-09:20:40,558 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.54/containers/create HTTP/1.1" 201 None
-09:20:40,562 urllib3.connectionpool DEBUG http://localhost:None "GET /v1.54/containers/637f2ecc0edfb95394868a3514ab4454dd53297e84511c6ee4e738dc3f21073f/json HTTP/1.1" 200 None
-09:20:40,828 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.54/containers/637f2ecc0edfb95394868a3514ab4454dd53297e84511c6ee4e738dc3f21073f/start HTTP/1.1" 204 0
-09:20:41,295 asyncio DEBUG Using proactor: IocpProactor
-09:20:42,391 httpx._client DEBUG HTTP Request: GET http://localhost:8080/apiVersion "HTTP/1.1 200 OK"
-09:20:42,770 httpx._client DEBUG HTTP Request: GET http://localhost:8080/adapterDefinition "HTTP/1.1 200 OK"
-09:20:42,773 vmware_aria_operations_integration_sdk.validation.describe_checks INFO Validating describe.xml
-09:20:42,984 asyncio DEBUG Using proactor: IocpProactor
-09:20:43,204 docker.utils.config DEBUG Trying paths: ['C:\\Users\\mille\\.docker\\config.json', 'C:\\Users\\mille\\.dockercfg']
-09:20:43,204 docker.utils.config DEBUG Found file at path: C:\Users\mille\.docker\config.json
-09:20:43,206 docker.auth DEBUG Found 'auths' section
-09:20:43,206 docker.auth DEBUG Auth data for docker.io is absent. Client might be using a credentials store instead.
-09:20:43,206 docker.auth DEBUG Auth data for https://index.docker.io/v1/ is absent. Client might be using a credentials store instead.
-09:20:43,207 docker.auth DEBUG Found 'credsStore' section
-09:20:43,217 urllib3.connectionpool DEBUG http://localhost:None "GET /version HTTP/1.1" 200 None
-09:20:43,242 urllib3.connectionpool DEBUG http://localhost:None "GET /v1.54/images/base-adapter:python-1.2.0/json HTTP/1.1" 200 None
-09:20:43,366 docker.api.build DEBUG Looking for auth config
-09:20:43,389 docker.auth DEBUG Looking for auth entry for 'https://index.docker.io/v1/'
-09:20:43,410 docker.auth DEBUG Looking for auth entry for 'https://dhi.io'
-09:20:43,431 docker.auth DEBUG Looking for auth entry for 'https://index.docker.io/v1/'
-09:20:43,470 docker.auth DEBUG Looking for auth entry for 'https://index.docker.io/v1/access-token'
-09:20:43,491 docker.auth DEBUG Looking for auth entry for 'https://index.docker.io/v1/refresh-token'
-09:20:43,513 docker.api.build DEBUG Sending auth config ('docker.io', 'https://index.docker.io/v1/', 'https://dhi.io', 'dhi.io', 'index.docker.io', 'https://index.docker.io/v1/access-token', 'https://index.docker.io/v1/refresh-token')
-09:20:43,715 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.54/build?q=False&nocache=True&rm=True&forcerm=False&pull=False HTTP/1.1" 200 None
-09:20:53,749 urllib3.connectionpool DEBUG http://localhost:None "GET /v1.54/images/c7a91e42a057/json HTTP/1.1" 200 None
-09:20:56,74 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.54/images/sha256:c7a91e42a0573f3f35655193ed74f032a6b75743ae825d496b1686649dd56b66/tag?tag=1.0.0_1775481656.061363&repo=docker.io%2Fmillerdadmatt%2Fazuregovcloud-adapter&force=0 HTTP/1.1" 201 None
-09:20:56,101 asyncio DEBUG Using proactor: IocpProactor
-09:20:56,333 docker.auth DEBUG Looking for auth config
-09:20:56,333 docker.auth DEBUG Using credentials store "desktop"
-09:20:56,335 docker.auth DEBUG Looking for auth entry for 'https://index.docker.io/v1/'
-09:20:56,376 docker.auth DEBUG Found auth config
-09:20:56,379 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.54/images/docker.io/millerdadmatt/azuregovcloud-adapter/push?tag=1.0.0_1775481656.061363 HTTP/1.1" 200 None
-09:21:00,485 urllib3.connectionpool DEBUG http://localhost:None "DELETE /v1.54/images/sha256:c7a91e42a0573f3f35655193ed74f032a6b75743ae825d496b1686649dd56b66?force=True&noprune=False HTTP/1.1" 200 None
-09:21:00,495 asyncio DEBUG Using proactor: IocpProactor
-09:21:00,870 httpx._client DEBUG HTTP Request: GET http://localhost:8080/apiVersion "HTTP/1.1 200 OK"
-09:21:01,726 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.54/containers/637f2ecc0edfb95394868a3514ab4454dd53297e84511c6ee4e738dc3f21073f/kill HTTP/1.1" 204 0
-09:21:01,741 urllib3.connectionpool DEBUG http://localhost:None "DELETE /v1.54/containers/637f2ecc0edfb95394868a3514ab4454dd53297e84511c6ee4e738dc3f21073f?v=False&link=False&force=False HTTP/1.1" 204 0
-09:21:01,786 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.54/images/prune?filters=%7B%22label%22%3A+%5B%22mp-test%22%5D%7D HTTP/1.1" 200 None
-09:21:01,790 vmware_aria_operations_integration_sdk.mp_build ERROR Unexpected exception occurred while trying to build pak file
-09:21:01,792 vmware_aria_operations_integration_sdk.mp_build ERROR string indices must be integers, not 'str'
+09:23:26,14 asyncio DEBUG Using proactor: IocpProactor
+09:23:26,15 docker.utils.config DEBUG Trying paths: ['C:\\Users\\mille\\.docker\\config.json', 'C:\\Users\\mille\\.dockercfg']
+09:23:26,16 docker.utils.config DEBUG Found file at path: C:\Users\mille\.docker\config.json
+09:23:26,16 docker.auth DEBUG Found 'auths' section
+09:23:26,16 docker.auth DEBUG Auth data for docker.io is absent. Client might be using a credentials store instead.
+09:23:26,16 docker.auth DEBUG Auth data for https://index.docker.io/v1/ is absent. Client might be using a credentials store instead.
+09:23:26,16 docker.auth DEBUG Found 'credsStore' section
+09:23:26,59 urllib3.connectionpool DEBUG http://localhost:None "GET /version HTTP/1.1" 200 None
+09:23:26,61 docker.utils.config DEBUG Trying paths: ['C:\\Users\\mille\\.docker\\config.json', 'C:\\Users\\mille\\.dockercfg']
+09:23:26,61 docker.utils.config DEBUG Found file at path: C:\Users\mille\.docker\config.json
+09:23:26,62 docker.auth DEBUG Found 'auths' section
+09:23:26,62 docker.auth DEBUG Auth data for docker.io is absent. Client might be using a credentials store instead.
+09:23:26,63 docker.auth DEBUG Auth data for https://index.docker.io/v1/ is absent. Client might be using a credentials store instead.
+09:23:26,63 docker.auth DEBUG Found 'credsStore' section
+09:23:26,73 asyncio DEBUG Using proactor: IocpProactor
+09:23:26,117 urllib3.connectionpool DEBUG http://localhost:None "GET /version HTTP/1.1" 200 None
+09:23:26,269 urllib3.connectionpool DEBUG http://localhost:None "GET /v1.54/images/base-adapter:python-1.2.0/json HTTP/1.1" 200 None
+09:23:26,398 docker.api.build DEBUG Looking for auth config
+09:23:26,425 docker.auth DEBUG Looking for auth entry for 'https://index.docker.io/v1/'
+09:23:26,446 docker.auth DEBUG Looking for auth entry for 'https://dhi.io'
+09:23:26,467 docker.auth DEBUG Looking for auth entry for 'https://index.docker.io/v1/'
+09:23:26,487 docker.auth DEBUG Looking for auth entry for 'https://index.docker.io/v1/access-token'
+09:23:26,509 docker.auth DEBUG Looking for auth entry for 'https://index.docker.io/v1/refresh-token'
+09:23:26,531 docker.api.build DEBUG Sending auth config ('docker.io', 'https://index.docker.io/v1/', 'https://dhi.io', 'dhi.io', 'index.docker.io', 'https://index.docker.io/v1/access-token', 'https://index.docker.io/v1/refresh-token')
+09:23:26,770 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.54/build?t=azuregovcloud-test%3A1.0.0&q=False&nocache=False&rm=True&forcerm=False&pull=False&labels=%7B%22mp-test%22%3A+%221775481806.0609443%22%7D HTTP/1.1" 200 None
+09:23:29,190 urllib3.connectionpool DEBUG http://localhost:None "GET /v1.54/images/6c4087d112c9/json HTTP/1.1" 200 None
+09:23:29,227 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.54/containers/create HTTP/1.1" 201 None
+09:23:29,231 urllib3.connectionpool DEBUG http://localhost:None "GET /v1.54/containers/c75edc073bf75e224c71a3e257156f18791cfe5ef5b774e5abff481005efae36/json HTTP/1.1" 200 None
+09:23:29,475 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.54/containers/c75edc073bf75e224c71a3e257156f18791cfe5ef5b774e5abff481005efae36/start HTTP/1.1" 204 0
+09:23:30,37 asyncio DEBUG Using proactor: IocpProactor
+09:23:31,166 httpx._client DEBUG HTTP Request: GET http://localhost:8080/apiVersion "HTTP/1.1 200 OK"
+09:23:31,543 httpx._client DEBUG HTTP Request: GET http://localhost:8080/adapterDefinition "HTTP/1.1 200 OK"
+09:23:31,548 vmware_aria_operations_integration_sdk.validation.describe_checks INFO Validating describe.xml
+09:23:31,760 asyncio DEBUG Using proactor: IocpProactor
+09:23:31,979 docker.utils.config DEBUG Trying paths: ['C:\\Users\\mille\\.docker\\config.json', 'C:\\Users\\mille\\.dockercfg']
+09:23:31,980 docker.utils.config DEBUG Found file at path: C:\Users\mille\.docker\config.json
+09:23:31,981 docker.auth DEBUG Found 'auths' section
+09:23:31,981 docker.auth DEBUG Auth data for docker.io is absent. Client might be using a credentials store instead.
+09:23:31,981 docker.auth DEBUG Auth data for https://index.docker.io/v1/ is absent. Client might be using a credentials store instead.
+09:23:31,981 docker.auth DEBUG Found 'credsStore' section
+09:23:31,991 urllib3.connectionpool DEBUG http://localhost:None "GET /version HTTP/1.1" 200 None
+09:23:32,17 urllib3.connectionpool DEBUG http://localhost:None "GET /v1.54/images/base-adapter:python-1.2.0/json HTTP/1.1" 200 None
+09:23:32,139 docker.api.build DEBUG Looking for auth config
+09:23:32,160 docker.auth DEBUG Looking for auth entry for 'https://index.docker.io/v1/'
+09:23:32,181 docker.auth DEBUG Looking for auth entry for 'https://dhi.io'
+09:23:32,202 docker.auth DEBUG Looking for auth entry for 'https://index.docker.io/v1/'
+09:23:32,222 docker.auth DEBUG Looking for auth entry for 'https://index.docker.io/v1/access-token'
+09:23:32,243 docker.auth DEBUG Looking for auth entry for 'https://index.docker.io/v1/refresh-token'
+09:23:32,268 docker.api.build DEBUG Sending auth config ('docker.io', 'https://index.docker.io/v1/', 'https://dhi.io', 'dhi.io', 'index.docker.io', 'https://index.docker.io/v1/access-token', 'https://index.docker.io/v1/refresh-token')
+09:23:32,417 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.54/build?q=False&nocache=True&rm=True&forcerm=False&pull=False HTTP/1.1" 200 None
+09:23:42,444 urllib3.connectionpool DEBUG http://localhost:None "GET /v1.54/images/088e35c16d14/json HTTP/1.1" 200 None
+09:23:44,806 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.54/images/sha256:088e35c16d149920e34513770d524206addc2f4f1a38171a9f754bf078254647/tag?tag=1.0.0_1775481824.7925968&repo=docker.io%2Fmillerdadmatt%2Fazuregovcloud-adapter&force=0 HTTP/1.1" 201 None
+09:23:44,828 asyncio DEBUG Using proactor: IocpProactor
+09:23:45,30 docker.auth DEBUG Looking for auth config
+09:23:45,31 docker.auth DEBUG Using credentials store "desktop"
+09:23:45,33 docker.auth DEBUG Looking for auth entry for 'https://index.docker.io/v1/'
+09:23:45,57 docker.auth DEBUG Found auth config
+09:23:45,61 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.54/images/docker.io/millerdadmatt/azuregovcloud-adapter/push?tag=1.0.0_1775481824.7925968 HTTP/1.1" 200 None
+09:23:49,406 urllib3.connectionpool DEBUG http://localhost:None "DELETE /v1.54/images/sha256:088e35c16d149920e34513770d524206addc2f4f1a38171a9f754bf078254647?force=True&noprune=False HTTP/1.1" 200 None
+09:23:49,422 asyncio DEBUG Using proactor: IocpProactor
+09:23:49,832 httpx._client DEBUG HTTP Request: GET http://localhost:8080/apiVersion "HTTP/1.1 200 OK"
+09:23:50,686 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.54/containers/c75edc073bf75e224c71a3e257156f18791cfe5ef5b774e5abff481005efae36/kill HTTP/1.1" 204 0
+09:23:50,702 urllib3.connectionpool DEBUG http://localhost:None "DELETE /v1.54/containers/c75edc073bf75e224c71a3e257156f18791cfe5ef5b774e5abff481005efae36?v=False&link=False&force=False HTTP/1.1" 204 0
+09:23:50,745 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.54/images/prune?filters=%7B%22label%22%3A+%5B%22mp-test%22%5D%7D HTTP/1.1" 200 None
+09:23:50,748 vmware_aria_operations_integration_sdk.mp_build ERROR Unexpected exception occurred while trying to build pak file
+09:23:50,750 vmware_aria_operations_integration_sdk.mp_build ERROR 'adapter_pre_script'
