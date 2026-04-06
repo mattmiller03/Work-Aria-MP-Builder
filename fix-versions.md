@@ -69,3 +69,24 @@ If no XSD exists, the build should still work — it's just a validation step. T
 
 cd /opt/aria/Aria-MP-Builder/Azure
 sudo mp-build
+
+
+
+The SDK wants to push the adapter image to a container registry as part of the build. On air-gapped environments, we can run a local registry in Docker and point to that:
+
+
+# Start a local Docker registry
+sudo docker run -d -p 5000:5000 --restart=always --name registry registry:2 2>/dev/null
+
+# If the registry image isn't available (air-gapped), skip it and use --no-ttl with the registry tag
+cd /opt/aria/Aria-MP-Builder/Azure
+sudo mp-build --no-ttl --registry-tag "localhost:5000/azuregovcloud" --use-default-registry -P 8080
+If the local registry isn't available either, try forcing it all on the command line to skip the interactive prompts:
+
+
+sudo mp-build --no-ttl --use-default-registry -P 8080
+If it still prompts for the registry path, we may need to create a config file. Check if there's a config file the SDK reads:
+
+
+cat /opt/aria/Aria-MP-Builder/Azure/config.json 2>/dev/null
+ls /opt/aria/Aria-MP-Builder/Azure/*.json
