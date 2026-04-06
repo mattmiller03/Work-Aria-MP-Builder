@@ -144,3 +144,31 @@ sudo sed -i 's/login(container_registry=container_registry, \*\*kwargs)/pass  # 
 # Clean and rebuild
 rm -rf build
 sudo mp-build --no-ttl --registry-tag "<MP-BUILDER-IP>:5000/azuregovcloud-adapter" -P 8080
+
+
+
+cat > /opt/aria/Aria-MP-Builder/Azure/manifest.txt <<EOF
+{
+  "name": "AzureGovCloud",
+  "version": "1.0.0",
+  "vcops_minimum_version": "8.10.0",
+  "adapter_kinds": ["AzureGovAdapter"],
+  "description": "Collects resource attributes from Azure Government Cloud including VMs, Disks, Networks, Storage, Key Vaults, SQL, and App Services.",
+  "vendor": "Custom",
+  "eula_file": "eula.txt",
+  "pak_icon": "icon.png",
+  "pak_validation_script": {
+    "script": "",
+    "script_timeout": 360
+  },
+  "adapter_pre_script": {
+    "script": "",
+    "script_timeout": 360
+  },
+  "adapter_post_script": {
+    "script": "",
+    "script_timeout": 360
+  },
+  "platform": ["Linux"]
+}
+EOF
