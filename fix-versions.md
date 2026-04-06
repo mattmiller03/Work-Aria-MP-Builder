@@ -161,3 +161,23 @@ try {
     $_.Exception.Message
     $_.ErrorDetails.Message
 }
+
+
+405 means the endpoint path is wrong. The API for Aria Ops 8.18 might use a different path. Let me find it:
+
+
+# Check available pak/solution endpoints
+$headers = @{ "Authorization" = "vRealizeOpsToken $token"; "Accept" = "application/json" }
+
+# Try listing existing solutions first
+Invoke-RestMethod -Uri "https://<aria-ops-fqdn>/suite-api/api/solutions" -Method Get -Headers $headers -SkipCertificateCheck
+Also try the upload with multipart form data instead of octet-stream, and a different endpoint:
+
+
+# Try alternate endpoint paths
+try {
+    Invoke-RestMethod -Uri "https://<aria-ops-fqdn>/suite-api/api/solutions/pak/upload" -Method Post -Headers @{ "Authorization" = "vRealizeOpsToken $token" } -Form @{ file = Get-Item "C:\path\to\AzureGovCloud_1.0.0.pak" } -SkipCertificateCheck
+} catch {
+    $_.Exception.Message
+    $_.ErrorDetails.Message
+}
