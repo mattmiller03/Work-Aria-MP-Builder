@@ -98,3 +98,9 @@ try { Invoke-RestMethod -Uri "$ariaOps/suite-api/api/adapters" -Method Get -Head
 
 # Try the internal API endpoint
 try { Invoke-RestMethod -Uri "$ariaOps/casa/pak/upload" -Method Post -Headers @{ "Authorization" = "vRealizeOpsToken $token"; "Content-Type" = "application/octet-stream" } -InFile "C:\Users\mille\OneDrive\Documents\GitHub\Aria\MP Builder\Azure\build\AzureGovCloud_1.0.0.pak" -SkipCertificateCheck -Verbose } catch { Write-Host "casa: $($_.Exception.Message)"; Write-Host "Details: $($_.ErrorDetails.Message)" }
+
+
+# First, see the structure of existing adapters
+$headers = @{ "Authorization" = "vRealizeOpsToken $token"; "Accept" = "application/json" }
+$adapters = Invoke-RestMethod -Uri "$ariaOps/suite-api/api/adapters" -Method Get -Headers $headers -SkipCertificateCheck
+$adapters.adapterInstancesInfoDto | Select-Object -First 3 | ConvertTo-Json -Depth 5
