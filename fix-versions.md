@@ -123,3 +123,36 @@ cd "C:\Users\mille\OneDrive\Documents\GitHub\Aria\MP Builder\Azure"
 pip install vmware-aria-operations-integration-sdk
 mp-build --use-default-registry -P 8080
 This might be the path of least resistance since Docker Hub login will work from your Windows PC.
+
+
+ /opt/aria/Aria-MP-Builder/Azure ]# sudo grep -n "login\|Login\|registry\|Registry" /opt/python312/lib/python3.12/site-packages/vmware_aria_operations_integration_sdk/mp_build.py | head -30
+59:from vmware_aria_operations_integration_sdk.docker_wrapper import login
+60:from vmware_aria_operations_integration_sdk.docker_wrapper import LoginError
+82:    ContainerRegistryValidator,
+137:def is_valid_registry(container_registry: str, **kwargs: Any) -> bool:
+139:        if _is_docker_hub_registry_format(container_registry):
+140:            if "registry_username" not in kwargs:
+141:                kwargs["registry_username"] = prompt("Enter Docker Hub username: ")
+143:            if "registry_password" not in kwargs:
+144:                kwargs["registry_password"] = prompt("Password: ", is_password=True)
+145:            login(**kwargs)
+147:            container_registry = (
+148:                container_registry
+149:                if container_registry.startswith("docker.io")
+150:                else f"docker.io/{container_registry}"
+153:        login(container_registry=container_registry, **kwargs)
+155:    except LoginError:
+161:def _is_docker_hub_registry_format(registry: Optional[str]) -> bool:
+162:    if not registry:
+169:    return bool(re.match(pattern, registry))
+174:    container_push_registry_arg: Optional[str],
+175:    container_registry_arg: Optional[str],
+182:    container_registry = container_registry_arg
+183:    if not container_registry:
+184:        container_registry = get_config_value(
+187:    container_push_registry = container_push_registry_arg
+188:    if not container_push_registry:
+189:        container_push_registry = get_config_value(
+192:    if not container_push_registry:
+193:        container_push_registry = container_registry
+196:    original_value = container_registry
