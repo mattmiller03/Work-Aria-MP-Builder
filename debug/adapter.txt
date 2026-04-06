@@ -58,3 +58,46 @@ sudo find / -path "*/AmazonAWSAdapter*" -type f 2>/dev/null | head -20
 /usr/lib/vmware-vcops/tomcat-web-app/webapps/ui/ContentPack/AmazonAWSAdapter/conf/pages/instanceUtilization/css/vrops-light.css
 /usr/lib/vmware-vcops/tomcat-web-app/webapps/ui/ContentPack/AmazonAWSAdapter/conf/pages/diskSpace/index.html
 /usr/lib/vmware-vcops/tomcat-web-app/webapps/ui/ContentPack/AmazonAWSAdapter/conf/pages/diskSpace/resources/resources_zh_TW.properties
+
+
+
+
+
+
+
+
+
+# Create certs
+sudo mkdir -p /opt/aria/registry/certs
+sudo openssl req -newkey rsa:4096 -nodes -sha256 \
+  -keyout /opt/aria/registry/certs/registry.key \
+  -x509 -days 365 \
+  -out /opt/aria/registry/certs/registry.crt \
+  -subj "/CN=<MP-BUILDER-IP>" \
+  -addext "subjectAltName=IP:<MP-BUILDER-IP>"
+
+# Stop old registry and restart with HTTPS
+sudo docker stop registry
+sudo docker rm registry
+sudo docker run -d -p 5000:5000 --restart=always --name registry \
+  -v /opt/aria/registry/certs:/certs \
+  -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/registry.crt \
+  -e REGISTRY_HTTP_TLS_KEY=/certs/registry.key \
+  registry:2
+
+# Re-push the image (may need to trust the self-signed cert locally too)
+sudo mkdir -p /etc/docker/certs.d/<MP-BUILDER-IP>:5000
+sudo cp /opt/aria/registry/certs/registry.crt /etc/docker/certs.d/<MP-BUILDER-IP>:5000/ca.crt
+sudo docker push <MP-BUILDER-IP>:5000/azuregovcloud-adapter:1.0.0
+Then copy the cert to the Aria Ops server and test:
+
+
+# SCP from MP Builder to Aria Ops
+scp /opt/aria/registry/certs/registry.crt user@<ARIA-OPS-SERVER>:/tmp/registry.crt
+
+# On Aria Ops server
+sudo mkdir -p /etc/docker/certs.d/<MP-BUILDER-IP>:5000
+sudo cp /tmp/registry.crt /etc/docker/certs.d/<MP-BUILDER-IP>:5000/ca.crt
+
+# Test
+curl -k https://<MP-BUILDER-IP>:5000/v2/_catalog
