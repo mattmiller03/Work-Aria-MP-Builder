@@ -1,8 +1,27 @@
-root@daisv0tp003 [ /tmp ]# find /usr/lib/vmware-vcops/user/plugins/inbound/ -name "*.py" 2>/dev/null | head -10
-/usr/lib/vmware-vcops/user/plugins/inbound/MicrosoftAzureAdapter/scripts/preAdapters.py
-/usr/lib/vmware-vcops/user/plugins/inbound/ServiceDiscoveryAdapter3/scripts/postAdapters.py
-/usr/lib/vmware-vcops/user/plugins/inbound/ServiceDiscoveryAdapter3/scripts/preAdapters.py
-/usr/lib/vmware-vcops/user/plugins/inbound/DiagnosticsAdapter3/conf/build_signatures.py
-/usr/lib/vmware-vcops/user/plugins/inbound/DiagnosticsAdapter3/conf/combine_rules.py
-/usr/lib/vmware-vcops/user/plugins/inbound/AppOSUCPAdapter3/scripts/postAdapters.py
-root@daisv0tp003 [ /tmp ]# find /usr/lib/vmware-vcops/user/plugins/inbound/ -name "commands.cfg" 2>/dev/null | head -10
+/storage/log/vcops/log/analytics-gc-20260331115533.log
+/storage/log/vcops/log/ui-gc.log
+/storage/log/vcops/log/pakManager/vcopsPakManager.root.query.log
+/storage/log/vcops/log/vcops-watchdog/vcops-watchdog.log
+/storage/log/vcops/log/vcops-watchdog/vcops-watchdog2.log
+/storage/log/vcops/log/2026-04/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log
+/storage/log/vcops/log/2026-04/analytics.audit-6b281004-1325-4f5b-be20-3b5ffacd06c7.log
+/storage/log/vcops/log/2026-04/actionScheduler-6b281004-1325-4f5b-be20-3b5ffacd06c7.log
+/storage/log/vcops/log/2026-04/vcops-bridge.log
+/storage/log/vcops/log/2026-04/web.log
+/storage/log/vcops/log/2026-04/LRUCacheProfiler-6b281004-1325-4f5b-be20-3b5ffacd06c7.log
+/storage/log/vcops/log/2026-04/onlineCapacity-6b281004-1325-4f5b-be20-3b5ffacd06c7.log
+/storage/log/vcops/log/casa/pakManager.actions.log
+/storage/log/vcops/log/casa/casa.log
+/storage/log/vcops/log/casa/casa-performance.log
+/storage/log/vcops/log/casa/casa.audit.log
+/storage/log/vcops/log/casa/casa-gc.log
+/storage/log/vcops/log/casa/casa-rest-calls.log
+/storage/log/vcops/log/http_api.log
+/storage/log/vcops/log/api.log
+/storage/log/vcops/log/gemfire-gc.log
+/storage/log/vcops/log/collector-gc-20260331115536.log
+/storage/log/vcops/log/api-gc.log
+/storage/log/vcops/log/gemfire-function-6b281004-1325-4f5b-be20-3b5ffacd06c7.log
+/storage/log/postgres/repl/postgresql-07.log
+/storage/db/casa/webapp/hsqldb/casa.db.log
+/var/log/vmware/vcops/env-checker.log
