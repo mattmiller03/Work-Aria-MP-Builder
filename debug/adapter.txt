@@ -1,103 +1,14 @@
-cd /tmp/azuregov-check/
-root@photon [ /tmp/azuregov-check ]# unzip -o adapter.zip  -d /tmp/adapter-check
-Archive:  adapter.zip
-  inflating: /tmp/adapter-check/AzureGovAdapter.conf  
-  inflating: /tmp/adapter-check/manifest.txt  
-  inflating: /tmp/adapter-check/eula.txt  
-  inflating: /tmp/adapter-check/icon.png  
-   creating: /tmp/adapter-check/resources/
-  inflating: /tmp/adapter-check/resources/resources.properties  
-   creating: /tmp/adapter-check/AzureGovAdapter/
-   creating: /tmp/adapter-check/AzureGovAdapter/conf/
-  inflating: /tmp/adapter-check/AzureGovAdapter/conf/version.txt  
-  inflating: /tmp/adapter-check/AzureGovAdapter/conf/describe.xml  
-  inflating: /tmp/adapter-check/AzureGovAdapter/conf/describeSchema.xsd  
-   creating: /tmp/adapter-check/AzureGovAdapter/conf/resources/
-  inflating: /tmp/adapter-check/AzureGovAdapter/conf/resources/resources.properties  
-root@photon [ /tmp/azuregov-check ]# cat /tmp/adapter-check/*.conf
-KINDKEY=AzureGovAdapter
-API_VERSION=1.0.0
-API_PROTOCOL=https
-API_PORT=443
-REGISTRY=214.73.76.134:5000
-REPOSITORY=/azuregovcloud-adapter
-DIGEST=sha256:ee4ccc5de9c369cb4f3c57b1f12075b4c203a7670ba31db22467c966fb7fdca8
-root@photon [ /tmp/azuregov-check ]# ls -la /tmp/adapter-check/
-total 16
-drwxr-xr-x  4 root root 160 Apr  6 18:25 .
-drwxrwxrwt 13 root root 280 Apr  6 18:25 ..
-drwxr-xr-x  3 root root  60 Apr  6 18:13 AzureGovAdapter
--rw-r--r--  1 root root 215 Apr  6 18:13 AzureGovAdapter.conf
--rwxr-xr-x  1 root root 151 Apr  6 18:13 eula.txt
--rw-r--r--  1 root root  69 Apr  6 18:13 icon.png
--rwxr-xr-x  1 root root 611 Apr  6 18:13 manifest.txt
-drwxr-xr-x  2 root root  60 Apr  1 15:53 resources
+cd /opt/aria/Aria-MP-Builder/Azure
 
+# Update config to use default registry
+cat > config.json <<EOF
+{
+    "container_push_repository": null,
+    "container_repository": "<MP-BUILDER-IP>:5000/azuregovcloud-adapter",
+    "default_memory_limit": 1024,
+    "use_default_registry": true
+}
+EOF
 
-
-
-
-sudo find / -path "*/AmazonAWSAdapter*" -type f 2>/dev/null | head -20
-/usr/lib/vmware-vcops/user/plugins/inbound/amazon_aws_adapter3/conf/images/AdapterKind/AmazonAWSAdapter.svg
-/usr/lib/vmware-vcops/user/plugins/inbound/amazon_aws_adapter3/conf/images/AdapterKind/AmazonAWSAdapter.png
-/usr/lib/vmware-vcops/user/plugins/inbound/amazon_aws_adapter3/conf/images/ResourceKind/AmazonAWSAdapter Instance.png
-/usr/lib/vmware-vcops/user/plugins/inbound/amazon_aws_adapter3/conf/images/Actions/AmazonAWSAdapter_RebootInstance.png
-/usr/lib/vmware-vcops/user/plugins/inbound/amazon_aws_adapter3/conf/images/Actions/AmazonAWSAdapter_PowerOffInstance.png
-/usr/lib/vmware-vcops/user/plugins/inbound/amazon_aws_adapter3/conf/images/Actions/AmazonAWSAdapter_PowerOnInstance.png
-/usr/lib/vmware-vcops/tomcat-web-app/webapps/ui/ContentPack/AmazonAWSAdapter/conf/pages/instanceUtilization/index.html
-/usr/lib/vmware-vcops/tomcat-web-app/webapps/ui/ContentPack/AmazonAWSAdapter/conf/pages/instanceUtilization/resources/resources_zh_TW.properties
-/usr/lib/vmware-vcops/tomcat-web-app/webapps/ui/ContentPack/AmazonAWSAdapter/conf/pages/instanceUtilization/resources/resources_es.properties
-/usr/lib/vmware-vcops/tomcat-web-app/webapps/ui/ContentPack/AmazonAWSAdapter/conf/pages/instanceUtilization/resources/resources_ko.properties
-/usr/lib/vmware-vcops/tomcat-web-app/webapps/ui/ContentPack/AmazonAWSAdapter/conf/pages/instanceUtilization/resources/resources_zh_CN.properties
-/usr/lib/vmware-vcops/tomcat-web-app/webapps/ui/ContentPack/AmazonAWSAdapter/conf/pages/instanceUtilization/resources/resources_de.properties
-/usr/lib/vmware-vcops/tomcat-web-app/webapps/ui/ContentPack/AmazonAWSAdapter/conf/pages/instanceUtilization/resources/resources.properties
-/usr/lib/vmware-vcops/tomcat-web-app/webapps/ui/ContentPack/AmazonAWSAdapter/conf/pages/instanceUtilization/resources/resources_fr.properties
-/usr/lib/vmware-vcops/tomcat-web-app/webapps/ui/ContentPack/AmazonAWSAdapter/conf/pages/instanceUtilization/resources/resources_ja.properties
-/usr/lib/vmware-vcops/tomcat-web-app/webapps/ui/ContentPack/AmazonAWSAdapter/conf/pages/instanceUtilization/css/main.css
-/usr/lib/vmware-vcops/tomcat-web-app/webapps/ui/ContentPack/AmazonAWSAdapter/conf/pages/instanceUtilization/css/vrops-dark.css
-/usr/lib/vmware-vcops/tomcat-web-app/webapps/ui/ContentPack/AmazonAWSAdapter/conf/pages/instanceUtilization/css/vrops-light.css
-/usr/lib/vmware-vcops/tomcat-web-app/webapps/ui/ContentPack/AmazonAWSAdapter/conf/pages/diskSpace/index.html
-/usr/lib/vmware-vcops/tomcat-web-app/webapps/ui/ContentPack/AmazonAWSAdapter/conf/pages/diskSpace/resources/resources_zh_TW.properties
-
-
-
-
-
-
-
-
-
-# Create certs
-sudo mkdir -p /opt/aria/registry/certs
-sudo openssl req -newkey rsa:4096 -nodes -sha256 \
-  -keyout /opt/aria/registry/certs/registry.key \
-  -x509 -days 365 \
-  -out /opt/aria/registry/certs/registry.crt \
-  -subj "/CN=<MP-BUILDER-IP>" \
-  -addext "subjectAltName=IP:<MP-BUILDER-IP>"
-
-# Stop old registry and restart with HTTPS
-sudo docker stop registry
-sudo docker rm registry
-sudo docker run -d -p 5000:5000 --restart=always --name registry \
-  -v /opt/aria/registry/certs:/certs \
-  -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/registry.crt \
-  -e REGISTRY_HTTP_TLS_KEY=/certs/registry.key \
-  registry:2
-
-# Re-push the image (may need to trust the self-signed cert locally too)
-sudo mkdir -p /etc/docker/certs.d/<MP-BUILDER-IP>:5000
-sudo cp /opt/aria/registry/certs/registry.crt /etc/docker/certs.d/<MP-BUILDER-IP>:5000/ca.crt
-sudo docker push <MP-BUILDER-IP>:5000/azuregovcloud-adapter:1.0.0
-Then copy the cert to the Aria Ops server and test:
-
-
-# SCP from MP Builder to Aria Ops
-scp /opt/aria/registry/certs/registry.crt user@<ARIA-OPS-SERVER>:/tmp/registry.crt
-
-# On Aria Ops server
-sudo mkdir -p /etc/docker/certs.d/<MP-BUILDER-IP>:5000
-sudo cp /tmp/registry.crt /etc/docker/certs.d/<MP-BUILDER-IP>:5000/ca.crt
-
-# Test
-curl -k https://<MP-BUILDER-IP>:5000/v2/_catalog
+rm -rf build
+sudo mp-build --no-ttl --registry-tag "<MP-BUILDER-IP>:5000/azuregovcloud-adapter" --use-default-registry -P 8080
