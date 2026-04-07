@@ -1,0 +1,72 @@
+OK, fresh start. The issue is that the MP Builder prepends the Source hostname to all requests. Since Azure uses different hosts for auth vs data, we need a different approach.
+
+Step 1 — Source:
+
+Hostname: management.usgovcloudapi.net
+Port: 443
+SSL: Unverified
+Base API Path: leave blank
+Step 2 — Authentication:
+
+Select Custom
+Add fields:
+Label	Sensitive?
+tenant_id	No
+client_id	No
+client_secret	Yes
+subscription_id	No
+Step 3 — Session Authentication:
+
+Toggle Yes
+Get Session Request:
+
+Method: POST
+API Path: https://login.microsoftonline.us/${authentication.credentials.tenant_id}/oauth2/v2.0/token
+Use the full URL here — this overrides the Source hostname for just this request.
+
+Get Session Advanced:
+
+Headers: Content-Type = application/x-www-form-urlencoded
+Body:
+
+grant_type=client_credentials&client_id=${authentication.credentials.client_id}&client_secret=${authentication.credentials.client_secret}&scope=https%3A%2F%2Fmanagement.usgovcloudapi.net%2F.default
+Click Request — should return 200 with access_token.
+
+Session Fields:
+
+Check access_token
+Release Session: Disabled
+
+Global Request Headers:
+
+Name: Authorization
+Value: Bearer ${authentication.session.access_token}
+Test Connection:
+
+Method: GET
+API Path: /subscriptions/${authentication.credentials.subscription_id}?api-version=2022-12-01
+Click Request.
+
+in this authentication section. it wont let me continue untile I have the value for each of these items populated
+Fill them in with your real Azure Gov credentials:
+
+Field	Value
+tenant_id	Your actual tenant ID GUID
+client_id	Your app registration App ID
+client_secret	The secret password/value
+subscription_id	One of your subscription GUIDs
+These are the same values you used in connections.json on the MP Builder server. The MP Builder needs them as a reference environment to test against while designing the pack.
+
+I just pointed that out in case we needed a property for each subscription id that we have
+No — just put one subscription ID in for now. The MP Builder needs a reference environment to test API calls against. When the pack is deployed to Aria Operations, we can configure it to collect from all subscriptions.
+
+The single subscription ID here is just for design-time testing. Go ahead and fill in one subscription and continue.
+
+in the Get Session Request section I have the http method option POST selected but the preview for the api path pre pupulates with https://managment.govcloudapi.net:443 and you have https://login.microsoftonline.us...
+That's OK — type the full URL in the API Path field:
+
+
+https://login.microsoftonline.us/${authentication.credentials.tenant_id}/oauth2/v2.0/token
+When you provide a full URL starting with https://, the MP Builder should use it as-is and override the prepended source hostname. The preview may still show the source prefix, but the actual request should go to login.microsoftonline.us.
+
+Click Request after filling in the body and Content-Type header — check if the actual request in the log goes to the right URL.
