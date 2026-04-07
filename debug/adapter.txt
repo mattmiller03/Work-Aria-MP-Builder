@@ -1,22 +1,36 @@
 cd /opt/aria/Aria-MP-Builder/Azure
 
-# Update config to use default registry
-cat > config.json <<EOF
+cat > manifest.txt <<'EOF'
 {
-    "container_push_repository": null,
-    "container_repository": "214.73.76.134:5000/azuregovcloud-adapter",
-    "default_memory_limit": 1024,
-    "use_default_registry": true
+  "name": "AzureGovCloud",
+  "version": "1.0.0",
+  "vcops_minimum_version": "8.10.0",
+  "adapter_kinds": ["AzureGovAdapter"],
+  "description": "Collects resource attributes from Azure Government Cloud including VMs, Disks, Networks, Storage, Key Vaults, SQL, and App Services.",
+  "vendor": "Custom",
+  "eula_file": "eula.txt",
+  "pak_icon": "icon.png",
+  "pak_validation_script": {
+    "script": ""
+  },
+  "adapter_pre_script": {
+    "script": ""
+  },
+  "adapter_post_script": {
+    "script": ""
+  },
+  "adapters": [
+    "adapter.zip"
+  ],
+  "platform": [
+    "Linux Non-VA",
+    "Linux VA"
+  ],
+  "disk_space_required": 500,
+  "display_name": "Azure Government Cloud",
+  "license_type": " "
 }
 EOF
 
 rm -rf build
-<<<<<<< HEAD
-sudo mp-build --no-ttl --registry-tag "214.73.76.134:5000/azuregovcloud-adapter" --use-default-registry -P 8080
-=======
-sudo mp-build --no-ttl --registry-tag "<MP-BUILDER-IP>:5000/azuregovcloud-adapter" --use-default-registry -P 8080
-
-
-
-
->>>>>>> a7425274f074b9afbb78c00d756c351147e8505c
+sudo mp-build --no-ttl --registry-tag "<MP-BUILDER-IP>:5000/azuregovcloud-adapter" -P 8080
