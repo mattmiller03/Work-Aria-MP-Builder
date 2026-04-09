@@ -11,6 +11,7 @@ from collectors.load_balancers import collect_load_balancers
 from collectors.key_vaults import collect_key_vaults
 from collectors.sql_databases import collect_sql_servers_and_databases
 from collectors.app_services import collect_app_services
+from collectors.dedicated_hosts import collect_dedicated_hosts
 
 __all__ = [
     "collect_subscriptions",
@@ -24,4 +25,5 @@ __all__ = [
     "collect_key_vaults",
     "collect_sql_servers_and_databases",
     "collect_app_services",
+    "collect_dedicated_hosts",
 ]

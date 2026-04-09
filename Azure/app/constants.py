@@ -40,6 +40,8 @@ OBJ_KEY_VAULT = "azure_key_vault"
 OBJ_SQL_SERVER = "azure_sql_server"
 OBJ_SQL_DATABASE = "azure_sql_database"
 OBJ_APP_SERVICE = "azure_app_service"
+OBJ_HOST_GROUP = "azure_host_group"
+OBJ_DEDICATED_HOST = "azure_dedicated_host"
 
 # API versions — use versions confirmed available in Azure Gov
 # These may lag behind commercial Azure; fall back if needed
@@ -56,4 +58,6 @@ API_VERSIONS = {
     "sql_servers": "2023-05-01-preview",
     "sql_databases": "2023-05-01-preview",
     "web_apps": "2023-01-01",
+    "host_groups": "2023-03-01",
+    "dedicated_hosts": "2023-03-01",
 }

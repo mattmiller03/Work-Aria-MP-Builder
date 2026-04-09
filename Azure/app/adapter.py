@@ -18,6 +18,7 @@ from constants import (
     OBJ_DISK, OBJ_NETWORK_INTERFACE, OBJ_VIRTUAL_NETWORK, OBJ_SUBNET,
     OBJ_STORAGE_ACCOUNT, OBJ_LOAD_BALANCER, OBJ_KEY_VAULT,
     OBJ_SQL_SERVER, OBJ_SQL_DATABASE, OBJ_APP_SERVICE,
+    OBJ_HOST_GROUP, OBJ_DEDICATED_HOST,
 )
 from auth import AzureAuthenticator
 from azure_client import AzureClient
@@ -33,6 +34,7 @@ from collectors import (
     collect_key_vaults,
     collect_sql_servers_and_databases,
     collect_app_services,
+    collect_dedicated_hosts,
 )
 
 logger = logging.getLogger(__name__)
@@ -328,6 +330,45 @@ def get_adapter_definition():
     app.define_string_property("outbound_ip_addresses",
                                "Outbound IP Addresses")
 
+    # Host Group
+    hg = definition.define_object_type(OBJ_HOST_GROUP,
+                                       "Azure Dedicated Host Group")
+    hg.define_string_identifier("subscription_id", "Subscription ID")
+    hg.define_string_identifier("resource_group", "Resource Group")
+    hg.define_string_identifier("host_group_name", "Host Group Name")
+    hg.define_string_property("resource_id", "Resource ID")
+    hg.define_string_property("location", "Location")
+    hg.define_string_property("platform_fault_domain_count",
+                              "Platform Fault Domain Count")
+    hg.define_string_property("support_automatic_placement",
+                              "Support Automatic Placement")
+    hg.define_string_property("provisioning_state", "Provisioning State")
+
+    # Dedicated Host
+    dh = definition.define_object_type(OBJ_DEDICATED_HOST,
+                                       "Azure Dedicated Host")
+    dh.define_string_identifier("subscription_id", "Subscription ID")
+    dh.define_string_identifier("host_group_name", "Host Group Name")
+    dh.define_string_identifier("host_name", "Host Name")
+    dh.define_string_property("resource_id", "Resource ID")
+    dh.define_string_property("location", "Location")
+    dh.define_string_property("resource_group", "Resource Group")
+    dh.define_string_property("sku_name", "SKU Name")
+    dh.define_string_property("platform_fault_domain", "Platform Fault Domain")
+    dh.define_string_property("auto_replace_on_failure",
+                              "Auto Replace on Failure")
+    dh.define_string_property("host_id", "Host ID")
+    dh.define_string_property("provisioning_state", "Provisioning State")
+    dh.define_string_property("provisioning_time", "Provisioning Time")
+    dh.define_numeric_property("vm_count", "VM Count")
+    dh.define_string_property("vm_ids", "VM Resource IDs")
+    dh.define_string_property("vm_names", "VM Names")
+    dh.define_string_property("health_state", "Health State")
+    dh.define_numeric_property("max_available_slots", "Max Available VM Slots")
+    dh.define_string_property("smallest_vm_size", "Smallest VM Size")
+    dh.define_numeric_property("smallest_vm_available",
+                               "Smallest VM Size Available Count")
+
     return definition
 
 
@@ -389,6 +430,7 @@ def collect(adapter_instance):
             ("Key Vaults", lambda: collect_key_vaults(client, result, ADAPTER_KIND, subscriptions, rgs_by_sub)),
             ("SQL Databases", lambda: collect_sql_servers_and_databases(client, result, ADAPTER_KIND, subscriptions)),
             ("App Services", lambda: collect_app_services(client, result, ADAPTER_KIND, subscriptions)),
+            ("Dedicated Hosts", lambda: collect_dedicated_hosts(client, result, ADAPTER_KIND, subscriptions)),
         ]
 
         for name, collector_fn in collectors:
