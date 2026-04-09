@@ -1,36 +1,24 @@
-cd /opt/aria/Aria-MP-Builder/Azure
+I see the issue — no Docker events and no Azure container appearing after the test. Aria Ops isn't even trying to start a container on the Cloud Proxy. It's likely trying to pull the image from the registry reference in the .pak conf file, not finding it locally.
 
-cat > manifest.txt <<'EOF'
-{
-  "name": "AzureGovCloud",
-  "version": "1.0.0",
-  "vcops_minimum_version": "8.10.0",
-  "adapter_kinds": ["AzureGovAdapter"],
-  "description": "Collects resource attributes from Azure Government Cloud including VMs, Disks, Networks, Storage, Key Vaults, SQL, and App Services.",
-  "vendor": "Custom",
-  "eula_file": "eula.txt",
-  "pak_icon": "icon.png",
-  "pak_validation_script": {
-    "script": ""
-  },
-  "adapter_pre_script": {
-    "script": ""
-  },
-  "adapter_post_script": {
-    "script": ""
-  },
-  "adapters": [
-    "adapter.zip"
-  ],
-  "platform": [
-    "Linux Non-VA",
-    "Linux VA"
-  ],
-  "disk_space_required": 500,
-  "display_name": "Azure Government Cloud",
-  "license_type": " "
-}
-EOF
+The .pak conf references:
 
-rm -rf build
-sudo mp-build --no-ttl --registry-tag "<MP-BUILDER-IP>:5000/azuregovcloud-adapter" -P 8080
+
+REGISTRY=214.73.76.134:5000
+REPOSITORY=/azuregovcloud-adapter
+DIGEST=sha256:ee4ccc5de9c...
+Aria Ops tries to pull by digest, not by tag. We need to tag the image with the exact digest. Check the digest in the .pak conf, then on the Cloud Proxy:
+
+
+# Check what digest the local image has
+sudo docker inspect azuregovcloud-test:1.0.0 --format='{{.Id}}'
+sudo docker inspect azuregovcloud-test:1.0.0 --format='{{index .RepoDigests 0}}' 2>/dev/null
+Also — the Cloud Proxy needs to be able to pull from the registry. Configure Docker on the Cloud Proxy to trust the insecure/self-signed registry:
+
+
+sudo mkdir -p /etc/docker/certs.d/214.73.76.134:5000
+# Copy the registry cert from the MP Builder server
+scp root@214.73.76.134:/opt/aria/registry/certs/registry.crt /etc/docker/certs.d/214.73.76.134:5000/ca.crt
+
+# Test pulling
+sudo docker pull 214.73.76.134:5000/azuregovcloud-adapter:latest
+If the pull works, try Validate Connection from the UI again. Also check if anything appeared in docker events after the test.
