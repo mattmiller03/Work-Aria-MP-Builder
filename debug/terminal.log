@@ -1,40 +1,22 @@
-REPOSITORY                                                          TAG          IMAGE ID       CREATED        SIZE
-ucp-docker-local.packages.vcfd.broadcom.net/salt-master-bootstrap   8.18.6.712   6a2a7635fb23   2 months ago   245MB
-cmd-docker-local.artifactory.eng.vmware.com/config-modules-docker   1.1.45       fb206b26a51d   2 months ago   234MB
-root@daisv0tp004 [ ~ ]# sudo docker load -i /tmp/azuregovcloud-adapter.tar 
-ace34d1d784c: Loading layer [==================================================>]  28.23MB/28.23MB
-b1e89496ceb6: Loading layer [==================================================>]  3.512MB/3.512MB
-16b1c710f703: Loading layer [==================================================>]  16.21MB/16.21MB
-be1d64b620bf: Loading layer [==================================================>]     250B/250B
-47df51738c02: Loading layer [==================================================>]  17.97MB/17.97MB
-60a6387a529e: Loading layer [==================================================>]   8.44MB/8.44MB
-fdb47a6cdd23: Loading layer [==================================================>]     122B/122B
-f22a909a2091: Loading layer [==================================================>]  3.331kB/3.331kB
-7fab10c54eac: Loading layer [==================================================>]     165B/165B
-f7b3e61e835f: Loading layer [==================================================>]  33.08kB/33.08kB
-d4757ea19ff3: Loading layer [==================================================>]  11.85MB/11.85MB
-e1ebf9c60890: Loading layer [==================================================>]   5.15MB/5.15MB
-3d31c9afa6d4: Loading layer [==================================================>]  6.451MB/6.451MB
-40d8fec2081e: Loading layer [==================================================>]     313B/313B
-70e915a1ede9: Loading layer [==================================================>]  5.182MB/5.182MB
-513e7d9f9a2b: Loading layer [==================================================>]  5.182MB/5.182MB
-957d36c5aad4: Loading layer [==================================================>]  5.216MB/5.216MB
-Loaded image: azuregovcloud-test:1.0.0
-root@daisv0tp004 [ ~ ]# sudo docker images | grep azure
-azuregovcloud-test                                                  1.0.0        ae3623788d7a   2 days ago     281MB
-root@daisv0tp004 [ ~ ]# sudo docker images | grep azure
-azuregovcloud-test                                                  1.0.0        ae3623788d7a   2 days ago     281MB
-root@daisv0tp004 [ ~ ]# curl -k https://214.73.76.134:5000/v2/_catalog
-{"repositories":["azuregovcloud-adapter"]}
-root@daisv0tp004 [ ~ ]# sudo docker tag azuregovcloud-test:1.0.0 214.73.76.134:5000/azuregovcloud-adapter:latest
-root@daisv0tp004 [ ~ ]# sudo docker ps -a  | grep azure
-root@daisv0tp004 [ ~ ]# sudo docker ps -a 
-CONTAINER ID   IMAGE                                                                          COMMAND                  CREATED       STATUS        PORTS                                                                                                          NAMES
-ddf5ca8a4641   cmd-docker-local.artifactory.eng.vmware.com/config-modules-docker:1.1.45       "./scripts/start_api…"   4 weeks ago   Up 17 hours   443/tcp                                                                                                        config-modules-docker
-e2cf823e3f37   ucp-docker-local.packages.vcfd.broadcom.net/salt-master-bootstrap:8.18.6.712   "/bin/sh -c '/tmp/sa…"   4 weeks ago   Up 17 hours   0.0.0.0:4505-4506->4505-4506/tcp, [::]:4505-4506->4505-4506/tcp, 0.0.0.0:8553->8553/tcp, [::]:8553->8553/tcp   ucp-controlplane-saltmaster
-root@daisv0tp004 [ ~ ]# sudo docker events --filter typ=container &
-[1] 719575
-root@daisv0tp004 [ ~ ]# sudo docker ps -a
-CONTAINER ID   IMAGE                                                                          COMMAND                  CREATED       STATUS        PORTS                                                                                                          NAMES
-ddf5ca8a4641   cmd-docker-local.artifactory.eng.vmware.com/config-modules-docker:1.1.45       "./scripts/start_api…"   4 weeks ago   Up 18 hours   443/tcp                                                                                                        config-modules-docker
-e2cf823e3f37   ucp-docker-local.packages.vcfd.broadcom.net/salt-master-bootstrap:8.18.6.712   "/bin/sh -c '/tmp/sa…"   4 weeks ago   Up 18 hours   0.0.0.0:4505-4506->4505-4506/tcp, [::]:4505-4506->4505-4506/tcp, 0.0.0.0:8553->8553/tcp, [::]:8553->8553/tcp   ucp-controlplane-saltmaster
+root@photon [ /tmp ]# unzip -o /tmp/azuregov-pak/adapter.zip -d /tmp/adapter-check
+Archive:  /tmp/azuregov-pak/adapter.zip
+  inflating: /tmp/adapter-check/AzureGovAdapter.conf  
+  inflating: /tmp/adapter-check/manifest.txt  
+  inflating: /tmp/adapter-check/eula.txt  
+  inflating: /tmp/adapter-check/icon.png  
+   creating: /tmp/adapter-check/resources/
+  inflating: /tmp/adapter-check/resources/resources.properties  
+   creating: /tmp/adapter-check/AzureGovAdapter/
+   creating: /tmp/adapter-check/AzureGovAdapter/conf/
+  inflating: /tmp/adapter-check/AzureGovAdapter/conf/version.txt  
+  inflating: /tmp/adapter-check/AzureGovAdapter/conf/describe.xml  
+  inflating: /tmp/adapter-check/AzureGovAdapter/conf/describeSchema.xsd  
+   creating: /tmp/adapter-check/AzureGovAdapter/conf/resources/
+  inflating: /tmp/adapter-check/AzureGovAdapter/conf/resources/resources.properties  
+root@photon [ /tmp ]# cat /tmp/adapter-check/AzureGovAdapter.conf 
+KINDKEY=AzureGovAdapter
+API_VERSION=1.0.0
+API_PROTOCOL=https
+API_PORT=443
+REPOSITORY=/azuregovcloud-adapter
+DIGEST=sha256:377ea21970dae24055ae028efdb2dbdee7265f9e336bc2ad643c52ee00bdf8d9
