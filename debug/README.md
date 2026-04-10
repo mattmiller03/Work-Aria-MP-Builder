@@ -50,3 +50,15 @@ Replace the three values from your connections.json. That prints a bearer token 
 Alternatively, skip all that and just check what SKUs you have from the mp-test output. When you run a collect, the adapter logs should show the host groups and hosts it found. Or check the Aria Ops UI — go to your Azure adapter objects, find the Dedicated Host objects, and look at the sku_name property.
 
 If none of those are convenient, you can also check the Azure Gov portal at portal.azure.us > Dedicated Hosts — the SKU is listed on each host.
+
+cd /opt/aria/Aria-MP-Builder/Azure/app
+python3 -c "
+from auth import AzureAuthenticator
+from azure_client import AzureClient
+auth = AzureAuthenticator('<TENANT_ID>', '<CLIENT_ID>', '<CLIENT_SECRET>', 'government')
+client = AzureClient(auth, 'government')
+subs = client.get_all('/subscriptions', '2022-12-01')
+print(f'Service principal can see {len(subs)} subscriptions:')
+for s in subs:
+    print(f'  {s[\"displayName\"]} ({s[\"subscriptionId\"]})')
+"
