@@ -6,7 +6,7 @@
   "description": "Collects resource attributes from Azure Government Cloud including VMs, Disks, Networks, Storage, Key Vaults, SQL, and App Services.",
   "vendor": "Custom",
   "eula_file": "eula.txt",
-  "pak_icon": "icon.png",
+  "pak_icon": "icon.svg",
   "pak_validation_script": {
     "script": "",
     "script_timeout": 360
@@ -19,5 +19,5 @@
     "script": "",
     "script_timeout": 360
   },
-  "platform": ["Linux"]
+  "platform": ["Linux Non-VA", "Linux VA"]
 }
