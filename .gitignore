@@ -19,6 +19,7 @@ Azure/app/conf/
 debug/*
 !debug/README.md
 !debug/scrub.py
+!debug/fetch_pricing.py
 ErrorFile.txt
 
 # Python
