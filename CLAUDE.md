@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Custom VMware Aria Operations management pack that collects resource attributes from **Azure Government Cloud** using the VCF Operations Integration SDK 1.3.1 (Python). Deployed on Aria Ops 8.18.6 Enterprise (air-gapped) with a container-based adapter running on a Cloud Proxy.
 
-**Current version:** 1.3.0 with 18 resource types collecting ~17,000 objects.
+**Current version:** 1.4.0 with 18 resource types collecting ~17,000 objects. Includes dedicated host costing (hourly/monthly rates from Azure Retail Prices API with air-gapped fallback) and full parent-child relationships (Host > VM > Disk).
 
 ## Architecture
 
@@ -23,10 +23,12 @@ Azure/
 │   ├── auth.py                 # OAuth2 client credentials flow (login.microsoftonline.us)
 │   ├── azure_client.py         # REST client with nextLink pagination + rate-limit retry
 │   ├── helpers.py              # SDK compat: make_identifiers(), safe_property(), extract_resource_group()
+│   ├── pricing.py              # Azure Retail Prices API client with air-gapped fallback table
 │   ├── collectors/             # 18 per-resource-type modules
 │   └── wheels/                 # Bundled Python wheels for air-gapped Docker builds
+├── fetch_pricing.py            # Standalone script to update fallback pricing from internet-connected PC
 ├── conf/describeSchema.xsd     # VMware validation schema (do not modify)
-└── content/                    # Dashboards (future)
+└── content/                    # Dashboards (built in Aria Ops UI, see docs/)
 ```
 
 ## SDK Compatibility Notes (CRITICAL)
@@ -59,6 +61,29 @@ sudo docker push <REGISTRY-IP>:5000/azuregovcloud-adapter:latest
 ```
 
 See `docs/rebuild-steps.md` for full step-by-step rebuild process.
+
+## Dedicated Host Costing
+
+Pricing is fetched from the Azure Retail Prices API (`prices.azure.com`) at collection time. In air-gapped environments where the Cloud Proxy can't reach the API, it falls back to a hardcoded table in `app/pricing.py`.
+
+To update the fallback table from an internet-connected PC:
+```bash
+python fetch_pricing.py --no-verify --update app/pricing.py
+```
+
+### Relationship Hierarchy
+
+```text
+Host Group > Dedicated Host > VM > Disk
+```
+
+- VMs link to hosts via `properties.host.id` from the Azure VM API
+- Disks link to VMs via the `managedBy` field from the Azure Disk API
+- Dedicated hosts show: `hourly_rate`, `monthly_rate_estimate`, `vm_size_summary`, `vm_disk_skus`, `allocatable_vm_summary`
+
+### Dashboard
+
+Built in Aria Ops UI (not in the pak). See `docs/dashboard-dedicated-host-detail.md` for step-by-step build guide.
 
 ## Deployment Gotchas (Air-Gapped Aria Ops 8.18.6)
 
