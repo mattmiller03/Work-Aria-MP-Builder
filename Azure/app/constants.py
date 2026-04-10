@@ -42,6 +42,10 @@ OBJ_SQL_DATABASE = "azure_sql_database"
 OBJ_APP_SERVICE = "azure_app_service"
 OBJ_HOST_GROUP = "azure_host_group"
 OBJ_DEDICATED_HOST = "azure_dedicated_host"
+OBJ_PUBLIC_IP = "azure_public_ip"
+OBJ_EXPRESSROUTE = "azure_expressroute_circuit"
+OBJ_RECOVERY_VAULT = "azure_recovery_services_vault"
+OBJ_LOG_ANALYTICS = "azure_log_analytics_workspace"
 
 # API versions — use versions confirmed available in Azure Gov
 # These may lag behind commercial Azure; fall back if needed
@@ -60,4 +64,9 @@ API_VERSIONS = {
     "web_apps": "2023-01-01",
     "host_groups": "2023-03-01",
     "dedicated_hosts": "2023-03-01",
+    "public_ips": "2023-05-01",
+    "expressroute": "2023-05-01",
+    "recovery_vaults": "2023-01-01",
+    "log_analytics": "2023-09-01",
+    "cost_management": "2023-03-01",
 }

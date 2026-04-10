@@ -12,6 +12,10 @@ from collectors.key_vaults import collect_key_vaults
 from collectors.sql_databases import collect_sql_servers_and_databases
 from collectors.app_services import collect_app_services
 from collectors.dedicated_hosts import collect_dedicated_hosts
+from collectors.public_ips import collect_public_ips
+from collectors.expressroute import collect_expressroute_circuits
+from collectors.recovery_vaults import collect_recovery_vaults
+from collectors.log_analytics import collect_log_analytics_workspaces
 
 __all__ = [
     "collect_subscriptions",
@@ -26,4 +30,8 @@ __all__ = [
     "collect_sql_servers_and_databases",
     "collect_app_services",
     "collect_dedicated_hosts",
+    "collect_public_ips",
+    "collect_expressroute_circuits",
+    "collect_recovery_vaults",
+    "collect_log_analytics_workspaces",
 ]

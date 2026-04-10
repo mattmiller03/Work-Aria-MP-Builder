@@ -19,6 +19,7 @@ from constants import (
     OBJ_STORAGE_ACCOUNT, OBJ_LOAD_BALANCER, OBJ_KEY_VAULT,
     OBJ_SQL_SERVER, OBJ_SQL_DATABASE, OBJ_APP_SERVICE,
     OBJ_HOST_GROUP, OBJ_DEDICATED_HOST,
+    OBJ_PUBLIC_IP, OBJ_EXPRESSROUTE, OBJ_RECOVERY_VAULT, OBJ_LOG_ANALYTICS,
 )
 from auth import AzureAuthenticator
 from azure_client import AzureClient
@@ -35,6 +36,10 @@ from collectors import (
     collect_sql_servers_and_databases,
     collect_app_services,
     collect_dedicated_hosts,
+    collect_public_ips,
+    collect_expressroute_circuits,
+    collect_recovery_vaults,
+    collect_log_analytics_workspaces,
 )
 
 logger = logging.getLogger(__name__)
@@ -369,6 +374,84 @@ def get_adapter_definition():
     dh.define_numeric_property("smallest_vm_available",
                                "Smallest VM Size Available Count")
 
+    # Public IP Address
+    pip = definition.define_object_type(OBJ_PUBLIC_IP,
+                                        "Azure Public IP Address")
+    pip.define_string_identifier("subscription_id", "Subscription ID")
+    pip.define_string_identifier("resource_group", "Resource Group")
+    pip.define_string_identifier("public_ip_name", "Public IP Name")
+    pip.define_string_property("resource_id", "Resource ID")
+    pip.define_string_property("location", "Location")
+    pip.define_string_property("sku_name", "SKU Name")
+    pip.define_string_property("sku_tier", "SKU Tier")
+    pip.define_string_property("ip_address", "IP Address")
+    pip.define_string_property("public_ip_allocation_method", "Allocation Method")
+    pip.define_string_property("public_ip_address_version", "IP Version")
+    pip.define_string_property("idle_timeout_in_minutes", "Idle Timeout (min)")
+    pip.define_string_property("provisioning_state", "Provisioning State")
+    pip.define_string_property("dns_fqdn", "DNS FQDN")
+    pip.define_string_property("dns_domain_name_label", "DNS Domain Label")
+    pip.define_string_property("associated_resource_id", "Associated Resource ID")
+    pip.define_string_property("availability_zone", "Availability Zone")
+
+    # ExpressRoute Circuit
+    er = definition.define_object_type(OBJ_EXPRESSROUTE,
+                                       "Azure ExpressRoute Circuit")
+    er.define_string_identifier("subscription_id", "Subscription ID")
+    er.define_string_identifier("resource_group", "Resource Group")
+    er.define_string_identifier("circuit_name", "Circuit Name")
+    er.define_string_property("resource_id", "Resource ID")
+    er.define_string_property("location", "Location")
+    er.define_string_property("sku_name", "SKU Name")
+    er.define_string_property("sku_tier", "SKU Tier")
+    er.define_string_property("sku_family", "SKU Family")
+    er.define_string_property("circuit_provisioning_state", "Circuit Provisioning State")
+    er.define_string_property("service_provider_provisioning_state", "Provider State")
+    er.define_string_property("bandwidth_in_mbps", "Bandwidth (Mbps)")
+    er.define_string_property("peering_location", "Peering Location")
+    er.define_string_property("service_provider_name", "Service Provider")
+    er.define_string_property("provisioning_state", "Provisioning State")
+    er.define_string_property("allow_classic_operations", "Allow Classic Operations")
+    er.define_string_property("global_reach_enabled", "Global Reach Enabled")
+    er.define_numeric_property("peering_count", "Peering Count")
+    er.define_string_property("peering_names", "Peering Names")
+
+    # Recovery Services Vault
+    rv = definition.define_object_type(OBJ_RECOVERY_VAULT,
+                                       "Azure Recovery Services Vault")
+    rv.define_string_identifier("subscription_id", "Subscription ID")
+    rv.define_string_identifier("resource_group", "Resource Group")
+    rv.define_string_identifier("vault_name", "Vault Name")
+    rv.define_string_property("resource_id", "Resource ID")
+    rv.define_string_property("location", "Location")
+    rv.define_string_property("sku_name", "SKU Name")
+    rv.define_string_property("sku_tier", "SKU Tier")
+    rv.define_string_property("provisioning_state", "Provisioning State")
+    rv.define_string_property("private_endpoint_state_for_backup", "Private Endpoint Backup")
+    rv.define_string_property("private_endpoint_state_for_site_recovery", "Private Endpoint Site Recovery")
+    rv.define_string_property("storage_type", "Storage Redundancy Type")
+    rv.define_string_property("cross_region_restore", "Cross Region Restore")
+    rv.define_string_property("immutability_state", "Immutability State")
+    rv.define_string_property("soft_delete_state", "Soft Delete State")
+
+    # Log Analytics Workspace
+    la = definition.define_object_type(OBJ_LOG_ANALYTICS,
+                                       "Azure Log Analytics Workspace")
+    la.define_string_identifier("subscription_id", "Subscription ID")
+    la.define_string_identifier("resource_group", "Resource Group")
+    la.define_string_identifier("workspace_name", "Workspace Name")
+    la.define_string_property("resource_id", "Resource ID")
+    la.define_string_property("location", "Location")
+    la.define_string_property("workspace_id", "Workspace ID")
+    la.define_string_property("provisioning_state", "Provisioning State")
+    la.define_string_property("sku_name", "SKU Name")
+    la.define_string_property("retention_in_days", "Retention (Days)")
+    la.define_string_property("daily_quota_gb", "Daily Quota (GB)")
+    la.define_string_property("created_date", "Created Date")
+    la.define_string_property("modified_date", "Modified Date")
+    la.define_string_property("public_network_access_for_ingestion", "Public Ingestion Access")
+    la.define_string_property("public_network_access_for_query", "Public Query Access")
+
     return definition
 
 
@@ -431,6 +514,10 @@ def collect(adapter_instance):
             ("SQL Databases", lambda: collect_sql_servers_and_databases(client, result, ADAPTER_KIND, subscriptions)),
             ("App Services", lambda: collect_app_services(client, result, ADAPTER_KIND, subscriptions)),
             ("Dedicated Hosts", lambda: collect_dedicated_hosts(client, result, ADAPTER_KIND, subscriptions)),
+            ("Public IPs", lambda: collect_public_ips(client, result, ADAPTER_KIND, subscriptions)),
+            ("ExpressRoute", lambda: collect_expressroute_circuits(client, result, ADAPTER_KIND, subscriptions)),
+            ("Recovery Vaults", lambda: collect_recovery_vaults(client, result, ADAPTER_KIND, subscriptions)),
+            ("Log Analytics", lambda: collect_log_analytics_workspaces(client, result, ADAPTER_KIND, subscriptions)),
         ]
 
         for name, collector_fn in collectors:
