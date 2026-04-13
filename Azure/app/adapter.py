@@ -63,13 +63,18 @@ def get_adapter_definition():
     from aria.ops.definition.units import Unit
 
     # Unit constants — the SDK's @skip-decorated enum classes (Ratio, DataSize,
-    # etc.) break under aenum 3.1.11 ('NonMember' has no attribute ...), so we
-    # instantiate the Unit dataclass values directly.
-    PERCENT = Unit("percent", "%", 1, 1)
-    BYTE = Unit("byte", "B", 1, 1, "bytes_base_10")
-    MILLISECONDS = Unit("milliseconds", "ms", 4, 1000)
-    PACKETS = Unit("packets", "packets", 1, 1, "Packets")
-    OPERATIONS_PER_SECOND = Unit("operations_per_sec", "ops/s", 1, 1, is_rate=True)
+    # etc.) become NonMember objects under aenum 3.1.11, breaking attribute
+    # access.  The SDK also expects enum-style access (unit.value.key), so we
+    # wrap each Unit in a simple object whose .value returns the Unit itself.
+    class _UnitWrapper:
+        def __init__(self, unit):
+            self.value = unit
+
+    PERCENT = _UnitWrapper(Unit("percent", "%", 1, 1))
+    BYTE = _UnitWrapper(Unit("byte", "B", 1, 1, "bytes_base_10"))
+    MILLISECONDS = _UnitWrapper(Unit("milliseconds", "ms", 4, 1000))
+    PACKETS = _UnitWrapper(Unit("packets", "packets", 1, 1, "Packets"))
+    OPERATIONS_PER_SECOND = _UnitWrapper(Unit("operations_per_sec", "ops/s", 1, 1, is_rate=True))
 
     definition = AdapterDefinition(ADAPTER_KIND, ADAPTER_NAME)
 
