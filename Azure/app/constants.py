@@ -69,4 +69,55 @@ API_VERSIONS = {
     "recovery_vaults": "2023-01-01",
     "log_analytics": "2023-09-01",
     "cost_management": "2023-03-01",
+    "monitor_metrics": "2023-10-01",
+}
+
+# Azure Monitor metric definitions per resource type
+# Each entry maps a resource type key to a list of (metric_name, aria_key, aggregation) tuples
+# metric_name: Azure Monitor metric name
+# aria_key: key used in Aria Ops (obj.with_metric)
+# aggregation: Azure aggregation type (Average, Total, Count, Maximum, Minimum)
+MONITOR_METRICS = {
+    "virtual_machines": [
+        ("Percentage CPU", "cpu_percent", "Average"),
+        ("Disk Read Bytes", "disk_read_bytes", "Total"),
+        ("Disk Write Bytes", "disk_write_bytes", "Total"),
+        ("Disk Read Operations/Sec", "disk_read_ops_per_sec", "Average"),
+        ("Disk Write Operations/Sec", "disk_write_ops_per_sec", "Average"),
+        ("Network In Total", "network_in_bytes", "Total"),
+        ("Network Out Total", "network_out_bytes", "Total"),
+    ],
+    "network_interfaces": [
+        ("BytesSentRate", "bytes_sent", "Total"),
+        ("BytesReceivedRate", "bytes_received", "Total"),
+        ("PacketsSentRate", "packets_sent", "Total"),
+        ("PacketsReceivedRate", "packets_received", "Total"),
+    ],
+    "load_balancers": [
+        ("VipAvailability", "data_path_availability", "Average"),
+        ("DipAvailability", "health_probe_status", "Average"),
+        ("ByteCount", "byte_count", "Total"),
+        ("PacketCount", "packet_count", "Total"),
+    ],
+    "sql_databases": [
+        ("cpu_percent", "cpu_percent", "Average"),
+        ("dtu_consumption_percent", "dtu_percent", "Average"),
+        ("physical_data_read_percent", "data_io_percent", "Average"),
+        ("log_write_percent", "log_io_percent", "Average"),
+        ("storage_percent", "storage_percent", "Average"),
+        ("connection_successful", "successful_connections", "Total"),
+        ("connection_failed", "failed_connections", "Total"),
+        ("deadlock", "deadlocks", "Total"),
+        ("workers_percent", "workers_percent", "Average"),
+        ("sessions_percent", "sessions_percent", "Average"),
+    ],
+    "storage_accounts": [
+        ("UsedCapacity", "used_capacity_bytes", "Average"),
+        ("Transactions", "transactions", "Total"),
+        ("Ingress", "ingress_bytes", "Total"),
+        ("Egress", "egress_bytes", "Total"),
+        ("Availability", "availability_percent", "Average"),
+        ("SuccessE2ELatency", "e2e_latency_ms", "Average"),
+        ("SuccessServerLatency", "server_latency_ms", "Average"),
+    ],
 }

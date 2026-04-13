@@ -7,6 +7,7 @@ from constants import (
     API_VERSIONS, OBJ_VIRTUAL_MACHINE, OBJ_RESOURCE_GROUP, OBJ_DEDICATED_HOST,
 )
 from helpers import make_identifiers, extract_resource_group, safe_property
+from collectors.metrics import collect_metrics_for_objects
 
 logger = logging.getLogger(__name__)
 
@@ -26,6 +27,7 @@ def collect_virtual_machines(client: AzureClient, result, adapter_kind: str,
     """
     logger.info("Collecting virtual machines")
     total = 0
+    vm_objects = {}  # resource_id -> aria obj, for metrics collection
 
     for sub in subscriptions:
         sub_id = sub["subscriptionId"]

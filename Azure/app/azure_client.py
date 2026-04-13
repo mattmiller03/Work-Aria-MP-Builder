@@ -85,6 +85,58 @@ class AzureClient:
 
         return all_items
 
+    def get_metrics(self, resource_id: str, metric_names: list,
+                    aggregation: str = "Average",
+                    timespan: str = "PT1H",
+                    interval: str = "PT5M",
+                    api_version: str = "2023-10-01") -> dict:
+        """Fetch Azure Monitor metrics for a single resource.
+
+        Args:
+            resource_id: Full Azure resource ID.
+            metric_names: List of Azure Monitor metric names.
+            aggregation: Aggregation type (Average, Total, Count, Max, Min).
+            timespan: ISO 8601 duration for lookback (default: last 1 hour).
+            interval: Granularity (default: 5 minutes).
+            api_version: Monitor API version.
+
+        Returns:
+            Dict mapping metric name to its latest aggregated value.
+            Returns empty dict on failure.
+        """
+        url = f"{self.arm_endpoint}{resource_id}/providers/microsoft.insights/metrics"
+        query = {
+            "api-version": api_version,
+            "metricnames": ",".join(metric_names),
+            "aggregation": aggregation,
+            "timespan": timespan,
+            "interval": interval,
+        }
+
+        results = {}
+        try:
+            response = self._request_with_retry("GET", url, query)
+            for metric in response.get("value", []):
+                name = metric.get("name", {}).get("value", "")
+                timeseries = metric.get("timeseries", [])
+                if not timeseries:
+                    continue
+                # Get the last non-null data point
+                data_points = timeseries[0].get("data", [])
+                for point in reversed(data_points):
+                    # Try the requested aggregation, then fall back
+                    val = point.get(aggregation.lower())
+                    if val is None:
+                        val = point.get("average") or point.get("total")
+                    if val is not None:
+                        results[name] = float(val)
+                        break
+        except Exception as e:
+            logger.debug("Metrics fetch failed for %s: %s",
+                         resource_id.split("/")[-1], e)
+
+        return results
+
     def _request_with_retry(self, method: str, url: str,
                             params: Optional[dict] = None,
                             max_retries: int = 3) -> dict:
