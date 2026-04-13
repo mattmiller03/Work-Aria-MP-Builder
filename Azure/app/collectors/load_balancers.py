@@ -5,6 +5,7 @@ import logging
 from azure_client import AzureClient
 from constants import API_VERSIONS, OBJ_LOAD_BALANCER, OBJ_RESOURCE_GROUP
 from helpers import make_identifiers, extract_resource_group, safe_property
+from collectors.metrics import collect_metrics_for_objects
 
 logger = logging.getLogger(__name__)
 
@@ -14,6 +15,7 @@ def collect_load_balancers(client: AzureClient, result, adapter_kind: str,
     """Collect load balancers across all subscriptions."""
     logger.info("Collecting load balancers")
     total = 0
+    lb_objects = {}  # resource_id -> aria obj
 
     for sub in subscriptions:
         sub_id = sub["subscriptionId"]
@@ -92,6 +94,13 @@ def collect_load_balancers(client: AzureClient, result, adapter_kind: str,
                 )
                 obj.add_parent(rg_obj)
 
+            resource_id = lb.get("id", "")
+            if resource_id:
+                lb_objects[resource_id] = obj
+
         total += len(lbs)
 
     logger.info("Collected %d load balancers", total)
+
+    if lb_objects:
+        collect_metrics_for_objects(client, lb_objects, "load_balancers")

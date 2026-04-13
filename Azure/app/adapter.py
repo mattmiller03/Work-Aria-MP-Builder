@@ -60,6 +60,7 @@ def get_adapter_definition():
     The SDK uses this to auto-generate describe.xml at build time.
     """
     from aria.ops.definition.adapter_definition import AdapterDefinition
+    from aria.ops.definition.units import Ratio, DataSize, Misc, Time
 
     definition = AdapterDefinition(ADAPTER_KIND, ADAPTER_NAME)
 
@@ -141,6 +142,21 @@ def get_adapter_definition():
     vm.define_string_property("dedicated_host_id", "Dedicated Host ID")
     vm.define_string_property("dedicated_host_name", "Dedicated Host Name")
     vm.define_string_property("dedicated_host_group", "Dedicated Host Group")
+    # VM Metrics (Azure Monitor)
+    vm.define_metric("CPU|cpu_usage", "CPU Usage",
+                     unit=Ratio.PERCENT, is_key_attribute=True)
+    vm.define_metric("Disk|disk_read_bytes", "Disk Read Bytes",
+                     unit=DataSize.BYTE)
+    vm.define_metric("Disk|disk_write_bytes", "Disk Write Bytes",
+                     unit=DataSize.BYTE)
+    vm.define_metric("Disk|disk_read_operations", "Disk Read Operations",
+                     unit=Misc.OPERATIONS_PER_SECOND, is_rate=True)
+    vm.define_metric("Disk|disk_write_operations", "Disk Write Operations",
+                     unit=Misc.OPERATIONS_PER_SECOND, is_rate=True)
+    vm.define_metric("Network|network_in", "Network In",
+                     unit=DataSize.BYTE)
+    vm.define_metric("Network|network_out", "Network Out",
+                     unit=DataSize.BYTE)
 
     # Disk
     disk = definition.define_object_type(OBJ_DISK, "Azure Disk")
@@ -188,6 +204,15 @@ def get_adapter_definition():
     nic.define_numeric_property("ip_config_count", "IP Config Count")
     nic.define_string_property("dns_servers", "DNS Servers")
     nic.define_string_property("applied_dns_servers", "Applied DNS Servers")
+    # NIC Metrics (Azure Monitor)
+    nic.define_metric("Network|bytes_sent", "Bytes Sent",
+                      unit=DataSize.BYTE)
+    nic.define_metric("Network|bytes_received", "Bytes Received",
+                      unit=DataSize.BYTE)
+    nic.define_metric("Network|packets_sent", "Packets Sent",
+                      unit=Misc.PACKETS)
+    nic.define_metric("Network|packets_received", "Packets Received",
+                      unit=Misc.PACKETS)
 
     # Virtual Network
     vnet = definition.define_object_type(OBJ_VIRTUAL_NETWORK,
@@ -240,6 +265,20 @@ def get_adapter_definition():
     sa.define_string_property("encryption_key_source", "Encryption Key Source")
     sa.define_string_property("network_default_action",
                               "Network Default Action")
+    # Storage Account Metrics (Azure Monitor)
+    sa.define_metric("Storage|used_capacity", "Used Capacity",
+                     unit=DataSize.BYTE)
+    sa.define_metric("Storage|transactions", "Transactions")
+    sa.define_metric("Network|ingress", "Ingress",
+                     unit=DataSize.BYTE)
+    sa.define_metric("Network|egress", "Egress",
+                     unit=DataSize.BYTE)
+    sa.define_metric("Availability|availability", "Availability",
+                     unit=Ratio.PERCENT)
+    sa.define_metric("Latency|e2e_latency", "E2E Latency",
+                     unit=Time.MILLISECONDS)
+    sa.define_metric("Latency|server_latency", "Server Latency",
+                     unit=Time.MILLISECONDS)
 
     # Load Balancer
     lb = definition.define_object_type(OBJ_LOAD_BALANCER,
@@ -260,6 +299,15 @@ def get_adapter_definition():
     lb.define_numeric_property("probe_count", "Probe Count")
     lb.define_numeric_property("inbound_nat_rule_count",
                                "Inbound NAT Rule Count")
+    # Load Balancer Metrics (Azure Monitor)
+    lb.define_metric("Availability|data_path_availability",
+                     "Data Path Availability", unit=Ratio.PERCENT)
+    lb.define_metric("Availability|health_probe_status",
+                     "Health Probe Status", unit=Ratio.PERCENT)
+    lb.define_metric("Network|byte_count", "Byte Count",
+                     unit=DataSize.BYTE)
+    lb.define_metric("Network|packet_count", "Packet Count",
+                     unit=Misc.PACKETS)
 
     # Key Vault
     kv = definition.define_object_type(OBJ_KEY_VAULT, "Azure Key Vault")
@@ -298,6 +346,18 @@ def get_adapter_definition():
                                    "Public Network Access")
     sql_srv.define_string_property("minimal_tls_version",
                                    "Minimal TLS Version")
+    # SQL Server Metrics (Azure Monitor — aggregated from child databases)
+    sql_srv.define_metric("CPU|cpu_usage", "Avg CPU Usage",
+                          unit=Ratio.PERCENT)
+    sql_srv.define_metric("Storage|data_io", "Avg Data I/O",
+                          unit=Ratio.PERCENT)
+    sql_srv.define_metric("Storage|xtp_storage", "XTP Storage",
+                          unit=Ratio.PERCENT)
+    sql_srv.define_metric("Workload|dtu_used", "DTU Used")
+    sql_srv.define_metric("Workload|workers", "Workers",
+                          unit=Ratio.PERCENT)
+    sql_srv.define_metric("Workload|sessions", "Sessions",
+                          unit=Ratio.PERCENT)
 
     # SQL Database
     sql_db = definition.define_object_type(OBJ_SQL_DATABASE,
@@ -318,6 +378,34 @@ def get_adapter_definition():
     sql_db.define_string_property("current_service_objective",
                                   "Current Service Objective")
     sql_db.define_string_property("zone_redundant", "Zone Redundant")
+    # SQL Database Metrics (Azure Monitor)
+    sql_db.define_metric("CPU|cpu_usage", "CPU Usage",
+                         unit=Ratio.PERCENT, is_key_attribute=True)
+    sql_db.define_metric("Workload|dtu_consumption", "DTU Consumption",
+                         unit=Ratio.PERCENT)
+    sql_db.define_metric("Workload|dtu_limit", "DTU Limit")
+    sql_db.define_metric("Workload|dtu_used", "DTU Used")
+    sql_db.define_metric("Storage|data_io", "Data I/O",
+                         unit=Ratio.PERCENT)
+    sql_db.define_metric("Storage|log_io", "Log I/O",
+                         unit=Ratio.PERCENT)
+    sql_db.define_metric("Storage|storage_usage", "Storage Usage",
+                         unit=Ratio.PERCENT)
+    sql_db.define_metric("Storage|database_size", "Database Size",
+                         unit=DataSize.BYTE)
+    sql_db.define_metric("Storage|xtp_storage", "XTP Storage",
+                         unit=Ratio.PERCENT)
+    sql_db.define_metric("Network|successful_connections",
+                         "Successful Connections")
+    sql_db.define_metric("Network|failed_connections",
+                         "Failed Connections")
+    sql_db.define_metric("Network|blocked_by_firewall",
+                         "Blocked by Firewall")
+    sql_db.define_metric("Network|deadlocks", "Deadlocks")
+    sql_db.define_metric("Workload|workers", "Workers",
+                         unit=Ratio.PERCENT)
+    sql_db.define_metric("Workload|sessions", "Sessions",
+                         unit=Ratio.PERCENT)
 
     # App Service
     app = definition.define_object_type(OBJ_APP_SERVICE,

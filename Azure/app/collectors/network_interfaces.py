@@ -5,6 +5,7 @@ import logging
 from azure_client import AzureClient
 from constants import API_VERSIONS, OBJ_NETWORK_INTERFACE, OBJ_RESOURCE_GROUP
 from helpers import make_identifiers, extract_resource_group, safe_property
+from collectors.metrics import collect_metrics_for_objects
 
 logger = logging.getLogger(__name__)
 
@@ -14,6 +15,7 @@ def collect_network_interfaces(client: AzureClient, result, adapter_kind: str,
     """Collect network interfaces across all subscriptions."""
     logger.info("Collecting network interfaces")
     total = 0
+    nic_objects = {}  # resource_id -> aria obj
 
     for sub in subscriptions:
         sub_id = sub["subscriptionId"]
@@ -112,6 +114,13 @@ def collect_network_interfaces(client: AzureClient, result, adapter_kind: str,
                 )
                 obj.add_parent(rg_obj)
 
+            resource_id = nic.get("id", "")
+            if resource_id:
+                nic_objects[resource_id] = obj
+
         total += len(nics)
 
     logger.info("Collected %d network interfaces", total)
+
+    if nic_objects:
+        collect_metrics_for_objects(client, nic_objects, "network_interfaces")

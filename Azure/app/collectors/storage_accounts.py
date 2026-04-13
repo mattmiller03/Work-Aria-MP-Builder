@@ -5,6 +5,7 @@ import logging
 from azure_client import AzureClient
 from constants import API_VERSIONS, OBJ_STORAGE_ACCOUNT, OBJ_RESOURCE_GROUP
 from helpers import make_identifiers, extract_resource_group, safe_property
+from collectors.metrics import collect_metrics_for_objects
 
 logger = logging.getLogger(__name__)
 
@@ -14,6 +15,7 @@ def collect_storage_accounts(client: AzureClient, result, adapter_kind: str,
     """Collect storage accounts across all subscriptions."""
     logger.info("Collecting storage accounts")
     total = 0
+    sa_objects = {}  # resource_id -> aria obj
 
     for sub in subscriptions:
         sub_id = sub["subscriptionId"]
@@ -94,6 +96,13 @@ def collect_storage_accounts(client: AzureClient, result, adapter_kind: str,
                 )
                 obj.add_parent(rg_obj)
 
+            resource_id = acct.get("id", "")
+            if resource_id:
+                sa_objects[resource_id] = obj
+
         total += len(accounts)
 
     logger.info("Collected %d storage accounts", total)
+
+    if sa_objects:
+        collect_metrics_for_objects(client, sa_objects, "storage_accounts")

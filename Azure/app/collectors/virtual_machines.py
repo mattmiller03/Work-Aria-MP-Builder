@@ -197,9 +197,18 @@ def collect_virtual_machines(client: AzureClient, result, adapter_kind: str,
                 )
                 obj.add_parent(rg_obj)
 
+            # Track for metrics collection
+            resource_id = vm.get("id", "")
+            if resource_id:
+                vm_objects[resource_id] = obj
+
         total += len(vms)
 
     logger.info("Collected %d virtual machines", total)
+
+    # Collect Azure Monitor metrics for all VMs
+    if vm_objects:
+        collect_metrics_for_objects(client, vm_objects, "virtual_machines")
 
 
 

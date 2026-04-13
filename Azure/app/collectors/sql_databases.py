@@ -7,6 +7,7 @@ from constants import (
     API_VERSIONS, OBJ_SQL_SERVER, OBJ_SQL_DATABASE, OBJ_RESOURCE_GROUP,
 )
 from helpers import make_identifiers, extract_resource_group, safe_property
+from collectors.metrics import collect_metrics_for_objects
 
 logger = logging.getLogger(__name__)
 
@@ -17,6 +18,7 @@ def collect_sql_servers_and_databases(client: AzureClient, result,
     logger.info("Collecting SQL servers and databases")
     total_servers = 0
     total_dbs = 0
+    db_objects = {}  # resource_id -> aria obj
 
     for sub in subscriptions:
         sub_id = sub["subscriptionId"]
@@ -138,7 +140,14 @@ def collect_sql_servers_and_databases(client: AzureClient, result,
                 db_obj.add_parent(srv_obj)
                 total_dbs += 1
 
+                resource_id = db.get("id", "")
+                if resource_id:
+                    db_objects[resource_id] = db_obj
+
         total_servers += len(servers)
 
     logger.info("Collected %d SQL servers, %d databases",
                 total_servers, total_dbs)
+
+    if db_objects:
+        collect_metrics_for_objects(client, db_objects, "sql_databases")
