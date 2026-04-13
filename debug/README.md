@@ -104,3 +104,26 @@ mp-builder-Ip:5000/azuregovcloud-adapter                            <none>      
 mp-builder-Ip:5000/azuregovcloud-adapter                            <none>       786e9f3b4ac2   3 days ago     281MB
 azuregovcloud-test                                                  1.0.0        ae3623788d7a   7 days ago     281MB
 mp-builder-Ip:5000/azuregovcloud-adapter                            <none>       ae3623788d7a   7 days ago     281MB
+
+
+
+Unexpected exception occurred while trying to build pak file
+[Errno 2] No such file or directory: '/opt/aria/Aria-MP-Builder/Azure/echo 0'
+  File "/opt/python312/lib/python3.12/site-packages/vmware_aria_operations_integration_sdk/mp_build.py", line 713, in main
+    pak_file = asyncio.run(
+               ^^^^^^^^^^^^
+  File "/opt/python312/lib/python3.12/asyncio/runners.py", line 195, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/opt/python312/lib/python3.12/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python312/lib/python3.12/asyncio/base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/opt/python312/lib/python3.12/site-packages/vmware_aria_operations_integration_sdk/mp_build.py", line 547, in build_pak_file
+    shutil.copy(
+  File "/opt/python312/lib/python3.12/shutil.py", line 435, in copy
+    copyfile(src, dst, follow_symlinks=follow_symlinks)
+  File "/opt/python312/lib/python3.12/shutil.py", line 260, in copyfile
+    with open(src, 'rb') as fsrc:
