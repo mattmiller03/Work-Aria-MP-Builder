@@ -93,3 +93,14 @@ Operation│Time    │t=0s                                                t=-17
 
 adapterDefinition endpoint returned 500.
 Unable to build pak file
+
+
+
+sudo docker images | grep azure
+mp-builder-Ip:5000/azuregovcloud-adapter                            <none>       f994e72787c2   2 days ago     281MB
+mp-builder-Ip:5000/azuregovcloud-adapter                            <none>       66f9a35890b1   3 days ago     281MB
+mp-builder-Ip:5000/azuregovcloud-adapter                            latest       9eb8cf6a0866   3 days ago     281MB
+mp-builder-Ip:5000/azuregovcloud-adapter                            <none>       63dd5869a726   3 days ago     281MB
+mp-builder-Ip:5000/azuregovcloud-adapter                            <none>       786e9f3b4ac2   3 days ago     281MB
+azuregovcloud-test                                                  1.0.0        ae3623788d7a   7 days ago     281MB
+mp-builder-Ip:5000/azuregovcloud-adapter                            <none>       ae3623788d7a   7 days ago     281MB
