@@ -12,6 +12,15 @@
   ],
   "vendor": "DLA",
   "pak_icon": "icon.png",
+  "pak_validation_script": {
+    "script": "echo 0"
+  },
+  "adapter_pre_script": {
+    "script": "echo 0"
+  },
+  "adapter_post_script": {
+    "script": "echo 0"
+  },
   "adapters": [
     "adapter.zip"
   ],
