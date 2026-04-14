@@ -190,13 +190,20 @@ If it shows AzureGovAdapter still registered, that's the blocker. We'd need to d
 # Get auth token
 TOKEN=$(curl -k -s -X POST "https://localhost/suite-api/api/auth/token/acquire" \
   -H "Content-Type: application/json" \
-  -d '{"username":"admin","password":"YOUR_PASSWORD","authSource":"LOCAL"}' \
+  -d '{"username":"admin","password":"***REDACTED-PASSWORD***","authSource":"LOCAL"}' \
   | python3 -c "import sys,json; print(json.load(sys.stdin)['token'])")
+
+
+  curl -k -X POST "https://localhost/suite-api/api/auth/token/acquire" \
+  -H "Content-Type: application/json" \
+  -d '{"username":"admin","password":"***REDACTED-PASSWORD***","authSource":"LOCAL"}' \
+  | python3 -c "import sys,json; print(json.load(sys.stdin)['token'])")
+
 
 # Check if AzureGovAdapter is still registered
 curl -k -s "https://localhost/suite-api/api/adapterkinds" \
-  -H "Authorization: vRealizeOpsToken $TOKEN" \
-  -H "Accept: application/json" | python3 -c "
+  -H "Authorization: vRealizeOpsToken ***REDACTED-TOKEN***" \
+  -H "Accept: application/json" | grep -i -o '"key":"[^"]*[Aa]zure[^"]*"'
 import sys,json
 data = json.load(sys.stdin)
 for ak in data.get('adapter-kind',[]):
@@ -207,3 +214,25 @@ for ak in data.get('adapter-kind',[]):
 # If it shows AzureGovAdapter, delete it
 curl -k -s -X DELETE "https://localhost/suite-api/api/adapterkinds/AzureGovAdapter" \
   -H "Authorization: vRealizeOpsToken $TOKEN"
+
+
+
+
+
+
+
+
+
+  root@daisv0tp003 [ /home/vropsssh ]# $VMWARE_PYTHON_BIN /usr/lib/vmware-vcopssuite/utilities/sliceConfiguration/bin/vcopsClusterManager.py init-cluster
+ERROR:root:Failed to get CaSA token pair: '503' error code: HTTP Error 503: Service Unavailable
+2026-04-14T19:03:41 ERROR [2933] - root - Failed to get CaSA token pair: '503' error code: HTTP Error 503: Service Unavailable
+2026-04-14T19:03:42 ERROR [2933] - root - Failed to initialize the cluster. Casa returned status code 503.
+2026-04-14T19:03:42 ERROR [2933] - root - 
+Operation failed.  Failed to initialize the cluster.  See log for details.
+2026-04-14T19:03:42 ERROR [2933] - root - Failed to initialize the cluster.
+Traceback (most recent call last):
+  File "/usr/lib/vmware-vcopssuite/utilities/sliceConfiguration/bin/vcopsClusterManager.py", line 146, in <module>
+    ClusterManager().initializeCluster()
+  File "/usr/lib/vmware-vcopssuite/utilities/sliceConfiguration/bin/vcopsClusterManager.py", line 81, in initializeCluster
+    raise Exception('Failed to initialize the cluster.')
+Exception: Failed to initialize the cluster.
