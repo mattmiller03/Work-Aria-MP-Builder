@@ -118,4 +118,44 @@ cd /usr/lib/vmware-vcops/
 
 In the Aria Ops web UI, go to Administration > Repository > Management Packs (not Solutions). The failed pak might show there with an option to delete it.
 
-Can you check both the Solutions page and the Repository page in the UI?
+
+
+
+On the Cloud Proxy:
+
+
+# Stop and remove all Azure adapter containers
+sudo docker ps -a | grep azure
+sudo docker stop $(sudo docker ps -a | grep azure | awk '{print $1}')
+sudo docker rm $(sudo docker ps -a | grep azure | awk '{print $1}')
+
+# Remove all Azure adapter images
+sudo docker rmi $(sudo docker images | grep azure | awk '{print $3}') --force
+
+# Verify clean
+sudo docker images | grep azure
+sudo docker ps -a | grep azure
+On the Aria Ops node:
+
+
+# Restart CASA to clear any cached state
+sudo systemctl restart vmware-casa
+
+# Wait a couple minutes, then verify the solution is gone
+# Check the UI: Administration > Solutions — Azure Gov should not appear
+On the MP Builder server:
+
+
+# Clean old builds and images
+sudo docker rmi $(sudo docker images | grep azure | awk '{print $3}') --force
+
+# Fresh build
+cd /opt/aria/Aria-MP-Builder/Azure
+sudo mp-build -i --no-ttl --registry-tag "mp-builder-Ip:5000/azuregovcloud-adapter" -P 8181
+
+# Push to registry
+sudo docker push mp-builder-Ip:5000/azuregovcloud-adapter:latest
+Then on Aria Ops UI:
+
+Administration > Repository > Add Pak
+Fresh install of the new .pak file
