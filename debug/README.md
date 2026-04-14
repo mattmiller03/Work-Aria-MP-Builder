@@ -1,3 +1,6 @@
+<!-- markdownlint-disable -->
+
+
 # Debug Folder
 
 Use this folder for transferring logs and scratch files between machines.
