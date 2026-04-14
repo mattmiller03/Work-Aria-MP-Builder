@@ -87,3 +87,35 @@ Administration > Solutions
 Right-click the Azure Gov pack
 Look for Reset or Uninstall option
 Does basic auth with -u 'admin:password' work, or is that also unauthorized?
+
+
+1. Use the maintenanceAdmin account instead (built-in system account):
+
+
+curl -k -u 'maintenanceAdmin:YOUR_PASSWORD' \
+  "https://localhost/suite-api/api/solutions" \
+  -H "Accept: application/json"
+2. Try specifying the auth source explicitly:
+
+
+curl -k -X POST "https://localhost/suite-api/api/auth/token/acquire" \
+  -H "Content-Type: application/json" \
+  -d '{"username":"admin","password":"YOUR_PASSWORD","authSource":"LOCAL"}'
+Note LOCAL in caps — some versions are case-sensitive.
+
+3. Skip the API entirely — use the $VMWARE_PYTHON_BIN CLI on the node:
+
+
+# SSH into the Aria Ops master node
+sudo su -
+cd /usr/lib/vmware-vcops/
+./vcopsConfigureRoles.sh --
+
+
+# Or try the pak manager directly
+/usr/lib/vmware-vcops/tools/opscli/admin-cli.sh solution list
+4. Simplest option — just uninstall from the UI:
+
+In the Aria Ops web UI, go to Administration > Repository > Management Packs (not Solutions). The failed pak might show there with an option to delete it.
+
+Can you check both the Solutions page and the Repository page in the UI?
