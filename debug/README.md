@@ -186,3 +186,24 @@ curl -k -u 'admin:YOUR_PASSWORD' \
   "https://localhost/suite-api/api/adapterkinds" \
   -H "Accept: application/json" 2>/dev/null | grep -i azure
 If it shows AzureGovAdapter still registered, that's the blocker. We'd need to delete the stale adapter kind before reinstalling.
+
+# Get auth token
+TOKEN=$(curl -k -s -X POST "https://localhost/suite-api/api/auth/token/acquire" \
+  -H "Content-Type: application/json" \
+  -d '{"username":"admin","password":"YOUR_PASSWORD","authSource":"LOCAL"}' \
+  | python3 -c "import sys,json; print(json.load(sys.stdin)['token'])")
+
+# Check if AzureGovAdapter is still registered
+curl -k -s "https://localhost/suite-api/api/adapterkinds" \
+  -H "Authorization: vRealizeOpsToken $TOKEN" \
+  -H "Accept: application/json" | python3 -c "
+import sys,json
+data = json.load(sys.stdin)
+for ak in data.get('adapter-kind',[]):
+    if 'azure' in ak.get('key','').lower():
+        print(ak['key'], ak.get('name',''))
+"
+
+# If it shows AzureGovAdapter, delete it
+curl -k -s -X DELETE "https://localhost/suite-api/api/adapterkinds/AzureGovAdapter" \
+  -H "Authorization: vRealizeOpsToken $TOKEN"
