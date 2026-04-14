@@ -266,3 +266,11 @@ Apr 14 19:34:52 daisv0tp003.dev-test.dla.mil vmware-casa.sh[3649]: starting tomc
 Apr 14 19:34:52 daisv0tp003.dev-test.dla.mil vmware-casa.sh[3649]: su_tomcat /usr/lib/vmware-casa/casa-web…tart
 Apr 14 19:34:52 daisv0tp003.dev-test.dla.mil vmware-casa.sh[3670]: touch: cannot touch '/storage/log/vcops…tory
 Apr 14 19:34:52 daisv0tp003.dev-test.dla.mil vmware-casa.sh[3666]: /usr/share/tomcat/bin/catalina.sh: line…tory
+
+
+
+
+sudo mkdir -p /storage/log/vcops/log/casa
+sudo mkdir -p /storage/log/vcops/log/pakManager
+sudo chown -R admin:admin /storage/log/vcops/log/casa
+sudo chown -R admin:admin /storage/log/vcops/log/pakManager
