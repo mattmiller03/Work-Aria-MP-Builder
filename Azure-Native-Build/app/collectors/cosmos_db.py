@@ -124,7 +124,7 @@ def collect_cosmos_db_accounts(client: AzureClient, result, adapter_kind: str,
             tags = acct.get("tags", {})
             if tags:
                 for key, value in tags.items():
-                    safe_property(obj, f"tag_{sanitize_tag_key(key)}", value)
+                    safe_property(obj, f"summary|tags|{key}", value)
 
             # Relationship: Cosmos DB Account -> Resource Group
             if rg_name:

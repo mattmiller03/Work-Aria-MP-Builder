@@ -88,7 +88,7 @@ def collect_expressroute_circuits(client: AzureClient, result, adapter_kind: str
             tags = circuit.get("tags", {})
             if tags:
                 for key, value in tags.items():
-                    safe_property(obj, f"tag_{sanitize_tag_key(key)}", value)
+                    safe_property(obj, f"summary|tags|{key}", value)
 
             if rg_name:
                 rg_id = f"/subscriptions/{sub_id}/resourceGroups/{rg_name}"

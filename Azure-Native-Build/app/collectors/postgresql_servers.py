@@ -133,7 +133,7 @@ def collect_postgresql_servers(client: AzureClient, result,
             tags = server.get("tags", {})
             if tags:
                 for key, value in tags.items():
-                    safe_property(obj, f"tag_{sanitize_tag_key(key)}", value)
+                    safe_property(obj, f"summary|tags|{key}", value)
 
             # Relationship: PostgreSQL Server -> Resource Group
             if rg_name:

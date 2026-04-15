@@ -79,7 +79,7 @@ def collect_log_analytics_workspaces(client: AzureClient, result, adapter_kind: 
             tags = ws.get("tags", {})
             if tags:
                 for key, value in tags.items():
-                    safe_property(obj, f"tag_{sanitize_tag_key(key)}", value)
+                    safe_property(obj, f"summary|tags|{key}", value)
 
             if rg_name:
                 rg_id = f"/subscriptions/{sub_id}/resourceGroups/{rg_name}"

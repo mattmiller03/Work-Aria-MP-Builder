@@ -21,6 +21,8 @@ from collectors.recovery_vaults import collect_recovery_vaults
 from collectors.log_analytics import collect_log_analytics_workspaces
 from collectors.postgresql_servers import collect_postgresql_servers
 from collectors.mysql_servers import collect_mysql_servers
+from collectors.regions import collect_regions_and_world
+from collectors.bulk_resources import collect_all_generic_resources
 
 __all__ = [
     "collect_subscriptions",
@@ -44,4 +46,6 @@ __all__ = [
     "collect_log_analytics_workspaces",
     "collect_postgresql_servers",
     "collect_mysql_servers",
+    "collect_regions_and_world",
+    "collect_all_generic_resources",
 ]

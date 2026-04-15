@@ -2,6 +2,7 @@
 
 import logging
 from collections import Counter
+from datetime import datetime, timedelta
 
 from azure_client import AzureClient
 from constants import (
@@ -37,8 +38,170 @@ def collect_dedicated_hosts(client: AzureClient, result, adapter_kind: str,
     # Cache pricing per region — fetched lazily on first use
     region_prices = {}  # region -> {sku_name: hourly_rate}
 
+    # Subscription-level caches for enrichment APIs
+    cost_cache = {}      # sub_id -> {resource_id_lower: {cost, currency, cost_30d}}
+    advisor_cache = {}   # sub_id -> {resource_id_lower: {count, descriptions, impact, categories}}
+
     for sub in subscriptions:
         sub_id = sub["subscriptionId"]
+
+        # --- Subscription-level: Cost Management (API 1) ---
+        if sub_id not in cost_cache:
+            try:
+                # MonthToDate actual cost
+                mtd_body = {
+                    "type": "ActualCost",
+                    "timeframe": "MonthToDate",
+                    "dataset": {
+                        "granularity": "None",
+                        "aggregation": {"totalCost": {"name": "Cost", "function": "Sum"}},
+                        "filter": {
+                            "dimensions": {
+                                "name": "ResourceType",
+                                "operator": "In",
+                                "values": ["Microsoft.Compute/hostGroups/hosts"],
+                            }
+                        },
+                        "grouping": [{"type": "Dimension", "name": "ResourceId"}],
+                    },
+                }
+                mtd_response = client.post(
+                    path=f"/subscriptions/{sub_id}/providers/Microsoft.CostManagement/query",
+                    api_version=API_VERSIONS["cost_management"],
+                    body=mtd_body,
+                )
+
+                # Last 30 days actual cost
+                now = datetime.utcnow()
+                thirty_days_ago = now - timedelta(days=30)
+                l30d_body = {
+                    "type": "ActualCost",
+                    "timeframe": "Custom",
+                    "timePeriod": {
+                        "from": thirty_days_ago.strftime("%Y-%m-%dT00:00:00Z"),
+                        "to": now.strftime("%Y-%m-%dT23:59:59Z"),
+                    },
+                    "dataset": {
+                        "granularity": "None",
+                        "aggregation": {"totalCost": {"name": "Cost", "function": "Sum"}},
+                        "filter": {
+                            "dimensions": {
+                                "name": "ResourceType",
+                                "operator": "In",
+                                "values": ["Microsoft.Compute/hostGroups/hosts"],
+                            }
+                        },
+                        "grouping": [{"type": "Dimension", "name": "ResourceId"}],
+                    },
+                }
+                l30d_response = client.post(
+                    path=f"/subscriptions/{sub_id}/providers/Microsoft.CostManagement/query",
+                    api_version=API_VERSIONS["cost_management"],
+                    body=l30d_body,
+                )
+
+                # Parse cost responses — columns: [Cost, ResourceId]
+                # Find column indices
+                sub_costs = {}
+                mtd_columns = mtd_response.get("properties", {}).get("columns", [])
+                mtd_rows = mtd_response.get("properties", {}).get("rows", [])
+                cost_idx = next((i for i, c in enumerate(mtd_columns)
+                                 if c.get("name", "").lower() == "cost"), 0)
+                rid_idx = next((i for i, c in enumerate(mtd_columns)
+                                if c.get("name", "").lower() == "resourceid"), 1)
+                currency_idx = next((i for i, c in enumerate(mtd_columns)
+                                     if c.get("name", "").lower() == "currency"), None)
+
+                for row in mtd_rows:
+                    res_id = str(row[rid_idx]).lower()
+                    cost_val = float(row[cost_idx]) if row[cost_idx] is not None else 0.0
+                    currency = str(row[currency_idx]) if currency_idx is not None and currency_idx < len(row) else "USD"
+                    sub_costs[res_id] = {
+                        "cost_month_to_date": cost_val,
+                        "cost_currency": currency,
+                    }
+
+                # Parse last 30 days
+                l30d_columns = l30d_response.get("properties", {}).get("columns", [])
+                l30d_rows = l30d_response.get("properties", {}).get("rows", [])
+                l30d_cost_idx = next((i for i, c in enumerate(l30d_columns)
+                                      if c.get("name", "").lower() == "cost"), 0)
+                l30d_rid_idx = next((i for i, c in enumerate(l30d_columns)
+                                     if c.get("name", "").lower() == "resourceid"), 1)
+
+                for row in l30d_rows:
+                    res_id = str(row[l30d_rid_idx]).lower()
+                    cost_val = float(row[l30d_cost_idx]) if row[l30d_cost_idx] is not None else 0.0
+                    if res_id in sub_costs:
+                        sub_costs[res_id]["cost_last_30_days"] = cost_val
+                    else:
+                        sub_costs[res_id] = {
+                            "cost_month_to_date": 0.0,
+                            "cost_currency": "USD",
+                            "cost_last_30_days": cost_val,
+                        }
+
+                cost_cache[sub_id] = sub_costs
+                logger.info("Cached cost data for %d dedicated hosts in subscription %s",
+                            len(sub_costs), sub_id)
+            except Exception as e:
+                logger.warning("Cost Management query failed for subscription %s: %s",
+                               sub_id, e)
+                cost_cache[sub_id] = {}
+
+        # --- Subscription-level: Advisor Recommendations (API 4) ---
+        if sub_id not in advisor_cache:
+            try:
+                recommendations = client.get_all(
+                    path=f"/subscriptions/{sub_id}/providers/Microsoft.Advisor/recommendations",
+                    api_version=API_VERSIONS["advisor"],
+                    params={"$filter": "ResourceType eq 'Microsoft.Compute/hostGroups/hosts'"},
+                )
+
+                sub_advisor = {}
+                impact_order = {"High": 3, "Medium": 2, "Low": 1}
+                for rec in recommendations:
+                    rec_props = rec.get("properties", {})
+                    affected_id = rec_props.get("resourceMetadata", {}).get(
+                        "resourceId", "").lower()
+                    if not affected_id:
+                        # Fall back to the recommendation's own resource path
+                        affected_id = rec.get("id", "").lower()
+                        # Extract the host resource ID from the recommendation ID
+                        # Format: .../hostGroups/{group}/hosts/{host}/providers/Microsoft.Advisor/...
+                        parts = affected_id.split("/providers/microsoft.advisor/")
+                        if parts:
+                            affected_id = parts[0]
+
+                    if affected_id not in sub_advisor:
+                        sub_advisor[affected_id] = {
+                            "count": 0,
+                            "descriptions": [],
+                            "impact": "",
+                            "categories": set(),
+                        }
+
+                    entry = sub_advisor[affected_id]
+                    entry["count"] += 1
+                    short_desc = rec_props.get("shortDescription", {}).get(
+                        "solution", rec_props.get("shortDescription", {}).get(
+                            "problem", ""))
+                    if short_desc:
+                        entry["descriptions"].append(short_desc)
+                    impact = rec_props.get("impact", "")
+                    if impact_order.get(impact, 0) > impact_order.get(entry["impact"], 0):
+                        entry["impact"] = impact
+                    category = rec_props.get("category", "")
+                    if category:
+                        entry["categories"].add(category)
+
+                advisor_cache[sub_id] = sub_advisor
+                logger.info("Cached %d advisor-affected hosts in subscription %s",
+                            len(sub_advisor), sub_id)
+            except Exception as e:
+                logger.warning("Advisor query failed for subscription %s: %s",
+                               sub_id, e)
+                advisor_cache[sub_id] = {}
 
         # List all host groups in subscription
         host_groups = client.get_all(
@@ -101,7 +264,7 @@ def collect_dedicated_hosts(client: AzureClient, result, adapter_kind: str,
             tags = group.get("tags", {})
             if tags:
                 for key, value in tags.items():
-                    safe_property(group_obj, f"tag_{sanitize_tag_key(key)}", value)
+                    safe_property(group_obj, f"summary|tags|{key}", value)
 
             # Relationship: Host Group -> Resource Group
             if rg_name:
@@ -399,7 +562,186 @@ def collect_dedicated_hosts(client: AzureClient, result, adapter_kind: str,
                 host_tags = host.get("tags", {})
                 if host_tags:
                     for key, value in host_tags.items():
-                        safe_property(host_obj, f"tag_{sanitize_tag_key(key)}", value)
+                        safe_property(host_obj, f"summary|tags|{key}", value)
+
+                # =============================================================
+                # Enrichment APIs — each in its own try/except
+                # =============================================================
+
+                # --- API 1: Cost Management (from subscription-level cache) ---
+                try:
+                    host_costs = cost_cache.get(sub_id, {}).get(
+                        host_resource_id.lower(), {})
+                    safe_property(host_obj, "cost_month_to_date",
+                                  host_costs.get("cost_month_to_date", 0.0))
+                    safe_property(host_obj, "cost_currency",
+                                  host_costs.get("cost_currency", ""))
+                    safe_property(host_obj, "cost_last_30_days",
+                                  host_costs.get("cost_last_30_days", 0.0))
+                except Exception as e:
+                    logger.warning("Cost enrichment failed for host %s: %s",
+                                   host_name, e)
+
+                # --- API 2: Resource Health (per host) ---
+                try:
+                    health_statuses = client.get_all(
+                        path=f"{host_resource_id}/providers/Microsoft.ResourceHealth/availabilityStatuses",
+                        api_version=API_VERSIONS["resource_health"],
+                    )
+                    if health_statuses:
+                        latest = health_statuses[0]
+                        h_props = latest.get("properties", {})
+                        safe_property(host_obj, "health_availability_state",
+                                      h_props.get("availabilityState", "Unknown"))
+                        safe_property(host_obj, "health_detailed_status",
+                                      h_props.get("detailedStatus", ""))
+                        safe_property(host_obj, "health_reason_type",
+                                      h_props.get("reasonType", ""))
+                        safe_property(host_obj, "health_occurred_time",
+                                      h_props.get("occuredTime",
+                                                   h_props.get("occurredTime", "")))
+                        safe_property(host_obj, "health_summary",
+                                      h_props.get("summary", ""))
+                    else:
+                        safe_property(host_obj, "health_availability_state", "Unknown")
+                        safe_property(host_obj, "health_detailed_status", "")
+                        safe_property(host_obj, "health_reason_type", "")
+                        safe_property(host_obj, "health_occurred_time", "")
+                        safe_property(host_obj, "health_summary", "")
+                except Exception as e:
+                    logger.warning("Resource Health query failed for host %s: %s",
+                                   host_name, e)
+
+                # --- API 3: Maintenance (per host) ---
+                try:
+                    maintenance_updates = client.get_all(
+                        path=f"{host_resource_id}/providers/Microsoft.Maintenance/updates",
+                        api_version=API_VERSIONS["maintenance"],
+                    )
+                    if maintenance_updates:
+                        safe_property(host_obj, "maintenance_pending", True)
+                        # Use the first (most relevant) update
+                        m_props = maintenance_updates[0].get("properties", {})
+                        safe_property(host_obj, "maintenance_impact_type",
+                                      m_props.get("impactType", "None"))
+                        safe_property(host_obj, "maintenance_status",
+                                      m_props.get("status", ""))
+                        safe_property(host_obj, "maintenance_not_before",
+                                      m_props.get("notBefore", ""))
+                        safe_property(host_obj, "maintenance_not_after",
+                                      m_props.get("notAfter", ""))
+                    else:
+                        safe_property(host_obj, "maintenance_pending", False)
+                        safe_property(host_obj, "maintenance_impact_type", "None")
+                        safe_property(host_obj, "maintenance_status", "")
+                        safe_property(host_obj, "maintenance_not_before", "")
+                        safe_property(host_obj, "maintenance_not_after", "")
+                except Exception as e:
+                    logger.warning("Maintenance query failed for host %s: %s",
+                                   host_name, e)
+
+                # --- API 4: Advisor (from subscription-level cache) ---
+                try:
+                    host_advisor = advisor_cache.get(sub_id, {}).get(
+                        host_resource_id.lower(), {})
+                    safe_property(host_obj, "advisor_recommendation_count",
+                                  host_advisor.get("count", 0))
+                    descs = host_advisor.get("descriptions", [])
+                    safe_property(host_obj, "advisor_recommendations",
+                                  ", ".join(descs) if descs else "")
+                    safe_property(host_obj, "advisor_impact",
+                                  host_advisor.get("impact", ""))
+                    cats = host_advisor.get("categories", set())
+                    safe_property(host_obj, "advisor_category",
+                                  ", ".join(sorted(cats)) if cats else "")
+                except Exception as e:
+                    logger.warning("Advisor enrichment failed for host %s: %s",
+                                   host_name, e)
+
+                # --- API 5: Activity Log (per host — last 7 days) ---
+                try:
+                    activity_start = (datetime.utcnow() - timedelta(days=7)).strftime(
+                        "%Y-%m-%dT%H:%M:%SZ")
+                    activity_events = client.get_all(
+                        path=(f"/subscriptions/{sub_id}/providers"
+                              f"/Microsoft.Insights/eventtypes/management/values"),
+                        api_version=API_VERSIONS["activity_log"],
+                        params={
+                            "$filter": (f"eventTimestamp ge '{activity_start}'"
+                                        f" and resourceUri eq '{host_resource_id}'"),
+                        },
+                    )
+                    safe_property(host_obj, "recent_operations_count",
+                                  len(activity_events))
+                    if activity_events:
+                        # Events are returned newest-first
+                        latest_event = activity_events[0]
+                        evt_auth = latest_event.get("authorization", {})
+                        safe_property(host_obj, "last_operation",
+                                      latest_event.get("operationName", {}).get(
+                                          "localizedValue",
+                                          latest_event.get("operationName", {}).get(
+                                              "value", "")))
+                        safe_property(host_obj, "last_operation_time",
+                                      latest_event.get("eventTimestamp", ""))
+                        safe_property(host_obj, "last_operation_status",
+                                      latest_event.get("status", {}).get(
+                                          "localizedValue",
+                                          latest_event.get("status", {}).get(
+                                              "value", "")))
+                        safe_property(host_obj, "last_operation_caller",
+                                      latest_event.get("caller", ""))
+                    else:
+                        safe_property(host_obj, "last_operation", "")
+                        safe_property(host_obj, "last_operation_time", "")
+                        safe_property(host_obj, "last_operation_status", "")
+                        safe_property(host_obj, "last_operation_caller", "")
+                except Exception as e:
+                    logger.warning("Activity Log query failed for host %s: %s",
+                                   host_name, e)
+
+                # =============================================================
+                # Sources 6-10: Computed metrics & additional enrichment
+                # =============================================================
+
+                # --- Source 10: Missing ARM properties ---
+                safe_property(host_obj, "time_created",
+                              host_props.get("timeCreated", ""))
+                safe_property(host_obj, "sku_tier",
+                              host_sku.get("tier", ""))
+                safe_property(host_obj, "sku_capacity",
+                              host_sku.get("capacity", ""))
+                # Health status time and message from instanceView statuses
+                health_status_time = ""
+                health_status_message = ""
+                for status in statuses:
+                    s_time = status.get("time", "")
+                    s_msg = status.get("message", "")
+                    if s_time:
+                        health_status_time = s_time
+                    if s_msg:
+                        health_status_message = s_msg
+                safe_property(host_obj, "health_status_time",
+                              health_status_time)
+                safe_property(host_obj, "health_status_message",
+                              health_status_message)
+
+                # --- Sources 6-9: Computed metrics enrichment ---
+                try:
+                    _enrich_host_with_computed_metrics(
+                        host_obj=host_obj,
+                        host_resource_id=host_resource_id,
+                        vm_lookup=vm_lookup,
+                        vm_ids=vm_ids,
+                        client=client,
+                        sub_id=sub_id,
+                        sku_memory=sku_memory,
+                        host_sku_name=host_sku_name,
+                        host_location=host_location,
+                    )
+                except Exception as e:
+                    logger.warning("Sources 6-9 enrichment failed for host %s: %s",
+                                   host_name, e)
 
                 # Relationship: Host -> Host Group (parent)
                 host_obj.add_parent(group_obj)
@@ -486,3 +828,295 @@ def collect_dedicated_hosts_with_instance_view(client: AzureClient, result,
             except Exception as e:
                 logger.warning("Failed to get instance view for host group %s: %s",
                                group_name, e)
+
+
+# ---------------------------------------------------------------------------
+# Source 6-10 enrichment helpers — separate from the main collector to avoid
+# conflicts with the other agent editing the main function.
+# ---------------------------------------------------------------------------
+
+def _build_vcpu_caches(client, sub_id, host_location):
+    """Build separate vCPU caches for VM SKUs and dedicated host SKUs.
+
+    Uses a separate cache from the main collector's _sku_cache to avoid
+    conflicts.  Fetches the compute/skus API and extracts vCPU counts
+    for both virtualMachines (capability: "vCPUs") and dedicatedHosts
+    (capability: "Cores").
+
+    Returns:
+        (vm_vcpu_map, host_vcpu_map): Dicts mapping SKU name to vCPU count.
+    """
+    if not hasattr(_build_vcpu_caches, '_vm_vcpu_cache'):
+        _build_vcpu_caches._vm_vcpu_cache = {}
+    if not hasattr(_build_vcpu_caches, '_host_vcpu_cache'):
+        _build_vcpu_caches._host_vcpu_cache = {}
+
+    cache_key = f"{sub_id}_{host_location}"
+    if cache_key not in _build_vcpu_caches._vm_vcpu_cache:
+        vm_vcpu = {}
+        host_vcpu = {}
+        try:
+            skus = client.get_all(
+                path=f"/subscriptions/{sub_id}/providers/Microsoft.Compute/skus",
+                api_version="2021-07-01",
+                params={"$filter": f"location eq '{host_location}'"},
+            )
+            for sku in skus:
+                sku_name_val = sku.get("name", "")
+                if sku.get("resourceType") == "virtualMachines":
+                    for cap in sku.get("capabilities", []):
+                        if cap.get("name") == "vCPUs":
+                            try:
+                                vm_vcpu[sku_name_val] = int(cap["value"])
+                            except (ValueError, KeyError):
+                                pass
+                elif sku.get("resourceType") == "dedicatedHosts":
+                    for cap in sku.get("capabilities", []):
+                        if cap.get("name") == "Cores":
+                            try:
+                                host_vcpu[sku_name_val] = int(cap["value"])
+                            except (ValueError, KeyError):
+                                pass
+            logger.info("Cached vCPU data: %d VM SKUs, %d host SKUs for %s",
+                        len(vm_vcpu), len(host_vcpu), host_location)
+        except Exception as e:
+            logger.warning("Failed to fetch vCPU SKU data for %s: %s",
+                           host_location, e)
+        _build_vcpu_caches._vm_vcpu_cache[cache_key] = vm_vcpu
+        _build_vcpu_caches._host_vcpu_cache[cache_key] = host_vcpu
+
+    return (
+        _build_vcpu_caches._vm_vcpu_cache.get(cache_key, {}),
+        _build_vcpu_caches._host_vcpu_cache.get(cache_key, {}),
+    )
+
+
+def _collect_host_aggregated_metrics(host_obj, vm_ids, vm_lookup, client):
+    """Aggregate VM-level Azure Monitor metrics to create host-level view.
+
+    For each VM placed on this host, fetches CPU, memory, network, and disk
+    metrics from Azure Monitor and aggregates them into host-level values.
+
+    Performance note: This makes one API call per VM.  The main adapter
+    already collects VM metrics in the VM collector, but those result objects
+    are not easily accessible here, so we make dedicated calls and log
+    the count for performance monitoring.
+    """
+    cpu_values = []
+    memory_values = []
+    net_in_total = 0.0
+    net_out_total = 0.0
+    disk_read_total = 0.0
+    disk_write_total = 0.0
+
+    # Collect the set of VM IDs that exist in our lookup
+    vm_ids_to_fetch = [
+        vm_id for vm_id in vm_ids
+        if vm_lookup.get(vm_id.lower())
+    ]
+
+    if not vm_ids_to_fetch:
+        return
+
+    logger.info("Fetching metrics for %d VMs across dedicated hosts",
+                len(vm_ids_to_fetch))
+
+    for vm_id in vm_ids_to_fetch:
+        try:
+            metrics = client.get_metrics(
+                resource_id=vm_id,
+                metric_names=[
+                    "Percentage CPU",
+                    "Available Memory Bytes",
+                    "Network In Total",
+                    "Network Out Total",
+                    "Disk Read Bytes",
+                    "Disk Write Bytes",
+                ],
+                aggregation="Average",
+                timespan="PT1H",
+            )
+            cpu = metrics.get("Percentage CPU")
+            if cpu is not None:
+                cpu_values.append(cpu)
+            mem = metrics.get("Available Memory Bytes")
+            if mem is not None:
+                memory_values.append(mem)
+            net_in = metrics.get("Network In Total")
+            if net_in is not None:
+                net_in_total += net_in
+            net_out = metrics.get("Network Out Total")
+            if net_out is not None:
+                net_out_total += net_out
+            disk_read = metrics.get("Disk Read Bytes")
+            if disk_read is not None:
+                disk_read_total += disk_read
+            disk_write = metrics.get("Disk Write Bytes")
+            if disk_write is not None:
+                disk_write_total += disk_write
+        except Exception as e:
+            logger.debug("Metrics fetch failed for VM %s: %s",
+                         vm_id.split("/")[-1], e)
+
+    # Set aggregated metrics on the host object
+    if cpu_values:
+        host_obj.with_property("host_cpu_avg",
+                               round(sum(cpu_values) / len(cpu_values), 2))
+        host_obj.with_property("host_cpu_max", round(max(cpu_values), 2))
+        host_obj.with_property("host_cpu_min", round(min(cpu_values), 2))
+    host_obj.with_property("host_network_in_total", net_in_total)
+    host_obj.with_property("host_network_out_total", net_out_total)
+    host_obj.with_property("host_disk_read_total", disk_read_total)
+    host_obj.with_property("host_disk_write_total", disk_write_total)
+
+
+def _enrich_host_with_computed_metrics(host_obj, host_resource_id, vm_lookup,
+                                       vm_ids, client, sub_id, sku_memory,
+                                       host_sku_name, host_location):
+    """Enrich a dedicated host with Sources 6-9 data.
+
+    Source 6:  vCPU capacity from expanded SKU API
+    Source 7:  Aggregated VM metrics (CPU, network, disk)
+    Source 8:  Policy compliance state
+    Source 9:  Reservations lookup
+
+    Note: Source 10 (missing ARM properties) is handled inline in the main
+    collector since those values come directly from the host dict.
+
+    Args:
+        host_obj: The Aria Ops result object for this host.
+        host_resource_id: Full ARM resource ID of the host.
+        vm_lookup: Dict mapping lowered VM ID to VM dict.
+        vm_ids: List of VM resource IDs placed on this host.
+        client: AzureClient instance.
+        sub_id: Subscription ID.
+        sku_memory: Dict mapping VM size to memory in GB (from main collector).
+        host_sku_name: The dedicated host SKU name (e.g. "DSv3-Type1").
+        host_location: Azure region of the host.
+    """
+
+    # ------------------------------------------------------------------
+    # Source 6: Expand SKU API for vCPU capacity
+    # ------------------------------------------------------------------
+    try:
+        vm_vcpu_map, host_vcpu_map = _build_vcpu_caches(
+            client, sub_id, host_location)
+
+        # Host vCPU capacity (from dedicated host SKU "Cores" capability)
+        host_vcpu_capacity = host_vcpu_map.get(host_sku_name, 0)
+        safe_property(host_obj, "host_vcpu_capacity", host_vcpu_capacity)
+
+        # Total VM vCPUs allocated (sum across all VMs on host)
+        total_vm_vcpus = 0
+        for vm_id in vm_ids:
+            vm_data = vm_lookup.get(vm_id.lower())
+            if vm_data:
+                vm_size = vm_data.get("properties", {}).get(
+                    "hardwareProfile", {}).get("vmSize", "")
+                total_vm_vcpus += vm_vcpu_map.get(vm_size, 0)
+        safe_property(host_obj, "total_vm_vcpus_allocated", total_vm_vcpus)
+
+        # vCPU utilization percentage
+        if host_vcpu_capacity > 0:
+            vcpu_util = round(
+                (total_vm_vcpus / host_vcpu_capacity) * 100, 1)
+            safe_property(host_obj, "vcpu_utilization_pct", vcpu_util)
+    except Exception as e:
+        logger.debug("vCPU enrichment failed for %s: %s",
+                     host_resource_id.split("/")[-1], e)
+
+    # ------------------------------------------------------------------
+    # Source 7: Aggregated VM metrics
+    # ------------------------------------------------------------------
+    try:
+        _collect_host_aggregated_metrics(
+            host_obj, vm_ids, vm_lookup, client)
+    except Exception as e:
+        logger.debug("Host aggregated metrics failed for %s: %s",
+                     host_resource_id.split("/")[-1], e)
+
+    # ------------------------------------------------------------------
+    # Source 8: Policy compliance
+    # ------------------------------------------------------------------
+    try:
+        compliance_records = client.get_all(
+            path=(f"{host_resource_id}/providers"
+                  "/Microsoft.PolicyInsights/policyStates/latest"),
+            api_version=API_VERSIONS.get("policy_insights", "2019-10-01"),
+        )
+        non_compliant = 0
+        overall_state = "Compliant"
+        for rec in compliance_records:
+            comp_state = rec.get("properties", {}).get(
+                "complianceState",
+                rec.get("complianceState", ""))
+            if comp_state == "NonCompliant":
+                non_compliant += 1
+                overall_state = "NonCompliant"
+        safe_property(host_obj, "policy_compliance_state", overall_state)
+        safe_property(host_obj, "policy_non_compliant_count", non_compliant)
+    except Exception as e:
+        logger.debug("Policy compliance fetch failed for %s: %s",
+                     host_resource_id.split("/")[-1], e)
+        safe_property(host_obj, "policy_compliance_state", "Unknown")
+        safe_property(host_obj, "policy_non_compliant_count", 0)
+
+    # ------------------------------------------------------------------
+    # Source 9: Reservations lookup
+    # ------------------------------------------------------------------
+    try:
+        if not hasattr(_enrich_host_with_computed_metrics,
+                       '_reservations_cache'):
+            _enrich_host_with_computed_metrics._reservations_cache = {}
+
+        if sub_id not in _enrich_host_with_computed_metrics._reservations_cache:
+            try:
+                reservations = client.get_all(
+                    path="/providers/Microsoft.Capacity/reservationOrders",
+                    api_version=API_VERSIONS.get(
+                        "reservations", "2022-11-01"),
+                )
+                _enrich_host_with_computed_metrics._reservations_cache[
+                    sub_id] = reservations
+            except Exception:
+                _enrich_host_with_computed_metrics._reservations_cache[
+                    sub_id] = []
+
+        reservations = (
+            _enrich_host_with_computed_metrics._reservations_cache
+            .get(sub_id, []))
+
+        reservation_status = "PayAsYouGo"
+        reservation_id = ""
+        reservation_expiry = ""
+
+        for order in reservations:
+            order_props = order.get("properties", {})
+            res_items = order_props.get("reservations", [])
+            for item in res_items:
+                item_props = item.get("properties", {})
+                # Check if reservation applies to dedicated hosts
+                reserved_type = item_props.get(
+                    "reservedResourceType", "")
+                if reserved_type == "DedicatedHost":
+                    display_name = item_props.get("displayName", "")
+                    if (host_sku_name
+                            and host_sku_name.lower()
+                            in display_name.lower()):
+                        reservation_status = "Reserved"
+                        reservation_id = order.get("name", "")
+                        reservation_expiry = str(
+                            order_props.get("expiryDate", ""))
+                        break
+            if reservation_status == "Reserved":
+                break
+
+        safe_property(host_obj, "reservation_status", reservation_status)
+        safe_property(host_obj, "reservation_id", reservation_id)
+        safe_property(host_obj, "reservation_expiry", reservation_expiry)
+    except Exception as e:
+        logger.debug("Reservations lookup failed for %s: %s",
+                     host_resource_id.split("/")[-1], e)
+        safe_property(host_obj, "reservation_status", "")
+        safe_property(host_obj, "reservation_id", "")
+        safe_property(host_obj, "reservation_expiry", "")

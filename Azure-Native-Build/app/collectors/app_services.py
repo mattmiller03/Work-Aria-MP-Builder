@@ -9,6 +9,7 @@ from constants import (
     SD_SUBSCRIPTION, SD_RESOURCE_GROUP, SD_REGION, SD_SERVICE, AZURE_SERVICE_NAMES,
 )
 from helpers import make_identifiers, extract_resource_group, safe_property, sanitize_tag_key
+from collectors.metrics import collect_metrics_for_objects
 
 logger = logging.getLogger(__name__)
 
@@ -18,6 +19,7 @@ def collect_app_services(client: AzureClient, result, adapter_kind: str,
     """Collect web apps and function apps across all subscriptions."""
     logger.info("Collecting app services")
     total = 0
+    app_objects = {}  # resource_id -> aria obj
 
     for sub in subscriptions:
         sub_id = sub["subscriptionId"]
@@ -32,6 +34,7 @@ def collect_app_services(client: AzureClient, result, adapter_kind: str,
             resource_id = app.get("id", "")
             location = app.get("location", "")
             props = app.get("properties", {})
+            site_config = props.get("siteConfig", {})
 
             obj = result.object(
                 adapter_kind=adapter_kind,
@@ -51,7 +54,35 @@ def collect_app_services(client: AzureClient, result, adapter_kind: str,
             safe_property(obj, SD_REGION, location)
             safe_property(obj, SD_SERVICE, AZURE_SERVICE_NAMES.get(OBJ_APP_SERVICE, ""))
 
-            safe_property(obj, "app_name", app_name)
+            # Native pak summary properties
+            safe_property(obj, "summary|name", app_name)
+            safe_property(obj, "summary|state", props.get("state", ""))
+            safe_property(obj, "summary|defaultHostName",
+                          props.get("defaultHostName", ""))
+            safe_property(obj, "summary|httpsOnly",
+                          str(props.get("httpsOnly", "")))
+            host_names = props.get("hostNames", [])
+            safe_property(obj, "summary|hostNames", ", ".join(host_names))
+            safe_property(obj, "summary|appServicePlanId",
+                          props.get("serverFarmId", ""))
+            safe_property(obj, "summary|containerSize",
+                          str(props.get("containerSize", "")))
+            safe_property(obj, "summary|hostNamesDisabled",
+                          str(props.get("hostNamesDisabled", "")))
+
+            # siteConfig properties
+            safe_property(obj, "summary|alwaysOn",
+                          str(site_config.get("alwaysOn", "")))
+            safe_property(obj, "summary|http20Enabled",
+                          str(site_config.get("http20Enabled", "")))
+            safe_property(obj, "summary|javaContainer",
+                          site_config.get("javaContainer", ""))
+            safe_property(obj, "summary|javaContainerVersion",
+                          site_config.get("javaContainerVersion", ""))
+            safe_property(obj, "summary|linuxFxVersion",
+                          site_config.get("linuxFxVersion", ""))
+
+            # Additional non-native properties retained for compatibility
             safe_property(obj, "resource_id", resource_id)
             safe_property(obj, "location", location)
             safe_property(obj, "subscription_id", sub_id)
@@ -63,20 +94,7 @@ def collect_app_services(client: AzureClient, result, adapter_kind: str,
             safe_property(obj, "is_function_app",
                           str("functionapp" in kind.lower()))
 
-            safe_property(obj, "state", props.get("state", ""))
-            safe_property(obj, "default_host_name",
-                          props.get("defaultHostName", ""))
-            safe_property(obj, "https_only",
-                          str(props.get("httpsOnly", "")))
             safe_property(obj, "enabled", str(props.get("enabled", "")))
-
-            # Host names
-            host_names = props.get("hostNames", [])
-            safe_property(obj, "host_names", ", ".join(host_names))
-
-            # App Service Plan
-            safe_property(obj, "server_farm_id",
-                          props.get("serverFarmId", ""))
 
             # Availability state
             safe_property(obj, "availability_state",
@@ -94,7 +112,7 @@ def collect_app_services(client: AzureClient, result, adapter_kind: str,
             tags = app.get("tags", {})
             if tags:
                 for key, value in tags.items():
-                    safe_property(obj, f"tag_{sanitize_tag_key(key)}", value)
+                    safe_property(obj, f"summary|tags|{key}", value)
 
             # Relationship: App -> Resource Group
             if rg_name:
@@ -110,6 +128,12 @@ def collect_app_services(client: AzureClient, result, adapter_kind: str,
                 )
                 obj.add_parent(rg_obj)
 
+            if resource_id:
+                app_objects[resource_id] = obj
+
         total += len(apps)
 
     logger.info("Collected %d app services", total)
+
+    if app_objects:
+        collect_metrics_for_objects(client, app_objects, "app_services")

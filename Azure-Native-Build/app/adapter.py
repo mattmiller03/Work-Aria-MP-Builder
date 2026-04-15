@@ -29,6 +29,7 @@ from constants import (
     OBJ_PUBLIC_IP, OBJ_EXPRESSROUTE, OBJ_RECOVERY_VAULT, OBJ_LOG_ANALYTICS,
     OBJ_FUNCTIONS_APP, OBJ_APP_SERVICE_PLAN, OBJ_COSMOS_DB,
     OBJ_POSTGRESQL, OBJ_MYSQL,
+    OBJ_REGION, OBJ_REGION_PER_SUB, OBJ_WORLD,
     ALL_NATIVE_STUB_KINDS,
     SD_SUBSCRIPTION, SD_RESOURCE_GROUP, SD_REGION, SD_SERVICE,
 )
@@ -56,6 +57,8 @@ from collectors import (
     collect_expressroute_circuits,
     collect_recovery_vaults,
     collect_log_analytics_workspaces,
+    collect_regions_and_world,
+    collect_all_generic_resources,
 )
 
 logger = logging.getLogger(__name__)
@@ -256,6 +259,50 @@ def get_adapter_definition():
     sa.define_metric("summary|successServerLatency", "Server Latency", unit=MILLISECONDS)
     sa.define_metric("summary|successE2ELatency", "E2E Latency", unit=MILLISECONDS)
     sa.define_metric("summary|availability", "Availability", unit=PERCENT)
+    # blobService group — metrics
+    sa.define_metric("blobService|blobCapacity", "Blob Capacity", unit=BYTE)
+    sa.define_metric("blobService|blobCount", "Blob Count", unit=COUNT)
+    sa.define_metric("blobService|containerCount", "Container Count", unit=COUNT)
+    sa.define_metric("blobService|indexCapacity", "Index Capacity", unit=BYTE)
+    sa.define_metric("blobService|transactions", "Blob Transactions", unit=COUNT)
+    sa.define_metric("blobService|ingress", "Blob Ingress", unit=BYTE)
+    sa.define_metric("blobService|egress", "Blob Egress", unit=BYTE)
+    sa.define_metric("blobService|successServerLatency", "Blob Server Latency", unit=MILLISECONDS)
+    sa.define_metric("blobService|successE2ELatency", "Blob E2E Latency", unit=MILLISECONDS)
+    sa.define_metric("blobService|availability", "Blob Availability", unit=PERCENT)
+    # queueService group — metrics
+    sa.define_metric("queueService|queueCapacity", "Queue Capacity", unit=BYTE)
+    sa.define_metric("queueService|queueCount", "Queue Count", unit=COUNT)
+    sa.define_metric("queueService|queueMessageCount", "Queue Message Count", unit=COUNT)
+    sa.define_metric("queueService|transactions", "Queue Transactions", unit=COUNT)
+    sa.define_metric("queueService|ingress", "Queue Ingress", unit=BYTE)
+    sa.define_metric("queueService|egress", "Queue Egress", unit=BYTE)
+    sa.define_metric("queueService|successServerLatency", "Queue Server Latency", unit=MILLISECONDS)
+    sa.define_metric("queueService|successE2ELatency", "Queue E2E Latency", unit=MILLISECONDS)
+    sa.define_metric("queueService|availability", "Queue Availability", unit=PERCENT)
+    # fileService group — metrics
+    sa.define_metric("fileService|fileCapacity", "File Capacity", unit=BYTE)
+    sa.define_metric("fileService|fileCount", "File Count", unit=COUNT)
+    sa.define_metric("fileService|fileShareCount", "File Share Count", unit=COUNT)
+    sa.define_metric("fileService|fileShareSnapshotCount", "File Share Snapshot Count", unit=COUNT)
+    sa.define_metric("fileService|fileShareSnapshotSize", "File Share Snapshot Size", unit=BYTE)
+    sa.define_metric("fileService|fileShareCapacityQuota", "File Share Capacity Quota", unit=BYTE)
+    sa.define_metric("fileService|transactions", "File Transactions", unit=COUNT)
+    sa.define_metric("fileService|ingress", "File Ingress", unit=BYTE)
+    sa.define_metric("fileService|egress", "File Egress", unit=BYTE)
+    sa.define_metric("fileService|successServerLatency", "File Server Latency", unit=MILLISECONDS)
+    sa.define_metric("fileService|successE2ELatency", "File E2E Latency", unit=MILLISECONDS)
+    sa.define_metric("fileService|availability", "File Availability", unit=PERCENT)
+    # tableService group — metrics
+    sa.define_metric("tableService|tableCapacity", "Table Capacity", unit=BYTE)
+    sa.define_metric("tableService|tableCount", "Table Count", unit=COUNT)
+    sa.define_metric("tableService|tableEntityCount", "Table Entity Count", unit=COUNT)
+    sa.define_metric("tableService|transactions", "Table Transactions", unit=COUNT)
+    sa.define_metric("tableService|ingress", "Table Ingress", unit=BYTE)
+    sa.define_metric("tableService|egress", "Table Egress", unit=BYTE)
+    sa.define_metric("tableService|successServerLatency", "Table Server Latency", unit=MILLISECONDS)
+    sa.define_metric("tableService|successE2ELatency", "Table E2E Latency", unit=MILLISECONDS)
+    sa.define_metric("tableService|availability", "Table Availability", unit=PERCENT)
     # summary group — properties
     sa.define_string_property("summary|name", "Name")
     sa.define_string_property("summary|creationTime", "Creation Time")
@@ -336,11 +383,73 @@ def get_adapter_definition():
     sql_db.define_metric("DWU_LIMIT", "DWU Limit")
     sql_db.define_metric("DWU_PERCENTAGE", "DWU Percentage", unit=PERCENT)
     sql_db.define_metric("DWU_USED", "DWU Used")
+    # Additional metrics from native pak decompiled source
+    sql_db.define_metric("DW_NODE_LEVEL_CPU_PERCENTAGE", "DW Node CPU Percentage", unit=PERCENT)
+    sql_db.define_metric("DW_NODE_LEVEL_DATA_IO_PERCENTAGE", "DW Node Data IO Percentage", unit=PERCENT)
+    sql_db.define_metric("CACHE_HIT_PERCENTAGE", "Cache Hit Percentage", unit=PERCENT)
+    sql_db.define_metric("CACHE_USED_PERCENTAGE", "Cache Used Percentage", unit=PERCENT)
+    sql_db.define_metric("LOCAL_TEMPDB_PERCENTAGE", "Local TempDB Percentage", unit=PERCENT)
+    sql_db.define_metric("APP_CPU_BILLED", "App CPU Billed")
+    sql_db.define_metric("APP_CPU_PERCENTAGE", "App CPU Percentage", unit=PERCENT)
+    sql_db.define_metric("APP_MEMORY_USED_PERCENTAGE", "App Memory Used Percentage", unit=PERCENT)
+    sql_db.define_metric("DATA_SPACE_ALLOCATED", "Data Space Allocated", unit=BYTE)
     _add_service_descriptors(sql_db)
 
     # -- App Service --
     app = definition.define_object_type(OBJ_APP_SERVICE, "Azure App Service")
     _add_standard_identifiers(app)
+    # CPU group
+    app.define_metric("CPU|cpuTime", "CPU Time")
+    # summary group — metrics
+    app.define_metric("summary|requests", "Requests", unit=COUNT)
+    app.define_metric("summary|bytesReceived", "Data In", unit=BYTE)
+    app.define_metric("summary|bytesSent", "Data Out", unit=BYTE)
+    app.define_metric("summary|http101", "Http 101", unit=COUNT)
+    app.define_metric("summary|http2xx", "Http 2xx", unit=COUNT)
+    app.define_metric("summary|http3xx", "Http 3xx", unit=COUNT)
+    app.define_metric("summary|http401", "Http 401", unit=COUNT)
+    app.define_metric("summary|http403", "Http 403", unit=COUNT)
+    app.define_metric("summary|http404", "Http 404", unit=COUNT)
+    app.define_metric("summary|http406", "Http 406", unit=COUNT)
+    app.define_metric("summary|http4xx", "Http 4xx", unit=COUNT)
+    app.define_metric("summary|http5xx", "Http Server Errors", unit=COUNT)
+    app.define_metric("summary|memoryWorkingSet", "Memory Working Set", unit=BYTE)
+    app.define_metric("summary|averageMemoryWorkingSet", "Average Memory Working Set", unit=BYTE)
+    app.define_metric("summary|averageResponseTime", "Average Response Time")
+    app.define_metric("summary|httpResponseTime", "Response Time")
+    app.define_metric("summary|appConnections", "Connections", unit=COUNT)
+    app.define_metric("summary|handles", "Handle Count", unit=COUNT)
+    app.define_metric("summary|threads", "Thread Count", unit=COUNT)
+    app.define_metric("summary|privateBytes", "Private Bytes", unit=BYTE)
+    app.define_metric("summary|ioReadBytesPerSecond", "IO Read Bytes Per Second", unit=BYTE)
+    app.define_metric("summary|ioWriteBytesPerSecond", "IO Write Bytes Per Second", unit=BYTE)
+    app.define_metric("summary|ioOtherBytesPerSecond", "IO Other Bytes Per Second", unit=BYTE)
+    app.define_metric("summary|ioReadOperationsPerSecond", "IO Read Operations Per Second")
+    app.define_metric("summary|ioWriteOperationsPerSecond", "IO Write Operations Per Second")
+    app.define_metric("summary|ioOtherOperationsPerSecond", "IO Other Operations Per Second")
+    app.define_metric("summary|requestsInApplicationQueue", "Requests In Application Queue", unit=COUNT)
+    app.define_metric("summary|currentAssemblies", "Current Assemblies", unit=COUNT)
+    app.define_metric("summary|totalAppDomains", "Total App Domains", unit=COUNT)
+    app.define_metric("summary|totalAppDomainsUnloaded", "Total App Domains Unloaded", unit=COUNT)
+    app.define_metric("summary|gen0Collections", "Gen 0 Garbage Collections", unit=COUNT)
+    app.define_metric("summary|gen1Collections", "Gen 1 Garbage Collections", unit=COUNT)
+    app.define_metric("summary|gen2Collections", "Gen 2 Garbage Collections", unit=COUNT)
+    app.define_metric("summary|healthCheckStatus", "Health Check Status")
+    app.define_metric("summary|fileSystemUsage", "File System Usage", unit=BYTE)
+    # summary group — properties
+    app.define_string_property("summary|name", "Name")
+    app.define_string_property("summary|appServicePlanId", "App Service Plan ID")
+    app.define_string_property("summary|defaultHostName", "Default Host Name")
+    app.define_string_property("summary|javaContainer", "Java Container")
+    app.define_string_property("summary|javaContainerVersion", "Java Container Version")
+    app.define_string_property("summary|linuxFxVersion", "Linux Fx Version")
+    app.define_string_property("summary|state", "State")
+    app.define_string_property("summary|containerSize", "Container Size")
+    app.define_string_property("summary|alwaysOn", "Always On")
+    app.define_string_property("summary|http20Enabled", "HTTP/2 Enabled")
+    app.define_string_property("summary|httpsOnly", "HTTPS Only")
+    app.define_string_property("summary|hostNamesDisabled", "Host Names Disabled")
+    app.define_string_property("summary|hostNames", "Host Names")
     _add_service_descriptors(app)
 
     # -- Functions App (AZURE_FUNCTIONS_APP) --
@@ -488,6 +597,58 @@ def get_adapter_definition():
     dh.define_numeric_property("host_memory_capacity_gb", "Host Memory Capacity (GB)")
     dh.define_numeric_property("memory_utilization_pct", "Memory Utilization (%)")
     dh.define_numeric_property("memory_available_gb", "Memory Available (GB)")
+    # Cost Management
+    dh.define_numeric_property("cost_month_to_date", "Cost Month To Date")
+    dh.define_string_property("cost_currency", "Cost Currency")
+    dh.define_numeric_property("cost_last_30_days", "Cost Last 30 Days")
+    # Resource Health
+    dh.define_string_property("health_availability_state", "Health Availability State")
+    dh.define_string_property("health_detailed_status", "Health Detailed Status")
+    dh.define_string_property("health_reason_type", "Health Reason Type")
+    dh.define_string_property("health_occurred_time", "Health Occurred Time")
+    dh.define_string_property("health_summary", "Health Summary")
+    # Maintenance
+    dh.define_string_property("maintenance_pending", "Maintenance Pending")
+    dh.define_string_property("maintenance_impact_type", "Maintenance Impact Type")
+    dh.define_string_property("maintenance_status", "Maintenance Status")
+    dh.define_string_property("maintenance_not_before", "Maintenance Not Before")
+    dh.define_string_property("maintenance_not_after", "Maintenance Not After")
+    # Advisor Recommendations
+    dh.define_numeric_property("advisor_recommendation_count", "Advisor Recommendation Count")
+    dh.define_string_property("advisor_recommendations", "Advisor Recommendations")
+    dh.define_string_property("advisor_impact", "Advisor Impact")
+    dh.define_string_property("advisor_category", "Advisor Category")
+    # Activity Log
+    dh.define_numeric_property("recent_operations_count", "Recent Operations Count (7d)")
+    dh.define_string_property("last_operation", "Last Operation")
+    dh.define_string_property("last_operation_time", "Last Operation Time")
+    dh.define_string_property("last_operation_status", "Last Operation Status")
+    dh.define_string_property("last_operation_caller", "Last Operation Caller")
+    # vCPU capacity (Source 6 — expanded SKU API)
+    dh.define_numeric_property("host_vcpu_capacity", "Host vCPU Capacity")
+    dh.define_numeric_property("total_vm_vcpus_allocated", "Total VM vCPUs Allocated")
+    dh.define_numeric_property("vcpu_utilization_pct", "vCPU Utilization (%)")
+    # Computed host-level metrics — aggregated from VMs (Source 7)
+    dh.define_metric("host_cpu_avg", "Host Avg CPU%", unit=PERCENT)
+    dh.define_metric("host_cpu_max", "Host Peak CPU%", unit=PERCENT)
+    dh.define_metric("host_cpu_min", "Host Min CPU%", unit=PERCENT)
+    dh.define_metric("host_network_in_total", "Host Network In Total", unit=BYTE)
+    dh.define_metric("host_network_out_total", "Host Network Out Total", unit=BYTE)
+    dh.define_metric("host_disk_read_total", "Host Disk Read Total", unit=BYTE)
+    dh.define_metric("host_disk_write_total", "Host Disk Write Total", unit=BYTE)
+    # Policy Compliance (Source 8)
+    dh.define_string_property("policy_compliance_state", "Policy Compliance State")
+    dh.define_numeric_property("policy_non_compliant_count", "Policy Non-Compliant Count")
+    # Reservations (Source 9)
+    dh.define_string_property("reservation_status", "Reservation Status")
+    dh.define_string_property("reservation_id", "Reservation Order ID")
+    dh.define_string_property("reservation_expiry", "Reservation Expiry Date")
+    # Missing ARM properties (Source 10)
+    dh.define_string_property("time_created", "Time Created")
+    dh.define_string_property("sku_tier", "SKU Tier")
+    dh.define_string_property("sku_capacity", "SKU Capacity")
+    dh.define_string_property("health_status_time", "Health Status Time")
+    dh.define_string_property("health_status_message", "Health Status Message")
     _add_generic_summary(dh)
     _add_service_descriptors(dh)
 
@@ -510,6 +671,46 @@ def get_adapter_definition():
     la = definition.define_object_type(OBJ_LOG_ANALYTICS, "Azure Log Analytics Workspace")
     _add_standard_identifiers(la)
     _add_service_descriptors(la)
+
+    # ===================================================================
+    # Region / World aggregation kinds — match native pak describe.xml
+    # ===================================================================
+
+    # Helper: define the full set of summary|total_number_* metrics shared
+    # by AZURE_REGION_PER_SUB, AZURE_REGION, and AZURE_WORLD.
+    def _add_summary_count_metrics(obj_type):
+        """Add all summary|total_number_* metrics from native pak."""
+        obj_type.define_metric("summary|total_number_vms", "Total VMs")
+        obj_type.define_metric("summary|active_number_vms", "Active VMs")
+        obj_type.define_metric("summary|total_number_storgeaccounts", "Total Storage Accounts")
+        obj_type.define_metric("summary|total_number_sqlserver", "Total SQL Servers")
+        obj_type.define_metric("summary|total_number_loadbalancers", "Total Load Balancers")
+        obj_type.define_metric("summary|total_number_nwInterface", "Total Network Interfaces")
+        obj_type.define_metric("summary|total_number_vNets", "Total Virtual Networks")
+        obj_type.define_metric("summary|total_number_appServices", "Total App Services")
+        obj_type.define_metric("summary|total_number_storageDisks", "Total Storage Disks")
+        obj_type.define_metric("summary|total_number_hostGroups", "Total Host Groups")
+        obj_type.define_metric("summary|total_number_dedicatedHosts", "Total Dedicated Hosts")
+        obj_type.define_metric("summary|total_number_publicIPAddresses", "Total Public IPs")
+        obj_type.define_metric("summary|total_number_expressrouteCircuit", "Total ExpressRoute Circuits")
+        obj_type.define_metric("summary|total_number_keyVaults", "Total Key Vaults")
+        obj_type.define_metric("summary|total_number_postgresqlserver", "Total PostgreSQL Servers")
+        obj_type.define_metric("summary|total_number_mysqlserver", "Total MySQL Servers")
+        obj_type.define_metric("summary|total_number_functionApp", "Total Function Apps")
+        obj_type.define_metric("summary|total_number_subscriptions", "Total Subscriptions")
+
+    # -- AZURE_REGION_PER_SUB — no identifiers (name is unique key) --
+    rps = definition.define_object_type(OBJ_REGION_PER_SUB, "Azure Region Per Subscription")
+    _add_summary_count_metrics(rps)
+
+    # -- AZURE_REGION — no identifiers (name is unique key) --
+    reg = definition.define_object_type(OBJ_REGION, "Azure Region")
+    _add_summary_count_metrics(reg)
+
+    # -- AZURE_WORLD — single root object, no identifiers --
+    world = definition.define_object_type(OBJ_WORLD, "Azure World")
+    _add_summary_count_metrics(world)
+    world.define_metric("summary|total_number_regions", "Total Regions")
 
     # ===================================================================
     # Stub Resource Kinds — 71 native pak types we don't actively collect
@@ -625,6 +826,21 @@ def collect(adapter_instance):
                 collector_fn()
             except Exception as e:
                 logger.error("Collector %s failed: %s", name, e, exc_info=True)
+
+        # 5. Bulk generic ARM resources (networking, containers, compute, etc.)
+        try:
+            collect_all_generic_resources(client, result, ADAPTER_KIND, subscriptions)
+        except Exception as e:
+            logger.error("Bulk resource collection failed: %s", e, exc_info=True)
+
+        # 6. Region & World aggregation — must run AFTER all resource collectors
+        try:
+            adapter_instance_name = target_sub or "Azure"
+            collect_regions_and_world(
+                result, ADAPTER_KIND, subscriptions, adapter_instance_name,
+            )
+        except Exception as e:
+            logger.error("Regions/World collector failed: %s", e, exc_info=True)
 
     except Exception as e:
         logger.error("Collection failed: %s", e, exc_info=True)

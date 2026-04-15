@@ -135,6 +135,8 @@ def collect_virtual_machines(client: AzureClient, result, adapter_kind: str,
             # Power state from instance view
             power_state = _extract_power_state(props.get("instanceView", {}))
             safe_property(obj, "summary|runtime|powerState", power_state)
+            # general|running — numeric metric: 1.0 if powered on, 0.0 if not
+            obj.with_metric("general|running", 1.0 if power_state == "Powered On" else 0.0)
 
             # Security profile
             security = props.get("securityProfile", {})
@@ -155,7 +157,7 @@ def collect_virtual_machines(client: AzureClient, result, adapter_kind: str,
             tags = vm.get("tags", {})
             if tags:
                 for key, value in tags.items():
-                    safe_property(obj, f"tag_{sanitize_tag_key(key)}", value)
+                    safe_property(obj, f"summary|tags|{key}", value)
 
             # Zones
             zones = vm.get("zones", [])
@@ -228,10 +230,25 @@ def collect_virtual_machines(client: AzureClient, result, adapter_kind: str,
 
 
 
+# Power state mapping — matches native pak MicrosoftAzureAdapter exactly
+# Alerts check for "Powered On" / "Powered Off" / "Unknown"
+_POWER_STATE_MAP = {
+    "PowerState/stopping": "Powered Off",
+    "PowerState/stopped": "Powered Off",
+    "PowerState/starting": "Powered On",
+    "PowerState/running": "Powered On",
+    "PowerState/deallocating": "Unknown",
+    "PowerState/deallocated": "Unknown",
+}
+
+
 def _extract_power_state(instance_view: dict) -> str:
-    """Extract power state from VM instance view statuses."""
+    """Extract power state from VM instance view statuses.
+
+    Returns native pak compatible values: 'Powered On', 'Powered Off', 'Unknown'.
+    """
     for status in instance_view.get("statuses", []):
         code = status.get("code", "")
         if code.startswith("PowerState/"):
-            return code.replace("PowerState/", "")
-    return "unknown"
+            return _POWER_STATE_MAP.get(code, "Unknown")
+    return "Unknown"

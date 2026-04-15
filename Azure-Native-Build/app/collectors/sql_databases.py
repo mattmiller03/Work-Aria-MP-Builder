@@ -77,7 +77,7 @@ def collect_sql_servers_and_databases(client: AzureClient, result,
             tags = server.get("tags", {})
             if tags:
                 for key, value in tags.items():
-                    safe_property(srv_obj, f"tag_{sanitize_tag_key(key)}", value)
+                    safe_property(srv_obj, f"summary|tags|{key}", value)
 
             # Relationship: SQL Server -> Resource Group
             if rg_name:
@@ -160,7 +160,7 @@ def collect_sql_servers_and_databases(client: AzureClient, result,
                 db_tags = db.get("tags", {})
                 if db_tags:
                     for key, value in db_tags.items():
-                        safe_property(db_obj, f"tag_{sanitize_tag_key(key)}", value)
+                        safe_property(db_obj, f"summary|tags|{key}", value)
 
                 # Relationship: Database -> SQL Server (parent)
                 db_obj.add_parent(srv_obj)

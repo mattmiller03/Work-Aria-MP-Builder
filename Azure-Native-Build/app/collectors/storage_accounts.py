@@ -7,6 +7,7 @@ from constants import (
     API_VERSIONS, OBJ_STORAGE_ACCOUNT, OBJ_RESOURCE_GROUP,
     RES_IDENT_SUB, RES_IDENT_RG, RES_IDENT_REGION, RES_IDENT_ID,
     SD_SUBSCRIPTION, SD_RESOURCE_GROUP, SD_REGION, SD_SERVICE, AZURE_SERVICE_NAMES,
+    MONITOR_METRICS,
 )
 from helpers import make_identifiers, extract_resource_group, safe_property, sanitize_tag_key
 from collectors.metrics import collect_metrics_for_objects
@@ -94,7 +95,7 @@ def collect_storage_accounts(client: AzureClient, result, adapter_kind: str,
             tags = acct.get("tags", {})
             if tags:
                 for key, value in tags.items():
-                    safe_property(obj, f"tag_{sanitize_tag_key(key)}", value)
+                    safe_property(obj, f"summary|tags|{key}", value)
 
             # Relationship: Storage Account -> Resource Group
             if rg_name:
@@ -119,3 +120,50 @@ def collect_storage_accounts(client: AzureClient, result, adapter_kind: str,
 
     if sa_objects:
         collect_metrics_for_objects(client, sa_objects, "storage_accounts")
+
+        # Collect sub-service metrics (blob, queue, file, table).
+        # These use a sub-resource path and a different metric namespace.
+        _SUB_SERVICES = [
+            ("blobServices/default", "Microsoft.Storage/storageAccounts/blobServices", "storage_accounts_blob"),
+            ("queueServices/default", "Microsoft.Storage/storageAccounts/queueServices", "storage_accounts_queue"),
+            ("fileServices/default", "Microsoft.Storage/storageAccounts/fileServices", "storage_accounts_file"),
+            ("tableServices/default", "Microsoft.Storage/storageAccounts/tableServices", "storage_accounts_table"),
+        ]
+
+        for sub_path, namespace, metrics_key in _SUB_SERVICES:
+            metric_defs = MONITOR_METRICS.get(metrics_key, [])
+            if not metric_defs:
+                continue
+
+            # Group by aggregation type to batch API calls
+            by_aggregation = {}
+            for azure_name, aria_key, aggregation in metric_defs:
+                if aggregation not in by_aggregation:
+                    by_aggregation[aggregation] = []
+                by_aggregation[aggregation].append((azure_name, aria_key))
+
+            errors = 0
+            for resource_id, obj in sa_objects.items():
+                sub_resource_id = f"{resource_id}/{sub_path}"
+                for aggregation, metrics in by_aggregation.items():
+                    azure_names = [m[0] for m in metrics]
+                    aria_keys = {m[0]: m[1] for m in metrics}
+                    try:
+                        values = client.get_metrics(
+                            resource_id=sub_resource_id,
+                            metric_names=azure_names,
+                            aggregation=aggregation,
+                            metricnamespace=namespace,
+                        )
+                        for azure_name, value in values.items():
+                            aria_key = aria_keys.get(azure_name)
+                            if aria_key and value is not None:
+                                obj.with_metric(aria_key, value)
+                    except Exception as e:
+                        errors += 1
+                        if errors <= 3:
+                            logger.warning("Sub-service metrics error (%s) for %s: %s",
+                                           metrics_key, resource_id.split("/")[-1], e)
+
+            logger.info("Sub-service metrics [%s]: processed %d storage accounts, %d errors",
+                        metrics_key, len(sa_objects), errors)

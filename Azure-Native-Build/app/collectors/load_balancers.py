@@ -92,7 +92,7 @@ def collect_load_balancers(client: AzureClient, result, adapter_kind: str,
             tags = lb.get("tags", {})
             if tags:
                 for key, value in tags.items():
-                    safe_property(obj, f"tag_{sanitize_tag_key(key)}", value)
+                    safe_property(obj, f"summary|tags|{key}", value)
 
             # Relationship: LB -> Resource Group
             if rg_name:

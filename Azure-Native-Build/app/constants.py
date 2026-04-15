@@ -168,32 +168,27 @@ OBJ_REGION_PER_SUB = "AZURE_REGION_PER_SUB"
 OBJ_REGION = "AZURE_REGION"
 OBJ_WORLD = "AZURE_WORLD"
 
-# Complete list of all native pak resource kinds (for stub generation)
+# Stub-only resource kinds — child types that need per-parent enumeration.
+# All other native pak types are now collected via dedicated or bulk collectors.
 ALL_NATIVE_STUB_KINDS = [
-    OBJ_KUBERNETES,
-    OBJ_VMSS, OBJ_VMSS_INSTANCE, OBJ_VNET_GATEWAY, OBJ_APP_GATEWAY,
-    OBJ_DATA_LAKE_ANALYTICS, OBJ_COGNITIVE_SERVICES, OBJ_HDINSIGHT,
-    OBJ_SYNAPSE_WORKSPACE, OBJ_SYNAPSE_SQL_POOL, OBJ_SYNAPSE_BIGDATA_POOL,
-    OBJ_SERVICE_BUS, OBJ_NETWORK_WATCHERS,
-    OBJ_CACHE_REDIS, OBJ_SQL_MANAGED_INSTANCE, OBJ_SQL_MANAGED_DB,
-    OBJ_MARIADB, OBJ_MARIADB_DB, OBJ_COMPUTE_DOMAINS, OBJ_BATCH_ACCOUNT,
-    OBJ_CONTAINER_GROUPS, OBJ_CONTAINER, OBJ_CONTAINER_REGISTRIES,
-    OBJ_DATALAKE_STORE, OBJ_APP_CONFIGURATION, OBJ_OPENSHIFT,
-    OBJ_ROUTE_TABLES, OBJ_PRIVATE_DNS, OBJ_DNS_ZONES,
-    OBJ_TRAFFIC_MANAGER, OBJ_SIGNALR, OBJ_FIREWALLS, OBJ_FRONT_DOORS,
-    OBJ_CDN_PROFILES, OBJ_CDN_ENDPOINTS, OBJ_VIRTUAL_WAN, OBJ_VIRTUAL_HUBS,
-    OBJ_NETAPP_ACCOUNT, OBJ_NETAPP_POOLS, OBJ_NETAPP_VOLUMES,
-    OBJ_MEDIA_SERVICES, OBJ_MEDIA_LIVE_EVENTS, OBJ_MEDIA_STREAMING,
-    OBJ_NOTIFICATION_HUBS, OBJ_NOTIFICATION_NS, OBJ_EVENTHUBS_NS,
-    OBJ_EVENT_HUBS, OBJ_DATA_EXPLORER_CLUSTER, OBJ_DATA_EXPLORER_DB,
-    OBJ_DATA_FACTORY, OBJ_SEARCH_SERVICES, OBJ_MACHINE_LEARNING,
-    OBJ_STREAM_ANALYTICS_JOBS, OBJ_STREAM_ANALYTICS_CLUSTERS,
-    OBJ_PURVIEW, OBJ_BOT_SERVICES, OBJ_ANALYSIS_SERVICES, OBJ_POWER_BI,
-    OBJ_NSG, OBJ_AVAILABILITY_SETS,
-    OBJ_PROXIMITY_GROUP, OBJ_DIGITAL_TWINS, OBJ_API_MANAGEMENT,
-    OBJ_DDOS_PROTECTION, OBJ_IOT_CENTRAL, OBJ_IOT_HUB, OBJ_TIME_SERIES,
-    OBJ_EVENT_GRID_DOMAIN, OBJ_EVENT_GRID_TOPIC, OBJ_EVENT_GRID_SUB,
-    OBJ_DATA_BOX, OBJ_SPATIAL_ANCHORS, OBJ_AUTOMATION,
+    OBJ_VMSS_INSTANCE,       # child of AZURE_VIRTUAL_SCALESET
+    OBJ_COMPUTE_DOMAINS,     # legacy cloud services
+    OBJ_CONTAINER,           # child of AZURE_CONTIANER_CONTAINERGROUPS
+    OBJ_CDN_ENDPOINTS,       # child of AZURE_CDN_PROFILES
+    OBJ_SQL_MANAGED_DB,      # child of AZURE_SQL_MANAGEDINSTANCES
+    OBJ_MARIADB_DB,          # child of AZURE_MARIADB_SERVER
+    OBJ_NETAPP_POOLS,        # child of AZURE_NETAPPACCOUNT
+    OBJ_NETAPP_VOLUMES,      # child of AZURE_NETAPPACCOUNT_CAPACITYPOOLS
+    OBJ_MEDIA_LIVE_EVENTS,   # child of AZURE_MEDIA_SERVICES
+    OBJ_MEDIA_STREAMING,     # child of AZURE_MEDIA_SERVICES
+    OBJ_NOTIFICATION_HUBS,   # child of AZURE_NOTIFICATIONHUBS_NAMESPACES
+    OBJ_EVENT_HUBS,          # child of AZURE_EVENTHUBS_NAMESPACES
+    OBJ_DATA_EXPLORER_DB,    # child of AZURE_DATA_EXPLORER_CLUSTER
+    OBJ_EVENT_GRID_SUB,      # child of topics/domains
+    OBJ_SYNAPSE_SQL_POOL,    # child of AZURE_SYNAPSE_ANALYTICS_WORKSPACE
+    OBJ_SYNAPSE_BIGDATA_POOL,# child of AZURE_SYNAPSE_ANALYTICS_WORKSPACE
+    OBJ_APP_SERVICE_PLAN,    # already has dedicated collector
+    OBJ_SERVICES_FROM_XML,   # dynamic discovery — not applicable
 ]
 
 # ---------------------------------------------------------------------------
@@ -221,9 +216,16 @@ API_VERSIONS = {
     "recovery_vaults": "2023-01-01",
     "log_analytics": "2023-09-01",
     "cost_management": "2023-03-01",
+    "resource_health": "2023-07-01-preview",
+    "maintenance": "2023-04-01",
+    "advisor": "2022-10-01",
+    "activity_log": "2015-04-01",
     "monitor_metrics": "2023-10-01",
     "postgresql_servers": "2022-12-01",
     "mysql_servers": "2023-06-30",
+    # Sources 6-10 enrichment APIs
+    "policy_insights": "2019-10-01",
+    "reservations": "2022-11-01",
 }
 
 # ---------------------------------------------------------------------------
@@ -278,13 +280,23 @@ MONITOR_METRICS = {
         ("connection_failed", "FAILED_CONNECTIONS", "Total"),
         ("blocked_by_firewall", "BLOCKED_BY_FIREWALL", "Total"),
         ("deadlock", "DEADLOCKS", "Total"),
-        ("storage_percent", "DATA_SPACE_USED_PERCENT", "Average"),
+        ("storage_percent", "DATA_SPACE_USED_PERCENT", "Maximum"),
         ("dtu_limit", "DTU_LIMIT", "Average"),
         ("cpu_limit", "CPU_LIMIT", "Average"),
         ("cpu_used", "CPU_USED", "Average"),
-        ("dwu_limit", "DWU_LIMIT", "Average"),
-        ("dwu_consumption_percent", "DWU_PERCENTAGE", "Average"),
-        ("dwu_used", "DWU_USED", "Average"),
+        ("dwu_limit", "DWU_LIMIT", "Maximum"),
+        ("dwu_consumption_percent", "DWU_PERCENTAGE", "Maximum"),
+        ("dwu_used", "DWU_USED", "Maximum"),
+        # Additional metrics from native pak decompiled source
+        ("dw_node_level_cpu_percent", "DW_NODE_LEVEL_CPU_PERCENTAGE", "Average"),
+        ("dw_node_level_data_io_percent", "DW_NODE_LEVEL_DATA_IO_PERCENTAGE", "Average"),
+        ("cache_hit_percent", "CACHE_HIT_PERCENTAGE", "Maximum"),
+        ("cache_used_percent", "CACHE_USED_PERCENTAGE", "Maximum"),
+        ("local_tempdb_usage_percent", "LOCAL_TEMPDB_PERCENTAGE", "Average"),
+        ("app_cpu_billed", "APP_CPU_BILLED", "Total"),
+        ("app_cpu_percent", "APP_CPU_PERCENTAGE", "Average"),
+        ("app_memory_percent", "APP_MEMORY_USED_PERCENTAGE", "Average"),
+        ("allocated_data_storage", "DATA_SPACE_ALLOCATED", "Average"),
     ],
     "sql_servers": [
         ("cpu_percent", "CPU|CPU_USAGE", "Average"),
@@ -306,17 +318,108 @@ MONITOR_METRICS = {
         ("SuccessE2ELatency", "summary|successE2ELatency", "Average"),
         ("Availability", "summary|availability", "Average"),
     ],
+    "storage_accounts_blob": [
+        # Native pak: blobService group (namespace Microsoft.Storage/storageAccounts/blobServices)
+        ("BlobCapacity", "blobService|blobCapacity", "Average"),
+        ("BlobCount", "blobService|blobCount", "Average"),
+        ("ContainerCount", "blobService|containerCount", "Average"),
+        ("IndexCapacity", "blobService|indexCapacity", "Average"),
+        ("Transactions", "blobService|transactions", "Total"),
+        ("Ingress", "blobService|ingress", "Total"),
+        ("Egress", "blobService|egress", "Total"),
+        ("SuccessServerLatency", "blobService|successServerLatency", "Average"),
+        ("SuccessE2ELatency", "blobService|successE2ELatency", "Average"),
+        ("Availability", "blobService|availability", "Average"),
+    ],
+    "storage_accounts_queue": [
+        # Native pak: queueService group (namespace Microsoft.Storage/storageAccounts/queueServices)
+        ("QueueCapacity", "queueService|queueCapacity", "Average"),
+        ("QueueCount", "queueService|queueCount", "Average"),
+        ("QueueMessageCount", "queueService|queueMessageCount", "Average"),
+        ("Transactions", "queueService|transactions", "Total"),
+        ("Ingress", "queueService|ingress", "Total"),
+        ("Egress", "queueService|egress", "Total"),
+        ("SuccessServerLatency", "queueService|successServerLatency", "Average"),
+        ("SuccessE2ELatency", "queueService|successE2ELatency", "Average"),
+        ("Availability", "queueService|availability", "Average"),
+    ],
+    "storage_accounts_file": [
+        # Native pak: fileService group (namespace Microsoft.Storage/storageAccounts/fileServices)
+        ("FileCapacity", "fileService|fileCapacity", "Average"),
+        ("FileCount", "fileService|fileCount", "Average"),
+        ("FileShareCount", "fileService|fileShareCount", "Average"),
+        ("FileShareSnapshotCount", "fileService|fileShareSnapshotCount", "Average"),
+        ("FileShareSnapshotSize", "fileService|fileShareSnapshotSize", "Average"),
+        ("FileShareCapacityQuota", "fileService|fileShareCapacityQuota", "Average"),
+        ("Transactions", "fileService|transactions", "Total"),
+        ("Ingress", "fileService|ingress", "Total"),
+        ("Egress", "fileService|egress", "Total"),
+        ("SuccessServerLatency", "fileService|successServerLatency", "Average"),
+        ("SuccessE2ELatency", "fileService|successE2ELatency", "Average"),
+        ("Availability", "fileService|availability", "Average"),
+    ],
+    "storage_accounts_table": [
+        # Native pak: tableService group (namespace Microsoft.Storage/storageAccounts/tableServices)
+        ("TableCapacity", "tableService|tableCapacity", "Average"),
+        ("TableCount", "tableService|tableCount", "Average"),
+        ("TableEntityCount", "tableService|tableEntityCount", "Average"),
+        ("Transactions", "tableService|transactions", "Total"),
+        ("Ingress", "tableService|ingress", "Total"),
+        ("Egress", "tableService|egress", "Total"),
+        ("SuccessServerLatency", "tableService|successServerLatency", "Average"),
+        ("SuccessE2ELatency", "tableService|successE2ELatency", "Average"),
+        ("Availability", "tableService|availability", "Average"),
+    ],
+    "app_services": [
+        # Native pak: AzureResourceMetrics$3
+        ("CPU Time", "CPU|cpuTime", "Total"),
+        ("Requests", "summary|requests", "Total"),
+        ("Data In", "summary|bytesReceived", "Total"),
+        ("Data Out", "summary|bytesSent", "Total"),
+        ("Http 101", "summary|http101", "Total"),
+        ("Http 2xx", "summary|http2xx", "Total"),
+        ("Http 3xx", "summary|http3xx", "Total"),
+        ("Http 401", "summary|http401", "Total"),
+        ("Http 403", "summary|http403", "Total"),
+        ("Http 404", "summary|http404", "Total"),
+        ("Http 406", "summary|http406", "Total"),
+        ("Http 4xx", "summary|http4xx", "Total"),
+        ("Http Server Errors", "summary|http5xx", "Total"),
+        ("Memory working set", "summary|memoryWorkingSet", "Total"),
+        ("Average memory working set", "summary|averageMemoryWorkingSet", "Average"),
+        ("Average Response Time", "summary|averageResponseTime", "Average"),
+        ("Response Time", "summary|httpResponseTime", "Average"),
+        ("Connections", "summary|appConnections", "Average"),
+        ("Handle Count", "summary|handles", "Average"),
+        ("Thread Count", "summary|threads", "Average"),
+        ("Private Bytes", "summary|privateBytes", "Average"),
+        ("IO Read Bytes Per Second", "summary|ioReadBytesPerSecond", "Total"),
+        ("IO Write Bytes Per Second", "summary|ioWriteBytesPerSecond", "Total"),
+        ("IO Other Bytes Per Second", "summary|ioOtherBytesPerSecond", "Total"),
+        ("IO Read Operations Per Second", "summary|ioReadOperationsPerSecond", "Total"),
+        ("IO Write Operations Per Second", "summary|ioWriteOperationsPerSecond", "Total"),
+        ("IO Other Operations Per Second", "summary|ioOtherOperationsPerSecond", "Total"),
+        ("Requests In Application Queue", "summary|requestsInApplicationQueue", "Average"),
+        ("Current Assemblies", "summary|currentAssemblies", "Average"),
+        ("Total App Domains", "summary|totalAppDomains", "Average"),
+        ("Total App Domains Unloaded", "summary|totalAppDomainsUnloaded", "Average"),
+        ("Gen 0 Garbage Collections", "summary|gen0Collections", "Total"),
+        ("Gen 1 Garbage Collections", "summary|gen1Collections", "Total"),
+        ("Gen 2 Garbage Collections", "summary|gen2Collections", "Total"),
+        ("Health check status", "summary|healthCheckStatus", "Average"),
+        ("File System Usage", "summary|fileSystemUsage", "Average"),
+    ],
     "postgresql_servers": [
-        # Native pak: flat metrics (no group prefix)
+        # Native pak: flat metrics — aggregations verified from decompiled $19
         ("cpu_percent", "CPU_PERCENT", "Average"),
         ("memory_percent", "MEMORY_PERCENT", "Average"),
         ("io_consumption_percent", "IO_PERCENT", "Average"),
         ("storage_percent", "STORAGE_PERCENT", "Average"),
         ("storage_used", "STORAGE_USED", "Average"),
-        ("storage_limit", "STORAGE_LIMIT", "Maximum"),
+        ("storage_limit", "STORAGE_LIMIT", "Average"),
         ("serverlog_storage_percent", "SERVER_LOG_STORAGE_PERCENT", "Average"),
         ("serverlog_storage_usage", "SERVER_LOG_STORAGE_USED", "Average"),
-        ("serverlog_storage_limit", "SERVER_LOG_STORAGE_LIMIT", "Maximum"),
+        ("serverlog_storage_limit", "SERVER_LOG_STORAGE_LIMIT", "Average"),
         ("active_connections", "ACTIVE_CONNECTIONS", "Average"),
         ("connections_failed", "FAILED_CONNECTIONS", "Total"),
         ("backup_storage_used", "BACKUP_STORAGE_USED", "Average"),
@@ -326,29 +429,29 @@ MONITOR_METRICS = {
         ("pg_replica_log_delay_in_bytes", "MAX_LAG_ACROSS_REPLICAS", "Maximum"),
     ],
     "mysql_servers": [
-        # Native pak: flat metrics (no group prefix)
+        # Native pak: flat metrics — aggregations verified from decompiled $20
         ("cpu_percent", "CPU_PERCENT", "Average"),
         ("memory_percent", "MEMORY_PERCENT", "Average"),
         ("io_consumption_percent", "IO_PERCENT", "Average"),
         ("storage_percent", "STORAGE_PERCENT", "Average"),
         ("storage_used", "STORAGE_USED", "Average"),
-        ("storage_limit", "STORAGE_LIMIT", "Maximum"),
+        ("storage_limit", "STORAGE_LIMIT", "Average"),
         ("serverlog_storage_percent", "SERVER_LOG_STORAGE_PERCENT", "Average"),
         ("serverlog_storage_usage", "SERVER_LOG_STORAGE_USED", "Average"),
-        ("serverlog_storage_limit", "SERVER_LOG_STORAGE_LIMIT", "Maximum"),
+        ("serverlog_storage_limit", "SERVER_LOG_STORAGE_LIMIT", "Average"),
         ("active_connections", "ACTIVE_CONNECTIONS", "Average"),
         ("connections_failed", "FAILED_CONNECTIONS", "Total"),
-        ("seconds_behind_master", "REPLICATION_LAG_IN_SECONDS", "Maximum"),
+        ("seconds_behind_master", "REPLICATION_LAG_IN_SECONDS", "Average"),
         ("backup_storage_used", "BACKUP_STORAGE_USED", "Average"),
         ("network_bytes_egress", "NETWORK_OUT", "Total"),
         ("network_bytes_ingress", "NETWORK_IN", "Total"),
     ],
     "cosmos_db": [
-        # Native pak: flat metrics (no group prefix)
+        # Native pak: flat metrics — aggregations verified from decompiled $16
         ("AvailableStorage", "AVAIL_STORAGE", "Total"),
         ("DataUsage", "DATA_USAGE", "Total"),
         ("IndexUsage", "INDEX_USAGE", "Total"),
-        ("DocumentQuota", "DOC_QUOTA", "Maximum"),
+        ("DocumentQuota", "DOC_QUOTA", "Total"),
         ("DocumentCount", "DOC_COUNT", "Total"),
     ],
 }
@@ -383,4 +486,61 @@ AZURE_SERVICE_NAMES = {
     OBJ_COSMOS_DB: "Microsoft.DocumentDB/databaseAccounts",
     OBJ_FUNCTIONS_APP: "Microsoft.Web/sites",
     OBJ_APP_SERVICE_PLAN: "Microsoft.Web/serverfarms",
+    # Networking
+    "AZURE_NETWORK_SECURITY_GROUP": "Microsoft.Network/networkSecurityGroups",
+    "AZURE_ROUTE_TABLES": "Microsoft.Network/routeTables",
+    "AZURE_DNS_ZONES": "Microsoft.Network/dnsZones",
+    "AZURE_PRIVATE_DNSZONES": "Microsoft.Network/privateDnsZones",
+    "AZURE_FIREWALLS": "Microsoft.Network/azureFirewalls",
+    "AZURE_VIRTUAL_NETWORK_GATEWAY": "Microsoft.Network/virtualNetworkGateways",
+    "AZURE_APPLICATION_GATEWAY": "Microsoft.Network/applicationGateways",
+    "AZURE_TRAFFIC_MANAGER_PROFILES": "Microsoft.Network/trafficManagerProfiles",
+    "AZURE_FRONT_DOORS": "Microsoft.Network/frontDoors",
+    "AZURE_VIRTUAL_WAN": "Microsoft.Network/virtualWans",
+    "AZURE_VIRTUAL_HUBS": "Microsoft.Network/virtualHubs",
+    "AZURE_DDOS_PROTECTION_PLAN": "Microsoft.Network/ddosProtectionPlans",
+    "AZURE_NETWORK_WATCHERS": "Microsoft.Network/networkWatchers",
+    # Containers
+    "AZURE_KUBERNATE_CLUSTER": "Microsoft.ContainerService/managedClusters",
+    "AZURE_CONTIANER_CONTAINERGROUPS": "Microsoft.ContainerInstance/containerGroups",
+    "AZURE_CONTAINER_REGISTRIES": "Microsoft.ContainerRegistry/registries",
+    "AZURE_OPENSHIFT_CLUSTERS": "Microsoft.RedHatOpenShift/openShiftClusters",
+    # Compute
+    "AZURE_VIRTUAL_SCALESET": "Microsoft.Compute/virtualMachineScaleSets",
+    "AZURE_AVAILABILITY_SETS": "Microsoft.Compute/availabilitySets",
+    "AZURE_BATCH_ACCOUNT": "Microsoft.Batch/batchAccounts",
+    "AZURE_AUTOMATION": "Microsoft.Automation/automationAccounts",
+    # Database
+    "AZURE_CACHE_REDIS": "Microsoft.Cache/redis",
+    "AZURE_SQL_MANAGEDINSTANCES": "Microsoft.Sql/managedInstances",
+    "AZURE_MARIADB_SERVER": "Microsoft.DBforMariaDB/servers",
+    # Messaging
+    "AZURE_SERVICE_BUS": "Microsoft.ServiceBus/namespaces",
+    "AZURE_EVENTHUBS_NAMESPACES": "Microsoft.EventHub/namespaces",
+    "AZURE_EVENT_GRID_DOMAIN": "Microsoft.EventGrid/domains",
+    "AZURE_EVENT_GRID_TOPIC": "Microsoft.EventGrid/topics",
+    # Analytics
+    "AZURE_DATA_FACTORY": "Microsoft.DataFactory/factories",
+    "AZURE_DATA_LAKE_ANALYTICS": "Microsoft.DataLakeAnalytics/accounts",
+    "AZURE_DATALAKE_STORE": "Microsoft.DataLakeStore/accounts",
+    "AZURE_SYNAPSE_ANALYTICS_WORKSPACE": "Microsoft.Synapse/workspaces",
+    "AZURE_HDINSIGHT": "Microsoft.HDInsight/clusters",
+    "AZURE_DATA_EXPLORER_CLUSTER": "Microsoft.Kusto/clusters",
+    "AZURE_STREAM_ANALYTICS_JOBS": "Microsoft.StreamAnalytics/streamingjobs",
+    # AI/ML
+    "AZURE_COGNITIVE_SERVICES_ACCOUNTS": "Microsoft.CognitiveServices/accounts",
+    "AZURE_MACHINE_LEARNING": "Microsoft.MachineLearningServices/workspaces",
+    "AZURE_SEARCH_SERVICES": "Microsoft.Search/searchServices",
+    # IoT
+    "AZURE_IOT_HUB": "Microsoft.Devices/IotHubs",
+    "AZURE_IOT_CENTRAL": "Microsoft.IoTCentral/iotApps",
+    "AZURE_DIGITAL_TWINS": "Microsoft.DigitalTwins/digitalTwinsInstances",
+    # Other
+    "AZURE_API_MANAGEMENT": "Microsoft.ApiManagement/service",
+    "AZURE_APP_CONFIGURATION": "Microsoft.AppConfiguration/configurationStores",
+    "AZURE_CDN_PROFILES": "Microsoft.Cdn/profiles",
+    "AZURE_MEDIA_SERVICES": "Microsoft.Media/mediaservices",
+    "AZURE_NETAPPACCOUNT": "Microsoft.NetApp/netAppAccounts",
+    "AZURE_NOTIFICATIONHUBS_NAMESPACES": "Microsoft.NotificationHubs/namespaces",
+    "AZURE_SIGNALR_SERVICES": "Microsoft.SignalRService/signalR",
 }

@@ -82,7 +82,7 @@ def collect_disks(client: AzureClient, result, adapter_kind: str,
             tags = disk.get("tags", {})
             if tags:
                 for key, value in tags.items():
-                    safe_property(obj, f"tag_{sanitize_tag_key(key)}", value)
+                    safe_property(obj, f"summary|tags|{key}", value)
 
             # Zones
             zones = disk.get("zones", [])

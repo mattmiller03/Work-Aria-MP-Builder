@@ -78,7 +78,7 @@ def collect_virtual_networks(client: AzureClient, result, adapter_kind: str,
             tags = vnet.get("tags", {})
             if tags:
                 for key, value in tags.items():
-                    safe_property(vnet_obj, f"tag_{sanitize_tag_key(key)}", value)
+                    safe_property(vnet_obj, f"summary|tags|{key}", value)
 
             # Relationship: VNet -> Resource Group
             if rg_name:
