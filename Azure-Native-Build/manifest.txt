@@ -1,0 +1,31 @@
+{
+  "display_name": "Management Pack for Microsoft Azure",
+  "name": "MicrosoftAzureAdapter",
+  "description": "Custom replacement for the VMware native Azure management pack. Collects resource attributes, metrics, and cost data from Azure Government and Commercial Cloud. Monitors 18 resource types with native pak key compatibility for seamless dashboard migration.",
+  "version": "8.19.0",
+  "vcops_minimum_version": "8.18.0",
+  "disk_space_required": 500,
+  "eula_file": "eula.txt",
+  "platform": [
+    "Linux Non-VA",
+    "Linux VA"
+  ],
+  "vendor": "DLA",
+  "pak_icon": "icon.png",
+  "pak_validation_script": {
+    "script": ""
+  },
+  "adapter_pre_script": {
+    "script": ""
+  },
+  "adapter_post_script": {
+    "script": ""
+  },
+  "adapters": [
+    "adapter.zip"
+  ],
+  "adapter_kinds": [
+    "MicrosoftAzureAdapter"
+  ],
+  "license_type": " "
+}

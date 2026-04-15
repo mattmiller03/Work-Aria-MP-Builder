@@ -1,0 +1,33 @@
+{
+    "display_name": "DISPLAY_NAME",
+    "name": "MicrosoftAzureAdapter",
+    "description": "DESCRIPTION",
+    "version": "8.18.0.24067771",
+    "vcops_minimum_version": "8.18.0",
+    "disk_space_required": 500,
+    "run_scripts_on_all_nodes": "false",
+    "eula_file": "eula.txt",
+    "platform": [
+        "Windows",
+        "Linux Non-VA",
+        "Linux VA"
+    ],
+    "vendor": "VENDOR",
+    "pak_icon": "MicrosoftAzureAdapter.svg",
+    "pak_validation_script": {
+        "script": ""
+    },
+    "adapter_pre_script": {
+        "script": "python preAdapters.py"
+    },
+    "adapter_post_script": {
+        "script": ""
+    },
+    "adapters": [
+        "AzureAdapter.zip"
+    ],
+    "adapter_kinds": [
+        "MicrosoftAzureAdapter"
+    ],
+    "license_type": ""
+}

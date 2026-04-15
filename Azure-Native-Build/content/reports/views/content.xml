@@ -1,0 +1,878 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Content>
+    <Views>
+        <ViewDef id="deb5e5dc-fc13-4a79-afba-7df1f78e448a">
+            <Title localizationKey="title">Azure Load Balancer Data Path Availability</Title>
+            <Description localizationKey="desc">Azure Load Balancer Data Path Availability.</Description>
+            <SubjectType adapterKind="MicrosoftAzureAdapter" resourceKind="AZURE_LB" type="descendant"/>
+            <SubjectType adapterKind="MicrosoftAzureAdapter" resourceKind="AZURE_LB" type="self"/>
+            <Usage>dashboard</Usage>
+            <Usage>report</Usage>
+            <Usage>details</Usage>
+            <Usage>content</Usage>
+            <Controls>
+                <Control id="time-interval-selector_id_33" type="time-interval-selector" visible="false">
+                    <Property name="advancedTimeMode" value="false"/>
+                    <Property name="unit" value="DAYS"/>
+                    <Property name="count" value="1"/>
+                </Control>
+                <Control id="attributes-selector_id_34" type="attributes-selector" visible="false">
+                    <Property name="attributeInfos">
+                        <List>
+                            <Item>
+<Value>
+    <Property name="objectType" value="RESOURCE"/>
+    <Property name="attributeKey" value="DATA_PATH_AVAILABLITY"/>
+    <Property name="isStringAttribute" value="false"/>
+    <Property name="adapterKind" value="MicrosoftAzureAdapter"/>
+    <Property name="resourceKind" value="AZURE_LB"/>
+    <Property name="rollUpType" value="NONE"/>
+    <Property name="rollUpCount" value="0"/>
+    <Property name="forecastDays" value="1"/>
+    <Property name="transformations">
+        <List>
+            <Item value="NONE"/>
+            <Item value="TREND"/>
+            <Item value="FORECAST"/>
+        </List>
+    </Property>
+    <Property name="isProperty" value="false"/>
+</Value>
+                            </Item>
+                        </List>
+                    </Property>
+                </Control>
+                <Control id="pagination-control_id_35" type="pagination-control" visible="true">
+                    <Property name="start" value="0"/>
+                    <Property name="size" value="25"/>
+                </Control>
+            </Controls>
+            <DataProviders>
+                <DataProvider dataType="trend-view" id="trend-view_id_32"/>
+            </DataProviders>
+            <Presentation type="line-chart"/>
+        </ViewDef>
+        <ViewDef id="f388e01c-2cee-4bf8-8b8d-df19da598ca4">
+            <Title localizationKey="title">Azure MySQL Server CPU Usage (%)</Title>
+            <Description localizationKey="desc">Azure MySQL Server CPU Usage (%).</Description>
+            <SubjectType adapterKind="MicrosoftAzureAdapter" resourceKind="AZURE_MYSQL_SERVER" type="descendant"/>
+            <SubjectType adapterKind="MicrosoftAzureAdapter" resourceKind="AZURE_MYSQL_SERVER" type="self"/>
+            <Usage>dashboard</Usage>
+            <Usage>report</Usage>
+            <Usage>details</Usage>
+            <Usage>content</Usage>
+            <Controls>
+                <Control id="time-interval-selector_id_8" type="time-interval-selector" visible="false">
+                    <Property name="advancedTimeMode" value="false"/>
+                    <Property name="unit" value="DAYS"/>
+                    <Property name="count" value="1"/>
+                </Control>
+                <Control id="attributes-selector_id_9" type="attributes-selector" visible="false">
+                    <Property name="attributeInfos">
+                        <List>
+                            <Item>
+<Value>
+    <Property name="objectType" value="RESOURCE"/>
+    <Property name="attributeKey" value="CPU_PERCENT"/>
+    <Property name="preferredUnitId" value="percent"/>
+    <Property name="isStringAttribute" value="false"/>
+    <Property name="adapterKind" value="MicrosoftAzureAdapter"/>
+    <Property name="resourceKind" value="AZURE_MYSQL_SERVER"/>
+    <Property name="rollUpType" value="NONE"/>
+    <Property name="rollUpCount" value="0"/>
+    <Property name="forecastDays" value="1"/>
+    <Property name="transformations">
+        <List>
+            <Item value="NONE"/>
+            <Item value="TREND"/>
+            <Item value="FORECAST"/>
+        </List>
+    </Property>
+    <Property name="isProperty" value="false"/>
+</Value>
+                            </Item>
+                        </List>
+                    </Property>
+                </Control>
+                <Control id="pagination-control_id_10" type="pagination-control" visible="true">
+                    <Property name="start" value="0"/>
+                    <Property name="size" value="25"/>
+                </Control>
+            </Controls>
+            <DataProviders>
+                <DataProvider dataType="trend-view" id="trend-view_id_7"/>
+            </DataProviders>
+            <Presentation type="line-chart"/>
+        </ViewDef>
+        <ViewDef id="56b2eb8f-1e98-4616-816a-803b6342ed5a">
+            <Title localizationKey="title">Azure Virtual Machine CPU Usage (%)</Title>
+            <Description localizationKey="desc">Azure Virtual Machine CPU Usage (%).</Description>
+            <SubjectType adapterKind="MicrosoftAzureAdapter" resourceKind="AZURE_VIRTUAL_MACHINE" type="descendant"/>
+            <SubjectType adapterKind="MicrosoftAzureAdapter" resourceKind="AZURE_VIRTUAL_MACHINE" type="self"/>
+            <Usage>dashboard</Usage>
+            <Usage>report</Usage>
+            <Usage>details</Usage>
+            <Usage>content</Usage>
+            <Controls>
+                <Control id="time-interval-selector_id_3" type="time-interval-selector" visible="false">
+                    <Property name="advancedTimeMode" value="false"/>
+                    <Property name="unit" value="DAYS"/>
+                    <Property name="count" value="1"/>
+                </Control>
+                <Control id="attributes-selector_id_4" type="attributes-selector" visible="false">
+                    <Property name="attributeInfos">
+                        <List>
+                            <Item>
+<Value>
+    <Property name="objectType" value="RESOURCE"/>
+    <Property name="attributeKey" value="CPU|CPU_USAGE"/>
+    <Property name="preferredUnitId" value="percent"/>
+    <Property name="isStringAttribute" value="false"/>
+    <Property name="adapterKind" value="MicrosoftAzureAdapter"/>
+    <Property name="resourceKind" value="AZURE_VIRTUAL_MACHINE"/>
+    <Property name="rollUpType" value="NONE"/>
+    <Property name="rollUpCount" value="0"/>
+    <Property name="forecastDays" value="1"/>
+    <Property name="transformations">
+        <List>
+            <Item value="NONE"/>
+            <Item value="TREND"/>
+            <Item value="FORECAST"/>
+        </List>
+    </Property>
+    <Property name="isProperty" value="false"/>
+</Value>
+                            </Item>
+                        </List>
+                    </Property>
+                </Control>
+                <Control id="pagination-control_id_5" type="pagination-control" visible="true">
+                    <Property name="start" value="0"/>
+                    <Property name="size" value="25"/>
+                </Control>
+            </Controls>
+            <DataProviders>
+                <DataProvider dataType="trend-view" id="trend-view_id_2"/>
+            </DataProviders>
+            <Presentation type="line-chart"/>
+        </ViewDef>
+        <ViewDef id="91a7fa4d-df44-4f8e-80b5-ff7327667698">
+            <Title localizationKey="title">Azure SQL Server CPU Usage (%)</Title>
+            <Description localizationKey="desc">Azure SQL Server CPU Usage (%).</Description>
+            <SubjectType adapterKind="MicrosoftAzureAdapter" resourceKind="AZURE_SQL_SERVER" type="descendant"/>
+            <SubjectType adapterKind="MicrosoftAzureAdapter" resourceKind="AZURE_SQL_SERVER" type="self"/>
+            <Usage>dashboard</Usage>
+            <Usage>report</Usage>
+            <Usage>details</Usage>
+            <Usage>content</Usage>
+            <Controls>
+                <Control id="time-interval-selector_id_18" type="time-interval-selector" visible="false">
+                    <Property name="advancedTimeMode" value="false"/>
+                    <Property name="unit" value="DAYS"/>
+                    <Property name="count" value="1"/>
+                </Control>
+                <Control id="attributes-selector_id_19" type="attributes-selector" visible="false">
+                    <Property name="attributeInfos">
+                        <List>
+                            <Item>
+<Value>
+    <Property name="objectType" value="RESOURCE"/>
+    <Property name="attributeKey" value="CPU|CPU_USAGE"/>
+    <Property name="preferredUnitId" value="percent"/>
+    <Property name="isStringAttribute" value="false"/>
+    <Property name="adapterKind" value="MicrosoftAzureAdapter"/>
+    <Property name="resourceKind" value="AZURE_SQL_SERVER"/>
+    <Property name="rollUpType" value="NONE"/>
+    <Property name="rollUpCount" value="0"/>
+    <Property name="forecastDays" value="1"/>
+    <Property name="transformations">
+        <List>
+            <Item value="NONE"/>
+            <Item value="TREND"/>
+            <Item value="FORECAST"/>
+        </List>
+    </Property>
+    <Property name="isProperty" value="false"/>
+</Value>
+                            </Item>
+                        </List>
+                    </Property>
+                </Control>
+                <Control id="pagination-control_id_20" type="pagination-control" visible="true">
+                    <Property name="start" value="0"/>
+                    <Property name="size" value="25"/>
+                </Control>
+            </Controls>
+            <DataProviders>
+                <DataProvider dataType="trend-view" id="trend-view_id_17"/>
+            </DataProviders>
+            <Presentation type="line-chart"/>
+        </ViewDef>
+        <ViewDef id="5bf85d53-f9c4-404b-b02a-a72b6b23b1dc">
+            <Title localizationKey="title">Azure SQL Database CPU Usage (%)</Title>
+            <Description localizationKey="desc">Azure SQL Database CPU Usage (%).</Description>
+            <SubjectType adapterKind="MicrosoftAzureAdapter" resourceKind="AZURE_SQL_DATABASE" type="descendant"/>
+            <SubjectType adapterKind="MicrosoftAzureAdapter" resourceKind="AZURE_SQL_DATABASE" type="self"/>
+            <Usage>dashboard</Usage>
+            <Usage>report</Usage>
+            <Usage>details</Usage>
+            <Usage>content</Usage>
+            <Controls>
+                <Control id="time-interval-selector_id_28" type="time-interval-selector" visible="false">
+                    <Property name="advancedTimeMode" value="false"/>
+                    <Property name="unit" value="DAYS"/>
+                    <Property name="count" value="1"/>
+                </Control>
+                <Control id="attributes-selector_id_29" type="attributes-selector" visible="false">
+                    <Property name="attributeInfos">
+                        <List>
+                            <Item>
+<Value>
+    <Property name="objectType" value="RESOURCE"/>
+    <Property name="attributeKey" value="CPU|CPU_USAGE"/>
+    <Property name="preferredUnitId" value="percent"/>
+    <Property name="isStringAttribute" value="false"/>
+    <Property name="adapterKind" value="MicrosoftAzureAdapter"/>
+    <Property name="resourceKind" value="AZURE_SQL_DATABASE"/>
+    <Property name="rollUpType" value="NONE"/>
+    <Property name="rollUpCount" value="0"/>
+    <Property name="forecastDays" value="1"/>
+    <Property name="transformations">
+        <List>
+            <Item value="NONE"/>
+            <Item value="TREND"/>
+            <Item value="FORECAST"/>
+        </List>
+    </Property>
+    <Property name="isProperty" value="false"/>
+</Value>
+                            </Item>
+                        </List>
+                    </Property>
+                </Control>
+                <Control id="pagination-control_id_30" type="pagination-control" visible="true">
+                    <Property name="start" value="0"/>
+                    <Property name="size" value="25"/>
+                </Control>
+            </Controls>
+            <DataProviders>
+                <DataProvider dataType="trend-view" id="trend-view_id_27"/>
+            </DataProviders>
+            <Presentation type="line-chart"/>
+        </ViewDef>
+        <ViewDef id="a97249f8-c549-4406-96ec-a89ecc9a538f">
+            <Title localizationKey="title">Azure PostgreSQL Server CPU Usage (%)</Title>
+            <Description localizationKey="desc">Azure PostgreSQL Server CPU Usage (%).</Description>
+            <SubjectType adapterKind="MicrosoftAzureAdapter" resourceKind="AZURE_POSTGRESQL_SERVER" type="descendant"/>
+            <SubjectType adapterKind="MicrosoftAzureAdapter" resourceKind="AZURE_POSTGRESQL_SERVER" type="self"/>
+            <Usage>dashboard</Usage>
+            <Usage>report</Usage>
+            <Usage>details</Usage>
+            <Usage>content</Usage>
+            <Controls>
+                <Control id="time-interval-selector_id_13" type="time-interval-selector" visible="false">
+                    <Property name="advancedTimeMode" value="false"/>
+                    <Property name="unit" value="DAYS"/>
+                    <Property name="count" value="1"/>
+                </Control>
+                <Control id="attributes-selector_id_14" type="attributes-selector" visible="false">
+                    <Property name="attributeInfos">
+                        <List>
+                            <Item>
+<Value>
+    <Property name="objectType" value="RESOURCE"/>
+    <Property name="attributeKey" value="CPU_PERCENT"/>
+    <Property name="preferredUnitId" value="percent"/>
+    <Property name="isStringAttribute" value="false"/>
+    <Property name="adapterKind" value="MicrosoftAzureAdapter"/>
+    <Property name="resourceKind" value="AZURE_POSTGRESQL_SERVER"/>
+    <Property name="rollUpType" value="NONE"/>
+    <Property name="rollUpCount" value="0"/>
+    <Property name="forecastDays" value="1"/>
+    <Property name="transformations">
+        <List>
+            <Item value="NONE"/>
+            <Item value="TREND"/>
+            <Item value="FORECAST"/>
+        </List>
+    </Property>
+    <Property name="isProperty" value="false"/>
+</Value>
+                            </Item>
+                        </List>
+                    </Property>
+                </Control>
+                <Control id="pagination-control_id_15" type="pagination-control" visible="true">
+                    <Property name="start" value="0"/>
+                    <Property name="size" value="25"/>
+                </Control>
+            </Controls>
+            <DataProviders>
+                <DataProvider dataType="trend-view" id="trend-view_id_12"/>
+            </DataProviders>
+            <Presentation type="line-chart"/>
+        </ViewDef>
+        <ViewDef id="65941230-9686-4521-8f57-8b5ca9acd3bc">
+            <Title localizationKey="title">Azure VMSS CPU Usage (%)</Title>
+            <Description localizationKey="desc">Azure Virtual Machine Scale Sets CPU Usage (%).</Description>
+            <SubjectType adapterKind="MicrosoftAzureAdapter" resourceKind="AZURE_VIRTUAL_SCALESET" type="descendant"/>
+            <SubjectType adapterKind="MicrosoftAzureAdapter" resourceKind="AZURE_VIRTUAL_SCALESET" type="self"/>
+            <Usage>dashboard</Usage>
+            <Usage>report</Usage>
+            <Usage>details</Usage>
+            <Usage>content</Usage>
+            <Controls>
+                <Control id="time-interval-selector_id_340" type="time-interval-selector" visible="false">
+                    <Property name="advancedTimeMode" value="false"/>
+                    <Property name="unit" value="DAYS"/>
+                    <Property name="count" value="7"/>
+                </Control>
+                <Control id="attributes-selector_id_341" type="attributes-selector" visible="false">
+                    <Property name="attributeInfos">
+                        <List>
+                            <Item>
+<Value>
+    <Property name="objectType" value="RESOURCE"/>
+    <Property name="attributeKey" value="cpu|percentage_cpu"/>
+    <Property name="preferredUnitId" value="percent"/>
+    <Property name="isStringAttribute" value="false"/>
+    <Property name="adapterKind" value="MicrosoftAzureAdapter"/>
+    <Property name="resourceKind" value="AZURE_VIRTUAL_SCALESET"/>
+    <Property name="rollUpType" value="NONE"/>
+    <Property name="rollUpCount" value="0"/>
+    <Property name="forecastDays" value="5"/>
+    <Property name="transformations">
+        <List>
+            <Item value="NONE"/>
+            <Item value="TREND"/>
+            <Item value="FORECAST"/>
+        </List>
+    </Property>
+    <Property name="isProperty" value="false"/>
+</Value>
+                            </Item>
+                        </List>
+                    </Property>
+                </Control>
+                <Control id="pagination-control_id_342" type="pagination-control" visible="true">
+                    <Property name="start" value="0"/>
+                    <Property name="size" value="25"/>
+                </Control>
+            </Controls>
+            <DataProviders>
+                <DataProvider dataType="trend-view" id="trend-view_id_339"/>
+            </DataProviders>
+            <Presentation type="line-chart"/>
+        </ViewDef>
+        <ViewDef id="5dc44f74-4e40-4b46-b07c-21ea55e78fee">
+            <Title localizationKey="title">Azure Web Apps</Title>
+            <Description localizationKey="desc">Azure Web Apps CPU Usage (%).</Description>
+            <SubjectType adapterKind="MicrosoftAzureAdapter" resourceKind="AZURE_APP_SERVICE" type="descendant"/>
+            <SubjectType adapterKind="MicrosoftAzureAdapter" resourceKind="AZURE_APP_SERVICE" type="self"/>
+            <Usage>dashboard</Usage>
+            <Usage>report</Usage>
+            <Usage>details</Usage>
+            <Usage>content</Usage>
+            <Controls>
+                <Control id="time-interval-selector_id_350" type="time-interval-selector" visible="false">
+                    <Property name="advancedTimeMode" value="false"/>
+                    <Property name="unit" value="DAYS"/>
+                    <Property name="count" value="7"/>
+                </Control>
+                <Control id="attributes-selector_id_351" type="attributes-selector" visible="false">
+                    <Property name="attributeInfos">
+                        <List>
+                            <Item>
+<Value>
+    <Property name="objectType" value="RESOURCE"/>
+    <Property name="attributeKey" value="CPU|cpuTime"/>
+    <Property name="preferredUnitId" value="percent"/>
+    <Property name="isStringAttribute" value="false"/>
+    <Property name="adapterKind" value="MicrosoftAzureAdapter"/>
+    <Property name="resourceKind" value="AZURE_APP_SERVICE"/>
+    <Property name="rollUpType" value="NONE"/>
+    <Property name="rollUpCount" value="0"/>
+    <Property name="forecastDays" value="5"/>
+    <Property name="transformations">
+        <List>
+            <Item value="NONE"/>
+            <Item value="TREND"/>
+            <Item value="FORECAST"/>
+        </List>
+    </Property>
+    <Property name="isProperty" value="false"/>
+</Value>
+                            </Item>
+                        </List>
+                    </Property>
+                </Control>
+                <Control id="pagination-control_id_352" type="pagination-control" visible="true">
+                    <Property name="start" value="0"/>
+                    <Property name="size" value="25"/>
+                </Control>
+            </Controls>
+            <DataProviders>
+                <DataProvider dataType="trend-view" id="trend-view_id_349"/>
+            </DataProviders>
+            <Presentation type="line-chart"/>
+        </ViewDef>
+        <ViewDef id="9bc1b268-314c-4b01-8b57-dcfcbf634204">
+            <Title localizationKey="title">Azure VMSS Instance</Title>
+            <Description localizationKey="desc">Azure Virtual Machine Scale Set Instances CPU Usage (%).</Description>
+            <SubjectType adapterKind="MicrosoftAzureAdapter" resourceKind="AZURE_VIRTUAL_SCALESET_INSTANCE" type="descendant"/>
+            <SubjectType adapterKind="MicrosoftAzureAdapter" resourceKind="AZURE_VIRTUAL_SCALESET_INSTANCE" type="self"/>
+            <Usage>dashboard</Usage>
+            <Usage>report</Usage>
+            <Usage>details</Usage>
+            <Usage>content</Usage>
+            <Controls>
+                <Control id="time-interval-selector_id_345" type="time-interval-selector" visible="false">
+                    <Property name="advancedTimeMode" value="false"/>
+                    <Property name="unit" value="DAYS"/>
+                    <Property name="count" value="7"/>
+                </Control>
+                <Control id="attributes-selector_id_346" type="attributes-selector" visible="false">
+                    <Property name="attributeInfos">
+                        <List>
+                            <Item>
+<Value>
+    <Property name="objectType" value="RESOURCE"/>
+    <Property name="attributeKey" value="CPU|CPU_USAGE"/>
+    <Property name="preferredUnitId" value="percent"/>
+    <Property name="isStringAttribute" value="false"/>
+    <Property name="adapterKind" value="MicrosoftAzureAdapter"/>
+    <Property name="resourceKind" value="AZURE_VIRTUAL_SCALESET_INSTANCE"/>
+    <Property name="rollUpType" value="NONE"/>
+    <Property name="rollUpCount" value="0"/>
+    <Property name="forecastDays" value="5"/>
+    <Property name="transformations">
+        <List>
+            <Item value="NONE"/>
+            <Item value="TREND"/>
+            <Item value="FORECAST"/>
+        </List>
+    </Property>
+    <Property name="isProperty" value="false"/>
+</Value>
+                            </Item>
+                        </List>
+                    </Property>
+                </Control>
+                <Control id="pagination-control_id_347" type="pagination-control" visible="true">
+                    <Property name="start" value="0"/>
+                    <Property name="size" value="25"/>
+                </Control>
+            </Controls>
+            <DataProviders>
+                <DataProvider dataType="trend-view" id="trend-view_id_344"/>
+            </DataProviders>
+            <Presentation type="line-chart"/>
+        </ViewDef>
+        <ViewDef id="583b647e-5904-42f0-bd30-50fd11cefe85">
+            <Title localizationKey="title">Azure Virtual Machines by Sizing Tier</Title>
+            <Description localizationKey="desc">Count of Azure virtual machines by sizing tier.</Description>
+            <SubjectType adapterKind="MicrosoftAzureAdapter" resourceKind="AZURE_VIRTUAL_MACHINE" type="descendant"/>
+            <Usage>dashboard</Usage>
+            <Usage>report</Usage>
+            <Usage>details</Usage>
+            <Usage>content</Usage>
+            <Controls>
+                <Control id="time-interval-selector_id_377" type="time-interval-selector" visible="false">
+                    <Property name="advancedTimeMode" value="false"/>
+                    <Property name="unit" value="DAYS"/>
+                    <Property name="count" value="7"/>
+                </Control>
+                <Control id="attributes-selector_id_378" type="attributes-selector" visible="false">
+                    <Property name="attributeInfos">
+                        <List>
+                            <Item>
+<Value>
+    <Property name="objectType" value="RESOURCE"/>
+    <Property name="attributeKey" value="summary|SIZING_TIER"/>
+    <Property name="isStringAttribute" value="true"/>
+    <Property name="adapterKind" value="MicrosoftAzureAdapter"/>
+    <Property name="resourceKind" value="AZURE_VIRTUAL_MACHINE"/>
+    <Property name="rollUpCount" value="0"/>
+    <Property name="isProperty" value="true"/>
+    <Property name="displayName" value="Sizing Tier"/>
+</Value>
+                            </Item>
+                        </List>
+                    </Property>
+                </Control>
+                <Control id="buckets-control_id_379" type="buckets-control" visible="false">
+                    <Property name="dynamicCalcFunction" value="DISCRETE"/>
+                    <Property name="isDynamic" value="true"/>
+                    <Property name="isSum" value="false"/>
+                </Control>
+                <Control id="metadata_id_380" type="metadata" visible="false">
+                    <Property name="maxPointsCount" value="5000"/>
+                    <Property name="hideObjectNameColumn" value="false"/>
+                    <Property name="listTopResultSize" value="-1"/>
+                </Control>
+            </Controls>
+            <DataProviders>
+                <DataProvider dataType="distribution-view" id="distribution-view_id_376"/>
+            </DataProviders>
+            <Presentation type="pie-chart"/>
+        </ViewDef>
+        <ViewDef id="b9b24386-f09b-4204-9759-681ffc3d28ce">
+            <Title localizationKey="title">Azure Virtual Machines Detail</Title>
+            <Description localizationKey="desc">List of Azure virtual machines with detail.</Description>
+            <SubjectType adapterKind="MicrosoftAzureAdapter" resourceKind="AZURE_VIRTUAL_MACHINE" type="descendant"/>
+            <SubjectType adapterKind="MicrosoftAzureAdapter" resourceKind="AZURE_VIRTUAL_MACHINE" type="self"/>
+            <Usage>dashboard</Usage>
+            <Usage>report</Usage>
+            <Usage>details</Usage>
+            <Usage>content</Usage>
+            <Controls>
+                <Control id="time-interval-selector_id_388" type="time-interval-selector" visible="false">
+                    <Property name="advancedTimeMode" value="false"/>
+                    <Property name="unit" value="DAYS"/>
+                    <Property name="count" value="7"/>
+                </Control>
+                <Control id="attributes-selector_id_389" type="attributes-selector" visible="false">
+                    <Property name="attributeInfos">
+                        <List>
+                            <Item>
+<Value>
+    <Property name="objectType" value="RESOURCE"/>
+    <Property name="attributeKey" value="summary|SIZING_TIER"/>
+    <Property name="isStringAttribute" value="true"/>
+    <Property name="adapterKind" value="MicrosoftAzureAdapter"/>
+    <Property name="resourceKind" value="AZURE_VIRTUAL_MACHINE"/>
+    <Property name="rollUpCount" value="0"/>
+    <Property name="transformations">
+        <List>
+            <Item value="CURRENT"/>
+        </List>
+    </Property>
+    <Property name="isProperty" value="true"/>
+    <Property name="displayName" value="Sizing Tier"/>
+    <Property name="addTimestampAsColumn" value="false"/>
+    <Property name="isShowRelativeTimestamp" value="false"/>
+</Value>
+                            </Item>
+                            <Item>
+<Value>
+    <Property name="objectType" value="RESOURCE"/>
+    <Property name="attributeKey" value="summary|OS_TYPE"/>
+    <Property name="isStringAttribute" value="true"/>
+    <Property name="adapterKind" value="MicrosoftAzureAdapter"/>
+    <Property name="resourceKind" value="AZURE_VIRTUAL_MACHINE"/>
+    <Property name="rollUpCount" value="0"/>
+    <Property name="transformations">
+        <List>
+            <Item value="CURRENT"/>
+        </List>
+    </Property>
+    <Property name="isProperty" value="true"/>
+    <Property name="displayName" value="OS Type"/>
+    <Property name="addTimestampAsColumn" value="false"/>
+    <Property name="isShowRelativeTimestamp" value="false"/>
+</Value>
+                            </Item>
+                        </List>
+                    </Property>
+                </Control>
+                <Control id="pagination-control_id_390" type="pagination-control" visible="true">
+                    <Property name="start" value="0"/>
+                    <Property name="size" value="50"/>
+                </Control>
+                <Control id="metadata_id_391" type="metadata" visible="false">
+                    <Property name="maxPointsCount" value="5000"/>
+                    <Property name="hideObjectNameColumn" value="false"/>
+                    <Property name="listTopResultSize" value="50"/>
+                </Control>
+            </Controls>
+            <DataProviders>
+                <DataProvider dataType="list-view" id="list-view_id_387"/>
+            </DataProviders>
+            <Presentation type="list"/>
+        </ViewDef>
+        <ViewDef id="d0ae19a1-7a4b-4b33-b257-d75ddb8cfc94">
+            <Title localizationKey="title">Azure VM CPU Distribution</Title>
+            <Description localizationKey="desc">Azure virtual machines CPU percentage distribution.</Description>
+            <SubjectType adapterKind="MicrosoftAzureAdapter" resourceKind="AZURE_VIRTUAL_MACHINE" type="descendant"/>
+            <Usage>dashboard</Usage>
+            <Usage>report</Usage>
+            <Usage>details</Usage>
+            <Usage>content</Usage>
+            <Controls>
+                <Control id="time-interval-selector_id_399" type="time-interval-selector" visible="false">
+                    <Property name="advancedTimeMode" value="true"/>
+                    <Property name="unit" value="DAYS"/>
+                    <Property name="count" value="7"/>
+                    <Property name="startPeriod" value="PREVIOUS"/>
+                    <Property name="endPeriod" value="NOW"/>
+                </Control>
+                <Control id="attributes-selector_id_400" type="attributes-selector" visible="false">
+                    <Property name="attributeInfos">
+                        <List>
+                            <Item>
+<Value>
+    <Property name="objectType" value="RESOURCE"/>
+    <Property name="attributeKey" value="CPU|CPU_USAGE"/>
+    <Property name="preferredUnitId" value="percent"/>
+    <Property name="isStringAttribute" value="false"/>
+    <Property name="adapterKind" value="MicrosoftAzureAdapter"/>
+    <Property name="resourceKind" value="AZURE_VIRTUAL_MACHINE"/>
+    <Property name="rollUpType" value="NONE"/>
+    <Property name="rollUpCount" value="0"/>
+    <Property name="transformations">
+        <List>
+            <Item value="CURRENT"/>
+        </List>
+    </Property>
+    <Property name="isProperty" value="false"/>
+    <Property name="displayName" value="CPU %"/>
+    <Property name="isShowRelativeTimestamp" value="false"/>
+</Value>
+                            </Item>
+                        </List>
+                    </Property>
+                </Control>
+                <Control id="buckets-control_id_401" type="buckets-control" visible="false">
+                    <Property name="bucketCount" value="5"/>
+                    <Property name="dynamicCalcFunction" value="SIMPLEMAXMIN"/>
+                    <Property name="isDynamic" value="true"/>
+                    <Property name="isSum" value="false"/>
+                </Control>
+                <Control id="metadata_id_402" type="metadata" visible="false">
+                    <Property name="maxPointsCount" value="5000"/>
+                    <Property name="hideObjectNameColumn" value="false"/>
+                    <Property name="listTopResultSize" value="-1"/>
+                </Control>
+            </Controls>
+            <DataProviders>
+                <DataProvider dataType="distribution-view" id="distribution-view_id_398"/>
+            </DataProviders>
+            <Presentation type="bar-chart"/>
+        </ViewDef>
+        <ViewDef id="4f61ff01-87b0-4385-8b8f-db00672580f6">
+            <Title localizationKey="title">Azure Kubernetes Clusters Detail</Title>
+            <Description localizationKey="desc">List of Azure Kubernetes Clusters with detail.</Description>
+            <SubjectType adapterKind="MicrosoftAzureAdapter" resourceKind="AZURE_KUBERNATE_CLUSTER" type="descendant"/>
+            <SubjectType adapterKind="MicrosoftAzureAdapter" resourceKind="AZURE_KUBERNATE_CLUSTER" type="self"/>
+            <Usage>dashboard</Usage>
+            <Usage>report</Usage>
+            <Usage>details</Usage>
+            <Usage>content</Usage>
+            <Controls>
+                <Control id="time-interval-selector_id_563" type="time-interval-selector" visible="false">
+                    <Property name="advancedTimeMode" value="false"/>
+                    <Property name="unit" value="DAYS"/>
+                    <Property name="count" value="7"/>
+                </Control>
+                <Control id="attributes-selector_id_564" type="attributes-selector" visible="false">
+                    <Property name="attributeInfos">
+                        <List>
+                            <Item>
+<Value>
+    <Property name="objectType" value="RESOURCE"/>
+    <Property name="attributeKey" value="summary|fqdn"/>
+    <Property name="isStringAttribute" value="true"/>
+    <Property name="adapterKind" value="MicrosoftAzureAdapter"/>
+    <Property name="resourceKind" value="AZURE_KUBERNATE_CLUSTER"/>
+    <Property name="rollUpCount" value="0"/>
+    <Property name="transformations">
+        <List>
+            <Item value="CURRENT"/>
+        </List>
+    </Property>
+    <Property name="isProperty" value="false"/>
+    <Property name="displayName" value="FQDN"/>
+    <Property name="addTimestampAsColumn" value="false"/>
+    <Property name="isShowRelativeTimestamp" value="false"/>
+</Value>
+                            </Item>
+                            <Item>
+<Value>
+    <Property name="objectType" value="RESOURCE"/>
+    <Property name="attributeKey" value="summary|provisioningState"/>
+    <Property name="isStringAttribute" value="true"/>
+    <Property name="adapterKind" value="MicrosoftAzureAdapter"/>
+    <Property name="resourceKind" value="AZURE_KUBERNATE_CLUSTER"/>
+    <Property name="rollUpCount" value="0"/>
+    <Property name="transformations">
+        <List>
+            <Item value="CURRENT"/>
+        </List>
+    </Property>
+    <Property name="isProperty" value="false"/>
+    <Property name="displayName" value="Provisioning State"/>
+    <Property name="addTimestampAsColumn" value="false"/>
+    <Property name="isShowRelativeTimestamp" value="false"/>
+</Value>
+                            </Item>
+                        </List>
+                    </Property>
+                </Control>
+                <Control id="pagination-control_id_565" type="pagination-control" visible="true">
+                    <Property name="start" value="0"/>
+                    <Property name="size" value="50"/>
+                </Control>
+                <Control id="metadata_id_566" type="metadata" visible="false">
+                    <Property name="maxPointsCount" value="5000"/>
+                    <Property name="hideObjectNameColumn" value="false"/>
+                    <Property name="listTopResultSize" value="50"/>
+                </Control>
+            </Controls>
+            <DataProviders>
+                <DataProvider dataType="list-view" id="list-view_id_562"/>
+            </DataProviders>
+            <Presentation type="list"/>
+        </ViewDef>
+        <ViewDef id="5a804371-d4af-4864-9de8-ea79e183af3e">
+            <Title localizationKey="title">Azure Storage Accounts Detail</Title>
+            <Description localizationKey="desc">List of Azure Storage Accounts with detail.</Description>
+            <SubjectType adapterKind="MicrosoftAzureAdapter" resourceKind="AZURE_STORAGE_ACCOUNT" type="descendant"/>
+            <SubjectType adapterKind="MicrosoftAzureAdapter" resourceKind="AZURE_STORAGE_ACCOUNT" type="self"/>
+            <Usage>dashboard</Usage>
+            <Usage>report</Usage>
+            <Usage>details</Usage>
+            <Usage>content</Usage>
+            <Controls>
+                <Control id="time-interval-selector_id_688" type="time-interval-selector" visible="false">
+                    <Property name="advancedTimeMode" value="false"/>
+                    <Property name="unit" value="DAYS"/>
+                    <Property name="count" value="7"/>
+                </Control>
+                <Control id="attributes-selector_id_689" type="attributes-selector" visible="false">
+                    <Property name="attributeInfos">
+                        <List>
+                            <Item>
+<Value>
+    <Property name="objectType" value="RESOURCE"/>
+    <Property name="attributeKey" value="summary|availability"/>
+    <Property name="preferredUnitId" value="percent"/>
+    <Property name="isStringAttribute" value="false"/>
+    <Property name="adapterKind" value="MicrosoftAzureAdapter"/>
+    <Property name="resourceKind" value="AZURE_STORAGE_ACCOUNT"/>
+    <Property name="rollUpType" value="NONE"/>
+    <Property name="rollUpCount" value="0"/>
+    <Property name="transformations">
+        <List>
+            <Item value="CURRENT"/>
+        </List>
+    </Property>
+    <Property name="isProperty" value="false"/>
+    <Property name="displayName" value="Availability"/>
+    <Property name="addTimestampAsColumn" value="false"/>
+    <Property name="isShowRelativeTimestamp" value="false"/>
+</Value>
+                            </Item>
+                            <Item>
+<Value>
+    <Property name="objectType" value="RESOURCE"/>
+    <Property name="attributeKey" value="summary|transactions"/>
+    <Property name="isStringAttribute" value="false"/>
+    <Property name="adapterKind" value="MicrosoftAzureAdapter"/>
+    <Property name="resourceKind" value="AZURE_STORAGE_ACCOUNT"/>
+    <Property name="rollUpType" value="NONE"/>
+    <Property name="rollUpCount" value="0"/>
+    <Property name="transformations">
+        <List>
+            <Item value="SUM"/>
+        </List>
+    </Property>
+    <Property name="isProperty" value="false"/>
+    <Property name="displayName" value="Total Transactions"/>
+    <Property name="addTimestampAsColumn" value="false"/>
+    <Property name="isShowRelativeTimestamp" value="false"/>
+</Value>
+                            </Item>
+                        </List>
+                    </Property>
+                </Control>
+                <Control id="pagination-control_id_690" type="pagination-control" visible="true">
+                    <Property name="start" value="0"/>
+                    <Property name="size" value="50"/>
+                </Control>
+                <Control id="metadata_id_691" type="metadata" visible="false">
+                    <Property name="maxPointsCount" value="5000"/>
+                    <Property name="hideObjectNameColumn" value="false"/>
+                    <Property name="listTopResultSize" value="50"/>
+                </Control>
+            </Controls>
+            <DataProviders>
+                <DataProvider dataType="list-view" id="list-view_id_687"/>
+            </DataProviders>
+            <Presentation type="list"/>
+        </ViewDef>
+        <ViewDef id="a9084f15-abdb-4c4b-a27d-c81f9c9cc505">
+            <Title localizationKey="title">Azure Virtual Networks Detail</Title>
+            <Description localizationKey="desc">List of Azure Virtual Networks with detail.</Description>
+            <SubjectType adapterKind="MicrosoftAzureAdapter" resourceKind="AZURE_VIRTUAL_NETWORK" type="descendant"/>
+            <SubjectType adapterKind="MicrosoftAzureAdapter" resourceKind="AZURE_VIRTUAL_NETWORK" type="self"/>
+            <Usage>dashboard</Usage>
+            <Usage>report</Usage>
+            <Usage>details</Usage>
+            <Usage>content</Usage>
+            <Controls>
+                <Control id="time-interval-selector_id_422" type="time-interval-selector" visible="false">
+                    <Property name="advancedTimeMode" value="false"/>
+                    <Property name="unit" value="DAYS"/>
+                    <Property name="count" value="7"/>
+                </Control>
+                <Control id="attributes-selector_id_423" type="attributes-selector" visible="false">
+                    <Property name="attributeInfos">
+                        <List>
+                            <Item>
+<Value>
+    <Property name="objectType" value="RESOURCE"/>
+    <Property name="attributeKey" value="summary|isVmProtectionEnabled"/>
+    <Property name="isStringAttribute" value="true"/>
+    <Property name="adapterKind" value="MicrosoftAzureAdapter"/>
+    <Property name="resourceKind" value="AZURE_VIRTUAL_NETWORK"/>
+    <Property name="rollUpCount" value="0"/>
+    <Property name="transformations">
+        <List>
+            <Item value="CURRENT"/>
+        </List>
+    </Property>
+    <Property name="isProperty" value="false"/>
+    <Property name="displayName" value="Is VM Protection Enabled"/>
+    <Property name="addTimestampAsColumn" value="false"/>
+    <Property name="isShowRelativeTimestamp" value="false"/>
+</Value>
+                            </Item>
+                            <Item>
+<Value>
+    <Property name="objectType" value="RESOURCE"/>
+    <Property name="attributeKey" value="summary|isDdosProtectionEnabled"/>
+    <Property name="isStringAttribute" value="true"/>
+    <Property name="adapterKind" value="MicrosoftAzureAdapter"/>
+    <Property name="resourceKind" value="AZURE_VIRTUAL_NETWORK"/>
+    <Property name="rollUpCount" value="0"/>
+    <Property name="transformations">
+        <List>
+            <Item value="CURRENT"/>
+        </List>
+    </Property>
+    <Property name="isProperty" value="false"/>
+    <Property name="displayName" value="Is DDos Protection Enabled"/>
+    <Property name="addTimestampAsColumn" value="false"/>
+    <Property name="isShowRelativeTimestamp" value="false"/>
+</Value>
+                            </Item>
+                        </List>
+                    </Property>
+                </Control>
+                <Control id="pagination-control_id_424" type="pagination-control" visible="true">
+                    <Property name="start" value="0"/>
+                    <Property name="size" value="50"/>
+                </Control>
+                <Control id="metadata_id_425" type="metadata" visible="false">
+                    <Property name="maxPointsCount" value="5000"/>
+                    <Property name="hideObjectNameColumn" value="false"/>
+                    <Property name="listTopResultSize" value="50"/>
+                </Control>
+            </Controls>
+            <DataProviders>
+                <DataProvider dataType="list-view" id="list-view_id_421"/>
+            </DataProviders>
+            <Presentation type="list"/>
+        </ViewDef>
+    </Views>
+</Content>

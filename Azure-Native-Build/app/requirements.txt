@@ -1,0 +1,4 @@
+--no-index
+--find-links /adapter/wheels
+requests>=2.31.0
+vmware-aria-operations-integration-sdk-lib==1.1.0

@@ -1,0 +1,282 @@
+{
+  "resourceKind": "AZURE_REGION",
+  "adapterKind": "MicrosoftAzureAdapter",
+  "regions": [
+    {
+      "name": "Azure East US",
+      "latitude": "37.3719",
+      "longitude": "-79.8164"
+    },
+    {
+      "name": "Azure East US 2",
+      "latitude": "37.12322",
+      "longitude": "-78.49277"
+    },
+    {
+      "name": "Azure South Central US",
+      "latitude": "29.4167",
+      "longitude": "-98.5"
+    },
+    {
+      "name": "Azure West US 2",
+      "latitude": "47.233",
+      "longitude": "-119.852"
+    },
+    {
+      "name": "Azure West US 3",
+      "latitude": "33.44844",
+      "longitude": "-112.07414"
+    },
+    {
+      "name": "Azure Australia East",
+      "latitude": "-33.86",
+      "longitude": "151.2094"
+    },
+    {
+      "name": "Azure South East Asia",
+      "latitude": "1.283",
+      "longitude": "103.833"
+    },
+    {
+      "name": "Azure North Europe",
+      "latitude": "53.3478",
+      "longitude": "-6.2597"
+    },
+    {
+      "name": "Azure Sweden Central",
+      "latitude": "60.67488",
+      "longitude": "17.14127"
+    },
+    {
+      "name": "Azure UK South",
+      "latitude": "51.48933",
+      "longitude": "-0.14406"
+    },
+    {
+      "name": "Azure West Europe",
+      "latitude": "52.3667",
+      "longitude": "4.9"
+    },
+    {
+      "name": "Azure Central US",
+      "latitude": "41.92167",
+      "longitude": "-93.31227"
+    },
+    {
+      "name": "Azure South Africa North",
+      "latitude": "-26.20500",
+      "longitude": "28.04972"
+    },
+    {
+      "name": "Azure Central India",
+      "latitude": "18.5822",
+      "longitude": "73.9197"
+    },
+    {
+      "name": "Azure East Asia",
+      "latitude": "22.267",
+      "longitude": "114.188"
+    },
+    {
+      "name": "Azure Japan East",
+      "latitude": "35.68",
+      "longitude": "139.77"
+    },
+    {
+      "name": "Azure Korea Central",
+      "latitude": "37.56668",
+      "longitude": "126.97829"
+    },
+    {
+      "name": "Azure Canada Central",
+      "latitude": "43.653",
+      "longitude": "-79.383"
+    },
+    {
+      "name": "Azure France Central",
+      "latitude": "48.85889",
+      "longitude": "2.32004"
+    },
+    {
+      "name": "Azure Germany West Central",
+      "latitude": "50.11064",
+      "longitude": "8.68209"
+    },
+    {
+      "name": "Azure Norway East",
+      "latitude": "59.913868",
+      "longitude": "10.752245"
+    },
+    {
+      "name": "Azure Switzerland North",
+      "latitude": "47.451542",
+      "longitude": "8.564572"
+    },
+    {
+      "name": "Azure UAE North",
+      "latitude": "25.266666",
+      "longitude": "55.316666"
+    },
+    {
+      "name": "Azure Brazil South",
+      "latitude": "-23.55",
+      "longitude": "-46.633"
+    },
+    {
+      "name": "Azure East US 2 EUAP",
+      "latitude": "36.6681",
+      "longitude": "-78.3889"
+    },
+    {
+      "name": "Azure North Central US",
+      "latitude": "41.8819",
+      "longitude": "-87.6278"
+    },
+    {
+      "name": "Azure West US",
+      "latitude": "37.783",
+      "longitude": "-122.417"
+    },
+    {
+      "name": "Azure Central US EUAP",
+      "latitude": "41.5950",
+      "longitude": "-93.6250"
+    },
+    {
+      "name": "Azure West Central US",
+      "latitude": "43.17003",
+      "longitude": "-107.56853"
+    },
+    {
+      "name": "Azure South Africa West",
+      "latitude": "-34.075691",
+      "longitude": "18.843266"
+    },
+    {
+      "name": "Azure Australia Central",
+      "latitude": "-35.3075",
+      "longitude": "149.1244"
+    },
+    {
+      "name": "Azure Australia Central 2",
+      "latitude": "-35.28765",
+      "longitude": "149.08789"
+    },
+    {
+      "name": "Azure Australia Southeast",
+      "latitude": "-36.59861",
+      "longitude": "144.67801"
+    },
+    {
+      "name": "Azure Japan West",
+      "latitude": "34.6939",
+      "longitude": "135.5022"
+    },
+    {
+      "name": "Azure South India",
+      "latitude": "12.9822",
+      "longitude": "80.1636"
+    },
+    {
+      "name": "Azure Canada East",
+      "latitude": "46.817",
+      "longitude": "-71.217"
+    },
+    {
+      "name": "Azure UK West",
+      "latitude": "51.48165",
+      "longitude": "-3.17919"
+    },
+    {
+      "name": "Azure UAE Central",
+      "latitude": "24.466667",
+      "longitude": "54.366669"
+    },
+    {
+      "name": "Azure South Central India",
+      "latitude": "17.38879",
+      "longitude": "78.46106"
+    },
+    {
+      "name": "Azure West India",
+      "latitude": "19.088",
+      "longitude": "72.868"
+    },
+    {
+      "name": "Azure Brazil Southeast",
+      "latitude": "-22.90278",
+      "longitude": "-43.2075"
+    },
+    {
+      "name": "Azure Norway West",
+      "latitude": "58.969975",
+      "longitude": "5.733107"
+    },
+    {
+      "name": "Azure Germany North",
+      "latitude": "53.073635",
+      "longitude": "8.806422"
+    },
+    {
+      "name": "Azure France South",
+      "latitude": "43.8345",
+      "longitude": "2.1972"
+    },
+    {
+      "name": "Azure Switzerland West",
+      "latitude": "46.204391",
+      "longitude": "6.143158"
+    },
+    {
+      "name": "Azure Jio India West",
+      "latitude": "22.470701",
+      "longitude": "70.05773"
+    },
+    {
+      "name": "Azure Jio India Central",
+      "latitude": "21.146633",
+      "longitude": "79.08886"
+    },
+    {
+      "name": "Azure Korea South",
+      "latitude": "35.1796",
+      "longitude": "129.0756"
+    },
+    {
+      "name": "Azure Sweden South",
+      "latitude": "55.64274",
+      "longitude": "13.21140"
+    },
+    {
+      "name": "Azure GovCloud (US Gov Arizona)",
+      "latitude": "34.42527",
+      "longitude": "-111.7046"
+    },
+    {
+      "name": "Azure GovCloud (US Gov Texas)",
+      "latitude": "31.56443",
+      "longitude": "-99.208076"
+    },
+    {
+      "name": "Azure GovCloud (US Gov Virginia)",
+      "latitude": "37.623159",
+      "longitude": "-78.39411"
+    },
+    {
+      "name": "Azure GovCloud (US DoD Central)",
+      "latitude": "42.41475",
+      "longitude": "-92.561731"
+    },
+    {
+      "name": "Azure GovCloud (US DoD East)",
+      "latitude": "37.70926",
+      "longitude": "-77.84588"
+    },
+    {
+      "name": "Azure Global"
+    },
+    {
+      "name":"Azure US GovCloud Global"
+    }
+  ]
+}

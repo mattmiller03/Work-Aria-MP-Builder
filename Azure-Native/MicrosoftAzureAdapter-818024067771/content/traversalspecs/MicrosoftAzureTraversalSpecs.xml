@@ -1,0 +1,307 @@
+<AdapterKind key="MicrosoftAzureAdapter">
+	<TraversalSpecKinds>
+		<TraversalSpecKind name="Azure Resources By Subscription"
+			rootAdapterKind="MicrosoftAzureAdapter" rootResourceKind="MicrosoftAzureAdapter Instance"
+			iconName="MicrosoftAzureAdapter.png" nameKey="800">
+			<ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_VIRTUAL_MACHINE::child" />
+			<ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_VIRTUAL_MACHINE::child||MicrosoftAzureAdapter::AZURE_STORAGE_DISK::child" />
+			<ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_SQL_SERVER||MicrosoftAzureAdapter::AZURE_SQL_DATABASE::child" />
+			<ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_DB_ACCOUNT::child" />
+			<ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_LB::child" />
+			<ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_VIRTUAL_NETWORK||MicrosoftAzureAdapter::AZURE_NW_INTERFACE::child" />
+			<ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_POSTGRESQL_SERVER::child" />
+			<ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_MYSQL_SERVER::child" />
+			<ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_KUBERNATE_CLUSTER||MicrosoftAzureAdapter::AZURE_VIRTUAL_SCALESET::child||MicrosoftAzureAdapter::AZURE_VIRTUAL_SCALESET_INSTANCE::child" />
+           <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_KUBERNATE_CLUSTER||MicrosoftAzureAdapter::AZURE_VIRTUAL_SCALESET::child||MicrosoftAzureAdapter::AZURE_LB::child" />
+           <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_KUBERNATE_CLUSTER||MicrosoftAzureAdapter::AZURE_VIRTUAL_SCALESET::child||MicrosoftAzureAdapter::AZURE_VIRTUAL_NETWORK::child" />
+		   <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_VIRTUAL_NETWORK||MicrosoftAzureAdapter::AZURE_VIRTUAL_NETWORK_GATEWAY::child" />
+		  <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_APPLICATION_GATEWAY::child" />
+		  <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_APP_SERVICE::child" />
+		  <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_STORAGE_DISK::child" />
+		  <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_STORAGE_ACCOUNT::child" />
+		 <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_SERVICES_FROM_XML::child" />
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_PUBLIC_IPADDRESSES::child||MicrosoftAzureAdapter::AZURE_APPLICATION_GATEWAY::child" />
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_PUBLIC_IPADDRESSES::child||MicrosoftAzureAdapter::AZURE_VIRTUAL_NETWORK_GATEWAY::child" />
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_PUBLIC_IPADDRESSES::child||MicrosoftAzureAdapter::AZURE_LB::child" />
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_PUBLIC_IPADDRESSES::child||MicrosoftAzureAdapter::AZURE_NW_INTERFACE::child" />
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_FUNCTIONS_APP::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_NETWORK_WATCHERS::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_CACHE_REDIS::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_SQL_MANAGEDINSTANCES::child||MicrosoftAzureAdapter::AZURE_SQL_MANAGEDINSTANCES_DATABASE::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_SQL_MANAGEDINSTANCES_DATABASE::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_MARIADB_SERVER::child||MicrosoftAzureAdapter::AZURE_MARIA_DBSERVER_DATABASE::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_MARIADB_SERVER::child||MicrosoftAzureAdapter::AZURE_VIRTUAL_NETWORK::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_MARIA_DBSERVER_DATABASE::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_COMPUTE_DOMAINNAMES::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_BATCH_ACCOUNT::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_COMPUTE_HOSTGROUPS::child||MicrosoftAzureAdapter::AZURE_DEDICATE_HOST::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_DEDICATE_HOST::child||MicrosoftAzureAdapter::AZURE_VIRTUAL_MACHINE::child" />
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_CONTIANER_CONTAINERGROUPS::child||MicrosoftAzureAdapter::AZURE_CONTAINER::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_CONTAINER_REGISTRIES::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_DATALAKE_STORE::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_APP_CONFIGURATION::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_OPENSHIFT_CLUSTERS::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_ROUTE_TABLES::child||MicrosoftAzureAdapter::AZURE_VIRTUAL_NETWORK::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_PRIVATE_DNSZONES::child||MicrosoftAzureAdapter::AZURE_VIRTUAL_NETWORK::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_DNS_ZONES::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_EXPRESSROUTE_CIRCUITS::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_TRAFFIC_MANAGER_PROFILES::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_SIGNALR_SERVICES::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_FIREWALLS::child||MicrosoftAzureAdapter::AZURE_VIRTUAL_NETWORK::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_FIREWALLS::child||MicrosoftAzureAdapter::AZURE_PUBLIC_IPADDRESSES::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_FRONT_DOORS::child||MicrosoftAzureAdapter::AZURE_APP_SERVICE::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_CDN_PROFILES::child||MicrosoftAzureAdapter::AZURE_CDN_PROFILES_ENDPOINTS::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_CDN_PROFILES::child||MicrosoftAzureAdapter::AZURE_APP_SERVICE::child" />
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_CDN_PROFILES::child||MicrosoftAzureAdapter::AZURE_STORAGE_ACCOUNT::child" />
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_CDN_PROFILES_ENDPOINTS::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_VIRTUAL_WAN::child||MicrosoftAzureAdapter::AZURE_VIRTUAL_HUBS::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_VIRTUAL_HUBS::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_KEY_VAULTS::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_NETAPPACCOUNT::child||MicrosoftAzureAdapter::AZURE_NETAPPACCOUNT_CAPACITYPOOLS::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_NETAPPACCOUNT_CAPACITYPOOLS::child||MicrosoftAzureAdapter::AZURE_NETAPPACCOUNT_CAPACITYPOOLS_VOLUMES::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_NETAPPACCOUNT_CAPACITYPOOLS_VOLUMES::child||MicrosoftAzureAdapter::AZURE_VIRTUAL_NETWORK::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_MEDIA_SERVICES::child||MicrosoftAzureAdapter::AZURE_MEDIASERVICES_LIVEEVENTS::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_MEDIA_SERVICES::child||MicrosoftAzureAdapter::AZURE_MEDIASERVICES_STREAMINGEP::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_MEDIA_SERVICES::child||MicrosoftAzureAdapter::AZURE_STORAGE_ACCOUNT::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_MEDIASERVICES_LIVEEVENTS::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_MEDIASERVICES_STREAMINGEP::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_NH_NAMESPACES_NOTIFICATIONHUBS::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_NOTIFICATIONHUBS_NAMESPACES::child||MicrosoftAzureAdapter::AZURE_NH_NAMESPACES_NOTIFICATIONHUBS::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_EVENTHUBS_NAMESPACES::child||MicrosoftAzureAdapter::AZURE_EVENT_HUBS::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_EVENT_HUBS::child||MicrosoftAzureAdapter::AZURE_STORAGE_ACCOUNT::child" />
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_DATA_LAKE_ANALYTICS::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_SYNAPSE_ANALYTICS::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_HDINSIGHT::child"/>
+		  <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_NETWORK_SECURITY_GROUP::child"/>
+          <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_APP_SERVICE_PLAN::child"/>
+		  <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_PROXIMITY_PLACEMENT_GROUP::child"/>
+          <ResourcePath
+				path="MicrosoftAzureAdapter::MicrosoftAzureAdapter Instance||MicrosoftAzureAdapter::AZURE_RESOURCE_GROUP||MicrosoftAzureAdapter::AZURE_AVAILABILITY_SETS::child"/>
+		</TraversalSpecKind>
+
+		<TraversalSpecKind name="Azure Resources By Region"
+			rootAdapterKind="MicrosoftAzureAdapter" rootResourceKind="AZURE_REGION"
+			iconName="AZURE_REGION.png" nameKey="801">
+			<ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_VIRTUAL_MACHINE::child" />
+			<ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_VIRTUAL_MACHINE::child||MicrosoftAzureAdapter::AZURE_STORAGE_DISK::child" />
+			<ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_SQL_SERVER||MicrosoftAzureAdapter::AZURE_SQL_DATABASE::child" />
+			<ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_DB_ACCOUNT::child" />
+			<ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_LB::child" />
+			<ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_VIRTUAL_NETWORK||MicrosoftAzureAdapter::AZURE_NW_INTERFACE::child" />
+			<ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_POSTGRESQL_SERVER::child" />
+			<ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_MYSQL_SERVER::child" />
+			<ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_KUBERNATE_CLUSTER||MicrosoftAzureAdapter::AZURE_VIRTUAL_SCALESET::child||MicrosoftAzureAdapter::AZURE_VIRTUAL_SCALESET_INSTANCE::child" />
+           <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_KUBERNATE_CLUSTER||MicrosoftAzureAdapter::AZURE_VIRTUAL_SCALESET::child||MicrosoftAzureAdapter::AZURE_LB::child" />		
+		   <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_KUBERNATE_CLUSTER||MicrosoftAzureAdapter::AZURE_VIRTUAL_SCALESET::child||MicrosoftAzureAdapter::AZURE_VIRTUAL_NETWORK::child" />
+		   <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_VIRTUAL_NETWORK||MicrosoftAzureAdapter::AZURE_VIRTUAL_NETWORK_GATEWAY::child" />
+		  <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_APPLICATION_GATEWAY::child" />
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_APP_SERVICE::child" />
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_STORAGE_DISK::child" />
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_STORAGE_ACCOUNT::child" />
+		  <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_SERVICES_FROM_XML::child" />
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_PUBLIC_IPADDRESSES::child||MicrosoftAzureAdapter::AZURE_APPLICATION_GATEWAY::child" />
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_PUBLIC_IPADDRESSES::child||MicrosoftAzureAdapter::AZURE_VIRTUAL_NETWORK_GATEWAY::child" />
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_PUBLIC_IPADDRESSES::child||MicrosoftAzureAdapter::AZURE_LB::child" />
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_PUBLIC_IPADDRESSES::child||MicrosoftAzureAdapter::AZURE_NW_INTERFACE::child" />
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_FUNCTIONS_APP::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_NETWORK_WATCHERS::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_CACHE_REDIS::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_SQL_MANAGEDINSTANCES::child||MicrosoftAzureAdapter::AZURE_SQL_MANAGEDINSTANCES_DATABASE::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_SQL_MANAGEDINSTANCES::child||MicrosoftAzureAdapter::AZURE_VIRTUAL_NETWORK::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_SQL_MANAGEDINSTANCES_DATABASE::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_MARIADB_SERVER::child||MicrosoftAzureAdapter::AZURE_MARIADB_SERVER::child"/>
+      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_MARIADB_SERVER::child||MicrosoftAzureAdapter::AZURE_VIRTUAL_NETWORK::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_MARIADB_SERVER::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_COMPUTE_DOMAINNAMES::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_BATCH_ACCOUNT::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_COMPUTE_HOSTGROUPS::child||MicrosoftAzureAdapter::AZURE_DEDICATE_HOST::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_DEDICATE_HOST::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_CONTIANER_CONTAINERGROUPS::child||MicrosoftAzureAdapter::AZURE_CONTAINER::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_CONTAINER_REGISTRIES::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_DATALAKE_STORE::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_APP_CONFIGURATION::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_OPENSHIFT_CLUSTERS::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_ROUTE_TABLES::child||MicrosoftAzureAdapter::AZURE_VIRTUAL_NETWORK::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_PRIVATE_DNSZONES::child||MicrosoftAzureAdapter::AZURE_VIRTUAL_NETWORK::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_DNS_ZONES::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_EXPRESSROUTE_CIRCUITS::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_TRAFFIC_MANAGER_PROFILES::child||MicrosoftAzureAdapter::AZURE_APP_SERVICE::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_SIGNALR_SERVICES::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_FIREWALLS::child||MicrosoftAzureAdapter::AZURE_VIRTUAL_NETWORK::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_FIREWALLS::child||MicrosoftAzureAdapter::AZURE_PUBLIC_IPADDRESSES::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_FRONT_DOORS::child||MicrosoftAzureAdapter::AZURE_APP_SERVICE::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_CDN_PROFILES::child||MicrosoftAzureAdapter::AZURE_CDN_PROFILES_ENDPOINTS::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_CDN_PROFILES::child||MicrosoftAzureAdapter::AZURE_APP_SERVICE::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_CDN_PROFILES::child||MicrosoftAzureAdapter::AZURE_STORAGE_ACCOUNT::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_CDN_PROFILES_ENDPOINTS::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_VIRTUAL_WAN::child||MicrosoftAzureAdapter::AZURE_VIRTUAL_HUBS::child"/>
+		  <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_VIRTUAL_HUBS::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_KEY_VAULTS::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_NETAPPACCOUNT::child||MicrosoftAzureAdapter::AZURE_NETAPPACCOUNT_CAPACITYPOOLS::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_NETAPPACCOUNT_CAPACITYPOOLS::child||MicrosoftAzureAdapter::AZURE_NETAPPACCOUNT_CAPACITYPOOLS_VOLUMES::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_NETAPPACCOUNT_CAPACITYPOOLS_VOLUMES::child||MicrosoftAzureAdapter::AZURE_VIRTUAL_NETWORK::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_MEDIA_SERVICES::child||MicrosoftAzureAdapter::AZURE_MEDIASERVICES_LIVEEVENTS::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_MEDIA_SERVICES::child||MicrosoftAzureAdapter::AZURE_MEDIASERVICES_STREAMINGEP::child"/>
+					      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_MEDIA_SERVICES::child||MicrosoftAzureAdapter::AZURE_STORAGE_ACCOUNT::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_MEDIASERVICES_LIVEEVENTS::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_MEDIASERVICES_STREAMINGEP::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_NH_NAMESPACES_NOTIFICATIONHUBS::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_NOTIFICATIONHUBS_NAMESPACES::child||MicrosoftAzureAdapter::AZURE_NH_NAMESPACES_NOTIFICATIONHUBS::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_EVENTHUBS_NAMESPACES::child||MicrosoftAzureAdapter::AZURE_EVENT_HUBS::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_EVENT_HUBS::child||MicrosoftAzureAdapter::AZURE_STORAGE_ACCOUNT::child" />
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_DATA_LAKE_ANALYTICS::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_SYNAPSE_ANALYTICS::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_HDINSIGHT::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_NETWORK_SECURITY_GROUP::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_APP_SERVICE_PLAN::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_AVAILABILITY_SETS::child"/>
+	      <ResourcePath
+				path="MicrosoftAzureAdapter::AZURE_REGION||MicrosoftAzureAdapter::AZURE_REGION_PER_SUB||MicrosoftAzureAdapter::AZURE_PROXIMITY_PLACEMENT_GROUP::child"/>
+		</TraversalSpecKind>
+	</TraversalSpecKinds>
+</AdapterKind>

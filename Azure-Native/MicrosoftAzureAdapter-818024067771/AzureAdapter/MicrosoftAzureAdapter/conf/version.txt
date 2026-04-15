@@ -1,0 +1,8 @@
+#Mon, 01 Jul 2024 06:07:07 -0700
+Major-Version=8
+Minor-Version=18
+Hotfix-Version=0
+Implementation-Version=24067771
+Vcops_Minimum_Version=8.18.0
+
+Implementation-Date=2024.07.01 06\:07\:07

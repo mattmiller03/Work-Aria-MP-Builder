@@ -1,0 +1,49 @@
+{
+    "connections": [
+        {
+            "certificates": null,
+            "credential": {
+                "client_id": {
+                    "password": false,
+                    "required": true,
+                    "value": "YOUR_CLIENT_ID"
+                },
+                "client_secret": {
+                    "password": true,
+                    "required": true,
+                    "value": "YOUR_CLIENT_SECRET"
+                },
+                "credential_kind_key": "azure_gov_credential",
+                "subscription_id": {
+                    "password": false,
+                    "required": false,
+                    "value": "YOUR_SUBSCRIPTION_ID"
+                },
+                "tenant_id": {
+                    "password": false,
+                    "required": true,
+                    "value": "YOUR_TENANT_ID"
+                }
+            },
+            "identifiers": {
+                "cloud_environment": {
+                    "part_of_uniqueness": false,
+                    "required": true,
+                    "value": "government"
+                },
+                "container_memory_limit": {
+                    "part_of_uniqueness": false,
+                    "required": true,
+                    "value": "1024"
+                }
+            },
+            "name": "Azure Gov Test",
+            "suite_api_hostname": null,
+            "suite_api_password": null,
+            "suite_api_username": null
+        }
+    ],
+    "suite_api_hostname": "placeholder_hostname",
+    "suite_api_password": "placeholder_password",
+    "suite_api_username": "placeholder_username"
+}

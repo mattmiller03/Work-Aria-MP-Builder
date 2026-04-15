@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?><alertContent>
+    <AlertDefinitions>
+        <AlertDefinition adapterKind="MicrosoftAzureAdapter" description="Azure SQL Database DTU Utilization is very high" id="AlertDefinition-dfac51ad-e435-44dc-87e4-8a04778fdab4" nameKey="21001" resourceKind="AZURE_SQL_DATABASE" subType="19" type="15">
+            <State severity="automatic">
+                <SymptomSet applyOn="self" operator="or">
+                    <Symptom ref="SymptomDefinition-5818191c-8e93-411e-a25b-3019b5c68704"/>
+                    <Symptom ref="SymptomDefinition-521356cb-72df-41f2-9383-a4d50278d6f2"/>
+                    <Symptom ref="SymptomDefinition-9d6b1f31-850b-428d-9ae1-c9082442a5f4"/>
+                </SymptomSet>
+                <Impact key="health" type="badge"/>
+                <Recommendations>
+                    <Recommendation priority="1" ref="Recommendation-ud-e2974bdf-b5bf-4e8f-ad1a-c2be7a28cc63"/>
+                </Recommendations>
+            </State>
+        </AlertDefinition>
+        <AlertDefinition adapterKind="MicrosoftAzureAdapter" description="Azure Virtual Machine CPU Utilization is very high" id="AlertDefinition-42664ac4-1e5b-430c-9dfb-566bc7697262" nameKey="21002" resourceKind="AZURE_VIRTUAL_MACHINE" subType="19" type="15">
+            <State severity="automatic">
+                <SymptomSet applyOn="self" operator="or">
+                    <Symptom ref="SymptomDefinition-c5b46c00-09ea-4fff-a565-c2f8e2f8ce5a"/>
+                    <Symptom ref="SymptomDefinition-d5a8eaed-39fc-413e-a7f2-2ad7f9f6ff31"/>
+                    <Symptom ref="SymptomDefinition-a103ae6c-be14-497b-979d-4a93b603728e"/>
+                </SymptomSet>
+                <Impact key="health" type="badge"/>
+            </State>
+        </AlertDefinition>
+        <AlertDefinition adapterKind="MicrosoftAzureAdapter" description="Azure SQL Database DWU Utilization is very high" id="AlertDefinition-eddb89ea-7707-4acf-96a7-49fff1d8e1e7" nameKey="21003" resourceKind="AZURE_SQL_DATABASE" subType="19" type="15">
+            <State severity="automatic">
+                <SymptomSet applyOn="self" operator="or">
+                    <Symptom ref="SymptomDefinition-6eb41f54-4f03-460c-97c5-527d4c52854c"/>
+                    <Symptom ref="SymptomDefinition-cbfc2bcb-db21-4bc8-8681-849bada4c64c"/>
+                    <Symptom ref="SymptomDefinition-1f4608b1-f176-4a1f-bc3d-a95da2e7f08a"/>
+                </SymptomSet>
+                <Impact key="health" type="badge"/>
+                <Recommendations>
+                    <Recommendation priority="1" ref="Recommendation-ud-2712e2a0-b7da-495e-8549-a92f07deb45d"/>
+                </Recommendations>
+            </State>
+        </AlertDefinition>
+        <AlertDefinition adapterKind="MicrosoftAzureAdapter" description="Azure SQL Database's Data Space Utilization is very high" id="AlertDefinition-4d75b0f0-3805-4018-8b0e-ee1da0b474fa" nameKey="21004" resourceKind="AZURE_SQL_DATABASE" subType="19" type="15">
+            <State severity="automatic">
+                <SymptomSet applyOn="self" operator="or">
+                    <Symptom ref="SymptomDefinition-3f681d17-d285-4ae4-9826-02b8bb10a72a"/>
+                    <Symptom ref="SymptomDefinition-2743b85e-801e-4d42-ab8f-e487483021f3"/>
+                    <Symptom ref="SymptomDefinition-5b673c4a-a905-4786-a262-4ec75a2191de"/>
+                </SymptomSet>
+                <Impact key="health" type="badge"/>
+                <Recommendations>
+                    <Recommendation priority="1" ref="Recommendation-ud-00fee3da-3985-4076-bcca-d704ba108a0f"/>
+                </Recommendations>
+            </State>
+        </AlertDefinition>
+    
+        <AlertDefinition adapterKind="MicrosoftAzureAdapter" description="Azure Storage Account Availability is fall below 100%" id="AlertDefinition-069c3f0d-a756-4d79-afb5-aff671ac3be1" nameKey="21005" resourceKind="AZURE_STORAGE_ACCOUNT" subType="19" type="15">
+            <State severity="automatic">
+                <SymptomSet applyOn="self" operator="and" ref="SymptomDefinition-fb44e356-e2b8-45cd-ae7f-3368cdc21be4"/>
+                <Impact key="health" type="badge"/>
+            </State>
+        </AlertDefinition>
+    
+        <AlertDefinition adapterKind="MicrosoftAzureAdapter" description="Azure Virtual Machine is powered off" id="AlertDefinition-7023c0c4-46a3-47ca-b106-22c9a852b569" nameKey="21006" resourceKind="AZURE_VIRTUAL_MACHINE" subType="19" type="15">
+            <State severity="automatic">
+                <SymptomSet applyOn="self" operator="and" ref="SymptomDefinition-d9fee494-f8b7-4212-8797-d33be210d6fb"/>
+                <Impact key="health" type="badge"/>
+            </State>
+        </AlertDefinition>
+        <AlertDefinition adapterKind="MicrosoftAzureAdapter" description="Azure App Service is not running." id="AlertDefinition-54480c2e-3fe7-4afa-9114-8c905702a901" nameKey="21007" resourceKind="AZURE_APP_SERVICE" subType="19" type="15">
+            <State severity="automatic">
+                <SymptomSet applyOn="self" operator="and" ref="SymptomDefinition-94dccaf2-c25f-4323-afbf-891e5cb9aed8"/>
+                <Impact key="health" type="badge"/>
+            </State>
+        </AlertDefinition>
+    
+    
+       <AlertDefinition adapterKind="MicrosoftAzureAdapter" description="Azure Kubernetes Cluster Available Memory is very low." id="AlertDefinition-cb48a527-378b-4da7-8957-96b1a591dd70" nameKey="21008" resourceKind="AZURE_KUBERNATE_CLUSTER" subType="19" type="15">
+            <State severity="automatic">
+                <SymptomSet applyOn="self" operator="and" ref="SymptomDefinition-0aa56c52-3a01-4f54-92f5-3beb2afb682c"/>
+                <Impact key="health" type="badge"/>
+            </State>
+        </AlertDefinition>
+        <AlertDefinition adapterKind="MicrosoftAzureAdapter" description="Azure Kubernates Cluster deployment is not Succeeded" id="AlertDefinition-69b49b29-a912-4060-9279-84891f618c9c" nameKey="21009" resourceKind="AZURE_KUBERNATE_CLUSTER" subType="19" type="15">
+            <State severity="automatic">
+                <SymptomSet applyOn="self" operator="and" ref="SymptomDefinition-ed9b6eb4-2d29-41d0-a21e-ef7e94b075e9"/>
+                <Impact key="health" type="badge"/>
+            </State>
+        </AlertDefinition>
+        <AlertDefinition adapterKind="MicrosoftAzureAdapter" description="Azure Storage Account Provisioning state is not Succeeded" id="AlertDefinition-15fe5443-7ec2-41b8-9d98-a98129da5298" nameKey="21010" resourceKind="AZURE_STORAGE_ACCOUNT" subType="19" type="15">
+            <State severity="automatic">
+                <SymptomSet applyOn="self" operator="and" ref="SymptomDefinition-e59defab-e353-4e08-8025-c881a0136b18"/>
+                <Impact key="health" type="badge"/>
+            </State>
+        </AlertDefinition>
+    
+        <AlertDefinition adapterKind="MicrosoftAzureAdapter" description="Azure Virtual Scale set Instance power state not running" id="AlertDefinition-8ccdfc6a-fe3b-48d8-ab73-c029f53316e7" nameKey="21011" resourceKind="AZURE_VIRTUAL_SCALESET_INSTANCE" subType="19" type="15">
+            <State severity="automatic">
+                <SymptomSet applyOn="self" operator="and" ref="SymptomDefinition-04452f8c-dcfd-46ee-8b76-3272d20f05a6"/>
+                <Impact key="health" type="badge"/>
+            </State>
+        </AlertDefinition>
+        <AlertDefinition adapterKind="MicrosoftAzureAdapter" description="Azure Virtual Scale Set Instance CPU Utilization is very high." id="AlertDefinition-41880696-7838-423f-8e9e-f44c96a6941f" nameKey="21012" resourceKind="AZURE_VIRTUAL_SCALESET_INSTANCE" subType="19" type="15">
+            <State severity="automatic">
+                <SymptomSet applyOn="self" operator="or">
+                    <Symptom ref="SymptomDefinition-cda380c1-dd46-4d87-9694-4c5fcbba14d1"/>
+                    <Symptom ref="SymptomDefinition-80796787-d9f5-4691-985a-271615de336e"/>
+                    <Symptom ref="SymptomDefinition-c9963163-d02b-46bb-b06a-4e9304629b6f"/>
+                </SymptomSet>
+                <Impact key="health" type="badge"/>
+            </State>
+        </AlertDefinition>
+    
+        <AlertDefinition adapterKind="MicrosoftAzureAdapter" description="Azure Storage Account Primary Status is not available." id="AlertDefinition-df0a7c78-39c5-4815-a353-9313cc1bb0c6" nameKey="21013" resourceKind="AZURE_STORAGE_ACCOUNT" subType="19" type="15">
+            <State severity="automatic">
+                <SymptomSet applyOn="self" operator="and" ref="SymptomDefinition-ac525067-d33b-4812-8d78-92d4e506aeb2"/>
+                <Impact key="health" type="badge"/>
+            </State>
+        </AlertDefinition>
+        <AlertDefinition adapterKind="MicrosoftAzureAdapter" description="Azure Virtual Scale Set CPU Utilization is is very high." id="AlertDefinition-55b5d4d9-933d-41c2-a83c-d0fbd29d7577" nameKey="21014" resourceKind="AZURE_VIRTUAL_SCALESET" subType="19" type="15">
+            <State severity="automatic">
+                <SymptomSet applyOn="self" operator="or">
+                    <Symptom ref="SymptomDefinition-770fa97d-c108-4659-85d7-1a4e1e33a543"/>
+                    <Symptom ref="SymptomDefinition-afada2af-358e-4ac0-bada-e72cabc3352e"/>
+                    <Symptom ref="SymptomDefinition-c185f6d0-30a5-4c53-95e0-f1563eadc30a"/>
+                </SymptomSet>
+                <Impact key="health" type="badge"/>
+            </State>
+        </AlertDefinition>
+    
+    
+    
+    </AlertDefinitions>
+    <SymptomDefinitions>
+        <SymptomDefinition adapterKind="MicrosoftAzureAdapter" cancelCycle="3" id="SymptomDefinition-c5b46c00-09ea-4fff-a565-c2f8e2f8ce5a" nameKey="20001" resourceKind="AZURE_VIRTUAL_MACHINE" waitCycle="3">
+            <State severity="critical">
+                <Condition key="CPU|CPU_USAGE" operator="&gt;" thresholdType="static" type="metric" value="95.0" valueType="numeric"/>
+            </State>
+        </SymptomDefinition>
+        <SymptomDefinition adapterKind="MicrosoftAzureAdapter" cancelCycle="3" id="SymptomDefinition-a103ae6c-be14-497b-979d-4a93b603728e" nameKey="20002" resourceKind="AZURE_VIRTUAL_MACHINE" waitCycle="3">
+            <State severity="warning">
+                <Condition key="CPU|CPU_USAGE" operator="&gt;" thresholdType="static" type="metric" value="85.0" valueType="numeric"/>
+            </State>
+        </SymptomDefinition>
+        <SymptomDefinition adapterKind="MicrosoftAzureAdapter" cancelCycle="3" id="SymptomDefinition-5818191c-8e93-411e-a25b-3019b5c68704" nameKey="20003" resourceKind="AZURE_SQL_DATABASE" waitCycle="3">
+            <State severity="critical">
+                <Condition key="DTU_PERCENTAGE" operator="&gt;" thresholdType="static" type="metric" value="95.0" valueType="numeric"/>
+            </State>
+        </SymptomDefinition>
+        <SymptomDefinition adapterKind="MicrosoftAzureAdapter" cancelCycle="3" id="SymptomDefinition-3f681d17-d285-4ae4-9826-02b8bb10a72a" nameKey="20004" resourceKind="AZURE_SQL_DATABASE" waitCycle="3">
+            <State severity="warning">
+                <Condition key="DATA_SPACE_USED_PERCENT" operator="&gt;" thresholdType="static" type="metric" value="85.0" valueType="numeric"/>
+            </State>
+        </SymptomDefinition>
+        <SymptomDefinition adapterKind="MicrosoftAzureAdapter" cancelCycle="3" id="SymptomDefinition-9d6b1f31-850b-428d-9ae1-c9082442a5f4" nameKey="20005" resourceKind="AZURE_SQL_DATABASE" waitCycle="3">
+            <State severity="warning">
+                <Condition key="DTU_PERCENTAGE" operator="&gt;" thresholdType="static" type="metric" value="85.0" valueType="numeric"/>
+            </State>
+        </SymptomDefinition>
+        <SymptomDefinition adapterKind="MicrosoftAzureAdapter" cancelCycle="3" id="SymptomDefinition-521356cb-72df-41f2-9383-a4d50278d6f2" nameKey="20006" resourceKind="AZURE_SQL_DATABASE" waitCycle="3">
+            <State severity="immediate">
+                <Condition key="DTU_PERCENTAGE" operator="&gt;" thresholdType="static" type="metric" value="90.0" valueType="numeric"/>
+            </State>
+        </SymptomDefinition>
+        <SymptomDefinition adapterKind="MicrosoftAzureAdapter" cancelCycle="3" id="SymptomDefinition-2743b85e-801e-4d42-ab8f-e487483021f3" nameKey="20007" resourceKind="AZURE_SQL_DATABASE" waitCycle="3">
+            <State severity="immediate">
+                <Condition key="DATA_SPACE_USED_PERCENT" operator="&gt;" thresholdType="static" type="metric" value="90.0" valueType="numeric"/>
+            </State>
+        </SymptomDefinition>
+        <SymptomDefinition adapterKind="MicrosoftAzureAdapter" cancelCycle="3" id="SymptomDefinition-5b673c4a-a905-4786-a262-4ec75a2191de" nameKey="20008" resourceKind="AZURE_SQL_DATABASE" waitCycle="3">
+            <State severity="critical">
+                <Condition key="DATA_SPACE_USED_PERCENT" operator="&gt;" thresholdType="static" type="metric" value="95.0" valueType="numeric"/>
+            </State>
+        </SymptomDefinition>
+        <SymptomDefinition adapterKind="MicrosoftAzureAdapter" cancelCycle="3" id="SymptomDefinition-1f4608b1-f176-4a1f-bc3d-a95da2e7f08a" nameKey="20009" resourceKind="AZURE_SQL_DATABASE" waitCycle="3">
+            <State severity="critical">
+                <Condition key="DWU_PERCENTAGE" operator="&gt;" thresholdType="static" type="metric" value="95.0" valueType="numeric"/>
+            </State>
+        </SymptomDefinition>
+        <SymptomDefinition adapterKind="MicrosoftAzureAdapter" cancelCycle="3" id="SymptomDefinition-cbfc2bcb-db21-4bc8-8681-849bada4c64c" nameKey="20010" resourceKind="AZURE_SQL_DATABASE" waitCycle="3">
+            <State severity="immediate">
+                <Condition key="DWU_PERCENTAGE" operator="&gt;" thresholdType="static" type="metric" value="90.0" valueType="numeric"/>
+            </State>
+        </SymptomDefinition>
+        <SymptomDefinition adapterKind="MicrosoftAzureAdapter" cancelCycle="3" id="SymptomDefinition-d5a8eaed-39fc-413e-a7f2-2ad7f9f6ff31" nameKey="20011" resourceKind="AZURE_VIRTUAL_MACHINE" waitCycle="3">
+            <State severity="immediate">
+                <Condition key="CPU|CPU_USAGE" operator="&gt;" thresholdType="static" type="metric" value="90.0" valueType="numeric"/>
+            </State>
+        </SymptomDefinition>
+        <SymptomDefinition adapterKind="MicrosoftAzureAdapter" cancelCycle="3" id="SymptomDefinition-6eb41f54-4f03-460c-97c5-527d4c52854c" nameKey="20012" resourceKind="AZURE_SQL_DATABASE" waitCycle="3">
+            <State severity="warning">
+                <Condition key="DWU_PERCENTAGE" operator="&gt;" thresholdType="static" type="metric" value="85.0" valueType="numeric"/>
+            </State>
+        </SymptomDefinition>
+        
+         <SymptomDefinition adapterKind="MicrosoftAzureAdapter" cancelCycle="2" id="SymptomDefinition-d9fee494-f8b7-4212-8797-d33be210d6fb" nameKey="20013" resourceKind="AZURE_VIRTUAL_MACHINE" waitCycle="2">
+            <State severity="info">
+                <Condition key="summary|runtime|powerState" operator="!=" thresholdType="static" type="property" value="Powered On" valueType="string"/>
+            </State>
+        </SymptomDefinition>  
+        
+        <SymptomDefinition adapterKind="MicrosoftAzureAdapter" cancelCycle="3" id="SymptomDefinition-cda380c1-dd46-4d87-9694-4c5fcbba14d1" nameKey="20014" resourceKind="AZURE_VIRTUAL_SCALESET_INSTANCE" waitCycle="3">
+            <State severity="warning">
+                <Condition key="CPU|CPU_USAGE" operator="&gt;" thresholdType="static" type="metric" value="85.0" valueType="numeric"/>
+            </State>
+        </SymptomDefinition>
+        <SymptomDefinition adapterKind="MicrosoftAzureAdapter" cancelCycle="3" id="SymptomDefinition-c9963163-d02b-46bb-b06a-4e9304629b6f" nameKey="20015" resourceKind="AZURE_VIRTUAL_SCALESET_INSTANCE" waitCycle="3">
+            <State severity="critical">
+                <Condition key="CPU|CPU_USAGE" operator="&gt;" thresholdType="static" type="metric" value="95.0" valueType="numeric"/>
+            </State>
+        </SymptomDefinition>
+        <SymptomDefinition adapterKind="MicrosoftAzureAdapter" cancelCycle="3" id="SymptomDefinition-80796787-d9f5-4691-985a-271615de336e" nameKey="20016" resourceKind="AZURE_VIRTUAL_SCALESET_INSTANCE" waitCycle="3">
+            <State severity="immediate">
+                <Condition key="CPU|CPU_USAGE" operator="&gt;" thresholdType="static" type="metric" value="90.0" valueType="numeric"/>
+            </State>
+        </SymptomDefinition> 
+        
+        <SymptomDefinition adapterKind="MicrosoftAzureAdapter" cancelCycle="3" id="SymptomDefinition-e308bc00-e025-4dbf-90d3-fdc673f93357" nameKey="20017" resourceKind="AZURE_APPLICATION_GATEWAY" waitCycle="3">
+            <State severity="immediate">
+                <Condition key="NETWORK|throughput" operator="&gt;" thresholdType="static" type="metric" value="100.0" valueType="numeric"/>
+            </State>
+        </SymptomDefinition>
+        <SymptomDefinition adapterKind="MicrosoftAzureAdapter" cancelCycle="3" id="SymptomDefinition-0aa56c52-3a01-4f54-92f5-3beb2afb682c" nameKey="20018" resourceKind="AZURE_KUBERNATE_CLUSTER" waitCycle="3">
+            <State severity="critical">
+                <Condition key="memory|kube_node_status_allocatable_memory_bytes" operator="&lt;" thresholdType="static" type="metric" value="1000.0" valueType="numeric"/>
+            </State>
+        </SymptomDefinition>
+        <SymptomDefinition adapterKind="MicrosoftAzureAdapter" cancelCycle="3" id="SymptomDefinition-fb44e356-e2b8-45cd-ae7f-3368cdc21be4" nameKey="20019" resourceKind="AZURE_STORAGE_ACCOUNT" waitCycle="3">
+            <State severity="warning">
+                <Condition key="summary|availability" operator="&lt;" thresholdType="static" type="metric" value="95.0" valueType="numeric"/>
+            </State>
+        </SymptomDefinition>
+        <SymptomDefinition adapterKind="MicrosoftAzureAdapter" cancelCycle="2" id="SymptomDefinition-ac525067-d33b-4812-8d78-92d4e506aeb2" nameKey="20020" resourceKind="AZURE_STORAGE_ACCOUNT" waitCycle="2">
+            <State severity="info">
+                <Condition key="summary|statusOfPrimary" operator="!=" thresholdType="static" type="property" value="AVAILABLE" valueType="string"/>
+            </State>
+        </SymptomDefinition>
+        <SymptomDefinition adapterKind="MicrosoftAzureAdapter" cancelCycle="2" id="SymptomDefinition-04452f8c-dcfd-46ee-8b76-3272d20f05a6" nameKey="20021" resourceKind="AZURE_VIRTUAL_SCALESET_INSTANCE" waitCycle="2">
+            <State severity="immediate">
+                <Condition key="summary|powerState" operator="!=" thresholdType="static" type="property" value="PowerState/running" valueType="string"/>
+            </State>
+        </SymptomDefinition>
+          
+         <SymptomDefinition adapterKind="MicrosoftAzureAdapter" cancelCycle="2" id="SymptomDefinition-ed9b6eb4-2d29-41d0-a21e-ef7e94b075e9" nameKey="20022" resourceKind="AZURE_KUBERNATE_CLUSTER" waitCycle="2">
+            <State severity="warning">
+                <Condition key="summary|provisioningState" operator="!=" thresholdType="static" type="property" value="Succeeded" valueType="string"/>
+            </State>
+        </SymptomDefinition>   
+        
+       <SymptomDefinition adapterKind="MicrosoftAzureAdapter" cancelCycle="3" id="SymptomDefinition-c185f6d0-30a5-4c53-95e0-f1563eadc30a" nameKey="20023" resourceKind="AZURE_VIRTUAL_SCALESET" waitCycle="3">
+            <State severity="critical">
+                <Condition key="cpu|percentage_cpu" operator="&gt;" thresholdType="static" type="metric" value="95.0" valueType="numeric"/>
+            </State>
+        </SymptomDefinition>  
+        
+        <SymptomDefinition adapterKind="MicrosoftAzureAdapter" cancelCycle="2" id="SymptomDefinition-e59defab-e353-4e08-8025-c881a0136b18" nameKey="20024" resourceKind="AZURE_STORAGE_ACCOUNT" waitCycle="2">
+            <State severity="info">
+                <Condition key="summary|provisioningState" operator="!=" thresholdType="static" type="property" value="SUCCEEDED" valueType="string"/>
+            </State>
+        </SymptomDefinition>
+        
+         <SymptomDefinition adapterKind="MicrosoftAzureAdapter" cancelCycle="3" id="SymptomDefinition-770fa97d-c108-4659-85d7-1a4e1e33a543" nameKey="20025" resourceKind="AZURE_VIRTUAL_SCALESET" waitCycle="3">
+            <State severity="warning">
+                <Condition key="cpu|percentage_cpu" operator="&gt;" thresholdType="static" type="metric" value="85.0" valueType="numeric"/>
+            </State>
+        </SymptomDefinition>
+        <SymptomDefinition adapterKind="MicrosoftAzureAdapter" cancelCycle="3" id="SymptomDefinition-afada2af-358e-4ac0-bada-e72cabc3352e" nameKey="20026" resourceKind="AZURE_VIRTUAL_SCALESET" waitCycle="3">
+            <State severity="immediate">
+                <Condition key="cpu|percentage_cpu" operator="&gt;" thresholdType="static" type="metric" value="90.0" valueType="numeric"/>
+            </State>
+        </SymptomDefinition>
+         <SymptomDefinition adapterKind="MicrosoftAzureAdapter" id="SymptomDefinition-94dccaf2-c25f-4323-afbf-891e5cb9aed8" nameKey="20027" resourceKind="AZURE_APP_SERVICE">
+            <State severity="warning">
+                <Condition key="summary|state" operator="!=" thresholdType="static" type="property" value="Running" valueType="string"/>
+            </State>
+        </SymptomDefinition>   
+        
+    </SymptomDefinitions>
+    <Recommendations>
+        <Recommendation key="Recommendation-ud-e2974bdf-b5bf-4e8f-ad1a-c2be7a28cc63">
+           <Description nameKey="22001"/>
+        </Recommendation>
+        <Recommendation key="Recommendation-ud-2712e2a0-b7da-495e-8549-a92f07deb45d">
+           <Description nameKey="22002"/>
+        </Recommendation>
+        <Recommendation key="Recommendation-ud-00fee3da-3985-4076-bcca-d704ba108a0f">
+           <Description nameKey="22003"/>
+        </Recommendation>
+    </Recommendations>
+</alertContent>

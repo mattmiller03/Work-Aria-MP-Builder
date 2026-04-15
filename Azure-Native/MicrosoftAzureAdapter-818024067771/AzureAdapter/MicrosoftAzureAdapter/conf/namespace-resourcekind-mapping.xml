@@ -1,0 +1,209 @@
+<MappingDefinitions>
+    <MappingDefinition namespace="Microsoft.Network/publicIPAddresses"  kind="">
+        <ResourceKindMapping resourceKind="AZURE_PUBLIC_IPADDRESSES" subscribedId="publicIpAddresses" isSecondClassService="false"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.Web/sites" kind="functionapp">
+        <ResourceKindMapping resourceKind="AZURE_FUNCTIONS_APP" subscribedId="functionApp" isSecondClassService="false"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.Network/networkWatchers" kind="">
+        <ResourceKindMapping resourceKind="AZURE_NETWORK_WATCHERS" subscribedId="networkWatchers" isSecondClassService="false"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.Cache/Redis" kind="">
+        <ResourceKindMapping resourceKind="AZURE_CACHE_REDIS" subscribedId="cacheRedis" isSecondClassService="false"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.Sql/managedInstances"  kind="">
+        <ResourceKindMapping resourceKind="AZURE_SQL_MANAGEDINSTANCES" subscribedId="sqlManagedInstances" isSecondClassService="false"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.DBforMariaDB/servers" kind="">
+        <ResourceKindMapping resourceKind="AZURE_MARIADB_SERVER" subscribedId="mariaDbServer" isSecondClassService="false"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.ClassicCompute/domainNames" kind="">
+        <ResourceKindMapping resourceKind="AZURE_COMPUTE_DOMAINNAMES" subscribedId="computeDomains" isSecondClassService="false"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.Batch/batchAccounts" kind="">
+        <ResourceKindMapping resourceKind="AZURE_BATCH_ACCOUNT" subscribedId="batchAccount" isSecondClassService="false"/>
+    </MappingDefinition>        
+    <MappingDefinition namespace="Microsoft.Compute/hostGroups" kind="">
+        <ResourceKindMapping resourceKind="AZURE_COMPUTE_HOSTGROUPS" subscribedId="computeHostGroups" isSecondClassService="false"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.Compute/hosts" kind="">
+        <ResourceKindMapping resourceKind="AZURE_DEDICATE_HOST" subscribedId="computeHosts" isSecondClassService="false"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.ContainerInstance/containerGroups" kind="">
+        <ResourceKindMapping resourceKind="AZURE_CONTIANER_CONTAINERGROUPS" subscribedId="containerGroups" isSecondClassService="false"/>
+    </MappingDefinition>    
+    <MappingDefinition namespace="Microsoft.ContainerRegistry/registries" kind="">
+        <ResourceKindMapping resourceKind="AZURE_CONTAINER_REGISTRIES" subscribedId="containerRegisteries" isSecondClassService="false"/>
+    </MappingDefinition> 
+    <MappingDefinition namespace="Microsoft.DataLakeStore/accounts" kind="">
+        <ResourceKindMapping resourceKind="AZURE_DATALAKE_STORE" subscribedId="dataLakeStore" isSecondClassService="false"/>
+    </MappingDefinition>    
+    <MappingDefinition namespace="Microsoft.AppConfiguration/configurationStores" kind="">
+        <ResourceKindMapping resourceKind="AZURE_APP_CONFIGURATION" subscribedId="appConfiguration" isSecondClassService="false"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.RedHatOpenShift/OpenShiftClusters" kind="">
+        <ResourceKindMapping resourceKind="AZURE_OPENSHIFT_CLUSTERS" subscribedId="openshiftClusters" isSecondClassService="false"/>
+    </MappingDefinition>  
+     <MappingDefinition namespace="Microsoft.Network/routeTables" kind="">
+        <ResourceKindMapping resourceKind="AZURE_ROUTE_TABLES" subscribedId="routeTable" isSecondClassService="false"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.Network/privateDnsZones" kind="">
+        <ResourceKindMapping resourceKind="AZURE_PRIVATE_DNSZONES" subscribedId="privateDnsZones" isSecondClassService="false"/>
+    </MappingDefinition>  
+     <MappingDefinition namespace="Microsoft.Network/dnszones" kind="">
+        <ResourceKindMapping resourceKind="AZURE_DNS_ZONES" subscribedId="dnsZones" isSecondClassService="false"/>
+    </MappingDefinition>  
+    <MappingDefinition namespace="Microsoft.Network/expressRouteCircuits" kind="">
+        <ResourceKindMapping resourceKind="AZURE_EXPRESSROUTE_CIRCUITS" subscribedId="expressRouteCirtuits" isSecondClassService="false"/>
+    </MappingDefinition>  
+     <MappingDefinition namespace="Microsoft.Network/trafficmanagerprofiles" kind="">
+        <ResourceKindMapping resourceKind="AZURE_TRAFFIC_MANAGER_PROFILES" subscribedId="trafficManagerProfiles" isSecondClassService="false"/>
+    </MappingDefinition>      
+    <MappingDefinition namespace="Microsoft.SignalRService/SignalR" kind="SignalR">
+        <ResourceKindMapping resourceKind="AZURE_SIGNALR_SERVICES" subscribedId="singnalrServices" isSecondClassService="false"/>
+    </MappingDefinition>    
+    <MappingDefinition namespace="Microsoft.Network/azureFirewalls" kind="">
+        <ResourceKindMapping resourceKind="AZURE_FIREWALLS" subscribedId="firewalls" isSecondClassService="false"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.Network/frontdoors" kind="">
+        <ResourceKindMapping resourceKind="AZURE_FRONT_DOORS" subscribedId="frontDoors" isSecondClassService="false"/>
+    </MappingDefinition>  
+     <MappingDefinition namespace="microsoft.Cdn/profiles" kind="">
+        <ResourceKindMapping resourceKind="AZURE_CDN_PROFILES" subscribedId="cdnProfile" isSecondClassService="false"/>
+    </MappingDefinition>  
+    <MappingDefinition namespace="microsoft.cdn/profiles/endpoints" kind="">
+        <ResourceKindMapping resourceKind="AZURE_CDN_PROFILES_ENDPOINTS" subscribedId="cdnProfileEndpoints" isSecondClassService="false"/>
+    </MappingDefinition>  
+     <MappingDefinition namespace="Microsoft.Network/virtualWans" kind="">
+        <ResourceKindMapping resourceKind="AZURE_VIRTUAL_WAN" subscribedId="virtualWan" isSecondClassService="false"/>
+    </MappingDefinition>
+     <MappingDefinition namespace="Microsoft.Network/virtualHubs" kind="">
+        <ResourceKindMapping resourceKind="AZURE_VIRTUAL_HUBS" subscribedId="virtualHubs" isSecondClassService="false"/>
+    </MappingDefinition>      
+    <MappingDefinition namespace="Microsoft.KeyVault/vaults" kind="">
+        <ResourceKindMapping resourceKind="AZURE_KEY_VAULTS" subscribedId="keyVaults" isSecondClassService="false"/>
+    </MappingDefinition>
+      <MappingDefinition namespace="Microsoft.NetApp/netAppAccounts" kind="">
+        <ResourceKindMapping resourceKind="AZURE_NETAPPACCOUNT" subscribedId="natAppAccount" isSecondClassService="false"/>
+    </MappingDefinition>
+      <MappingDefinition namespace="Microsoft.NetApp/netAppAccounts/capacityPools" kind="">
+        <ResourceKindMapping resourceKind="AZURE_NETAPPACCOUNT_CAPACITYPOOLS" subscribedId="natAppAccountCapacityPools" isSecondClassService="false"/>
+    </MappingDefinition>      
+    <MappingDefinition namespace="Microsoft.NetApp/netAppAccounts/capacityPools/volumes" kind="">
+        <ResourceKindMapping resourceKind="AZURE_NETAPPACCOUNT_CAPACITYPOOLS_VOLUMES" subscribedId="natAppAccountCapacityPoolVolumn" isSecondClassService="false"/>
+    </MappingDefinition>   
+        <MappingDefinition namespace="Microsoft.Media/mediaservices" kind="">
+        <ResourceKindMapping resourceKind="AZURE_MEDIA_SERVICES" subscribedId="mediaServices" isSecondClassService="false"/>
+    </MappingDefinition>      
+    <MappingDefinition namespace="Microsoft.Media/mediaservices/liveEvents" kind="">
+        <ResourceKindMapping resourceKind="AZURE_MEDIASERVICES_LIVEEVENTS" subscribedId="mediaServicesLiveEvents" isSecondClassService="false"/>
+    </MappingDefinition>
+      <MappingDefinition namespace="Microsoft.Media/mediaservices/streamingEndpoints" kind="">
+        <ResourceKindMapping resourceKind="AZURE_MEDIASERVICES_STREAMINGEP" subscribedId="mediaServicesStreamingGep" isSecondClassService="false"/>
+    </MappingDefinition>
+      <MappingDefinition namespace="Microsoft.NotificationHubs/namespaces/notificationHubs" kind="">
+        <ResourceKindMapping resourceKind="AZURE_NH_NAMESPACES_NOTIFICATIONHUBS" subscribedId="notificationHubs" isSecondClassService="false"/>
+    </MappingDefinition>      
+    <MappingDefinition namespace="Microsoft.NotificationHubs/namespaces" kind="">
+        <ResourceKindMapping resourceKind="AZURE_NOTIFICATIONHUBS_NAMESPACES" subscribedId="notificationHubsNamespaces" isSecondClassService="false"/>
+    </MappingDefinition> 
+    <MappingDefinition namespace="Microsoft.EventHub/namespaces" kind="">
+        <ResourceKindMapping resourceKind="AZURE_EVENTHUBS_NAMESPACES" subscribedId="eventHubsNamespaces" isSecondClassService="false"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.EventHub/Namespaces/EventHubs" kind="">
+        <ResourceKindMapping resourceKind="AZURE_EVENT_HUBS" subscribedId="eventHubs" isSecondClassService="false"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.DataLakeAnalytics/accounts" kind="">
+        <ResourceKindMapping resourceKind="AZURE_DATA_LAKE_ANALYTICS" subscribedId="dataLakeAnalytics" isSecondClassService="false"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.Synapse/workspaces" kind="">
+        <ResourceKindMapping resourceKind="AZURE_SYNAPSE_ANALYTICS_WORKSPACE" subscribedId="synapseAnalyticsWorkspace" isSecondClassService="false"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.Synapse/workspaces/sqlPools" kind="">
+        <ResourceKindMapping resourceKind="AZURE_SYNAPSE_ANALYTICS_SQL_POOL" subscribedId="synapseAnalyticsSQLPool" isSecondClassService="false"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.Synapse/workspaces/bigDataPools" kind="">
+        <ResourceKindMapping resourceKind="AZURE_SYNAPSE_ANALYTICS_BIGDATA_POOL" subscribedId="synapseAnalyticsBigDataPool" isSecondClassService="false"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.HDInsight/clusters" kind="">
+        <ResourceKindMapping resourceKind="AZURE_HDINSIGHT" subscribedId="hdInsight" isSecondClassService="false"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.Kusto/Clusters" kind="">
+        <ResourceKindMapping resourceKind="AZURE_DATA_EXPLORER_CLUSTER" subscribedId="kustoClusters" isSecondClassService="false"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.DataFactory/factories" kind="">
+        <ResourceKindMapping resourceKind="AZURE_DATA_FACTORY" subscribedId="dataFactory" isSecondClassService="false"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.CognitiveServices/accounts" kind="">
+        <ResourceKindMapping resourceKind="AZURE_COGNITIVE_SERVICES_ACCOUNTS" subscribedId="cognitiveServicesAccounts" isSecondClassService="false"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.purview/accounts" kind="">
+        <ResourceKindMapping resourceKind="AZURE_PURVIEW_ACCOUNTS" subscribedId="purviewAccounts" isSecondClassService="true"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.botservice/botservices" kind="">
+        <ResourceKindMapping resourceKind="AZURE_BOT_SERVICES" subscribedId="botServices" isSecondClassService="true"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.Search/searchServices" kind="">
+        <ResourceKindMapping resourceKind="AZURE_SEARCH_SERVICES" subscribedId="searchServices" isSecondClassService="false"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.AnalysisServices/servers" kind="">
+        <ResourceKindMapping resourceKind="AZURE_ANALYSIS_SERVICES" subscribedId="analysisServices" isSecondClassService="true"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.PowerBIDedicated/capacities" kind="">
+        <ResourceKindMapping resourceKind="AZURE_POWER_BI_EMBEDDED" subscribedId="powerBIEmbedded" isSecondClassService="true"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.Network/networkSecurityGroups"  kind="">
+        <ResourceKindMapping resourceKind="AZURE_NETWORK_SECURITY_GROUP" subscribedId="networkSecurityGroup" isSecondClassService="false"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.Web/serverfarms"  kind="app">
+        <ResourceKindMapping resourceKind="AZURE_APP_SERVICE_PLAN" subscribedId="appServicePlan" isSecondClassService="false"/>
+    </MappingDefinition>
+        <MappingDefinition namespace="Microsoft.Web/serverfarms"  kind="functionapp">
+        <ResourceKindMapping resourceKind="AZURE_APP_SERVICE_PLAN" subscribedId="appServicePlan" isSecondClassService="false"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.Web/serverfarms"  kind="linux">
+        <ResourceKindMapping resourceKind="AZURE_APP_SERVICE_PLAN" subscribedId="appServicePlan" isSecondClassService="false"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.Web/serverfarms"  kind="Windows">
+        <ResourceKindMapping resourceKind="AZURE_APP_SERVICE_PLAN" subscribedId="appServicePlan" isSecondClassService="false"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.MachineLearningServices/workspaces" kind="">
+        <ResourceKindMapping resourceKind="AZURE_MACHINE_LEARNING" subscribedId="machineLearning" isSecondClassService="false"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.DataBoxEdge/dataBoxEdgeDevices" kind="">
+        <ResourceKindMapping resourceKind="AZURE_DATA_BOX" subscribedId="dataBox" isSecondClassService="true"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.StreamAnalytics/streamingjobs" kind="">
+        <ResourceKindMapping resourceKind="AZURE_STREAM_ANALYTICS_JOBS" subscribedId="streamAnalyticsJobs" isSecondClassService="false"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.Devices/IotHubs" kind="">
+        <ResourceKindMapping resourceKind="AZURE_IOT_HUB" subscribedId="iotHub" isSecondClassService="false"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.Automation/automationAccounts" kind="">
+        <ResourceKindMapping resourceKind="AZURE_AUTOMATION" subscribedId="automation" isSecondClassService="true"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.TimeSeriesInsights/environments" kind="Gen2">
+        <ResourceKindMapping resourceKind="AZURE_TIME_SERIES_INSIGHTS" subscribedId="timeSeriesInsights" isSecondClassService="false"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.EventGrid/domains" kind="">
+        <ResourceKindMapping resourceKind="AZURE_EVENT_GRID_DOMAIN" subscribedId="eventGridDomain" isSecondClassService="false"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.EventGrid/topics" kind="Azure">
+        <ResourceKindMapping resourceKind="AZURE_EVENT_GRID_TOPIC" subscribedId="eventGridTopic" isSecondClassService="false"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.EventGrid/eventSubscriptions" kind="">
+        <ResourceKindMapping resourceKind="AZURE_EVENT_GRID_SUBSCRIPTION" subscribedId="eventGridSubscription" isSecondClassService="false"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.DigitalTwins/digitalTwinsInstances" kind="">
+        <ResourceKindMapping resourceKind="AZURE_DIGITAL_TWINS" subscribedId="digitalTwins" isSecondClassService="false"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.IoTCentral/IoTApps" kind="">
+        <ResourceKindMapping resourceKind="AZURE_IOT_CENTRAL" subscribedId="iotCentral" isSecondClassService="true"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.ApiManagement/service" kind="">
+        <ResourceKindMapping resourceKind="AZURE_API_MANAGEMENT" subscribedId="apiManagement" isSecondClassService="false"/>
+    </MappingDefinition>
+    <MappingDefinition namespace="Microsoft.MixedReality/spatialAnchorsAccounts" kind="">
+        <ResourceKindMapping resourceKind="AZURE_SPATIAL_ANCHORS" subscribedId="spatialAnchors" isSecondClassService="true"/>
+    </MappingDefinition>
+</MappingDefinitions>

@@ -1,0 +1,115 @@
+2026-04-06 12:59:55,144 main INFO Port: 8080
+2026-04-06 12:59:55,162 connexion.middleware.main WARNING `ConnexionMiddleware.run` is optimized for development. For production, run using a dedicated ASGI server.
+2026-04-06 12:59:55,180 connexion.middleware.swagger_ui INFO Adding spec json: /openapi.json
+2026-04-06 12:59:55,182 connexion.options WARNING The swagger_ui directory could not be found.
+    Please install connexion with extra install: pip install connexion[swagger-ui]
+    or provide the path to your local installation by passing swagger_path=<your path>
+
+2026-04-06 12:59:56,348 swagger_server.controllers.controller INFO Request: apiVersion
+2026-04-06 12:59:56,539 swagger_server.controllers.controller INFO Request: definition
+2026-04-06 12:59:56,729 swagger_server.controllers.controller INFO Subprocess exited before reading input.
+2026-04-06 13:05:08,5 main INFO Port: 8080
+2026-04-06 13:05:08,21 connexion.middleware.main WARNING `ConnexionMiddleware.run` is optimized for development. For production, run using a dedicated ASGI server.
+2026-04-06 13:05:08,39 connexion.middleware.swagger_ui INFO Adding spec json: /openapi.json
+2026-04-06 13:05:08,41 connexion.options WARNING The swagger_ui directory could not be found.
+    Please install connexion with extra install: pip install connexion[swagger-ui]
+    or provide the path to your local installation by passing swagger_path=<your path>
+
+2026-04-06 13:05:09,212 swagger_server.controllers.controller INFO Request: apiVersion
+2026-04-06 13:05:09,391 swagger_server.controllers.controller INFO Request: definition
+2026-04-06 13:05:09,578 swagger_server.controllers.controller INFO Subprocess exited before reading input.
+2026-04-06 13:06:48,370 main INFO Port: 8080
+2026-04-06 13:06:48,386 connexion.middleware.main WARNING `ConnexionMiddleware.run` is optimized for development. For production, run using a dedicated ASGI server.
+2026-04-06 13:06:48,403 connexion.middleware.swagger_ui INFO Adding spec json: /openapi.json
+2026-04-06 13:06:48,405 connexion.options WARNING The swagger_ui directory could not be found.
+    Please install connexion with extra install: pip install connexion[swagger-ui]
+    or provide the path to your local installation by passing swagger_path=<your path>
+
+2026-04-06 13:06:49,583 swagger_server.controllers.controller INFO Request: apiVersion
+2026-04-06 13:06:49,754 swagger_server.controllers.controller INFO Request: definition
+2026-04-06 13:06:49,944 swagger_server.controllers.controller INFO Subprocess exited before reading input.
+2026-04-06 13:18:12,234 main INFO Port: 8080
+2026-04-06 13:18:12,255 connexion.middleware.main WARNING `ConnexionMiddleware.run` is optimized for development. For production, run using a dedicated ASGI server.
+2026-04-06 13:18:12,274 connexion.middleware.swagger_ui INFO Adding spec json: /openapi.json
+2026-04-06 13:18:12,276 connexion.options WARNING The swagger_ui directory could not be found.
+    Please install connexion with extra install: pip install connexion[swagger-ui]
+    or provide the path to your local installation by passing swagger_path=<your path>
+
+2026-04-06 13:18:13,401 swagger_server.controllers.controller INFO Request: apiVersion
+2026-04-06 13:18:13,577 swagger_server.controllers.controller INFO Request: definition
+2026-04-06 13:18:13,782 swagger_server.controllers.controller INFO Subprocess exited before reading input.
+2026-04-06 13:19:28,352 main INFO Port: 8080
+2026-04-06 13:19:28,369 connexion.middleware.main WARNING `ConnexionMiddleware.run` is optimized for development. For production, run using a dedicated ASGI server.
+2026-04-06 13:19:28,386 connexion.middleware.swagger_ui INFO Adding spec json: /openapi.json
+2026-04-06 13:19:28,388 connexion.options WARNING The swagger_ui directory could not be found.
+    Please install connexion with extra install: pip install connexion[swagger-ui]
+    or provide the path to your local installation by passing swagger_path=<your path>
+
+2026-04-06 13:19:29,549 swagger_server.controllers.controller INFO Request: apiVersion
+2026-04-06 13:19:29,727 swagger_server.controllers.controller INFO Request: definition
+2026-04-06 13:19:29,924 swagger_server.controllers.controller INFO Subprocess exited before reading input.
+2026-04-06 13:19:56,693 swagger_server.controllers.controller INFO Request: apiVersion
+2026-04-06 13:20:41,196 main INFO Port: 8080
+2026-04-06 13:20:41,213 connexion.middleware.main WARNING `ConnexionMiddleware.run` is optimized for development. For production, run using a dedicated ASGI server.
+2026-04-06 13:20:41,231 connexion.middleware.swagger_ui INFO Adding spec json: /openapi.json
+2026-04-06 13:20:41,233 connexion.options WARNING The swagger_ui directory could not be found.
+    Please install connexion with extra install: pip install connexion[swagger-ui]
+    or provide the path to your local installation by passing swagger_path=<your path>
+
+2026-04-06 13:20:42,390 swagger_server.controllers.controller INFO Request: apiVersion
+2026-04-06 13:20:42,568 swagger_server.controllers.controller INFO Request: definition
+2026-04-06 13:20:42,767 swagger_server.controllers.controller INFO Subprocess exited before reading input.
+2026-04-06 13:21:00,868 swagger_server.controllers.controller INFO Request: apiVersion
+2026-04-06 13:22:12,41 main INFO Port: 8080
+2026-04-06 13:22:12,56 connexion.middleware.main WARNING `ConnexionMiddleware.run` is optimized for development. For production, run using a dedicated ASGI server.
+2026-04-06 13:22:12,74 connexion.middleware.swagger_ui INFO Adding spec json: /openapi.json
+2026-04-06 13:22:12,76 connexion.options WARNING The swagger_ui directory could not be found.
+    Please install connexion with extra install: pip install connexion[swagger-ui]
+    or provide the path to your local installation by passing swagger_path=<your path>
+
+2026-04-06 13:22:13,269 swagger_server.controllers.controller INFO Request: apiVersion
+2026-04-06 13:22:13,452 swagger_server.controllers.controller INFO Request: definition
+2026-04-06 13:22:13,664 swagger_server.controllers.controller INFO Subprocess exited before reading input.
+2026-04-06 13:23:29,843 main INFO Port: 8080
+2026-04-06 13:23:29,859 connexion.middleware.main WARNING `ConnexionMiddleware.run` is optimized for development. For production, run using a dedicated ASGI server.
+2026-04-06 13:23:29,880 connexion.middleware.swagger_ui INFO Adding spec json: /openapi.json
+2026-04-06 13:23:29,882 connexion.options WARNING The swagger_ui directory could not be found.
+    Please install connexion with extra install: pip install connexion[swagger-ui]
+    or provide the path to your local installation by passing swagger_path=<your path>
+
+2026-04-06 13:23:31,165 swagger_server.controllers.controller INFO Request: apiVersion
+2026-04-06 13:23:31,346 swagger_server.controllers.controller INFO Request: definition
+2026-04-06 13:23:31,539 swagger_server.controllers.controller INFO Subprocess exited before reading input.
+2026-04-06 13:23:49,832 swagger_server.controllers.controller INFO Request: apiVersion
+2026-04-06 13:24:49,242 main INFO Port: 8080
+2026-04-06 13:24:49,259 connexion.middleware.main WARNING `ConnexionMiddleware.run` is optimized for development. For production, run using a dedicated ASGI server.
+2026-04-06 13:24:49,276 connexion.middleware.swagger_ui INFO Adding spec json: /openapi.json
+2026-04-06 13:24:49,278 connexion.options WARNING The swagger_ui directory could not be found.
+    Please install connexion with extra install: pip install connexion[swagger-ui]
+    or provide the path to your local installation by passing swagger_path=<your path>
+
+2026-04-06 13:24:50,468 swagger_server.controllers.controller INFO Request: apiVersion
+2026-04-06 13:24:50,656 swagger_server.controllers.controller INFO Request: definition
+2026-04-06 13:24:50,855 swagger_server.controllers.controller INFO Subprocess exited before reading input.
+2026-04-06 13:25:08,913 swagger_server.controllers.controller INFO Request: apiVersion
+2026-04-06 14:11:39,110 main INFO Port: 8080
+2026-04-06 14:11:39,128 connexion.middleware.main WARNING `ConnexionMiddleware.run` is optimized for development. For production, run using a dedicated ASGI server.
+2026-04-06 14:11:39,145 connexion.middleware.swagger_ui INFO Adding spec json: /openapi.json
+2026-04-06 14:11:39,147 connexion.options WARNING The swagger_ui directory could not be found.
+    Please install connexion with extra install: pip install connexion[swagger-ui]
+    or provide the path to your local installation by passing swagger_path=<your path>
+
+2026-04-06 14:11:40,179 swagger_server.controllers.controller INFO Request: apiVersion
+2026-04-06 14:11:40,364 swagger_server.controllers.controller INFO Request: definition
+2026-04-06 14:11:40,564 swagger_server.controllers.controller INFO Subprocess exited before reading input.
+2026-04-06 14:13:18,599 main INFO Port: 8080
+2026-04-06 14:13:18,615 connexion.middleware.main WARNING `ConnexionMiddleware.run` is optimized for development. For production, run using a dedicated ASGI server.
+2026-04-06 14:13:18,633 connexion.middleware.swagger_ui INFO Adding spec json: /openapi.json
+2026-04-06 14:13:18,635 connexion.options WARNING The swagger_ui directory could not be found.
+    Please install connexion with extra install: pip install connexion[swagger-ui]
+    or provide the path to your local installation by passing swagger_path=<your path>
+
+2026-04-06 14:13:19,747 swagger_server.controllers.controller INFO Request: apiVersion
+2026-04-06 14:13:19,936 swagger_server.controllers.controller INFO Request: definition
+2026-04-06 14:13:20,140 swagger_server.controllers.controller INFO Subprocess exited before reading input.
+2026-04-06 14:13:38,410 swagger_server.controllers.controller INFO Request: apiVersion
