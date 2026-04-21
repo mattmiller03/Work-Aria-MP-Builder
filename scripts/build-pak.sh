@@ -79,16 +79,18 @@ sudo mp-build -i --no-ttl --registry-tag "$REGISTRY_TAG" -P "$PORT"
 
 echo ""
 echo "=== Step 2: Patching describe.xml ==="
-# Find the generated describe.xml
+# mp-build generates describe.xml inside adapter.zip inside the .pak, not on
+# disk at conf/describe.xml, so the expected path is the "else" fallback below.
 if [ -f conf/describe.xml ]; then
     "$PYTHON_BIN" "$SCRIPT_DIR/patch-describe-xml.py" conf/describe.xml
 else
-    echo "WARNING: conf/describe.xml not found — skipping patch"
-    echo "The describe.xml may be inside the built .pak file."
-    echo "Attempting to patch inside the .pak..."
+    echo "Patching describe.xml inside the built .pak..."
 
     PAK_FILE=$(ls -t build/*.pak 2>/dev/null | head -1)
     if [ -n "$PAK_FILE" ]; then
+        # Absolute path so later cd commands don't break zip's output target.
+        PAK_FILE="$(readlink -f "$PAK_FILE")"
+
         TEMP_DIR=$(mktemp -d)
         trap "rm -rf $TEMP_DIR" EXIT
 
@@ -104,17 +106,20 @@ else
             if [ -f "$DESCRIBE" ]; then
                 "$PYTHON_BIN" "$SCRIPT_DIR/patch-describe-xml.py" "$DESCRIBE"
 
-                # Repack adapter.zip
-                cd "$TEMP_DIR/adapter"
-                zip -r -q "$TEMP_DIR/pak/adapter.zip" .
-                cd "$ADAPTER_DIR"
+                # Repack adapter.zip (remove old archive so zip doesn't just update it)
+                rm -f "$TEMP_DIR/pak/adapter.zip"
+                (cd "$TEMP_DIR/adapter" && zip -r -q "$TEMP_DIR/pak/adapter.zip" .)
+            else
+                echo "ERROR: describe.xml not found at $DESCRIBE"
+                echo "Contents of $TEMP_DIR/adapter:"
+                ls -la "$TEMP_DIR/adapter"
+                exit 1
             fi
         fi
 
-        # Repack .pak
-        cd "$TEMP_DIR/pak"
-        zip -r -q "$PAK_FILE" .
-        cd "$ADAPTER_DIR"
+        # Repack .pak (overwrite the mp-build output with patched content)
+        rm -f "$PAK_FILE"
+        (cd "$TEMP_DIR/pak" && zip -r -q "$PAK_FILE" .)
         echo "Patched .pak file: $PAK_FILE"
     fi
 fi
