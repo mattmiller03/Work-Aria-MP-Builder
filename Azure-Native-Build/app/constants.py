@@ -187,7 +187,6 @@ ALL_NATIVE_STUB_KINDS = [
     OBJ_EVENT_GRID_SUB,      # child of topics/domains
     OBJ_SYNAPSE_SQL_POOL,    # child of AZURE_SYNAPSE_ANALYTICS_WORKSPACE
     OBJ_SYNAPSE_BIGDATA_POOL,# child of AZURE_SYNAPSE_ANALYTICS_WORKSPACE
-    OBJ_APP_SERVICE_PLAN,    # already has dedicated collector
     OBJ_SERVICES_FROM_XML,   # dynamic discovery — not applicable
 ]
 
