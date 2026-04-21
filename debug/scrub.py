@@ -1,13 +1,21 @@
 """Scrub sensitive data from log files before committing.
 
 Usage:
-    python scrub.py <input_file> [output_file]
+    python scrub.py <input_file> [output_file]     # single file
+    python scrub.py <input_dir>  [output_dir]      # every file in a folder
+    python scrub.py -r <input_dir> [output_dir]    # recurse into subfolders
 
-If no output file is specified, overwrites the input file.
-Add your hostnames, IPs, and other sensitive strings to the
-REPLACEMENTS dict below.
+Add hostnames, IPs, and other sensitive strings to REPLACEMENTS below.
+
+File/dir behavior:
+- Single file, no output: overwrite in place.
+- Single file, with output: write scrubbed copy to output path.
+- Directory, no output: scrub each file in place.
+- Directory, with output: mirror the tree under output.
+- Binary files (non-decodable as UTF-8) are skipped with a notice.
 """
 
+import os
 import re
 import sys
 
@@ -47,23 +55,75 @@ def scrub(text):
     return text
 
 
-def main():
-    if len(sys.argv) < 2:
-        print("Usage: python scrub.py <input_file> [output_file]")
-        sys.exit(1)
-
-    input_file = sys.argv[1]
-    output_file = sys.argv[2] if len(sys.argv) > 2 else input_file
-
-    with open(input_file, "r", encoding="utf-8", errors="replace") as f:
-        content = f.read()
+def scrub_file(input_file, output_file):
+    """Scrub a single file. Returns True if written, False if skipped."""
+    try:
+        with open(input_file, "rb") as f:
+            raw = f.read()
+        content = raw.decode("utf-8")
+    except UnicodeDecodeError:
+        print(f"  [SKIP] {input_file} (binary / not UTF-8)")
+        return False
 
     scrubbed = scrub(content)
 
+    os.makedirs(os.path.dirname(os.path.abspath(output_file)) or ".", exist_ok=True)
     with open(output_file, "w", encoding="utf-8") as f:
         f.write(scrubbed)
+    print(f"  [OK]   {input_file} -> {output_file}")
+    return True
 
-    print(f"Scrubbed {len(REPLACEMENTS)} patterns in {input_file} -> {output_file}")
+
+def iter_files(root, recursive):
+    if recursive:
+        for dirpath, _dirnames, filenames in os.walk(root):
+            for name in filenames:
+                yield os.path.join(dirpath, name)
+    else:
+        for name in sorted(os.listdir(root)):
+            path = os.path.join(root, name)
+            if os.path.isfile(path):
+                yield path
+
+
+def main():
+    args = sys.argv[1:]
+    recursive = False
+    if args and args[0] in ("-r", "--recursive"):
+        recursive = True
+        args = args[1:]
+
+    if not args:
+        print(__doc__.strip())
+        sys.exit(1)
+
+    input_path = args[0]
+    output_path = args[1] if len(args) > 1 else None
+
+    if os.path.isfile(input_path):
+        out = output_path if output_path else input_path
+        scrub_file(input_path, out)
+        return
+
+    if not os.path.isdir(input_path):
+        print(f"ERROR: {input_path} is not a file or directory")
+        sys.exit(1)
+
+    scrubbed = 0
+    skipped = 0
+    for src in iter_files(input_path, recursive):
+        if output_path:
+            rel = os.path.relpath(src, input_path)
+            dst = os.path.join(output_path, rel)
+        else:
+            dst = src
+        if scrub_file(src, dst):
+            scrubbed += 1
+        else:
+            skipped += 1
+
+    print(f"\nDone: {scrubbed} scrubbed, {skipped} skipped "
+          f"({len(REPLACEMENTS)} replacement patterns)")
 
 
 if __name__ == "__main__":
