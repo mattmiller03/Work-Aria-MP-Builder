@@ -19,11 +19,27 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-ADAPTER_DIR="${SCRIPT_DIR}/../Azure-Native-Build"
 REGISTRY_TAG="${REGISTRY_TAG:-214.73.76.134:5000/azuregovcloud-adapter}"
 PORT="${PORT:-8181}"
 SIGN=false
 TEST_ONLY=false
+
+# Resolve ADAPTER_DIR. Honor an explicit override, else try the two known layouts
+# (repo-native Azure-Native-Build/, or the renamed Azure/ that servers sometimes use).
+if [[ -n "${ADAPTER_DIR:-}" ]]; then
+    :
+elif [[ -f "${SCRIPT_DIR}/../Azure-Native-Build/manifest.txt" ]]; then
+    ADAPTER_DIR="${SCRIPT_DIR}/../Azure-Native-Build"
+elif [[ -f "${SCRIPT_DIR}/../Azure/manifest.txt" ]]; then
+    ADAPTER_DIR="${SCRIPT_DIR}/../Azure"
+else
+    echo "ERROR: Could not find adapter directory. Expected one of:"
+    echo "  ${SCRIPT_DIR}/../Azure-Native-Build/manifest.txt"
+    echo "  ${SCRIPT_DIR}/../Azure/manifest.txt"
+    echo "Or set ADAPTER_DIR=/path/to/adapter before running."
+    exit 1
+fi
+echo "Using adapter directory: $ADAPTER_DIR"
 
 # Read adapter kind from manifest.txt so path lookups stay in sync with pak name.
 ADAPTER_KIND=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["adapter_kinds"][0])' "${ADAPTER_DIR}/manifest.txt")
