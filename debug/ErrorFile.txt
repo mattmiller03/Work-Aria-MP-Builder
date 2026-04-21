@@ -1,76 +1,34 @@
-Using adapter directory: /opt/aria/Aria-MP-Builder/scripts/../Azure
-=== Running mp-test ===
-Building base image [Finished]
-Choose a connection:  Azure Gov Test
-Choose a method to test: Test Connection
-Building adapter [Finished]
-Waiting for adapter to start [Finished]
-500 Internal Server Error
-No result from adapter. Captured stdout:
-  2026-04-21 15:30:17,191 [ERROR] root: [Errno 13] Permission denied: '/var/log/adapter.log'
-Traceback (most recent call last):
-  File "/usr/local/lib/python3.11/site-packages/aria/ops/adapter_logging.py", line 28, in setup_logging
-    log_handler = RotatingFileHandler(
-                  ^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/logging/handlers.py", line 155, in __init__
-    BaseRotatingHandler.__init__(self, filename, mode, encoding=encoding,
-  File "/usr/local/lib/python3.11/logging/handlers.py", line 58, in __init__
-    logging.FileHandler.__init__(self, filename, mode=mode,
-  File "/usr/local/lib/python3.11/logging/__init__.py", line 1181, in __init__
-    StreamHandler.__init__(self, self._open())
-                                 ^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/logging/__init__.py", line 1213, in _open
-    return open_func(self.baseFilename, self.mode,
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-PermissionError: [Errno 13] Permission denied: '/var/log/adapter.log'
-2026-04-21 15:30:17,192 [INFO] __main__: Running adapter code with arguments: ['adapter_definition', '/tmp/tmpdl4r_mbf/input_pipe', '/tmp/tmpdl4r_mbf/output_pipe']
-2026-04-21 15:30:17,218 [ERROR] __main__: Error in adapter_definition: Object type with key AZURE_APP_SERVICE_PLAN already exists in adapter definition.
-Traceback (most recent call last):
-  File "/home/aria-ops-adapter-user/src/app/app/adapter.py", line 930, in main
-    result = get_adapter_definition()
-             ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/aria-ops-adapter-user/src/app/app/adapter.py", line 722, in get_adapter_definition
-    stub = definition.define_object_type(stub_key, stub_key)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/aria/ops/definition/adapter_definition.py", line 294, in define_object_type
-    self.add_object_type(object_type)
-  File "/usr/local/lib/python3.11/site-packages/aria/ops/definition/adapter_definition.py", line 315, in add_object_type
-    raise DuplicateKeyException(
-aria.ops.definition.exceptions.DuplicateKeyException: Object type with key AZURE_APP_SERVICE_PLAN already exists in adapter definition.
-2026-04-21 15:30:17,220 [INFO] __main__: Timing Graph: 
-━━━━━━━━━┯━━━━━━━━┯━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Operation│Time    │t=0s                                                t=-1776785417.22s
-━━━━━━━━━┿━━━━━━━━┿━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-━━━━━━━━━┷━━━━━━━━┷━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+If both the test pak AND the upgrade fail at APPLY_ADAPTER, the issue isn't the content/kind mismatch — it's something in the pak itself. I need to see the actual error.
 
-adapterDefinition endpoint returned 500.
-Running Connect [Finished]
-Unexpected error
-'limit'
-  File "/opt/python312/lib/python3.12/site-packages/vmware_aria_operations_integration_sdk/mp_test.py", line 938, in main
-    asyncio.run(run(parser.parse_args()))
-  File "/opt/python312/lib/python3.12/asyncio/runners.py", line 195, in run
-    return runner.run(main)
-           ^^^^^^^^^^^^^^^^
-  File "/opt/python312/lib/python3.12/asyncio/runners.py", line 118, in run
-    return self._loop.run_until_complete(task)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/python312/lib/python3.12/asyncio/base_events.py", line 691, in run_until_complete
-    return future.result()
-           ^^^^^^^^^^^^^^^
-  File "/opt/python312/lib/python3.12/site-packages/vmware_aria_operations_integration_sdk/mp_test.py", line 406, in run
-    result_bundle = await method(
-                    ^^^^^^^^^^^^^
-  File "/opt/python312/lib/python3.12/site-packages/vmware_aria_operations_integration_sdk/mp_test.py", line 240, in run_connect
-    async with await adapter_container.record_stats():
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/python312/lib/python3.12/site-packages/vmware_aria_operations_integration_sdk/docker_wrapper.py", line 360, in __aexit__
-    await self._recording_task
-  File "/opt/python312/lib/python3.12/concurrent/futures/thread.py", line 59, in run
-    result = self.fn(*self.args, **self.kwargs)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/python312/lib/python3.12/site-packages/vmware_aria_operations_integration_sdk/docker_wrapper.py", line 369, in _record
-    self.add(self.container.stats(stream=False))
-  File "/opt/python312/lib/python3.12/site-packages/vmware_aria_operations_integration_sdk/docker_wrapper.py", line 376, in add
-    self.total_memory = current_stats["memory_stats"]["limit"]
-                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+Grab the apply_adapter log from the Aria Ops node:
+
+
+sudo tail -100 /storage/log/vcops/log/pakManager/vcopsPakManager.root.apply_adapter.log
+Paste what comes back — that log has the specific reason APPLY_ADAPTER rejected the pak.
+
+Also worth checking:
+
+
+# Show the tail of the ADAPTER app log if it made it that far
+sudo tail -50 /storage/log/vcops/log/adapter3/adapter3.log 2>/dev/null | grep -iE "azure|microsoft|error" | tail -20
+
+# And the describe.xml schema validation log if any
+sudo grep -iE "describe|schema|azure" /storage/log/vcops/log/pakManager/vcopsPakManager.root.apply_adapter*.log | tail -20
+While you pull those, a couple of hypotheses I want to test:
+
+1. describe.xml might have invalid schema content. Our patch-describe-xml.py adds attributes (type, subType, worldObjectName, showTag, PowerState) after mp-build generates the XML. If those attributes aren't allowed by the schema at the positions we insert them, Aria Ops rejects the whole pak. The test pak hit the same step, so this is my top suspect.
+
+2. Something in adapter.py's get_adapter_definition() produces invalid output. The DuplicateKeyException we fixed earlier was one such issue — there might be more that only surface during Aria Ops' strict validation (vs. mp-test's looser check).
+
+Quick verification step — extract the pak we just built and sanity-check the describe.xml locally:
+
+
+cd /tmp && rm -rf pak-check
+mkdir pak-check && cd pak-check
+unzip -q /opt/aria/Aria-MP-Builder/Azure/build/MicrosoftAzureAdapter_8.19.0.pak
+unzip -q adapter.zip
+ls MicrosoftAzureAdapter/conf/
+xmllint --noout --schema MicrosoftAzureAdapter/conf/describeSchema.xsd MicrosoftAzureAdapter/conf/describe.xml 2>&1 | head -30
+xmllint will tell us if describe.xml is schema-valid. If it reports errors, that's your answer.
+
+Paste the log output and the xmllint output — one of them will pinpoint it.
