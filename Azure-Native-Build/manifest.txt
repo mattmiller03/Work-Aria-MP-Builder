@@ -1,8 +1,8 @@
 {
-  "display_name": "Management Pack for Microsoft Azure [TEST BUILD]",
-  "name": "MicrosoftAzureAdapterTest",
-  "description": "TEST BUILD — side-by-side with native Azure pak. Custom replacement for the VMware native Azure management pack. Collects resource attributes, metrics, and cost data from Azure Government and Commercial Cloud. Monitors 18 resource types with native pak key compatibility for seamless dashboard migration.",
-  "version": "1.0.0",
+  "display_name": "Management Pack for Microsoft Azure",
+  "name": "MicrosoftAzureAdapter",
+  "description": "Custom replacement for the VMware native Azure management pack. Collects resource attributes, metrics, and cost data from Azure Government and Commercial Cloud. Monitors 18 resource types with native pak key compatibility for seamless dashboard migration.",
+  "version": "8.19.0",
   "vcops_minimum_version": "8.18.0",
   "disk_space_required": 500,
   "eula_file": "eula.txt",
@@ -25,7 +25,7 @@
     "adapter.zip"
   ],
   "adapter_kinds": [
-    "MicrosoftAzureAdapterTest"
+    "MicrosoftAzureAdapter"
   ],
   "license_type": " "
 }

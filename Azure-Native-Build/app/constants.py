@@ -7,8 +7,8 @@ so that existing dashboards and traversal specs continue to work.
 # ---------------------------------------------------------------------------
 # Adapter identity — must match native pak adapter kind
 # ---------------------------------------------------------------------------
-ADAPTER_KIND = "MicrosoftAzureAdapterTest"
-ADAPTER_NAME = "Management Pack for Microsoft Azure [TEST BUILD]"
+ADAPTER_KIND = "MicrosoftAzureAdapter"
+ADAPTER_NAME = "Management Pack for Microsoft Azure"
 
 # ---------------------------------------------------------------------------
 # Azure Gov endpoints
@@ -62,7 +62,7 @@ RES_IDENT_ID = "ID"                            # identType=1
 # ---------------------------------------------------------------------------
 # Object type keys — match native pak exactly (including typos)
 # ---------------------------------------------------------------------------
-OBJ_ADAPTER_INSTANCE = "MicrosoftAzureAdapterTest Instance"
+OBJ_ADAPTER_INSTANCE = "MicrosoftAzureAdapter Instance"
 OBJ_RESOURCE_GROUP = "AZURE_RESOURCE_GROUP"
 OBJ_VIRTUAL_MACHINE = "AZURE_VIRTUAL_MACHINE"
 OBJ_DISK = "AZURE_STORAGE_DISK"
