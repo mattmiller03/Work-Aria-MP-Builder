@@ -1,1 +1,10 @@
-placeholder text
+cd /opt/aria/Aria-MP-Builder
+git pull
+find scripts -name "*.sh" -exec sed -i 's/\r$//' {} +
+find scripts -name "*.py" -exec sed -i 's/\r$//' {} +
+find Azure-Native-Build -name "*.py" -exec sed -i 's/\r$//' {} +
+find Azure-Native-Build -name "*.sh" -exec sed -i 's/\r$//' {} +
+find Azure-Native-Build -name "*.cfg" -exec sed -i 's/\r$//' {} +
+sed -i 's/\r$//' Azure-Native-Build/Dockerfile
+sed -i 's/\r$//' Azure-Native-Build/manifest.txt
+chmod +x scripts/*.sh scripts/*.py
