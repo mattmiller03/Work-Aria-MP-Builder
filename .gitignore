@@ -26,7 +26,7 @@ debug/*
 !debug/scrub.py
 !debug/fetch_pricing.py
 !ErrorFile.txt
-!*.log
+#!*.log
 
 # Python
 __pycache__/
