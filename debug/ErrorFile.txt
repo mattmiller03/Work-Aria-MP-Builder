@@ -1,0 +1,9 @@
+# On the Aria Ops node — find which log contains our failed task ID
+sudo grep -rl "aceb0fca-65a1-454b-857b-3f23072e375a" /storage/log/vcops/log/ 2>/dev/null
+
+# Also find which logs mention our pak by ID
+sudo grep -rlE "MicrosoftAzureAdapter-8190|MicrosoftAzureAdapterTest-136" /storage/log/vcops/log/ 2>/dev/null
+
+# And specifically check adapter3 — that's the adapter-backend service on 8.18
+sudo ls /storage/log/vcops/log/adapter3/ 2>/dev/null
+sudo ls /storage/log/vcops/log/analytics/ 2>/dev/null
