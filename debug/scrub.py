@@ -29,6 +29,12 @@ REPLACEMENTS = {
     "daisv0tp003": "ariaops-node",
     "daisv0tp004": "cloud-proxy",
 
+    # Internal domain / site names — catches FQDNs the hostname replace missed
+    ".dev-test.dla.mil": ".INTERNAL-DOMAIN",
+    "dev-test.dla.mil":  "INTERNAL-DOMAIN",
+    "dla.mil":           "INTERNAL-DOMAIN",
+    "dev-test":          "SITE",
+
     # IPs — exact match, or use x / * as octet wildcards
     "214.73.76.134": "MP-BUILDER-IP",
     "214.73.76.149": "CLOUD-PROXY-IP",
@@ -96,15 +102,23 @@ def scrub_file(input_file, output_file):
 
 
 def iter_files(root, recursive):
+    # Never scrub this script itself — that would turn REPLACEMENTS into a no-op dict.
+    self_path = os.path.abspath(__file__)
     if recursive:
         for dirpath, _dirnames, filenames in os.walk(root):
             for name in filenames:
-                yield os.path.join(dirpath, name)
+                path = os.path.join(dirpath, name)
+                if os.path.abspath(path) == self_path:
+                    continue
+                yield path
     else:
         for name in sorted(os.listdir(root)):
             path = os.path.join(root, name)
-            if os.path.isfile(path):
-                yield path
+            if not os.path.isfile(path):
+                continue
+            if os.path.abspath(path) == self_path:
+                continue
+            yield path
 
 
 def main():
