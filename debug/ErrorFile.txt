@@ -1,10 +1,76 @@
-cd /opt/aria/Aria-MP-Builder
-git pull
-find scripts -name "*.sh" -exec sed -i 's/\r$//' {} +
-find scripts -name "*.py" -exec sed -i 's/\r$//' {} +
-find Azure-Native-Build -name "*.py" -exec sed -i 's/\r$//' {} +
-find Azure-Native-Build -name "*.sh" -exec sed -i 's/\r$//' {} +
-find Azure-Native-Build -name "*.cfg" -exec sed -i 's/\r$//' {} +
-sed -i 's/\r$//' Azure-Native-Build/Dockerfile
-sed -i 's/\r$//' Azure-Native-Build/manifest.txt
-chmod +x scripts/*.sh scripts/*.py
+Using adapter directory: /opt/aria/Aria-MP-Builder/scripts/../Azure
+=== Running mp-test ===
+Building base image [Finished]
+Choose a connection:  Azure Gov Test
+Choose a method to test: Test Connection
+Building adapter [Finished]
+Waiting for adapter to start [Finished]
+500 Internal Server Error
+No result from adapter. Captured stdout:
+  2026-04-21 15:30:17,191 [ERROR] root: [Errno 13] Permission denied: '/var/log/adapter.log'
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/aria/ops/adapter_logging.py", line 28, in setup_logging
+    log_handler = RotatingFileHandler(
+                  ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/logging/handlers.py", line 155, in __init__
+    BaseRotatingHandler.__init__(self, filename, mode, encoding=encoding,
+  File "/usr/local/lib/python3.11/logging/handlers.py", line 58, in __init__
+    logging.FileHandler.__init__(self, filename, mode=mode,
+  File "/usr/local/lib/python3.11/logging/__init__.py", line 1181, in __init__
+    StreamHandler.__init__(self, self._open())
+                                 ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/logging/__init__.py", line 1213, in _open
+    return open_func(self.baseFilename, self.mode,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: '/var/log/adapter.log'
+2026-04-21 15:30:17,192 [INFO] __main__: Running adapter code with arguments: ['adapter_definition', '/tmp/tmpdl4r_mbf/input_pipe', '/tmp/tmpdl4r_mbf/output_pipe']
+2026-04-21 15:30:17,218 [ERROR] __main__: Error in adapter_definition: Object type with key AZURE_APP_SERVICE_PLAN already exists in adapter definition.
+Traceback (most recent call last):
+  File "/home/aria-ops-adapter-user/src/app/app/adapter.py", line 930, in main
+    result = get_adapter_definition()
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/aria-ops-adapter-user/src/app/app/adapter.py", line 722, in get_adapter_definition
+    stub = definition.define_object_type(stub_key, stub_key)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/aria/ops/definition/adapter_definition.py", line 294, in define_object_type
+    self.add_object_type(object_type)
+  File "/usr/local/lib/python3.11/site-packages/aria/ops/definition/adapter_definition.py", line 315, in add_object_type
+    raise DuplicateKeyException(
+aria.ops.definition.exceptions.DuplicateKeyException: Object type with key AZURE_APP_SERVICE_PLAN already exists in adapter definition.
+2026-04-21 15:30:17,220 [INFO] __main__: Timing Graph: 
+━━━━━━━━━┯━━━━━━━━┯━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Operation│Time    │t=0s                                                t=-1776785417.22s
+━━━━━━━━━┿━━━━━━━━┿━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━┷━━━━━━━━┷━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+adapterDefinition endpoint returned 500.
+Running Connect [Finished]
+Unexpected error
+'limit'
+  File "/opt/python312/lib/python3.12/site-packages/vmware_aria_operations_integration_sdk/mp_test.py", line 938, in main
+    asyncio.run(run(parser.parse_args()))
+  File "/opt/python312/lib/python3.12/asyncio/runners.py", line 195, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/opt/python312/lib/python3.12/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python312/lib/python3.12/asyncio/base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/opt/python312/lib/python3.12/site-packages/vmware_aria_operations_integration_sdk/mp_test.py", line 406, in run
+    result_bundle = await method(
+                    ^^^^^^^^^^^^^
+  File "/opt/python312/lib/python3.12/site-packages/vmware_aria_operations_integration_sdk/mp_test.py", line 240, in run_connect
+    async with await adapter_container.record_stats():
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python312/lib/python3.12/site-packages/vmware_aria_operations_integration_sdk/docker_wrapper.py", line 360, in __aexit__
+    await self._recording_task
+  File "/opt/python312/lib/python3.12/concurrent/futures/thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python312/lib/python3.12/site-packages/vmware_aria_operations_integration_sdk/docker_wrapper.py", line 369, in _record
+    self.add(self.container.stats(stream=False))
+  File "/opt/python312/lib/python3.12/site-packages/vmware_aria_operations_integration_sdk/docker_wrapper.py", line 376, in add
+    self.total_memory = current_stats["memory_stats"]["limit"]
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
