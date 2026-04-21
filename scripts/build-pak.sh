@@ -24,6 +24,18 @@ PORT="${PORT:-8181}"
 SIGN=false
 TEST_ONLY=false
 
+# Pin the host-side Python to the 3.12 we installed at /opt/python312
+# (Photon's default python3 is 3.10/3.11, which may not match the SDK).
+# Override with PYTHON_BIN=/some/python if needed.
+if [[ -n "${PYTHON_BIN:-}" ]]; then
+    :
+elif command -v python3.12 >/dev/null 2>&1; then
+    PYTHON_BIN="$(command -v python3.12)"
+else
+    PYTHON_BIN="$(command -v python3)"
+fi
+echo "Using python: $PYTHON_BIN ($("$PYTHON_BIN" --version 2>&1))"
+
 # Resolve ADAPTER_DIR. Honor an explicit override, else try the two known layouts
 # (repo-native Azure-Native-Build/, or the renamed Azure/ that servers sometimes use).
 if [[ -n "${ADAPTER_DIR:-}" ]]; then
@@ -42,7 +54,7 @@ fi
 echo "Using adapter directory: $ADAPTER_DIR"
 
 # Read adapter kind from manifest.txt so path lookups stay in sync with pak name.
-ADAPTER_KIND=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["adapter_kinds"][0])' "${ADAPTER_DIR}/manifest.txt")
+ADAPTER_KIND=$("$PYTHON_BIN" -c 'import json,sys; print(json.load(open(sys.argv[1]))["adapter_kinds"][0])' "${ADAPTER_DIR}/manifest.txt")
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -69,7 +81,7 @@ echo ""
 echo "=== Step 2: Patching describe.xml ==="
 # Find the generated describe.xml
 if [ -f conf/describe.xml ]; then
-    python3 "$SCRIPT_DIR/patch-describe-xml.py" conf/describe.xml
+    "$PYTHON_BIN" "$SCRIPT_DIR/patch-describe-xml.py" conf/describe.xml
 else
     echo "WARNING: conf/describe.xml not found — skipping patch"
     echo "The describe.xml may be inside the built .pak file."
@@ -90,7 +102,7 @@ else
 
             DESCRIBE="$TEMP_DIR/adapter/$ADAPTER_KIND/conf/describe.xml"
             if [ -f "$DESCRIBE" ]; then
-                python3 "$SCRIPT_DIR/patch-describe-xml.py" "$DESCRIBE"
+                "$PYTHON_BIN" "$SCRIPT_DIR/patch-describe-xml.py" "$DESCRIBE"
 
                 # Repack adapter.zip
                 cd "$TEMP_DIR/adapter"
