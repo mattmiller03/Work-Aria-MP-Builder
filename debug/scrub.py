@@ -38,16 +38,16 @@ REPLACEMENTS = {
     # IPs — exact match, or use x / * as octet wildcards
     "214.73.76.134": "MP-BUILDER-IP",
     "214.73.76.149": "CLOUD-PROXY-IP",
-    # "192.168.x.x": "INTERNAL-IP",   # matches 192.168.1.5, 192.168.200.17, etc.
+    "214.73.x.x": "INTERNAL-IP",   # matches 192.168.1.5, 192.168.200.17, etc.
     # "10.*.*.*":    "RFC1918-IP",    # * and x both work as wildcards
 
     # Usernames
     "vropsssh": "svcaccount",
 
     # Azure tenant/subscription — add if needed
-    # "6dee1d83-8de8-49bb-bc0d-fd8812473904": "TENANT-ID",
-    # "988779d0-a914-4d28-8db2-56ae35c26853": "SUB-ID",
-    # "a3e73c56-50f4-401e-8695-791bc44afed5": "SUB-ID-2",
+     "6dee1d83-8de8-49bb-bc0d-fd8812473904": "TENANT-ID",
+     "988779d0-a914-4d28-8db2-56ae35c26853": "SUB-ID",
+     "a3e73c56-50f4-401e-8695-791bc44afed5": "SUB-ID-2",
 }
 
 
