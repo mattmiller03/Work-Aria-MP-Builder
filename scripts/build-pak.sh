@@ -25,6 +25,9 @@ PORT="${PORT:-8181}"
 SIGN=false
 TEST_ONLY=false
 
+# Read adapter kind from manifest.txt so path lookups stay in sync with pak name.
+ADAPTER_KIND="$(python3 -c "import json,sys; print(json.load(open(sys.argv[1]))['adapter_kinds'][0])" "${ADAPTER_DIR}/manifest.txt")"
+
 while [[ $# -gt 0 ]]; do
     case "$1" in
         --sign) SIGN=true; shift ;;
@@ -69,7 +72,7 @@ else
             mkdir -p "$TEMP_DIR/adapter"
             unzip -q "$TEMP_DIR/pak/adapter.zip" -d "$TEMP_DIR/adapter"
 
-            DESCRIBE="$TEMP_DIR/adapter/MicrosoftAzureAdapter/conf/describe.xml"
+            DESCRIBE="$TEMP_DIR/adapter/$ADAPTER_KIND/conf/describe.xml"
             if [ -f "$DESCRIBE" ]; then
                 python3 "$SCRIPT_DIR/patch-describe-xml.py" "$DESCRIBE"
 
