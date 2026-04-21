@@ -1,0 +1,1378 @@
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.read_arguments:4159 - Input params:
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.read_arguments:4160 -   - action: "apply_adapter_pre_script"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.read_arguments:4161 -   - pakFile: "MicrosoftAzureAdapterTest-100"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.read_arguments:4162 -   - locale: "None"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.read_arguments:4163 -   - Remove History Action: "None"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.read_arguments:4164 -   - Remove Pak Action: False
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.read_arguments:4165 -   - Skip: False
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.read_arguments:4166 -   - Force: False
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.read_arguments:4167 -   - Force content update: True
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.read_arguments:4168 -   - Results action to update: "None"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.read_arguments:4169 -   - Results exit code: None
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.read_arguments:4170 -   - Results exit message: "None"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.read_arguments:4171 -   - Results resource message key: "None"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.read_arguments:4172 -   - Results resource args: None
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.read_arguments:4173 -   - Results resrouce dir: "None"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.read_arguments:4178 -   - Auth Token Passed: True
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.main:4280 - In: apply_adapter_pre_script
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.returnPakFormat:1754 - Checking pak file: "MicrosoftAzureAdapterTest-100" format
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vc_ops_logging.logDebug:266 - Locale language code: "en", territory code: "US"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/resources/resources_en_US.properties"
+
+
+2026-04-21T16:06:10 INFO [634662] - vc_ops_logging.logInfo:271 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/resources/resources_en_US.properties" does not exist
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/resources/resources_en.properties"
+
+
+2026-04-21T16:06:10 INFO [634662] - vc_ops_logging.logInfo:271 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/resources/resources_en.properties" does not exist
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/resources/resources.properties"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vc_ops_logging.logDebug:266 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/resources/resources.properties" exists, use it
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vc_ops_logging.logDebug:266 - Return resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/resources/resources.properties"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vc_ops_logging.logDebug:266 - Locale language code: "en", territory code: "US"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/resources/resources_en_US.properties"
+
+
+2026-04-21T16:06:10 INFO [634662] - vc_ops_logging.logInfo:271 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/resources/resources_en_US.properties" does not exist
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/resources/resources_en.properties"
+
+
+2026-04-21T16:06:10 INFO [634662] - vc_ops_logging.logInfo:271 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/resources/resources_en.properties" does not exist
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/resources/resources.properties"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vc_ops_logging.logDebug:266 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/resources/resources.properties" exists, use it
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vc_ops_logging.logDebug:266 - Return resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/resources/resources.properties"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.loadResultValue:438 - Entering load result value for: pak_format
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.LoadResultsFile:421 - Entering load results file
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.VerifyPakResultFileExists:368 - Verify the Pak file result file: exists
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.VerifyPakResultFileExists:370 - The results file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/MicrosoftAzureAdapterTest-100.results" exists
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManagerCommon.LoadJsonDocument:207 - Loaded Json file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/MicrosoftAzureAdapterTest-100.results"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.populateLocalizableFileinResultsFile:411 - No file: 'ApplyAdapterPreScript' object has no attribute 'pakName'
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.populateLocalizableFileinResultsFile:411 - No file: 'release_info_file'
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.loadResultValue:442 - Value for: pak_format is: "6.x"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.loadResultValue:447 - Returning key value: "6.x"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.returnPakFormat:1759 - The results file pak format is: "6.x"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vc_ops_logging.logDebug:266 - Locale language code: "en", territory code: "US"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/resources/resources_en_US.properties"
+
+
+2026-04-21T16:06:10 INFO [634662] - vc_ops_logging.logInfo:271 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/resources/resources_en_US.properties" does not exist
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/resources/resources_en.properties"
+
+
+2026-04-21T16:06:10 INFO [634662] - vc_ops_logging.logInfo:271 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/resources/resources_en.properties" does not exist
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/resources/resources.properties"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vc_ops_logging.logDebug:266 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/resources/resources.properties" exists, use it
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vc_ops_logging.logDebug:266 - Return resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/resources/resources.properties"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.__init__:1700 - Added env variable: 'ALIVE_BASE' = '/usr/lib/vmware-vcops'
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.__init__:1700 - Added env variable: 'VCOPS_BASE' = '/usr/lib/vmware-vcops'
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.__init__:1700 - Added env variable: 'GEMFIRE_HOME' = '/usr/lib/vmware-vcops/gemfire'
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.__init__:1700 - Added env variable: 'JRE_HOME' = '/usr/java/default'
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.__init__:1700 - Added env variable: 'VCOPS_DATA' = '/data'
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.__init__:1700 - Added env variable: 'VCOPS_DATA_VCOPS' = '/data/vcops'
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.__init__:1700 - Added env variable: 'STORAGE' = '/storage'
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.__init__:1700 - Added env variable: 'STORAGE_LOG_VCOPS' = '/storage/log/vcops'
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.__init__:1700 - Added env variable: 'STORAGE_DB_VCOPS' = '/storage/db/vcops'
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.__init__:1700 - Added env variable: 'VMWARE_JAVA_HOME' = '/usr/java/default'
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.__init__:1700 - Added env variable: 'VMWARE_PYTHON_BIN' = '/usr/bin/python'
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.__init__:1700 - Added env variable: 'VMWARE_PYTHON_3_BIN' = '/usr/bin/python'
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.__init__:1700 - Added env variable: 'VMWARE_TCROOT' = '/usr/share/tomcat'
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.__init__:1700 - Added env variable: 'STORAGE_CORE_VCOPS' = '/storage/core'
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.__init__:1700 - Added env variable: 'VMWARE_VPOSTGRES_ROOT' = '/opt/vmware/vpostgres/current'
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.__init__:1700 - Added env variable: 'VCOPS_TEMP' = '/storage/db/tmp'
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.__init__:1700 - Added env variable: 'VCOPS_USER' = 'admin'
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.__init__:1700 - Added env variable: 'VCOPS_GROUP' = 'admin'
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.__init__:1700 - Added env variable: 'PAGER' = 'cat'
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.__init__:1700 - Added env variable: 'CASSANDRA_CONF' = '/usr/lib/vmware-vcops/user/conf/cassandra'
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.__init__:1700 - Added env variable: 'PGSSLCERT' = '/storage/vcops/user/conf/ssl/postgres_vcops_cert.pem'
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.__init__:1700 - Added env variable: 'PGSSLKEY' = '/storage/vcops/user/conf/ssl/postgres_vcops_key.pem'
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManagerCommon.LoadJsonDocument:207 - Loaded Json file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/MicrosoftAzureAdapterTest-100.results"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.checkActionPreReqs:2378 - Checking dependency: "stage"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.VerifyActionSuccessfullyCompleted:1835 - Entering verify action: stage
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.VerifyActionSuccessfullyCompleted:1844 - Checking if "stage_exit_code" key exists
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.VerifyActionSuccessfullyCompleted:1870 - stage result: "0"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.VerifyActionSuccessfullyCompleted:1872 - The action: stage successfully completed on pak file: "MicrosoftAzureAdapterTest-100"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManagerCommon.LoadJsonDocument:207 - Loaded Json file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/MicrosoftAzureAdapterTest-100.results"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.VerifyActionNotRunningOrRun:1887 - Entering verify action: apply_adapter_pre_script
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.VerifyActionNotRunningOrRun:1898 - Checking if keys: "apply_adapter_pre_script_exit_code" and "apply_adapter_pre_script_result exists
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.VerifyActionNotRunningOrRun:1911 - apply_adapter_pre_script result: "no results"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.VerifyActionNotRunningOrRun:1912 - apply_adapter_pre_script exit code: ""
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.loadScript:2464 - Entering verify the "apply_adapter_pre_script" script is defined
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.loadManifestScriptsValue:1487 - Entering load manifest file script section: adapter_pre_script for the script type: apply_adapter_pre_script
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.LoadManifest:1347 - Entering load manifest file
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.verifyManifestFileExists:638 - Verify manifest file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/manifest.txt" exists
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManagerCommon.LoadJsonDocument:207 - Loaded Json file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/manifest.txt"
+
+
+2026-04-21T16:06:10 WARNING [634662] - vc_ops_logging.logWarning:276 - Failed to find a value for: "TEST BUILD — side-by-side with native Azure pak. Custom replacement for the VMware native Azure management pack. Collects resource attributes, metrics, and cost data from Azure Government and Commercial Cloud. Monitors 18 resource types with native pak key compatibility for seamless dashboard migration.", exception: No option 'test build — side-by-side with native azure pak. custom replacement for the vmware native azure management pack. collects resource attributes, metrics, and cost data from azure government and commercial cloud. monitors 18 resource types with native pak key compatibility for seamless dashboard migration.' in section: 'no-section', setting default value to: TEST BUILD — side-by-side with native Azure pak. Custom replacement for the VMware native Azure management pack. Collects resource attributes, metrics, and cost data from Azure Government and Commercial Cloud. Monitors 18 resource types with native pak key compatibility for seamless dashboard migration.
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.returnResourceValue:862 - Return the resource value: "TEST BUILD — side-by-side with native Azure pak. Custom replacement for the VMware native Azure management pack. Collects resource attributes, metrics, and cost data from Azure Government and Commercial Cloud. Monitors 18 resource types with native pak key compatibility for seamless dashboard migration." for the resource: "TEST BUILD — side-by-side with native Azure pak. Custom replacement for the VMware native Azure management pack. Collects resource attributes, metrics, and cost data from Azure Government and Commercial Cloud. Monitors 18 resource types with native pak key compatibility for seamless dashboard migration."
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.updateLocalizationValue:1317 - Updating the localization pak key: "description" from: "TEST BUILD — side-by-side with native Azure pak. Custom replacement for the VMware native Azure management pack. Collects resource attributes, metrics, and cost data from Azure Government and Commercial Cloud. Monitors 18 resource types with native pak key compatibility for seamless dashboard migration." to: "TEST BUILD — side-by-side with native Azure pak. Custom replacement for the VMware native Azure management pack. Collects resource attributes, metrics, and cost data from Azure Government and Commercial Cloud. Monitors 18 resource types with native pak key compatibility for seamless dashboard migration."
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.update_pak_display_name_localization_value:1328 - Entering return pak display name
+
+
+2026-04-21T16:06:10 WARNING [634662] - vc_ops_logging.logWarning:276 - Failed to find a value for: "Management Pack for Microsoft Azure [TEST BUILD]", exception: No option 'management pack for microsoft azure [test build]' in section: 'no-section', setting default value to: Management Pack for Microsoft Azure [TEST BUILD]
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.returnResourceValue:862 - Return the resource value: "Management Pack for Microsoft Azure [TEST BUILD]" for the resource: "Management Pack for Microsoft Azure [TEST BUILD]"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.updateLocalizationValue:1317 - Updating the localization pak key: "display_name" from: "Management Pack for Microsoft Azure [TEST BUILD]" to: "Management Pack for Microsoft Azure [TEST BUILD]"
+
+
+2026-04-21T16:06:10 WARNING [634662] - vc_ops_logging.logWarning:276 - Failed to find a value for: "DLA", exception: No option 'dla' in section: 'no-section', setting default value to: DLA
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.returnResourceValue:862 - Return the resource value: "DLA" for the resource: "DLA"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.updateLocalizationValue:1317 - Updating the localization pak key: "vendor" from: "DLA" to: "DLA"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vc_ops_logging.logDebug:266 - Locale language code: "en", territory code: "US"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/eula_en_US.txt"
+
+
+2026-04-21T16:06:10 INFO [634662] - vc_ops_logging.logInfo:271 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/eula_en_US.txt" does not exist
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/eula_en.txt"
+
+
+2026-04-21T16:06:10 INFO [634662] - vc_ops_logging.logInfo:271 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/eula_en.txt" does not exist
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/eula.txt"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vc_ops_logging.logDebug:266 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/eula.txt" exists, use it
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vc_ops_logging.logDebug:266 - Return resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/eula.txt"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.loadLocalizableFile:1392 - Updating localized file to: "eula.txt"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.loadManifestScriptsValue:1493 - Return the OS agnostic script: "" was supplied
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.return_expanded_string:872 - Returning the expanded string from: "", updated to: ""
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.UpdateResultsFile:531 - Entering update the results file with the result: "Completed successfully-no script to run", exit code: "0", action: "apply_adapter_pre_script"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.UpdateResultsFile:538 - The results file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/MicrosoftAzureAdapterTest-100.results" exists
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.loadResultValue:438 - Entering load result value for: apply_adapter_pre_script_exit_code
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.LoadResultsFile:421 - Entering load results file
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.VerifyPakResultFileExists:368 - Verify the Pak file result file: exists
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.VerifyPakResultFileExists:370 - The results file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/MicrosoftAzureAdapterTest-100.results" exists
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManagerCommon.LoadJsonDocument:207 - Loaded Json file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/MicrosoftAzureAdapterTest-100.results"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vc_ops_logging.logDebug:266 - Locale language code: "en", territory code: "US"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/eula_en_US.txt"
+
+
+2026-04-21T16:06:10 INFO [634662] - vc_ops_logging.logInfo:271 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/eula_en_US.txt" does not exist
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/eula_en.txt"
+
+
+2026-04-21T16:06:10 INFO [634662] - vc_ops_logging.logInfo:271 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/eula_en.txt" does not exist
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/eula.txt"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vc_ops_logging.logDebug:266 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/eula.txt" exists, use it
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vc_ops_logging.logDebug:266 - Return resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/eula.txt"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.populateLocalizableFileinResultsFile:405 - localizedFile = eula.txt
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.populateLocalizableFileinResultsFile:411 - No file: 'release_info_file'
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.loadResultValue:442 - Value for: apply_adapter_pre_script_exit_code is: ""
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.loadResultValue:447 - Returning key value: ""
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.UpdateResultsFile:545 - Updating the results file action: apply_adapter_pre_script with the value: Completed successfully-no script to run
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.UpdateResultsFile:562 - Skip resource info
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.UpdateResultsFile:568 - Skip updating the action log file
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.UpdateResultsFile:572 - Skip updating the action error log file
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.CreateResultsFile:477 - Create the results file: /storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/MicrosoftAzureAdapterTest-100.results if it does not already exist
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.CreateResultsFile:479 - The results file already exists
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.LoadResultsFile:421 - Entering load results file
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.VerifyPakResultFileExists:368 - Verify the Pak file result file: exists
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.VerifyPakResultFileExists:370 - The results file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/MicrosoftAzureAdapterTest-100.results" exists
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManagerCommon.LoadJsonDocument:207 - Loaded Json file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/MicrosoftAzureAdapterTest-100.results"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vc_ops_logging.logDebug:266 - Locale language code: "en", territory code: "US"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/eula_en_US.txt"
+
+
+2026-04-21T16:06:10 INFO [634662] - vc_ops_logging.logInfo:271 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/eula_en_US.txt" does not exist
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/eula_en.txt"
+
+
+2026-04-21T16:06:10 INFO [634662] - vc_ops_logging.logInfo:271 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/eula_en.txt" does not exist
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/eula.txt"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vc_ops_logging.logDebug:266 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/eula.txt" exists, use it
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vc_ops_logging.logDebug:266 - Return resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-100/eula.txt"
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.populateLocalizableFileinResultsFile:405 - localizedFile = eula.txt
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.populateLocalizableFileinResultsFile:411 - No file: 'release_info_file'
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.UpdatePakRepoLocalHistoryFile:504 - Entering load history file
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManager.UpdatePakRepoLocalHistoryFile:506 - The history file: "/storage/db/pakRepoLocal/vcopsPakManagerCommonHistory.json" exists
+
+
+2026-04-21T16:06:10 DEBUG [634662] - vcopsPakManagerCommon.LoadJsonDocument:207 - Loaded Json file: "/storage/db/pakRepoLocal/vcopsPakManagerCommonHistory.json"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.read_arguments:4159 - Input params:
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.read_arguments:4160 -   - action: "apply_adapter_pre_script"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.read_arguments:4161 -   - pakFile: "MicrosoftAzureAdapterTest-136"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.read_arguments:4162 -   - locale: "None"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.read_arguments:4163 -   - Remove History Action: "None"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.read_arguments:4164 -   - Remove Pak Action: False
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.read_arguments:4165 -   - Skip: False
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.read_arguments:4166 -   - Force: False
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.read_arguments:4167 -   - Force content update: True
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.read_arguments:4168 -   - Results action to update: "None"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.read_arguments:4169 -   - Results exit code: None
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.read_arguments:4170 -   - Results exit message: "None"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.read_arguments:4171 -   - Results resource message key: "None"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.read_arguments:4172 -   - Results resource args: None
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.read_arguments:4173 -   - Results resrouce dir: "None"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.read_arguments:4178 -   - Auth Token Passed: True
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.main:4280 - In: apply_adapter_pre_script
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.returnPakFormat:1754 - Checking pak file: "MicrosoftAzureAdapterTest-136" format
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vc_ops_logging.logDebug:266 - Locale language code: "en", territory code: "US"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/resources/resources_en_US.properties"
+
+
+2026-04-21T17:15:57 INFO [788466] - vc_ops_logging.logInfo:271 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/resources/resources_en_US.properties" does not exist
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/resources/resources_en.properties"
+
+
+2026-04-21T17:15:57 INFO [788466] - vc_ops_logging.logInfo:271 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/resources/resources_en.properties" does not exist
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/resources/resources.properties"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vc_ops_logging.logDebug:266 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/resources/resources.properties" exists, use it
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vc_ops_logging.logDebug:266 - Return resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/resources/resources.properties"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vc_ops_logging.logDebug:266 - Locale language code: "en", territory code: "US"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/resources/resources_en_US.properties"
+
+
+2026-04-21T17:15:57 INFO [788466] - vc_ops_logging.logInfo:271 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/resources/resources_en_US.properties" does not exist
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/resources/resources_en.properties"
+
+
+2026-04-21T17:15:57 INFO [788466] - vc_ops_logging.logInfo:271 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/resources/resources_en.properties" does not exist
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/resources/resources.properties"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vc_ops_logging.logDebug:266 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/resources/resources.properties" exists, use it
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vc_ops_logging.logDebug:266 - Return resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/resources/resources.properties"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.loadResultValue:438 - Entering load result value for: pak_format
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.LoadResultsFile:421 - Entering load results file
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.VerifyPakResultFileExists:368 - Verify the Pak file result file: exists
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.VerifyPakResultFileExists:370 - The results file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/MicrosoftAzureAdapterTest-136.results" exists
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManagerCommon.LoadJsonDocument:207 - Loaded Json file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/MicrosoftAzureAdapterTest-136.results"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.populateLocalizableFileinResultsFile:411 - No file: 'ApplyAdapterPreScript' object has no attribute 'pakName'
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.populateLocalizableFileinResultsFile:411 - No file: 'release_info_file'
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.loadResultValue:442 - Value for: pak_format is: "6.x"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.loadResultValue:447 - Returning key value: "6.x"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.returnPakFormat:1759 - The results file pak format is: "6.x"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vc_ops_logging.logDebug:266 - Locale language code: "en", territory code: "US"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/resources/resources_en_US.properties"
+
+
+2026-04-21T17:15:57 INFO [788466] - vc_ops_logging.logInfo:271 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/resources/resources_en_US.properties" does not exist
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/resources/resources_en.properties"
+
+
+2026-04-21T17:15:57 INFO [788466] - vc_ops_logging.logInfo:271 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/resources/resources_en.properties" does not exist
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/resources/resources.properties"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vc_ops_logging.logDebug:266 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/resources/resources.properties" exists, use it
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vc_ops_logging.logDebug:266 - Return resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/resources/resources.properties"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.__init__:1700 - Added env variable: 'ALIVE_BASE' = '/usr/lib/vmware-vcops'
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.__init__:1700 - Added env variable: 'VCOPS_BASE' = '/usr/lib/vmware-vcops'
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.__init__:1700 - Added env variable: 'GEMFIRE_HOME' = '/usr/lib/vmware-vcops/gemfire'
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.__init__:1700 - Added env variable: 'JRE_HOME' = '/usr/java/default'
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.__init__:1700 - Added env variable: 'VCOPS_DATA' = '/data'
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.__init__:1700 - Added env variable: 'VCOPS_DATA_VCOPS' = '/data/vcops'
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.__init__:1700 - Added env variable: 'STORAGE' = '/storage'
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.__init__:1700 - Added env variable: 'STORAGE_LOG_VCOPS' = '/storage/log/vcops'
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.__init__:1700 - Added env variable: 'STORAGE_DB_VCOPS' = '/storage/db/vcops'
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.__init__:1700 - Added env variable: 'VMWARE_JAVA_HOME' = '/usr/java/default'
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.__init__:1700 - Added env variable: 'VMWARE_PYTHON_BIN' = '/usr/bin/python'
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.__init__:1700 - Added env variable: 'VMWARE_PYTHON_3_BIN' = '/usr/bin/python'
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.__init__:1700 - Added env variable: 'VMWARE_TCROOT' = '/usr/share/tomcat'
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.__init__:1700 - Added env variable: 'STORAGE_CORE_VCOPS' = '/storage/core'
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.__init__:1700 - Added env variable: 'VMWARE_VPOSTGRES_ROOT' = '/opt/vmware/vpostgres/current'
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.__init__:1700 - Added env variable: 'VCOPS_TEMP' = '/storage/db/tmp'
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.__init__:1700 - Added env variable: 'VCOPS_USER' = 'admin'
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.__init__:1700 - Added env variable: 'VCOPS_GROUP' = 'admin'
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.__init__:1700 - Added env variable: 'PAGER' = 'cat'
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.__init__:1700 - Added env variable: 'CASSANDRA_CONF' = '/usr/lib/vmware-vcops/user/conf/cassandra'
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.__init__:1700 - Added env variable: 'PGSSLCERT' = '/storage/vcops/user/conf/ssl/postgres_vcops_cert.pem'
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.__init__:1700 - Added env variable: 'PGSSLKEY' = '/storage/vcops/user/conf/ssl/postgres_vcops_key.pem'
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManagerCommon.LoadJsonDocument:207 - Loaded Json file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/MicrosoftAzureAdapterTest-136.results"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.checkActionPreReqs:2378 - Checking dependency: "stage"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.VerifyActionSuccessfullyCompleted:1835 - Entering verify action: stage
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.VerifyActionSuccessfullyCompleted:1844 - Checking if "stage_exit_code" key exists
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.VerifyActionSuccessfullyCompleted:1870 - stage result: "0"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.VerifyActionSuccessfullyCompleted:1872 - The action: stage successfully completed on pak file: "MicrosoftAzureAdapterTest-136"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManagerCommon.LoadJsonDocument:207 - Loaded Json file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/MicrosoftAzureAdapterTest-136.results"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.VerifyActionNotRunningOrRun:1887 - Entering verify action: apply_adapter_pre_script
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.VerifyActionNotRunningOrRun:1898 - Checking if keys: "apply_adapter_pre_script_exit_code" and "apply_adapter_pre_script_result exists
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.VerifyActionNotRunningOrRun:1911 - apply_adapter_pre_script result: "no results"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.VerifyActionNotRunningOrRun:1912 - apply_adapter_pre_script exit code: ""
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.loadScript:2464 - Entering verify the "apply_adapter_pre_script" script is defined
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.loadManifestScriptsValue:1487 - Entering load manifest file script section: adapter_pre_script for the script type: apply_adapter_pre_script
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.LoadManifest:1347 - Entering load manifest file
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.verifyManifestFileExists:638 - Verify manifest file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/manifest.txt" exists
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManagerCommon.LoadJsonDocument:207 - Loaded Json file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/manifest.txt"
+
+
+2026-04-21T17:15:57 WARNING [788466] - vc_ops_logging.logWarning:276 - Failed to find a value for: "TEST BUILD — side-by-side with native Azure pak. Custom replacement for the VMware native Azure management pack. Collects resource attributes, metrics, and cost data from Azure Government and Commercial Cloud. Monitors 18 resource types with native pak key compatibility for seamless dashboard migration.", exception: No option 'test build — side-by-side with native azure pak. custom replacement for the vmware native azure management pack. collects resource attributes, metrics, and cost data from azure government and commercial cloud. monitors 18 resource types with native pak key compatibility for seamless dashboard migration.' in section: 'no-section', setting default value to: TEST BUILD — side-by-side with native Azure pak. Custom replacement for the VMware native Azure management pack. Collects resource attributes, metrics, and cost data from Azure Government and Commercial Cloud. Monitors 18 resource types with native pak key compatibility for seamless dashboard migration.
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.returnResourceValue:862 - Return the resource value: "TEST BUILD — side-by-side with native Azure pak. Custom replacement for the VMware native Azure management pack. Collects resource attributes, metrics, and cost data from Azure Government and Commercial Cloud. Monitors 18 resource types with native pak key compatibility for seamless dashboard migration." for the resource: "TEST BUILD — side-by-side with native Azure pak. Custom replacement for the VMware native Azure management pack. Collects resource attributes, metrics, and cost data from Azure Government and Commercial Cloud. Monitors 18 resource types with native pak key compatibility for seamless dashboard migration."
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.updateLocalizationValue:1317 - Updating the localization pak key: "description" from: "TEST BUILD — side-by-side with native Azure pak. Custom replacement for the VMware native Azure management pack. Collects resource attributes, metrics, and cost data from Azure Government and Commercial Cloud. Monitors 18 resource types with native pak key compatibility for seamless dashboard migration." to: "TEST BUILD — side-by-side with native Azure pak. Custom replacement for the VMware native Azure management pack. Collects resource attributes, metrics, and cost data from Azure Government and Commercial Cloud. Monitors 18 resource types with native pak key compatibility for seamless dashboard migration."
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.update_pak_display_name_localization_value:1328 - Entering return pak display name
+
+
+2026-04-21T17:15:57 WARNING [788466] - vc_ops_logging.logWarning:276 - Failed to find a value for: "Management Pack for Microsoft Azure [TEST BUILD]", exception: No option 'management pack for microsoft azure [test build]' in section: 'no-section', setting default value to: Management Pack for Microsoft Azure [TEST BUILD]
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.returnResourceValue:862 - Return the resource value: "Management Pack for Microsoft Azure [TEST BUILD]" for the resource: "Management Pack for Microsoft Azure [TEST BUILD]"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.updateLocalizationValue:1317 - Updating the localization pak key: "display_name" from: "Management Pack for Microsoft Azure [TEST BUILD]" to: "Management Pack for Microsoft Azure [TEST BUILD]"
+
+
+2026-04-21T17:15:57 WARNING [788466] - vc_ops_logging.logWarning:276 - Failed to find a value for: "DLA", exception: No option 'dla' in section: 'no-section', setting default value to: DLA
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.returnResourceValue:862 - Return the resource value: "DLA" for the resource: "DLA"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.updateLocalizationValue:1317 - Updating the localization pak key: "vendor" from: "DLA" to: "DLA"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vc_ops_logging.logDebug:266 - Locale language code: "en", territory code: "US"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/eula_en_US.txt"
+
+
+2026-04-21T17:15:57 INFO [788466] - vc_ops_logging.logInfo:271 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/eula_en_US.txt" does not exist
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/eula_en.txt"
+
+
+2026-04-21T17:15:57 INFO [788466] - vc_ops_logging.logInfo:271 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/eula_en.txt" does not exist
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/eula.txt"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vc_ops_logging.logDebug:266 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/eula.txt" exists, use it
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vc_ops_logging.logDebug:266 - Return resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/eula.txt"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.loadLocalizableFile:1392 - Updating localized file to: "eula.txt"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.loadManifestScriptsValue:1493 - Return the OS agnostic script: "" was supplied
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.return_expanded_string:872 - Returning the expanded string from: "", updated to: ""
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.UpdateResultsFile:531 - Entering update the results file with the result: "Completed successfully-no script to run", exit code: "0", action: "apply_adapter_pre_script"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.UpdateResultsFile:538 - The results file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/MicrosoftAzureAdapterTest-136.results" exists
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.loadResultValue:438 - Entering load result value for: apply_adapter_pre_script_exit_code
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.LoadResultsFile:421 - Entering load results file
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.VerifyPakResultFileExists:368 - Verify the Pak file result file: exists
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.VerifyPakResultFileExists:370 - The results file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/MicrosoftAzureAdapterTest-136.results" exists
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManagerCommon.LoadJsonDocument:207 - Loaded Json file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/MicrosoftAzureAdapterTest-136.results"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vc_ops_logging.logDebug:266 - Locale language code: "en", territory code: "US"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/eula_en_US.txt"
+
+
+2026-04-21T17:15:57 INFO [788466] - vc_ops_logging.logInfo:271 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/eula_en_US.txt" does not exist
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/eula_en.txt"
+
+
+2026-04-21T17:15:57 INFO [788466] - vc_ops_logging.logInfo:271 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/eula_en.txt" does not exist
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/eula.txt"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vc_ops_logging.logDebug:266 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/eula.txt" exists, use it
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vc_ops_logging.logDebug:266 - Return resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/eula.txt"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.populateLocalizableFileinResultsFile:405 - localizedFile = eula.txt
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.populateLocalizableFileinResultsFile:411 - No file: 'release_info_file'
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.loadResultValue:442 - Value for: apply_adapter_pre_script_exit_code is: ""
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.loadResultValue:447 - Returning key value: ""
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.UpdateResultsFile:545 - Updating the results file action: apply_adapter_pre_script with the value: Completed successfully-no script to run
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.UpdateResultsFile:562 - Skip resource info
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.UpdateResultsFile:568 - Skip updating the action log file
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.UpdateResultsFile:572 - Skip updating the action error log file
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.CreateResultsFile:477 - Create the results file: /storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/MicrosoftAzureAdapterTest-136.results if it does not already exist
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.CreateResultsFile:479 - The results file already exists
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.LoadResultsFile:421 - Entering load results file
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.VerifyPakResultFileExists:368 - Verify the Pak file result file: exists
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.VerifyPakResultFileExists:370 - The results file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/MicrosoftAzureAdapterTest-136.results" exists
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManagerCommon.LoadJsonDocument:207 - Loaded Json file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/MicrosoftAzureAdapterTest-136.results"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vc_ops_logging.logDebug:266 - Locale language code: "en", territory code: "US"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/eula_en_US.txt"
+
+
+2026-04-21T17:15:57 INFO [788466] - vc_ops_logging.logInfo:271 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/eula_en_US.txt" does not exist
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/eula_en.txt"
+
+
+2026-04-21T17:15:57 INFO [788466] - vc_ops_logging.logInfo:271 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/eula_en.txt" does not exist
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/eula.txt"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vc_ops_logging.logDebug:266 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/eula.txt" exists, use it
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vc_ops_logging.logDebug:266 - Return resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapterTest-136/eula.txt"
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.populateLocalizableFileinResultsFile:405 - localizedFile = eula.txt
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.populateLocalizableFileinResultsFile:411 - No file: 'release_info_file'
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.UpdatePakRepoLocalHistoryFile:504 - Entering load history file
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManager.UpdatePakRepoLocalHistoryFile:506 - The history file: "/storage/db/pakRepoLocal/vcopsPakManagerCommonHistory.json" exists
+
+
+2026-04-21T17:15:57 DEBUG [788466] - vcopsPakManagerCommon.LoadJsonDocument:207 - Loaded Json file: "/storage/db/pakRepoLocal/vcopsPakManagerCommonHistory.json"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.read_arguments:4159 - Input params:
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.read_arguments:4160 -   - action: "apply_adapter_pre_script"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.read_arguments:4161 -   - pakFile: "MicrosoftAzureAdapter-8190"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.read_arguments:4162 -   - locale: "None"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.read_arguments:4163 -   - Remove History Action: "None"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.read_arguments:4164 -   - Remove Pak Action: False
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.read_arguments:4165 -   - Skip: False
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.read_arguments:4166 -   - Force: False
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.read_arguments:4167 -   - Force content update: True
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.read_arguments:4168 -   - Results action to update: "None"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.read_arguments:4169 -   - Results exit code: None
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.read_arguments:4170 -   - Results exit message: "None"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.read_arguments:4171 -   - Results resource message key: "None"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.read_arguments:4172 -   - Results resource args: None
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.read_arguments:4173 -   - Results resrouce dir: "None"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.read_arguments:4178 -   - Auth Token Passed: True
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.main:4280 - In: apply_adapter_pre_script
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.returnPakFormat:1754 - Checking pak file: "MicrosoftAzureAdapter-8190" format
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vc_ops_logging.logDebug:266 - Locale language code: "en", territory code: "US"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/resources/resources_en_US.properties"
+
+
+2026-04-21T17:53:54 INFO [875033] - vc_ops_logging.logInfo:271 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/resources/resources_en_US.properties" does not exist
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/resources/resources_en.properties"
+
+
+2026-04-21T17:53:54 INFO [875033] - vc_ops_logging.logInfo:271 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/resources/resources_en.properties" does not exist
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/resources/resources.properties"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vc_ops_logging.logDebug:266 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/resources/resources.properties" exists, use it
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vc_ops_logging.logDebug:266 - Return resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/resources/resources.properties"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vc_ops_logging.logDebug:266 - Locale language code: "en", territory code: "US"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/resources/resources_en_US.properties"
+
+
+2026-04-21T17:53:54 INFO [875033] - vc_ops_logging.logInfo:271 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/resources/resources_en_US.properties" does not exist
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/resources/resources_en.properties"
+
+
+2026-04-21T17:53:54 INFO [875033] - vc_ops_logging.logInfo:271 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/resources/resources_en.properties" does not exist
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/resources/resources.properties"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vc_ops_logging.logDebug:266 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/resources/resources.properties" exists, use it
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vc_ops_logging.logDebug:266 - Return resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/resources/resources.properties"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.loadResultValue:438 - Entering load result value for: pak_format
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.LoadResultsFile:421 - Entering load results file
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.VerifyPakResultFileExists:368 - Verify the Pak file result file: exists
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.VerifyPakResultFileExists:370 - The results file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/MicrosoftAzureAdapter-8190.results" exists
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManagerCommon.LoadJsonDocument:207 - Loaded Json file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/MicrosoftAzureAdapter-8190.results"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.populateLocalizableFileinResultsFile:411 - No file: 'ApplyAdapterPreScript' object has no attribute 'pakName'
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.populateLocalizableFileinResultsFile:411 - No file: 'release_info_file'
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.loadResultValue:442 - Value for: pak_format is: "6.x"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.loadResultValue:447 - Returning key value: "6.x"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.returnPakFormat:1759 - The results file pak format is: "6.x"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vc_ops_logging.logDebug:266 - Locale language code: "en", territory code: "US"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/resources/resources_en_US.properties"
+
+
+2026-04-21T17:53:54 INFO [875033] - vc_ops_logging.logInfo:271 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/resources/resources_en_US.properties" does not exist
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/resources/resources_en.properties"
+
+
+2026-04-21T17:53:54 INFO [875033] - vc_ops_logging.logInfo:271 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/resources/resources_en.properties" does not exist
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/resources/resources.properties"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vc_ops_logging.logDebug:266 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/resources/resources.properties" exists, use it
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vc_ops_logging.logDebug:266 - Return resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/resources/resources.properties"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.__init__:1700 - Added env variable: 'ALIVE_BASE' = '/usr/lib/vmware-vcops'
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.__init__:1700 - Added env variable: 'VCOPS_BASE' = '/usr/lib/vmware-vcops'
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.__init__:1700 - Added env variable: 'GEMFIRE_HOME' = '/usr/lib/vmware-vcops/gemfire'
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.__init__:1700 - Added env variable: 'JRE_HOME' = '/usr/java/default'
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.__init__:1700 - Added env variable: 'VCOPS_DATA' = '/data'
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.__init__:1700 - Added env variable: 'VCOPS_DATA_VCOPS' = '/data/vcops'
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.__init__:1700 - Added env variable: 'STORAGE' = '/storage'
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.__init__:1700 - Added env variable: 'STORAGE_LOG_VCOPS' = '/storage/log/vcops'
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.__init__:1700 - Added env variable: 'STORAGE_DB_VCOPS' = '/storage/db/vcops'
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.__init__:1700 - Added env variable: 'VMWARE_JAVA_HOME' = '/usr/java/default'
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.__init__:1700 - Added env variable: 'VMWARE_PYTHON_BIN' = '/usr/bin/python'
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.__init__:1700 - Added env variable: 'VMWARE_PYTHON_3_BIN' = '/usr/bin/python'
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.__init__:1700 - Added env variable: 'VMWARE_TCROOT' = '/usr/share/tomcat'
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.__init__:1700 - Added env variable: 'STORAGE_CORE_VCOPS' = '/storage/core'
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.__init__:1700 - Added env variable: 'VMWARE_VPOSTGRES_ROOT' = '/opt/vmware/vpostgres/current'
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.__init__:1700 - Added env variable: 'VCOPS_TEMP' = '/storage/db/tmp'
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.__init__:1700 - Added env variable: 'VCOPS_USER' = 'admin'
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.__init__:1700 - Added env variable: 'VCOPS_GROUP' = 'admin'
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.__init__:1700 - Added env variable: 'PAGER' = 'cat'
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.__init__:1700 - Added env variable: 'CASSANDRA_CONF' = '/usr/lib/vmware-vcops/user/conf/cassandra'
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.__init__:1700 - Added env variable: 'PGSSLCERT' = '/storage/vcops/user/conf/ssl/postgres_vcops_cert.pem'
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.__init__:1700 - Added env variable: 'PGSSLKEY' = '/storage/vcops/user/conf/ssl/postgres_vcops_key.pem'
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManagerCommon.LoadJsonDocument:207 - Loaded Json file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/MicrosoftAzureAdapter-8190.results"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.checkActionPreReqs:2378 - Checking dependency: "stage"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.VerifyActionSuccessfullyCompleted:1835 - Entering verify action: stage
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.VerifyActionSuccessfullyCompleted:1844 - Checking if "stage_exit_code" key exists
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.VerifyActionSuccessfullyCompleted:1870 - stage result: "0"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.VerifyActionSuccessfullyCompleted:1872 - The action: stage successfully completed on pak file: "MicrosoftAzureAdapter-8190"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManagerCommon.LoadJsonDocument:207 - Loaded Json file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/MicrosoftAzureAdapter-8190.results"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.VerifyActionNotRunningOrRun:1887 - Entering verify action: apply_adapter_pre_script
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.VerifyActionNotRunningOrRun:1898 - Checking if keys: "apply_adapter_pre_script_exit_code" and "apply_adapter_pre_script_result exists
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.VerifyActionNotRunningOrRun:1911 - apply_adapter_pre_script result: "no results"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.VerifyActionNotRunningOrRun:1912 - apply_adapter_pre_script exit code: ""
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.loadScript:2464 - Entering verify the "apply_adapter_pre_script" script is defined
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.loadManifestScriptsValue:1487 - Entering load manifest file script section: adapter_pre_script for the script type: apply_adapter_pre_script
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.LoadManifest:1347 - Entering load manifest file
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.verifyManifestFileExists:638 - Verify manifest file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/manifest.txt" exists
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManagerCommon.LoadJsonDocument:207 - Loaded Json file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/manifest.txt"
+
+
+2026-04-21T17:53:54 WARNING [875033] - vc_ops_logging.logWarning:276 - Failed to find a value for: "Custom replacement for the VMware native Azure management pack. Collects resource attributes, metrics, and cost data from Azure Government and Commercial Cloud. Monitors 18 resource types with native pak key compatibility for seamless dashboard migration.", exception: No option 'custom replacement for the vmware native azure management pack. collects resource attributes, metrics, and cost data from azure government and commercial cloud. monitors 18 resource types with native pak key compatibility for seamless dashboard migration.' in section: 'no-section', setting default value to: Custom replacement for the VMware native Azure management pack. Collects resource attributes, metrics, and cost data from Azure Government and Commercial Cloud. Monitors 18 resource types with native pak key compatibility for seamless dashboard migration.
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.returnResourceValue:862 - Return the resource value: "Custom replacement for the VMware native Azure management pack. Collects resource attributes, metrics, and cost data from Azure Government and Commercial Cloud. Monitors 18 resource types with native pak key compatibility for seamless dashboard migration." for the resource: "Custom replacement for the VMware native Azure management pack. Collects resource attributes, metrics, and cost data from Azure Government and Commercial Cloud. Monitors 18 resource types with native pak key compatibility for seamless dashboard migration."
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.updateLocalizationValue:1317 - Updating the localization pak key: "description" from: "Custom replacement for the VMware native Azure management pack. Collects resource attributes, metrics, and cost data from Azure Government and Commercial Cloud. Monitors 18 resource types with native pak key compatibility for seamless dashboard migration." to: "Custom replacement for the VMware native Azure management pack. Collects resource attributes, metrics, and cost data from Azure Government and Commercial Cloud. Monitors 18 resource types with native pak key compatibility for seamless dashboard migration."
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.update_pak_display_name_localization_value:1328 - Entering return pak display name
+
+
+2026-04-21T17:53:54 WARNING [875033] - vc_ops_logging.logWarning:276 - Failed to find a value for: "Management Pack for Microsoft Azure", exception: No option 'management pack for microsoft azure' in section: 'no-section', setting default value to: Management Pack for Microsoft Azure
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.returnResourceValue:862 - Return the resource value: "Management Pack for Microsoft Azure" for the resource: "Management Pack for Microsoft Azure"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.updateLocalizationValue:1317 - Updating the localization pak key: "display_name" from: "Management Pack for Microsoft Azure" to: "Management Pack for Microsoft Azure"
+
+
+2026-04-21T17:53:54 WARNING [875033] - vc_ops_logging.logWarning:276 - Failed to find a value for: "DLA", exception: No option 'dla' in section: 'no-section', setting default value to: DLA
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.returnResourceValue:862 - Return the resource value: "DLA" for the resource: "DLA"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.updateLocalizationValue:1317 - Updating the localization pak key: "vendor" from: "DLA" to: "DLA"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vc_ops_logging.logDebug:266 - Locale language code: "en", territory code: "US"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/eula_en_US.txt"
+
+
+2026-04-21T17:53:54 INFO [875033] - vc_ops_logging.logInfo:271 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/eula_en_US.txt" does not exist
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/eula_en.txt"
+
+
+2026-04-21T17:53:54 INFO [875033] - vc_ops_logging.logInfo:271 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/eula_en.txt" does not exist
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/eula.txt"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vc_ops_logging.logDebug:266 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/eula.txt" exists, use it
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vc_ops_logging.logDebug:266 - Return resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/eula.txt"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.loadLocalizableFile:1392 - Updating localized file to: "eula.txt"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.loadManifestScriptsValue:1493 - Return the OS agnostic script: "" was supplied
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.return_expanded_string:872 - Returning the expanded string from: "", updated to: ""
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.UpdateResultsFile:531 - Entering update the results file with the result: "Completed successfully-no script to run", exit code: "0", action: "apply_adapter_pre_script"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.UpdateResultsFile:538 - The results file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/MicrosoftAzureAdapter-8190.results" exists
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.loadResultValue:438 - Entering load result value for: apply_adapter_pre_script_exit_code
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.LoadResultsFile:421 - Entering load results file
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.VerifyPakResultFileExists:368 - Verify the Pak file result file: exists
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.VerifyPakResultFileExists:370 - The results file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/MicrosoftAzureAdapter-8190.results" exists
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManagerCommon.LoadJsonDocument:207 - Loaded Json file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/MicrosoftAzureAdapter-8190.results"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vc_ops_logging.logDebug:266 - Locale language code: "en", territory code: "US"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/eula_en_US.txt"
+
+
+2026-04-21T17:53:54 INFO [875033] - vc_ops_logging.logInfo:271 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/eula_en_US.txt" does not exist
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/eula_en.txt"
+
+
+2026-04-21T17:53:54 INFO [875033] - vc_ops_logging.logInfo:271 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/eula_en.txt" does not exist
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/eula.txt"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vc_ops_logging.logDebug:266 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/eula.txt" exists, use it
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vc_ops_logging.logDebug:266 - Return resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/eula.txt"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.populateLocalizableFileinResultsFile:405 - localizedFile = eula.txt
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.populateLocalizableFileinResultsFile:411 - No file: 'release_info_file'
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.loadResultValue:442 - Value for: apply_adapter_pre_script_exit_code is: ""
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.loadResultValue:447 - Returning key value: ""
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.UpdateResultsFile:545 - Updating the results file action: apply_adapter_pre_script with the value: Completed successfully-no script to run
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.UpdateResultsFile:562 - Skip resource info
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.UpdateResultsFile:568 - Skip updating the action log file
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.UpdateResultsFile:572 - Skip updating the action error log file
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.CreateResultsFile:477 - Create the results file: /storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/MicrosoftAzureAdapter-8190.results if it does not already exist
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.CreateResultsFile:479 - The results file already exists
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.LoadResultsFile:421 - Entering load results file
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.VerifyPakResultFileExists:368 - Verify the Pak file result file: exists
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.VerifyPakResultFileExists:370 - The results file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/MicrosoftAzureAdapter-8190.results" exists
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManagerCommon.LoadJsonDocument:207 - Loaded Json file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/MicrosoftAzureAdapter-8190.results"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vc_ops_logging.logDebug:266 - Locale language code: "en", territory code: "US"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/eula_en_US.txt"
+
+
+2026-04-21T17:53:54 INFO [875033] - vc_ops_logging.logInfo:271 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/eula_en_US.txt" does not exist
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/eula_en.txt"
+
+
+2026-04-21T17:53:54 INFO [875033] - vc_ops_logging.logInfo:271 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/eula_en.txt" does not exist
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vc_ops_logging.logDebug:266 - Checking resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/eula.txt"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vc_ops_logging.logDebug:266 - Resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/eula.txt" exists, use it
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vc_ops_logging.logDebug:266 - Return resource file: "/storage/db/pakRepoLocal/MicrosoftAzureAdapter-8190/eula.txt"
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.populateLocalizableFileinResultsFile:405 - localizedFile = eula.txt
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.populateLocalizableFileinResultsFile:411 - No file: 'release_info_file'
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.UpdatePakRepoLocalHistoryFile:504 - Entering load history file
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManager.UpdatePakRepoLocalHistoryFile:506 - The history file: "/storage/db/pakRepoLocal/vcopsPakManagerCommonHistory.json" exists
+
+
+2026-04-21T17:53:54 DEBUG [875033] - vcopsPakManagerCommon.LoadJsonDocument:207 - Loaded Json file: "/storage/db/pakRepoLocal/vcopsPakManagerCommonHistory.json"
+
+

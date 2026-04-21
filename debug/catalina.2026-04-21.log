@@ -1,0 +1,8 @@
+21-Apr-2026 00:02:06.967 INFO [ph-url-upload-task] org.bouncycastle.jsse.provider.PropertyUtils.getStringSystemProperty Found string system property [javax.net.ssl.trustStore]: /data/vcops/user/conf/ssl/tcserver.truststore
+21-Apr-2026 00:02:06.968 INFO [ph-url-upload-task] org.bouncycastle.jsse.provider.PropertyUtils.getSensitiveStringSystemProperty Found sensitive string system property [javax.net.ssl.trustStorePassword]
+21-Apr-2026 00:04:07.165 INFO [ph-url-upload-task] org.bouncycastle.jsse.provider.PropertyUtils.getStringSystemProperty Found string system property [javax.net.ssl.trustStore]: /data/vcops/user/conf/ssl/tcserver.truststore
+21-Apr-2026 00:04:07.166 INFO [ph-url-upload-task] org.bouncycastle.jsse.provider.PropertyUtils.getSensitiveStringSystemProperty Found sensitive string system property [javax.net.ssl.trustStorePassword]
+21-Apr-2026 00:06:07.368 INFO [ph-url-upload-task] org.bouncycastle.jsse.provider.PropertyUtils.getStringSystemProperty Found string system property [javax.net.ssl.trustStore]: /data/vcops/user/conf/ssl/tcserver.truststore
+21-Apr-2026 00:06:07.368 INFO [ph-url-upload-task] org.bouncycastle.jsse.provider.PropertyUtils.getSensitiveStringSystemProperty Found sensitive string system property [javax.net.ssl.trustStorePassword]
+21-Apr-2026 00:08:07.583 INFO [ph-url-upload-task] org.bouncycastle.jsse.provider.PropertyUtils.getStringSystemProperty Found string system property [javax.net.ssl.trustStore]: /data/vcops/user/conf/ssl/tcserver.truststore
+21-Apr-2026 00:08:07.583 INFO [ph-url-upload-task] org.bouncycastle.jsse.provider.PropertyUtils.getSensitiveStringSystemProperty Found sensitive string system property [javax.net.ssl.trustStorePassword]
