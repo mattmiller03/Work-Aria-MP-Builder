@@ -178,12 +178,6 @@ def get_adapter_definition():
     sub.define_string_property("state", "State")
     sub.define_string_property("tenant_id", "Tenant ID")
 
-    # BISECT ROUND 3: skip every other first-class kind. Only azure_subscription
-    # remains (plus the SDK-generated adapter-instance kind). If this minimal pak
-    # installs, the problem is in one of the ~25 first-class kinds below; if it
-    # STILL fails, the problem is in the adapter-instance setup itself.
-    return definition
-
     # -- Resource Group --
     rg = definition.define_object_type(OBJ_RESOURCE_GROUP, "Azure Resource Group")
     rg.define_string_identifier(RES_IDENT_SUB, "Subscription ID")
@@ -457,6 +451,12 @@ def get_adapter_definition():
     app.define_string_property("summary|hostNamesDisabled", "Host Names Disabled")
     app.define_string_property("summary|hostNames", "Host Names")
     _add_service_descriptors(app)
+
+    # BISECT ROUND 4: 12 first-class kinds enabled (RESOURCE_GROUP through
+    # APP_SERVICE). Everything after this point is bypassed. If this install
+    # succeeds, problem is in kinds 13-23 (FUNCTIONS_APP through LOG_ANALYTICS).
+    # If it fails, problem is in kinds 1-12 (above).
+    return definition
 
     # -- Functions App (AZURE_FUNCTIONS_APP) --
     fa = definition.define_object_type(OBJ_FUNCTIONS_APP, "Azure Functions App")
