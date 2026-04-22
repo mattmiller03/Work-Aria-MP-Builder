@@ -21,14 +21,8 @@ Azure/app/conf/
 Azure-Native-Build/app/conf/
 
 # Debug/scratch files — track only README and scrub script
-debug/*
-!debug/README.md
-!debug/scrub.py
-!debug/fetch_pricing.py
-!ErrorFile.txt
-!*.log
-!*.xml
-!*.xsd
+!debug/*
+
 
 # Python
 __pycache__/
