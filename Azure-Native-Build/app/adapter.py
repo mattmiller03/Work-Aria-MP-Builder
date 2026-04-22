@@ -184,53 +184,43 @@ def get_adapter_definition():
     rg.define_string_identifier(RES_IDENT_ID, "Resource ID")
 
     # -- Virtual Machine --
-    # VM definition copied verbatim from the v1.3.4 DLA custom pak (known-good
-    # shape that installs cleanly on this Aria Ops 8.18 instance). Keeps our
-    # UPPERCASE kind key "AZURE_VIRTUAL_MACHINE" for dashboard compatibility,
-    # but uses v1.3.4's lowercase identifier/property/metric keys which are
-    # proven to work. Collectors in app/collectors/virtual_machines.py will
-    # need updating to write into these lowercase keys; that's intentional
-    # — we prioritized a working install first, collectors follow.
     vm = definition.define_object_type(OBJ_VIRTUAL_MACHINE, "Azure Virtual Machine")
-    vm.define_string_identifier("subscription_id", "Subscription ID")
-    vm.define_string_identifier("resource_group", "Resource Group")
-    vm.define_string_identifier("vm_name", "VM Name")
-    vm.define_string_property("resource_id", "Resource ID")
-    vm.define_string_property("location", "Location")
-    vm.define_string_property("vm_id", "VM ID")
-    vm.define_string_property("vm_size", "VM Size")
-    vm.define_string_property("provisioning_state", "Provisioning State")
-    vm.define_string_property("power_state", "Power State")
-    vm.define_string_property("computer_name", "Computer Name")
-    vm.define_string_property("admin_username", "Admin Username")
-    vm.define_string_property("os_type", "OS Type")
-    vm.define_string_property("image_publisher", "Image Publisher")
-    vm.define_string_property("image_offer", "Image Offer")
-    vm.define_string_property("image_sku", "Image SKU")
-    vm.define_string_property("image_version", "Image Version")
-    vm.define_string_property("os_disk_name", "OS Disk Name")
-    vm.define_string_property("os_disk_size_gb", "OS Disk Size (GB)")
-    vm.define_string_property("os_disk_caching", "OS Disk Caching")
-    vm.define_string_property("os_disk_storage_type", "OS Disk Storage Type")
-    vm.define_numeric_property("data_disk_count", "Data Disk Count")
-    vm.define_string_property("network_interface_ids", "Network Interface IDs")
-    vm.define_numeric_property("nic_count", "NIC Count")
-    vm.define_string_property("secure_boot_enabled", "Secure Boot Enabled")
-    vm.define_string_property("vtpm_enabled", "vTPM Enabled")
-    vm.define_string_property("boot_diagnostics_enabled", "Boot Diagnostics Enabled")
-    vm.define_string_property("availability_zone", "Availability Zone")
-    vm.define_string_property("dedicated_host_id", "Dedicated Host ID")
-    vm.define_string_property("dedicated_host_name", "Dedicated Host Name")
-    vm.define_string_property("dedicated_host_group", "Dedicated Host Group")
-    # Metrics — only two-level pipe paths (no three-level like "summary|runtime|x")
-    vm.define_metric("CPU|cpu_usage", "CPU Usage", unit=PERCENT, is_key_attribute=True)
-    vm.define_metric("Disk|disk_read_bytes", "Disk Read Bytes", unit=BYTE)
-    vm.define_metric("Disk|disk_write_bytes", "Disk Write Bytes", unit=BYTE)
-    vm.define_metric("Disk|disk_read_operations", "Disk Read Operations")
-    vm.define_metric("Disk|disk_write_operations", "Disk Write Operations")
-    vm.define_metric("Network|network_in", "Network In", unit=BYTE)
-    vm.define_metric("Network|network_out", "Network Out", unit=BYTE)
-    vm.define_metric("CPU|capacity", "CPU Capacity Reference", unit=PERCENT)
+    _add_standard_identifiers(vm)
+    # BISECT ROUND 10: keep only the CPU metrics group (3 metrics, all with
+    # pipe-separated keys). Everything else (STORAGE/NETWORK/MEMORY/general/
+    # summary groups) wrapped in `if False:`. Round 9's "empty VM" failed to
+    # build — SDK likely rejects a kind with zero metrics. This keeps VM
+    # minimally valid (has metrics) while narrowing what's packed into it.
+    # CPU group — enabled
+    vm.define_metric("CPU|CPU_USAGE", "CPU Usage", unit=PERCENT, is_key_attribute=True)
+    vm.define_metric("CPU|CPU_CRED_REMAINING", "CPU Credits Remaining")
+    vm.define_metric("CPU|CPU_CRED_CONSUMED", "CPU Credits Consumed")
+    if False:
+        # STORAGE group
+        vm.define_metric("STORAGE|DATA_WRITE_DISK", "Disk Write Bytes", unit=BYTE)
+        vm.define_metric("STORAGE|DATA_READ_DISK", "Disk Read Bytes", unit=BYTE)
+        vm.define_metric("STORAGE|DISK_READ_OPERATION", "Disk Read Operations")
+        vm.define_metric("STORAGE|DISK_WRITE_OPERATION", "Disk Write Operations")
+        # NETWORK group
+        vm.define_metric("NETWORK|NETWORK_IN", "Network In", unit=BYTE)
+        vm.define_metric("NETWORK|NETWORK_OUT", "Network Out", unit=BYTE)
+        # MEMORY group (custom — requires Azure Monitor Agent on VM)
+        vm.define_metric("MEMORY|AVAILABLE_MEMORY_BYTES", "Available Memory Bytes", unit=BYTE)
+        # general group
+        vm.define_string_property("general|FQDN", "FQDN")
+        vm.define_metric("general|running", "Running")
+        # summary group
+        vm.define_string_property("summary|OS_TYPE", "OS Type")
+        vm.define_string_property("summary|OS_VHD_URI", "OS VHD URI")
+        vm.define_string_property("summary|SIZING_TIER", "VM Size")
+        vm.define_string_property("summary|availabilityZones", "Availability Zones")
+        vm.define_string_property("summary|runtime|powerState", "Power State")
+    _add_service_descriptors(vm)
+
+    # BISECT ROUND 8: azure_subscription + RESOURCE_GROUP + VIRTUAL_MACHINE.
+    # If install FAILS → VM is the culprit (confirming my bet).
+    # If install SUCCEEDS → DISK is the culprit (need to bisect what's wrong in DISK).
+    return definition
 
     # -- Disk (AZURE_STORAGE_DISK) --
     disk = definition.define_object_type(OBJ_DISK, "Azure Managed Disk")
