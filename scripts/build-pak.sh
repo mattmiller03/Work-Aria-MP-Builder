@@ -23,6 +23,7 @@ REGISTRY_TAG="${REGISTRY_TAG:-214.73.76.134:5000/azuregovcloud-adapter}"
 PORT="${PORT:-8181}"
 SIGN=false
 TEST_ONLY=false
+NO_PATCH=false
 
 # Pin the host-side Python to the 3.12 we installed at /opt/python312
 # (Photon's default python3 is 3.10/3.11, which may not match the SDK).
@@ -60,6 +61,7 @@ while [[ $# -gt 0 ]]; do
     case "$1" in
         --sign) SIGN=true; shift ;;
         --test) TEST_ONLY=true; shift ;;
+        --no-patch) NO_PATCH=true; shift ;;
         --registry) REGISTRY_TAG="$2"; shift 2 ;;
         --port) PORT="$2"; shift 2 ;;
         *) echo "Unknown option: $1"; exit 1 ;;
@@ -79,9 +81,11 @@ sudo mp-build -i --no-ttl --registry-tag "$REGISTRY_TAG" -P "$PORT"
 
 echo ""
 echo "=== Step 2: Patching describe.xml ==="
+if $NO_PATCH; then
+    echo "Skipped (--no-patch). Pak will ship with pure SDK-generated describe.xml."
 # mp-build generates describe.xml inside adapter.zip inside the .pak, not on
 # disk at conf/describe.xml, so the expected path is the "else" fallback below.
-if [ -f conf/describe.xml ]; then
+elif [ -f conf/describe.xml ]; then
     "$PYTHON_BIN" "$SCRIPT_DIR/patch-describe-xml.py" conf/describe.xml
 else
     echo "Patching describe.xml inside the built .pak..."
