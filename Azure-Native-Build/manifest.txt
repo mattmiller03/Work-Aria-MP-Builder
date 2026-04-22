@@ -5,6 +5,7 @@
   "version": "8.19.0",
   "vcops_minimum_version": "8.18.0",
   "disk_space_required": 500,
+  "run_scripts_on_all_nodes": "false",
   "eula_file": "eula.txt",
   "platform": [
     "Linux Non-VA",
@@ -27,5 +28,5 @@
   "adapter_kinds": [
     "MicrosoftAzureAdapter"
   ],
-  "license_type": " "
+  "license_type": ""
 }
