@@ -225,6 +225,11 @@ def get_adapter_definition():
     disk.define_string_property("summary|sku", "SKU")
     _add_service_descriptors(disk)
 
+    # BISECT ROUND 6: only kinds 1-3 enabled (RESOURCE_GROUP, VIRTUAL_MACHINE,
+    # STORAGE_DISK). If install succeeds, problem is kinds 4-6 (NW_INTERFACE,
+    # VIRTUAL_NETWORK, azure_subnet). If it fails, problem is in 1-3.
+    return definition
+
     # -- Network Interface (AZURE_NW_INTERFACE) --
     nic = definition.define_object_type(OBJ_NETWORK_INTERFACE, "Azure Network Interface")
     _add_standard_identifiers(nic)
@@ -247,11 +252,6 @@ def get_adapter_definition():
     subnet.define_string_property("resource_id", "Resource ID")
     subnet.define_string_property("address_prefix", "Address Prefix")
     subnet.define_string_property("provisioning_state", "Provisioning State")
-
-    # BISECT ROUND 5: only kinds 1-6 enabled (RESOURCE_GROUP through azure_subnet).
-    # If install succeeds, problem is in kinds 7-12 (STORAGE_ACCOUNT..APP_SERVICE).
-    # If install fails, problem is in kinds 1-6 (above).
-    return definition
 
     # -- Storage Account --
     sa = definition.define_object_type(OBJ_STORAGE_ACCOUNT, "Azure Storage Account")
