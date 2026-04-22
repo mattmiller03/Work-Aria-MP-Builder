@@ -183,12 +183,6 @@ def get_adapter_definition():
     rg.define_string_identifier(RES_IDENT_SUB, "Subscription ID")
     rg.define_string_identifier(RES_IDENT_ID, "Resource ID")
 
-    # BISECT ROUND 7: only azure_subscription + AZURE_RESOURCE_GROUP enabled.
-    # If install succeeds, problem is in VIRTUAL_MACHINE or STORAGE_DISK.
-    # If install fails, problem is in AZURE_RESOURCE_GROUP (simple kind —
-    # would be very surprising).
-    return definition
-
     # -- Virtual Machine --
     vm = definition.define_object_type(OBJ_VIRTUAL_MACHINE, "Azure Virtual Machine")
     _add_standard_identifiers(vm)
@@ -216,6 +210,11 @@ def get_adapter_definition():
     vm.define_string_property("summary|availabilityZones", "Availability Zones")
     vm.define_string_property("summary|runtime|powerState", "Power State")
     _add_service_descriptors(vm)
+
+    # BISECT ROUND 8: azure_subscription + RESOURCE_GROUP + VIRTUAL_MACHINE.
+    # If install FAILS → VM is the culprit (confirming my bet).
+    # If install SUCCEEDS → DISK is the culprit (need to bisect what's wrong in DISK).
+    return definition
 
     # -- Disk (AZURE_STORAGE_DISK) --
     disk = definition.define_object_type(OBJ_DISK, "Azure Managed Disk")
