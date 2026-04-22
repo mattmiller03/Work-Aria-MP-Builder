@@ -186,17 +186,16 @@ def get_adapter_definition():
     # -- Virtual Machine --
     vm = definition.define_object_type(OBJ_VIRTUAL_MACHINE, "Azure Virtual Machine")
     _add_standard_identifiers(vm)
-    # BISECT ROUND 9: strip all metrics + properties from VM. Only identifiers
-    # and service_descriptors remain. If install succeeds, the problem is in
-    # the metric/property definitions below (pipe-separated keys like
-    # "CPU|CPU_USAGE" or "summary|runtime|powerState" are prime suspects).
-    # If install still fails with this stripped VM, the base VM kind itself
-    # is the issue — unlikely but possible.
+    # BISECT ROUND 10: keep only the CPU metrics group (3 metrics, all with
+    # pipe-separated keys). Everything else (STORAGE/NETWORK/MEMORY/general/
+    # summary groups) wrapped in `if False:`. Round 9's "empty VM" failed to
+    # build — SDK likely rejects a kind with zero metrics. This keeps VM
+    # minimally valid (has metrics) while narrowing what's packed into it.
+    # CPU group — enabled
+    vm.define_metric("CPU|CPU_USAGE", "CPU Usage", unit=PERCENT, is_key_attribute=True)
+    vm.define_metric("CPU|CPU_CRED_REMAINING", "CPU Credits Remaining")
+    vm.define_metric("CPU|CPU_CRED_CONSUMED", "CPU Credits Consumed")
     if False:
-        # CPU group
-        vm.define_metric("CPU|CPU_USAGE", "CPU Usage", unit=PERCENT, is_key_attribute=True)
-        vm.define_metric("CPU|CPU_CRED_REMAINING", "CPU Credits Remaining")
-        vm.define_metric("CPU|CPU_CRED_CONSUMED", "CPU Credits Consumed")
         # STORAGE group
         vm.define_metric("STORAGE|DATA_WRITE_DISK", "Disk Write Bytes", unit=BYTE)
         vm.define_metric("STORAGE|DATA_READ_DISK", "Disk Read Bytes", unit=BYTE)
