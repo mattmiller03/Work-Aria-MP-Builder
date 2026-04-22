@@ -52,6 +52,21 @@ ATTR_PATCHES = {
     "AZURE_SERVICES_FROM_XML": {
         "showTag": "false",
     },
+    # SDK emits "<adapter-name>_adapter_instance" for the adapter-instance
+    # ResourceKind. Native pak uses "MicrosoftAzureAdapter Instance" (with a
+    # space), and all our bundled content (traversal specs, dashboards) points
+    # at that exact name. We rename the key below. monitoringInterval matches
+    # the native pak's 10-minute cycle.
+    "MicrosoftAzureAdapter_adapter_instance": {
+        "monitoringInterval": "10",
+    },
+}
+
+# ResourceKind keys that must be renamed after attribute patching. Map of
+# old_key -> new_key. Keep in sync with OBJ_ADAPTER_INSTANCE in
+# Azure-Native-Build/app/constants.py.
+RENAME_KINDS = {
+    "MicrosoftAzureAdapter_adapter_instance": "MicrosoftAzureAdapter Instance",
 }
 
 # ---------------------------------------------------------------------------
@@ -149,6 +164,17 @@ def _apply_child_patch(content: str, kind: str, child_tag: str, block: str) -> t
     return injected, 1
 
 
+def _rename_kind(content: str, old_key: str, new_key: str) -> tuple[str, int]:
+    """Rename every `<ResourceKind key="old_key">` occurrence to new_key.
+    Does NOT touch other XML (the adapter instance kind doesn't appear as a
+    child/parent reference inside describe.xml itself).
+    """
+    pattern = re.compile(
+        r'(<ResourceKind\s+key=")' + re.escape(old_key) + r'(")'
+    )
+    return pattern.subn(r'\1' + new_key + r'\2', content)
+
+
 def patch_describe_xml(filepath: str) -> int:
     with open(filepath, "r", encoding="utf-8") as f:
         content = f.read()
@@ -156,6 +182,7 @@ def patch_describe_xml(filepath: str) -> int:
     original = content
     applied = 0
 
+    # 1. Attribute patches (strip any conflicting existing attrs, then inject)
     for kind, attrs in ATTR_PATCHES.items():
         content, count = _apply_attr_patch(content, kind, attrs)
         attr_preview = ", ".join(f"{k}={v}" for k, v in attrs.items())
@@ -165,6 +192,7 @@ def patch_describe_xml(filepath: str) -> int:
         else:
             print(f"  [SKIP]    {kind}: ResourceKind not found")
 
+    # 2. Child-element injections (PowerState, etc.)
     for patch in CHILD_PATCHES:
         content, count = _apply_child_patch(
             content, patch["kind"], patch["child_tag"], patch["block"]
@@ -174,6 +202,16 @@ def patch_describe_xml(filepath: str) -> int:
             print(f"  [PATCHED] {patch['description']}")
         else:
             print(f"  [SKIP]    {patch['description']} (already present or ResourceKind missing)")
+
+    # 3. ResourceKind renames (applied last so attribute patches can target
+    # the SDK's original key). Each rename is idempotent via check before sub.
+    for old_key, new_key in RENAME_KINDS.items():
+        content, count = _rename_kind(content, old_key, new_key)
+        if count > 0:
+            applied += count
+            print(f"  [PATCHED] rename ResourceKind: {old_key} -> {new_key}")
+        else:
+            print(f"  [SKIP]    rename {old_key} (not found — already renamed?)")
 
     if content != original:
         with open(filepath, "w", encoding="utf-8") as f:
