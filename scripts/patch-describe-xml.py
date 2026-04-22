@@ -69,6 +69,23 @@ RENAME_KINDS = {
     "MicrosoftAzureAdapter_adapter_instance": "MicrosoftAzureAdapter Instance",
 }
 
+# ResourceIdentifier attribute overrides. Keyed by the identifier's `key`
+# attribute; only applied to the first matching occurrence (typically inside
+# the adapter-instance ResourceKind).
+#
+# Background: the SDK emits identType="1" (part of unique key) for all
+# identifiers, but the native pak marks enum selectors like ACCOUNT_TYPE and
+# SERVICES as identType="2" (descriptive, not part of uniqueness). On upgrade,
+# Aria Ops matches existing adapter instances against our new schema by the
+# identType="1" fields; if we claim ACCOUNT_TYPE is part of the key when
+# existing instances were created with it as descriptive, the match fails and
+# APPLY_ADAPTER rejects the pak.
+IDENTIFIER_ATTR_PATCHES = {
+    "ACCOUNT_TYPE": {
+        "identType": "2",
+    },
+}
+
 # ---------------------------------------------------------------------------
 # Child-element patches — injected as children of the named ResourceKind.
 # These are added once per kind; re-runs are a no-op because we check for the
@@ -164,6 +181,45 @@ def _apply_child_patch(content: str, kind: str, child_tag: str, block: str) -> t
     return injected, 1
 
 
+def _apply_identifier_attr_patch(content: str, ident_key: str, new_attrs: dict) -> tuple[str, int]:
+    """Replace/add attributes on the first `<ResourceIdentifier ... key="KEY" ...>` match.
+
+    The SDK emits attributes in a fixed order; we don't care about order —
+    we strip any existing attribute whose name we're overriding and insert
+    our values. The `key=` attribute itself is left untouched.
+    """
+    pattern = re.compile(
+        r'(<ResourceIdentifier\b)([^>]*?\bkey="' + re.escape(ident_key) + r'"[^>]*?)(/?>)'
+    )
+
+    def substitute(match):
+        head = match.group(1)         # <ResourceIdentifier
+        rest = match.group(2)         # all attrs including key="..."
+        close = match.group(3)        # /> or >
+
+        kept = []
+        for attr_match in _ATTR_RE.finditer(rest):
+            name = attr_match.group(1)
+            if name in new_attrs:
+                continue
+            kept.append(attr_match.group(0))
+
+        our_attrs = " ".join(f'{k}="{v}"' for k, v in new_attrs.items())
+        kept_attrs = " ".join(kept)
+
+        parts = [head]
+        if kept_attrs:
+            parts.append(" " + kept_attrs)
+        if our_attrs:
+            parts.append(" " + our_attrs)
+        parts.append(close)
+        return "".join(parts)
+
+    # Replace only the first match (scoped to the adapter-instance ResourceKind)
+    new_content, count = pattern.subn(substitute, content, count=1)
+    return new_content, count
+
+
 def _rename_kind(content: str, old_key: str, new_key: str) -> tuple[str, int]:
     """Rename every `<ResourceKind key="old_key">` occurrence to new_key.
     Does NOT touch other XML (the adapter instance kind doesn't appear as a
@@ -203,7 +259,17 @@ def patch_describe_xml(filepath: str) -> int:
         else:
             print(f"  [SKIP]    {patch['description']} (already present or ResourceKind missing)")
 
-    # 3. ResourceKind renames (applied last so attribute patches can target
+    # 3. ResourceIdentifier attribute overrides (identType fixes, etc.)
+    for ident_key, attrs in IDENTIFIER_ATTR_PATCHES.items():
+        content, count = _apply_identifier_attr_patch(content, ident_key, attrs)
+        attr_preview = ", ".join(f"{k}={v}" for k, v in attrs.items())
+        if count > 0:
+            applied += count
+            print(f"  [PATCHED] identifier {ident_key}: set {attr_preview}")
+        else:
+            print(f"  [SKIP]    identifier {ident_key}: not found")
+
+    # 4. ResourceKind renames (applied last so attribute patches can target
     # the SDK's original key). Each rename is idempotent via check before sub.
     for old_key, new_key in RENAME_KINDS.items():
         content, count = _rename_kind(content, old_key, new_key)
