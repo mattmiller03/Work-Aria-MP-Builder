@@ -198,17 +198,6 @@ head -3 "$DESCRIBE"
 
 Results:      
 
- xmllint --noout --schema "$SCHEMA" "$DESCRIBE" 2>&1 | head -80
+xmllint --noout --schema "$SCHEMA" "$DESCRIBE" 2>&1 | head -80
 /tmp/pak-inspect/MicrosoftAzureAdapter/conf/describeSchema.xsd:788: element assert: Schemas parser error : Element '{http://www.w3.org/2001/XMLSchema}complexType': The content is not valid. Expected is (annotation?, (simpleContent | complexContent | ((group | all | choice | sequence)?, ((attribute | attributeGroup)*, anyAttribute?)))).
 WXS schema /tmp/pak-inspect/MicrosoftAzureAdapter/conf/describeSchema.xsd failed to compile
-root@photon [ /tmp/pak-inspect ]# 
-root@photon [ /tmp/pak-inspect ]# 
-root@photon [ /tmp/pak-inspect ]# 
-root@photon [ /tmp/pak-inspect ]# 
-root@photon [ /tmp/pak-inspect ]# 
-root@photon [ /tmp/pak-inspect ]#   xmllint --noout --schema "$SCHEMA" "$DESCRIBE" 2>&1 > /tmp/pak-inspect/xmllint.out
-  wc -l /tmp/pak-inspect/xmllint.out
-/tmp/pak-inspect/MicrosoftAzureAdapter/conf/describeSchema.xsd:788: element assert: Schemas parser error : Element '{http://www.w3.org/2001/XMLSchema}complexType': The content is not valid. Expected is (annotation?, (simpleContent | complexContent | ((group | all | choice | sequence)?, ((attribute | attributeGroup)*, anyAttribute?)))).
-WXS schema /tmp/pak-inspect/MicrosoftAzureAdapter/conf/describeSchema.xsd failed to compile
-root@photon [ /tmp/pak-inspect ]#   wc -l /tmp/pak-inspect/xmllint.out
-0 /tmp/pak-inspect/xmllint.out
