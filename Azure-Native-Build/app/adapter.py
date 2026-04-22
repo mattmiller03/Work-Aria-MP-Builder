@@ -248,6 +248,11 @@ def get_adapter_definition():
     subnet.define_string_property("address_prefix", "Address Prefix")
     subnet.define_string_property("provisioning_state", "Provisioning State")
 
+    # BISECT ROUND 5: only kinds 1-6 enabled (RESOURCE_GROUP through azure_subnet).
+    # If install succeeds, problem is in kinds 7-12 (STORAGE_ACCOUNT..APP_SERVICE).
+    # If install fails, problem is in kinds 1-6 (above).
+    return definition
+
     # -- Storage Account --
     sa = definition.define_object_type(OBJ_STORAGE_ACCOUNT, "Azure Storage Account")
     _add_standard_identifiers(sa)
@@ -451,12 +456,6 @@ def get_adapter_definition():
     app.define_string_property("summary|hostNamesDisabled", "Host Names Disabled")
     app.define_string_property("summary|hostNames", "Host Names")
     _add_service_descriptors(app)
-
-    # BISECT ROUND 4: 12 first-class kinds enabled (RESOURCE_GROUP through
-    # APP_SERVICE). Everything after this point is bypassed. If this install
-    # succeeds, problem is in kinds 13-23 (FUNCTIONS_APP through LOG_ANALYTICS).
-    # If it fails, problem is in kinds 1-12 (above).
-    return definition
 
     # -- Functions App (AZURE_FUNCTIONS_APP) --
     fa = definition.define_object_type(OBJ_FUNCTIONS_APP, "Azure Functions App")
