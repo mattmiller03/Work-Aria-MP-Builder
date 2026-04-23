@@ -1,8 +1,0 @@
-tee: debug/build.log: No such file or directory
-Using python: /usr/local/bin/python3.12 (Python 3.12.11)
-Using adapter directory: /opt/aria/Aria-MP-Builder/scripts/../Azure-Native-Build
-=== Step 1: Building pak with mp-build ===
-500 Internal Server Error
-{"type": "about:blank", "title": "Internal Server Error", "detail": "The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.", "status": 500}
-adapterDefinition endpoint returned 500.
-Unable to build pak file
