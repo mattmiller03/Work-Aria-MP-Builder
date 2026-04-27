@@ -8,37 +8,16 @@ Unable to build pak file
 
 
 --- Logging error ---
-Traceback (most recent call last):
-  File "/opt/python312/lib/python3.12/logging/__init__.py", line 1163, in emit
-    stream.write(msg + self.terminator)
-ValueError: I/O operation on closed file.
-Call stack:
-  File "/opt/python312/lib/python3.12/threading.py", line 1032, in _bootstrap
-    self._bootstrap_inner()
-  File "/opt/python312/lib/python3.12/threading.py", line 1075, in _bootstrap_inner
-    self.run()
-  File "/opt/python312/lib/python3.12/threading.py", line 1012, in run
-    self._target(*self._args, **self._kwargs)
-  File "/opt/python312/lib/python3.12/concurrent/futures/thread.py", line 93, in _worker
-    work_item.run()
-  File "/opt/python312/lib/python3.12/concurrent/futures/thread.py", line 59, in run
-    result = self.fn(*self.args, **self.kwargs)
-  File "/opt/python312/lib/python3.12/site-packages/vmware_aria_operations_integration_sdk/docker_wrapper.py", line 288, in get_container_image
-    build_image(
-  File "/opt/python312/lib/python3.12/site-packages/vmware_aria_operations_integration_sdk/docker_wrapper.py", line 191, in build_image
-    ensure_base_image_exists(language)
-  File "/opt/python312/lib/python3.12/site-packages/vmware_aria_operations_integration_sdk/docker_wrapper.py", line 470, in ensure_base_image_exists
-    client = init()
-  File "/opt/python312/lib/python3.12/site-packages/vmware_aria_operations_integration_sdk/docker_wrapper.py", line 88, in init
-    client = docker.from_env()
-  File "/opt/python312/lib/python3.12/site-packages/docker/client.py", line 94, in from_env
-    return cls(
-  File "/opt/python312/lib/python3.12/site-packages/docker/client.py", line 45, in __init__
-    self.api = APIClient(*args, **kwargs)
-  File "/opt/python312/lib/python3.12/site-packages/docker/api/client.py", line 131, in __init__
-    self._general_configs = config.load_general_config()
-  File "/opt/python312/lib/python3.12/site-packages/docker/utils/config.py", line 52, in load_general_config
-    config_file = find_config_file(config_path)
-  File "/opt/python312/lib/python3.12/site-packages/docker/utils/config.py", line 21, in find_config_file
-    log.debug(f"Trying paths: {repr(paths)}")
-Message: "Trying paths: ['/root/.docker/config.json', '/root/.dockercfg']"
+15:47:14,705 asyncio DEBUG Using selector: EpollSelector
+15:47:14,986 docker.utils.config DEBUG Found file at path: /root/.docker/config.json
+15:47:15,2 docker.auth DEBUG Found 'auths' section
+15:47:15,4 docker.auth DEBUG Found entry (registry='https://index.docker.io/v1/', username='fake')
+15:47:15,10 urllib3.connectionpool DEBUG http://localhost:None "GET /version HTTP/1.1" 200 800
+15:47:15,12 urllib3.connectionpool DEBUG http://localhost:None "GET /v1.43/images/base-adapter:python-1.2.0/json HTTP/1.1" 200 None
+15:47:15,268 docker.api.build DEBUG Looking for auth config
+15:47:15,268 docker.api.build DEBUG Sending auth config ('https://index.docker.io/v1/')
+15:47:15,320 urllib3.connectionpool DEBUG http://localhost:None "POST /v1.43/build?t=microsoftazureadapter-test%3A8.19.1&q=False&nocache=False&rm=True&forcerm=False&pull=False&labels=%7B%22mp-test%22%3A+%221777304834.6994953%22%7D HTTP/1.1" 200 None
+15:47:18,126 urllib3.connectionpool DEBUG http://localhost:None "GET /v1.43/images/4c1026310d31/json HTTP/1.1" 200 None
+15:47:18,179 asyncio DEBUG Using selector: EpollSelector
+15:49:41,683 vmware_aria_operations_integration_sdk.mp_test DEBUG Ctrl C pressed by user
+15:49:41,689 vmware_aria_operations_integration_sdk.mp_test INFO Testing cancelled
