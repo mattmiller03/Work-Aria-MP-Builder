@@ -34,9 +34,6 @@ EOF
 
 sudo docker run --rm -v /tmp/test_def.py:/tmp/test_def.py microsoftazureadapter-test:8.19.2 /usr/local/bin/python /tmp/test_def.py
 
-microsoftazureadapter-test   8.19.2         624ced5a4473   5 minutes ago   282MB
-<none>                       <none>         8262ab8be3e0   2 weeks ago     281MB
-base-adapter                 python-1.2.0   23597e988b10   4 weeks ago     240MB
-python                       3.11-slim      e67db9b14d09   5 weeks ago     124MB
-vmware/mp-builder-app        latest         1b0cfd8526b2   20 months ago   1.68GB
-registry                     2              26b2eb03618e   2 years ago     25.4MB
+sudo docker run --rm microsoftazureadapter-test:8.19.2 /usr/local/bin/python --version
+
+sudo docker run --rm microsoftazureadapter-test:8.19.2 /usr/local/bin/python -c "import sys; sys.path.insert(0, 'app'); import adapter; d = adapter.get_adapter_definition(); print('OK kinds:', len(d.object_types))"
