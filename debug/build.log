@@ -97,3 +97,74 @@ echo "=== swagger_server source location ==="
 sudo docker exec azure-test find / -path '*swagger_server*' -name '*.py' 2>/dev/null | head -10
 
 sudo docker rm -f azure-test
+
+
+root@photon [ /opt/aria/Aria-MP-Builder ]# sudo docker run -d --name azure-test -p 8181:8080 microsoftazureadapter-test:8.19.2
+sleep 3
+9f94028f7353d6a007f5a5e875ba76bb3f99c40ce3eb2e592334ebe334d3de60
+root@photon [ /opt/aria/Aria-MP-Builder ]# # Try the OpenAPI/Swagger doc to see what paths exist
+root@photon [ /opt/aria/Aria-MP-Builder ]# echo "=== OpenAPI spec (first 80 lines) ==="
+=== OpenAPI spec (first 80 lines) ===
+root@photon [ /opt/aria/Aria-MP-Builder ]# curl -s http://localhost:8181/openapi.json | python3 -m json.tool 2>/dev/null | head -80
+echo "---"
+curl -s http://localhost:8181/api/v1/openapi.json | python3 -m json.tool 2>/dev/null | head -40
+echo "---"
+curl -s http://localhost:8181/docs 2>&1 | head -10
+{
+    "type": "about:blank",
+    "title": "Internal Server Error",
+    "detail": "The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.",
+    "status": 500
+}
+root@photon [ /opt/aria/Aria-MP-Builder ]# echo "---"
+---
+root@photon [ /opt/aria/Aria-MP-Builder ]# curl -s http://localhost:8181/api/v1/openapi.json | python3 -m json.tool 2>/dev/null | head -40
+{
+    "type": "about:blank",
+    "title": "Not Found",
+    "detail": "The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.",
+    "status": 404
+}
+root@photon [ /opt/aria/Aria-MP-Builder ]# echo "---"
+---
+root@photon [ /opt/aria/Aria-MP-Builder ]# curl -s http://localhost:8181/docs 2>&1 | head -10
+{"type": "about:blank", "title": "Not Found", "detail": "The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.", "status": 404}root@photon [ /opt/aria/Aria-MP-Builder ]# 
+root@photon [ /opt/aria/Aria-MP-Builder ]# 
+root@photon [ /opt/aria/Aria-MP-Builder ]# 
+root@photon [ /opt/aria/Aria-MP-Builder ]# 
+root@photon [ /opt/aria/Aria-MP-Builder ]# 
+root@photon [ /opt/aria/Aria-MP-Builder ]# 
+root@photon [ /opt/aria/Aria-MP-Builder ]# echo ""
+
+root@photon [ /opt/aria/Aria-MP-Builder ]# echo "=== Endpoint probes ==="
+=== Endpoint probes ===
+root@photon [ /opt/aria/Aria-MP-Builder ]# for path in /adapterDefinition /adapter_definition /api/adapterDefinition /api/v1/adapterDefinition /apiVersions; do
+>   code=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8181$path)
+>   echo "  $path  ->  $code"
+> done
+  /adapterDefinition  ->  500
+
+# Also peek at swagger_server's actual app structure
+  /adapter_definition  ->  404
+  /api/adapterDefinition  ->  404
+echo ""
+  /api/v1/adapterDefinition  ->  404
+echo "=== swagger_server source location ==="
+  /apiVersions  ->  404
+root@photon [ /opt/aria/Aria-MP-Builder ]# 
+root@photon [ /opt/aria/Aria-MP-Builder ]# # Also peek at swagger_server's actual app structure
+root@photon [ /opt/aria/Aria-MP-Builder ]# echo ""
+
+root@photon [ /opt/aria/Aria-MP-Builder ]# echo "=== swagger_server source location ==="
+=== swagger_server source location ===
+root@photon [ /opt/aria/Aria-MP-Builder ]# sudo docker exec azure-test find / -path '*swagger_server*' -name '*.py' 2>/dev/null | head -10
+/home/aria-ops-adapter-user/src/app/swagger_server/models/object_data.py
+/home/aria-ops-adapter-user/src/app/swagger_server/models/identifier.py
+/home/aria-ops-adapter-user/src/app/swagger_server/models/group_definition.py
+/home/aria-ops-adapter-user/src/app/swagger_server/models/credential_kind.py
+/home/aria-ops-adapter-user/src/app/swagger_server/models/object_key.py
+/home/aria-ops-adapter-user/src/app/swagger_server/models/credential_definition_enum_values.py
+/home/aria-ops-adapter-user/src/app/swagger_server/models/adapter_config.py
+/home/aria-ops-adapter-user/src/app/swagger_server/models/certificate_config.py
+/home/aria-ops-adapter-user/src/app/swagger_server/models/property_data.py
+/home/aria-ops-adapter-user/src/app/swagger_server/models/__init__.py
