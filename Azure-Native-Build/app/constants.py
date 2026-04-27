@@ -8,7 +8,7 @@ so that existing dashboards and traversal specs continue to work.
 # Adapter identity — must match native pak adapter kind
 # ---------------------------------------------------------------------------
 ADAPTER_KIND = "MicrosoftAzureAdapter"
-ADAPTER_NAME = "Management Pack for Microsoft Azure"
+ADAPTER_NAME = "Microsoft Azure Cloud DLA Custom"
 
 # ---------------------------------------------------------------------------
 # Azure Gov endpoints
