@@ -40,3 +40,10 @@ sudo docker run --rm --entrypoint /usr/local/bin/python microsoftazureadapter-te
 
 
 sudo docker run --rm --entrypoint /usr/local/bin/python microsoftazureadapter-test:8.19.2 -c "import sys; sys.argv = ['x', 'adapter_definition', '/tmp/in', '/tmp/out']; sys.path.insert(0, 'app'); import adapter; d = adapter.get_adapter_definition(); d.send_results(); print('send_results OK')"
+
+
+# 1. JSON size — pipes have a 64KB default buffer; 24 native-substituted kinds could blow past that
+sudo docker run --rm --entrypoint /usr/local/bin/python microsoftazureadapter-test:8.19.2 -c "import sys, json; sys.path.insert(0, 'app'); import adapter; d = adapter.get_adapter_definition(); j = d.to_json(); print('JSON size:', len(json.dumps(j)), 'bytes')"
+
+# 2. What's the image's entrypoint/cmd? mp-build runs through this — knowing what it is tells us which layer to inspect next
+sudo docker inspect microsoftazureadapter-test:8.19.2 | grep -A 5 -iE '"Entrypoint"|"Cmd"|"WorkingDir"'
