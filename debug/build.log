@@ -47,3 +47,37 @@ sudo docker run --rm --entrypoint /usr/local/bin/python microsoftazureadapter-te
 
 # 2. What's the image's entrypoint/cmd? mp-build runs through this — knowing what it is tells us which layer to inspect next
 sudo docker inspect microsoftazureadapter-test:8.19.2 | grep -A 5 -iE '"Entrypoint"|"Cmd"|"WorkingDir"'
+
+
+
+JSON size: 139123 bytes
+root@photon [ /opt/aria/Aria-MP-Builder ]# sudo docker inspect microsoftazureadapter-test:8.19.2 | grep -A 5 -iE '"Entrypoint"|"Cmd"|"WorkingDir"'
+            "Cmd": [
+                "/bin/sh",
+                "-c",
+                "#(nop) ",
+                "LABEL mp-test=1777307403.3124087"
+            ],
+--
+            "WorkingDir": "/home/aria-ops-adapter-user/src/app",
+            "Entrypoint": [
+                "python3"
+            ],
+            "OnBuild": null,
+            "Labels": {
+                "mp-test": "1777307403.3124087"
+--
+            "Cmd": [
+                "-m",
+                "swagger_server"
+            ],
+            "ArgsEscaped": true,
+            "Image": "sha256:5da2b459f925ab167c637cfcbe0643fae8d7302d9ec71896e782b13fdd7a1da3",
+--
+            "WorkingDir": "/home/aria-ops-adapter-user/src/app",
+            "Entrypoint": [
+                "python3"
+            ],
+            "OnBuild": null,
+            "Labels": {
+                "mp-test": "1777307403.3124087"
