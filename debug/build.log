@@ -398,23 +398,22 @@ sudo docker rm -f azure-test
 
 
 
+# 1. See what's there first (run this and read the output to confirm before step 2)
+sudo docker ps -a --format 'table {{.ID}}\t{{.Image}}\t{{.Status}}\t{{.Names}}\t{{.Command}}'
 
+# 2. Stop & remove ALL containers whose image is microsoftazureadapter or whose command is swagger_server
+#    Keeps mp-builder-app and registry untouched.
+sudo docker ps -a --filter "ancestor=microsoftazureadapter-test" -q | xargs -r sudo docker rm -f
+sudo docker ps -a --format '{{.ID}} {{.Command}}' | grep 'swagger_server' | awk '{print $1}' | xargs -r sudo docker rm -f
 
+# 3. Remove the dangling <none>:<none> image (8262ab8be3e0 from your earlier listing) and prune
+sudo docker image prune -f
+sudo docker container prune -f
+sudo docker system df
 
+# 4. Confirm only intended containers remain
+sudo docker ps -a --format 'table {{.Image}}\t{{.Status}}\t{{.Names}}'
+# Expect: just vmware/mp-builder-app and registry running, nothing else
+After that, the disk-space issue should be resolved without needing the aggressive prune -a. Then proceed with the rebuild from docs/phase-d-rollout.md.
 
---- EXCEPTION ---
-Traceback (most recent call last):
-  File "<string>", line 7, in <module>
-  File "/home/aria-ops-adapter-user/src/app/swagger_server/controllers/controller.py", line 79, in definition
-    message, code = runcommand(command)
-                    ^^^^^^^^^^^^^^^^^^^
-  File "/home/aria-ops-adapter-user/src/app/swagger_server/controllers/controller.py", line 168, in runcommand
-    dir = tempfile.mkdtemp()
-          ^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/tempfile.py", line 385, in mkdtemp
-    _os.mkdir(file, 0o700)
-OSError: [Errno 28] No space left on device: '/tmp/tmpodglvw0z'
-
-
-
-spec loaded OK, paths: ['/apiVersion', '/test', '/collect', '/endpointURLs', '/adapterDefinition']
+If you want a permanent fix so this doesn't accumulate again, I can patch scripts/build-pak.sh to add sudo docker ps -aq --filter ancestor=microsoftazureadapter-test | xargs -r sudo docker rm -f to its cleanup trap — that way every build cycle ends by reaping its own zombies. Say the word.
