@@ -417,3 +417,30 @@ sudo docker ps -a --format 'table {{.Image}}\t{{.Status}}\t{{.Names}}'
 After that, the disk-space issue should be resolved without needing the aggressive prune -a. Then proceed with the rebuild from docs/phase-d-rollout.md.
 
 If you want a permanent fix so this doesn't accumulate again, I can patch scripts/build-pak.sh to add sudo docker ps -aq --filter ancestor=microsoftazureadapter-test | xargs -r sudo docker rm -f to its cleanup trap — that way every build cycle ends by reaping its own zombies. Say the word.
+
+
+
+
+
+/opt/aria/Aria-MP-Builder ]# bash scripts/build-pak.sh 2>&1 | tee debug/build.log
+Using python: /usr/local/bin/python3.12 (Python 3.12.11)
+Using adapter directory: /opt/aria/Aria-MP-Builder/scripts/../Azure-Native-Build
+=== Step 1: Building pak with mp-build ===
+Unexpected exception occurred while trying to build pak file
+500 Server Error for http+docker://localhost/v1.43/containers/d9e52dd085ac67ec23590962e07ae9117ad75a0694bd8c38475fc44fa95d0f35/start: Internal Server Error ("driver failed programming external connectivity on endpoint pedantic_lamarr (9e7df92b7fb34665dadebc5ad17547e197767c9b10670890ad19124e89b4fe37): Bind for 0.0.0.0:8181 failed: port is already allocated")
+  File "/opt/python312/lib/python3.12/site-packages/vmware_aria_operations_integration_sdk/mp_build.py", line 713, in main
+    pak_file = asyncio.run(
+               ^^^^^^^^^^^^
+  File "/opt/python312/lib/python3.12/asyncio/runners.py", line 195, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/opt/python312/lib/python3.12/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/python312/lib/python3.12/asyncio/base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/opt/python312/lib/python3.12/site-packages/vmware_aria_operations_integration_sdk/mp_build.py", line 583, in build_pak_file
+    await adapter_container.stop()
+  File "/opt/python312/lib/python3.12/site-packages/vmware_aria_operations_integration_sdk/adapter_container.py", line 67, in stop
+    await self._container_task
