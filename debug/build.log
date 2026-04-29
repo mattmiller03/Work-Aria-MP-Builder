@@ -559,3 +559,13 @@ grep -c '<ResourceKind ' MicrosoftAzureAdapter/conf/describe.xml   # expect 28 (
 # Push and install
 sudo docker tag microsoftazureadapter-test:8.19.4 214.73.76.134:5000/azuregovcloud-adapter:latest
 sudo docker push 214.73.76.134:5000/azuregovcloud-adapter:latest
+
+
+sudo grep -nE "Illegal symbols|Failed to load resource kind|Incorrect format in describe.xml" \
+  /storage/log/vcops/log/analytics-*.log* 2>/dev/null | tail -20
+That second command will surface the latest reject — likely a different attribute key or a different "describe N" number. Paste the output.
+
+Also as a quick sanity check while you're getting the log, what did the build output say for the dynamic loader count?
+
+
+grep "dynamic native loader" /opt/aria/Aria-MP-Builder/debug/build.log
