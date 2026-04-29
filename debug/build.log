@@ -659,14 +659,26 @@ df -h /tmp /var/lib/docker
 sudo docker system df
 sudo find /tmp -maxdepth 1 -type d -name 'tmp*' -mtime -1 2>/dev/null | wc -l
 
-# 2. If /tmp looks fine, exec into the freshly-built image and run get_adapter_definition() directly
-sudo docker run --rm --entrypoint /usr/local/bin/python microsoftazureadapter-test:8.19.3 -c "import sys, traceback; sys.path.insert(0, 'app')
-try:
-    import adapter
-    d = adapter.get_adapter_definition()
-    print('OK kinds:', len(d.object_types))
-    j = d.to_json()
-    print('to_json OK')
-except Exception:
-    traceback.print_exc()"
+# Confirm where /storage and /data point — sdb's role
+df -h /storage /data 2>/dev/null
+mount | grep -E 'vg_data|/storage|/data'
+
+# Then in vSphere/vCenter:
+#   - Edit VM settings → Hard disk 1 → Provisioned Size: increase by 30 GB
+#   - Save (no power-cycle needed if hot-extend is enabled)
+
+# Then in the VM, walk the stack down:
+sudo bash -c 'for d in /sys/class/scsi_device/*/device/rescan; do echo 1 > "$d"; done'
+lsblk    # /dev/sda should show the new size
+
+sudo growpart /dev/sda 4
+sudo pvresize /dev/sda4
+sudo lvextend -l +100%FREE /dev/mapper/vg_system-lv_system
+
+# ext4 vs xfs — confirm with df -T /, then run the matching one:
+sudo resize2fs /dev/mapper/vg_system-lv_system   # ext4
+# OR
+sudo xfs_growfs /                                # xfs
+
+df -h /                                          # should now show ~40 GB total
 
