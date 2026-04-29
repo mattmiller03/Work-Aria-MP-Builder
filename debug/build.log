@@ -469,5 +469,21 @@ sudo grep -n -B 2 -A 30 "977741b6-8f7e-4bfe-9587-80f8a5ee1ffb\|MicrosoftAzureAda
 /usr/lib/vmware-vcops/user/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.1
 
 
+# List all analytics log rotations
+sudo ls -la /storage/log/vcops/log/analytics-*.log* 2>/dev/null
+
+# Get error context around our task ID
+sudo grep -n -B 2 -A 30 "977741b6-8f7e-4bfe-9587-80f8a5ee1ffb" \
+  /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.1
+
+# Also grep for the pak ID and any SAX/parse errors right around the install timestamp
+sudo grep -n -B 2 -A 10 -iE "MicrosoftAzureAdapter-8192|SAXParse|describe.xml|adapter_kinds.*reject|addAdapterKind" \
+  /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.1 | tail -100
+
+# If the .log.1 is too old (rotated before today's failure), check the active one too
+sudo grep -n -B 2 -A 30 "977741b6-8f7e-4bfe-9587-80f8a5ee1ffb\|MicrosoftAzureAdapter-8192" \
+  /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log 2>/dev/null | tail -60
+
+
 
 
