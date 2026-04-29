@@ -618,3 +618,13 @@ wc -l /tmp/native-sorted.txt
 # The diff — kinds we have that native doesn't (these are the dynamic-loader skips)
 echo "=== ours but not in native ==="
 comm -23 /tmp/ours-sorted.txt /tmp/native-sorted.txt
+
+
+
+
+comm: file 1 is not in sorted order
+azure_log_analytics_workspace
+azure_recovery_services_vault
+azure_subnet
+azure_subscription
+comm: input is not in sorted order
