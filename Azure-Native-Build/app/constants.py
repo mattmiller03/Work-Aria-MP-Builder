@@ -168,26 +168,96 @@ OBJ_REGION_PER_SUB = "AZURE_REGION_PER_SUB"
 OBJ_REGION = "AZURE_REGION"
 OBJ_WORLD = "AZURE_WORLD"
 
-# Stub-only resource kinds — child types that need per-parent enumeration.
-# All other native pak types are now collected via dedicated or bulk collectors.
+# Stub-only resource kinds — every native ResourceKind that this pak doesn't
+# actively collect, registered as stubs so that:
+#  - existing native-pak dashboards / alert defs / reports keep their kind
+#    references resolved (no "missing kind" warnings on upgrade)
+#  - the dynamic loader in scripts/patch-describe-xml.py substitutes each
+#    one's flat pipe-keyed SDK shape with the native verbatim XML at build
+#    time, so install passes APPLY_ADAPTER
+#
+# Together with the first-class kinds defined in adapter.py, this brings the
+# pak to full native parity: 97 native-equivalent kinds + 4 custom kinds
+# (azure_subscription, azure_subnet, azure_recovery_services_vault,
+# azure_log_analytics_workspace) = 101 ResourceKinds.
 ALL_NATIVE_STUB_KINDS = [
-    OBJ_VMSS_INSTANCE,       # child of AZURE_VIRTUAL_SCALESET
-    OBJ_COMPUTE_DOMAINS,     # legacy cloud services
-    OBJ_CONTAINER,           # child of AZURE_CONTIANER_CONTAINERGROUPS
-    OBJ_CDN_ENDPOINTS,       # child of AZURE_CDN_PROFILES
-    OBJ_SQL_MANAGED_DB,      # child of AZURE_SQL_MANAGEDINSTANCES
-    OBJ_MARIADB_DB,          # child of AZURE_MARIADB_SERVER
-    OBJ_NETAPP_POOLS,        # child of AZURE_NETAPPACCOUNT
-    OBJ_NETAPP_VOLUMES,      # child of AZURE_NETAPPACCOUNT_CAPACITYPOOLS
-    OBJ_MEDIA_LIVE_EVENTS,   # child of AZURE_MEDIA_SERVICES
-    OBJ_MEDIA_STREAMING,     # child of AZURE_MEDIA_SERVICES
-    OBJ_NOTIFICATION_HUBS,   # child of AZURE_NOTIFICATIONHUBS_NAMESPACES
-    OBJ_EVENT_HUBS,          # child of AZURE_EVENTHUBS_NAMESPACES
-    OBJ_DATA_EXPLORER_DB,    # child of AZURE_DATA_EXPLORER_CLUSTER
-    OBJ_EVENT_GRID_SUB,      # child of topics/domains
-    OBJ_SYNAPSE_SQL_POOL,    # child of AZURE_SYNAPSE_ANALYTICS_WORKSPACE
-    OBJ_SYNAPSE_BIGDATA_POOL,# child of AZURE_SYNAPSE_ANALYTICS_WORKSPACE
-    OBJ_SERVICES_FROM_XML,   # dynamic discovery — not applicable
+    # --- child kinds (need per-parent enumeration to populate; stubbed for now) ---
+    OBJ_VMSS_INSTANCE,            # child of AZURE_VIRTUAL_SCALESET
+    OBJ_CONTAINER,                # child of AZURE_CONTIANER_CONTAINERGROUPS
+    OBJ_CDN_ENDPOINTS,            # child of AZURE_CDN_PROFILES
+    OBJ_SQL_MANAGED_DB,           # child of AZURE_SQL_MANAGEDINSTANCES
+    OBJ_MARIADB_DB,               # child of AZURE_MARIADB_SERVER
+    OBJ_NETAPP_POOLS,             # child of AZURE_NETAPPACCOUNT
+    OBJ_NETAPP_VOLUMES,           # child of AZURE_NETAPPACCOUNT_CAPACITYPOOLS
+    OBJ_MEDIA_LIVE_EVENTS,        # child of AZURE_MEDIA_SERVICES
+    OBJ_MEDIA_STREAMING,          # child of AZURE_MEDIA_SERVICES
+    OBJ_NOTIFICATION_HUBS,        # child of AZURE_NOTIFICATIONHUBS_NAMESPACES
+    OBJ_EVENT_HUBS,               # child of AZURE_EVENTHUBS_NAMESPACES
+    OBJ_DATA_EXPLORER_DB,         # child of AZURE_DATA_EXPLORER_CLUSTER
+    OBJ_EVENT_GRID_SUB,           # child of topics/domains
+    OBJ_SYNAPSE_SQL_POOL,         # child of AZURE_SYNAPSE_ANALYTICS_WORKSPACE
+    OBJ_SYNAPSE_BIGDATA_POOL,     # child of AZURE_SYNAPSE_ANALYTICS_WORKSPACE
+
+    # --- top-level native kinds we don't actively collect (parity stubs) ---
+    OBJ_COMPUTE_DOMAINS,          # legacy cloud services
+    OBJ_SERVICES_FROM_XML,        # dynamic discovery — not applicable
+    OBJ_ANALYSIS_SERVICES,        # AZURE_ANALYSIS_SERVICES
+    OBJ_API_MANAGEMENT,           # AZURE_API_MANAGEMENT
+    OBJ_APP_GATEWAY,              # AZURE_APPLICATION_GATEWAY
+    OBJ_APP_CONFIGURATION,        # AZURE_APP_CONFIGURATION
+    OBJ_AUTOMATION,               # AZURE_AUTOMATION
+    OBJ_AVAILABILITY_SETS,        # AZURE_AVAILABILITY_SETS
+    OBJ_BATCH_ACCOUNT,            # AZURE_BATCH_ACCOUNT
+    OBJ_BOT_SERVICES,             # AZURE_BOT_SERVICES
+    OBJ_CACHE_REDIS,              # AZURE_CACHE_REDIS
+    OBJ_CDN_PROFILES,             # AZURE_CDN_PROFILES
+    OBJ_COGNITIVE_SERVICES,       # AZURE_COGNITIVE_SERVICES_ACCOUNTS
+    OBJ_CONTAINER_REGISTRIES,     # AZURE_CONTAINER_REGISTRIES
+    OBJ_CONTAINER_GROUPS,         # AZURE_CONTIANER_CONTAINERGROUPS (native typo)
+    OBJ_DATALAKE_STORE,           # AZURE_DATALAKE_STORE
+    OBJ_DATA_BOX,                 # AZURE_DATA_BOX
+    OBJ_DATA_EXPLORER_CLUSTER,    # AZURE_DATA_EXPLORER_CLUSTER
+    OBJ_DATA_FACTORY,             # AZURE_DATA_FACTORY
+    OBJ_DATA_LAKE_ANALYTICS,      # AZURE_DATA_LAKE_ANALYTICS
+    OBJ_DDOS_PROTECTION,          # AZURE_DDOS_PROTECTION_PLAN
+    OBJ_DIGITAL_TWINS,            # AZURE_DIGITAL_TWINS
+    OBJ_DNS_ZONES,                # AZURE_DNS_ZONES
+    OBJ_EVENTHUBS_NS,             # AZURE_EVENTHUBS_NAMESPACES
+    OBJ_EVENT_GRID_DOMAIN,        # AZURE_EVENT_GRID_DOMAIN
+    OBJ_EVENT_GRID_TOPIC,         # AZURE_EVENT_GRID_TOPIC
+    OBJ_FIREWALLS,                # AZURE_FIREWALLS
+    OBJ_FRONT_DOORS,              # AZURE_FRONT_DOORS
+    OBJ_HDINSIGHT,                # AZURE_HDINSIGHT
+    OBJ_IOT_CENTRAL,              # AZURE_IOT_CENTRAL
+    OBJ_IOT_HUB,                  # AZURE_IOT_HUB
+    OBJ_KUBERNETES,               # AZURE_KUBERNATE_CLUSTER (native typo)
+    OBJ_MACHINE_LEARNING,         # AZURE_MACHINE_LEARNING
+    OBJ_MARIADB,                  # AZURE_MARIADB_SERVER
+    OBJ_MEDIA_SERVICES,           # AZURE_MEDIA_SERVICES
+    OBJ_NETAPP_ACCOUNT,           # AZURE_NETAPPACCOUNT
+    OBJ_NSG,                      # AZURE_NETWORK_SECURITY_GROUP
+    OBJ_NETWORK_WATCHERS,         # AZURE_NETWORK_WATCHERS
+    OBJ_NOTIFICATION_NS,          # AZURE_NOTIFICATIONHUBS_NAMESPACES
+    OBJ_OPENSHIFT,                # AZURE_OPENSHIFT_CLUSTERS
+    OBJ_POWER_BI,                 # AZURE_POWER_BI_EMBEDDED
+    OBJ_PRIVATE_DNS,              # AZURE_PRIVATE_DNSZONES
+    OBJ_PROXIMITY_GROUP,          # AZURE_PROXIMITY_PLACEMENT_GROUP
+    OBJ_PURVIEW,                  # AZURE_PURVIEW_ACCOUNTS
+    OBJ_ROUTE_TABLES,             # AZURE_ROUTE_TABLES
+    OBJ_SEARCH_SERVICES,          # AZURE_SEARCH_SERVICES
+    OBJ_SERVICE_BUS,              # AZURE_SERVICE_BUS
+    OBJ_SIGNALR,                  # AZURE_SIGNALR_SERVICES
+    OBJ_SPATIAL_ANCHORS,          # AZURE_SPATIAL_ANCHORS
+    OBJ_SQL_MANAGED_INSTANCE,     # AZURE_SQL_MANAGEDINSTANCES
+    OBJ_STREAM_ANALYTICS_CLUSTERS,# AZURE_STREAM_ANALYTICS_CLUSTERS
+    OBJ_STREAM_ANALYTICS_JOBS,    # AZURE_STREAM_ANALYTICS_JOBS
+    OBJ_SYNAPSE_WORKSPACE,        # AZURE_SYNAPSE_ANALYTICS_WORKSPACE
+    OBJ_TIME_SERIES,              # AZURE_TIME_SERIES_INSIGHTS
+    OBJ_TRAFFIC_MANAGER,          # AZURE_TRAFFIC_MANAGER_PROFILES
+    OBJ_VIRTUAL_HUBS,             # AZURE_VIRTUAL_HUBS
+    OBJ_VNET_GATEWAY,             # AZURE_VIRTUAL_NETWORK_GATEWAY
+    OBJ_VMSS,                     # AZURE_VIRTUAL_SCALESET
+    OBJ_VIRTUAL_WAN,              # AZURE_VIRTUAL_WAN
 ]
 
 # ---------------------------------------------------------------------------
