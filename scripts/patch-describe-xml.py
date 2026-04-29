@@ -418,6 +418,87 @@ def _substitute_resource_kind(content: str, kind: str, block: str) -> tuple[str,
     return content[:match.start()] + block + content[full_end:], 1
 
 
+def _extract_custom_flat_attrs(sdk_content: str, kind: str, native_span: str) -> list:
+    """Find ResourceAttribute children in the SDK-emitted block for `kind`
+    that are flat (no pipe in key) AND not present in the native span.
+
+    Returned list is the raw XML elements (with whitespace). They represent
+    extensions we've added to a native-equivalent kind that the dynamic
+    loader's substitution would otherwise erase.
+
+    Pipe-keyed attrs are intentionally skipped — those are SDK-emulated
+    nested-group fields that the native span already provides via real
+    nested ResourceGroup elements.
+    """
+    open_re = re.compile(
+        r'<ResourceKind\s+key="' + re.escape(kind) + r'"[^>]*>'
+    )
+    sdk_match = open_re.search(sdk_content)
+    if not sdk_match:
+        return []
+    sdk_close = sdk_content.find("</ResourceKind>", sdk_match.end())
+    if sdk_close == -1:
+        return []
+    sdk_body = sdk_content[sdk_match.end():sdk_close]
+
+    # Keys that already exist in the native span — skip duplicates.
+    native_keys = set(re.findall(
+        r'<ResourceAttribute\b[^>]*?\bkey="([^"]+)"', native_span
+    ))
+
+    custom = []
+    for m in re.finditer(r'<ResourceAttribute\b[^>]*/>', sdk_body):
+        elem = m.group(0)
+        key_match = re.search(r'\bkey="([^"]+)"', elem)
+        if not key_match:
+            continue
+        key = key_match.group(1)
+        if "|" in key:
+            continue
+        if key in native_keys:
+            continue
+        custom.append(elem)
+    return custom
+
+
+def _inject_custom_attrs(content: str, kind: str, attrs: list) -> str:
+    """Insert `attrs` (list of <ResourceAttribute .../> XML elements) just
+    before </ResourceKind> in the block for `kind`. Idempotent: skips if all
+    keys are already present in the block.
+    """
+    if not attrs:
+        return content
+    open_re = re.compile(
+        r'<ResourceKind\s+key="' + re.escape(kind) + r'"[^>]*>'
+    )
+    match = open_re.search(content)
+    if not match:
+        return content
+    close_start = content.find("</ResourceKind>", match.end())
+    if close_start == -1:
+        return content
+
+    body = content[match.end():close_start]
+    # Filter out attrs whose keys already appear in the body (idempotent re-runs).
+    fresh = []
+    for attr in attrs:
+        key_match = re.search(r'\bkey="([^"]+)"', attr)
+        if not key_match:
+            continue
+        if f'key="{key_match.group(1)}"' in body:
+            continue
+        fresh.append(attr)
+    if not fresh:
+        return content
+
+    injection = (
+        "\n         <!-- Custom extensions (preserved across native substitution) -->\n         "
+        + "\n         ".join(fresh)
+        + "\n      "
+    )
+    return content[:close_start] + injection + content[close_start:]
+
+
 def _load_native_resourcekinds(native_xml_path: str) -> dict:
     """Read the native pak's describe.xml and return a dict mapping each
     ResourceKind key to its raw `<ResourceKind ...>...</ResourceKind>` span
@@ -657,19 +738,35 @@ def patch_describe_xml(filepath: str) -> int:
     # entry in the native describe.xml, replace it with the native span
     # verbatim. Skips kinds in BLOCK_SUBSTITUTIONS (manual overrides win)
     # and CUSTOM_KIND_SKIPS (no native equivalent).
+    #
+    # Critical: native substitution would discard any SDK-emitted custom
+    # ResourceAttribute children we added via define_*_property/metric
+    # (e.g., AZURE_DEDICATE_HOST has ~50 custom attrs like hourly_rate,
+    # vm_size_summary, memory tracking, cost, health). We preserve these
+    # by extracting them BEFORE substitution and re-injecting them
+    # immediately after.
     native_xml_path = os.environ.get("NATIVE_DESCRIBE_XML", DEFAULT_NATIVE_DESCRIBE_XML)
     if os.path.exists(native_xml_path):
         native_kinds = _load_native_resourcekinds(native_xml_path)
         dynamic_skips = set(BLOCK_SUBSTITUTIONS.keys()) | CUSTOM_KIND_SKIPS
         substituted_dyn = 0
+        preserved_total = 0
         for kind, native_span in native_kinds.items():
             if kind in dynamic_skips:
                 continue
+            # Capture our SDK's flat custom attrs for this kind BEFORE the substitution.
+            custom_attrs = _extract_custom_flat_attrs(content, kind, native_span)
             content, count = _substitute_resource_kind(content, kind, native_span)
             if count > 0:
                 applied += count
                 substituted_dyn += 1
-        print(f"  [PATCHED] dynamic native loader: {substituted_dyn} kinds substituted "
+                if custom_attrs:
+                    content = _inject_custom_attrs(content, kind, custom_attrs)
+                    preserved_total += len(custom_attrs)
+                    print(f"  [PATCHED] preserved {len(custom_attrs)} custom attr(s) "
+                          f"on {kind} after native substitution")
+        print(f"  [PATCHED] dynamic native loader: {substituted_dyn} kinds substituted, "
+              f"{preserved_total} custom attrs preserved "
               f"(from {native_xml_path})")
     else:
         print(f"  [WARN]    native describe.xml not found at {native_xml_path}; "
