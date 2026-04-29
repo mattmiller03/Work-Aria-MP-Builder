@@ -622,9 +622,19 @@ comm -23 /tmp/ours-sorted.txt /tmp/native-sorted.txt
 
 
 
-comm: file 1 is not in sorted order
-azure_log_analytics_workspace
-azure_recovery_services_vault
-azure_subnet
-azure_subscription
-comm: input is not in sorted order
+PAK=$(ls -t /opt/aria/Aria-MP-Builder/Azure-Native-Build/build/*.pak | head -1)
+echo "Pak: $PAK"
+rm -rf /tmp/pak-inspect && mkdir /tmp/pak-inspect && cd /tmp/pak-inspect
+unzip -q "$PAK" && unzip -q adapter.zip
+
+# Find any ResourceAttribute with pipe in the key — these are the kinds that didn't substitute
+grep -nE 'ResourceAttribute key="[^"]*\|' MicrosoftAzureAdapter/conf/describe.xml | head -20
+
+# For each pipe-keyed line, walk upward to find which ResourceKind it's inside
+echo "=== ResourceKind containing the first pipe-key ==="
+LINE=$(grep -nE 'ResourceAttribute key="[^"]*\|' MicrosoftAzureAdapter/conf/describe.xml | head -1 | cut -d: -f1)
+echo "First offending line: $LINE"
+sed -n "1,${LINE}p" MicrosoftAzureAdapter/conf/describe.xml | grep -oE '<ResourceKind key="[^"]+"' | tail -1
+
+# Also count ResourceKind in the pak — sanity check
+echo "Total ResourceKind elements: $(grep -c '<ResourceKind ' MicrosoftAzureAdapter/conf/describe.xml)"
