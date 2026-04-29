@@ -505,6 +505,20 @@ grep -nE "^\s+at |^Caused by:|java\.|Exception" /tmp/install-window.log | head -
 
 
 
+# 1. List all analytics log rotations and their sizes/dates
+sudo ls -la /storage/log/vcops/log/analytics-*.log* 2>/dev/null
+
+# 2. Find which file actually contains the failed task ID
+sudo grep -l "977741b6-8f7e-4bfe-9587-80f8a5ee1ffb" /storage/log/vcops/log/analytics-*.log* 2>/dev/null
+sudo zgrep -l "977741b6-8f7e-4bfe-9587-80f8a5ee1ffb" /storage/log/vcops/log/analytics-*.log*.gz 2>/dev/null
+
+# 3. Once found, check the file actually has those timestamps (simpler than sed)
+TARGET=$(sudo grep -l "977741b6-8f7e-4bfe-9587-80f8a5ee1ffb" /storage/log/vcops/log/analytics-*.log* 2>/dev/null | head -1)
+echo "Target file: $TARGET"
+sudo grep -c "^2026-04-28T19:2[56]" "$TARGET"
+
+
+
 
 
 
