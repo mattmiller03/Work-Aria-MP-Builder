@@ -2,7 +2,7 @@
   "display_name": "Microsoft Azure Cloud DLA Custom",
   "name": "MicrosoftAzureAdapter",
   "description": "Custom replacement for the VMware native Azure management pack. Collects resource attributes, metrics, and cost data from Azure Government and Commercial Cloud. Monitors 18 resource types with native pak key compatibility for seamless dashboard migration.",
-  "version": "8.19.0",
+  "version": "8.19.4",
   "vcops_minimum_version": "8.18.0",
   "disk_space_required": 500,
   "run_scripts_on_all_nodes": "false",

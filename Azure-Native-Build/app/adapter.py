@@ -704,25 +704,24 @@ def get_adapter_definition():
         obj_type.define_metric("summary|total_number_functionApp", "Total Function Apps")
         obj_type.define_metric("summary|total_number_subscriptions", "Total Subscriptions")
 
-    # TEMPORARILY DISABLED for install-failure bisection. These three kinds
-    # have NO <ResourceIdentifier> children at all — they rely on the display
-    # name being the unique key. Aria Ops 8.18 may reject ResourceKinds that
-    # have zero identifiers. v1.3.4 (known-working) has no such kinds.
-    # Re-enable by removing the `if False:` wrapper once we have a clean
-    # install baseline.
-    if False:
-        # -- AZURE_REGION_PER_SUB — no identifiers (name is unique key) --
-        rps = definition.define_object_type(OBJ_REGION_PER_SUB, "Azure Region Per Subscription")
-        _add_summary_count_metrics(rps)
+    # Geo aggregation kinds — no <ResourceIdentifier> children (display name is
+    # the unique key). The SDK emits pipe-keyed `summary|total_number_*` metrics
+    # which Aria Ops would reject, BUT the dynamic loader in
+    # patch-describe-xml.py substitutes the entire ResourceKind block with
+    # the native verbatim XML (which uses nested ResourceGroup) before pak
+    # packaging.
+    # -- AZURE_REGION_PER_SUB --
+    rps = definition.define_object_type(OBJ_REGION_PER_SUB, "Azure Region Per Subscription")
+    _add_summary_count_metrics(rps)
 
-        # -- AZURE_REGION — no identifiers (name is unique key) --
-        reg = definition.define_object_type(OBJ_REGION, "Azure Region")
-        _add_summary_count_metrics(reg)
+    # -- AZURE_REGION --
+    reg = definition.define_object_type(OBJ_REGION, "Azure Region")
+    _add_summary_count_metrics(reg)
 
-        # -- AZURE_WORLD — single root object, no identifiers --
-        world = definition.define_object_type(OBJ_WORLD, "Azure World")
-        _add_summary_count_metrics(world)
-        world.define_metric("summary|total_number_regions", "Total Regions")
+    # -- AZURE_WORLD --
+    world = definition.define_object_type(OBJ_WORLD, "Azure World")
+    _add_summary_count_metrics(world)
+    world.define_metric("summary|total_number_regions", "Total Regions")
 
     # ===================================================================
     # Stub Resource Kinds — 18 native pak types we don't actively collect
