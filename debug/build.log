@@ -519,6 +519,24 @@ sudo grep -c "^2026-04-28T19:2[56]" "$TARGET"
 
 
 
+TARGET=$(sudo grep -l "977741b6-8f7e-4bfe-9587-80f8a5ee1ffb" /storage/log/vcops/log/analytics-*.log* 2>/dev/null | head -1)
+echo "Reading: $TARGET"
+
+# Pull all 19:25/19:26 lines into a manageable file (use double quotes for variable)
+sudo grep "^2026-04-28T19:2[56]" "$TARGET" > /tmp/install-window.log
+wc -l /tmp/install-window.log
+
+# Now show ONLY the AdapterDescribe / install-related lines, drop the SDDC-Health noise
+grep -nE "AdapterDescribe|DistributedTaskInstall|describe\.xml|loadDescribe|MicrosoftAzureAdapter|Caused by:|^\s+at " /tmp/install-window.log
+
+# Also show lines immediately around the "Failed to load" message (line numbers in the windowed file)
+grep -n "Failed to load resource kind describe 47" /tmp/install-window.log
+# Note the line number, then:
+LINE=$(grep -n "Failed to load resource kind describe 47" /tmp/install-window.log | head -1 | cut -d: -f1)
+sed -n "$((LINE-25)),$((LINE+5))p" /tmp/install-window.log
+
+
+
 
 
 
