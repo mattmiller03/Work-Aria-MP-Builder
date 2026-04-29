@@ -453,35 +453,10 @@ bash scripts/build-pak.sh 2>&1 | tee debug/build.log
 grep -E 'Reaping|native loader|substitut|adapterDefinition' debug/build.log
 Step 4 (docker daemon restart) is the part we haven't tried yet — it nukes any stuck port bindings, leftover networks, or daemon-side state we can't see. After that, the slate is fully clean.
 
-Then avoid mp-test --port 8181 until we've confirmed the build is stable, since mp-test bypasses build-pak.sh's auto-cleanup and reintroduces zombies. If you do need to use it later, follow with sudo docker ps -aq --filter "ancestor=microsoftazureadapter-test" | xargs -r sudo docker rm -f manually.
+sudo ls -lt /storage/log/vcops/log/analytics/analytics*.log | head -3
+sudo grep -n -B 2 -A 30 "977741b6-8f7e-4bfe-9587-80f8a5ee1ffb\|MicrosoftAzureAdapter-8192\|adapter_kinds\|addAdapterKind\|SAXParse" \
+  /storage/log/vcops/log/analytics/analytics*.log 2>/dev/null | tail -80
 
 
 
 
-# 1. Confirm the pak and image are ready
-ls -la /opt/aria/Aria-MP-Builder/Azure-Native-Build/build/*.pak
-sudo docker images | grep microsoftazureadapter
-
-# 2. Tag and push (note your version — likely 8.19.2 or whatever you bumped to)
-VERSION=$(awk -F'"' '/"version":/ {print $4}' /opt/aria/Aria-MP-Builder/Azure-Native-Build/manifest.txt)
-echo "Pushing version: $VERSION"
-sudo docker tag microsoftazureadapter-test:$VERSION 214.73.76.134:5000/azuregovcloud-adapter:latest
-sudo docker push 214.73.76.134:5000/azuregovcloud-adapter:latest
-
-# 3. (Optional) Sanity check the pak's describe.xml has 24 kinds and they're native-shape
-PAK=$(ls -t /opt/aria/Aria-MP-Builder/Azure-Native-Build/build/*.pak | head -1)
-echo "Inspecting: $PAK"
-rm -rf /tmp/pak-inspect && mkdir /tmp/pak-inspect && cd /tmp/pak-inspect
-unzip -q "$PAK" && unzip -q adapter.zip
-echo "ResourceKind count: $(grep -c '<ResourceKind ' MicrosoftAzureAdapter/conf/describe.xml)  (expect 24)"
-grep -c 'nameKey=' MicrosoftAzureAdapter/conf/describe.xml
-# expect: a high count — every native-substituted kind has nameKey attrs; SDK emission has none
-
-# 4. Upload via Aria Ops UI:
-#    Administration > Repository > Add Pak > select the .pak from $PAK above
-#    Watch Task History — step 16 (APPLY_ADAPTER) must reach SUCCESS
-Three possible outcomes when you click install:
-
-APPLY_ADAPTER SUCCESS → 24-kind pak installed, move to D.3 (geo trio).
-ERROR after 0.0s, empty errorMessages → likely one of the 4 custom kinds (azure_subscription / azure_subnet / azure_recovery_services_vault / azure_log_analytics_workspace) — those don't get the dynamic substitution. Bisect by temporarily wrapping them in if False: one at a time.
-ERROR with text → paste it; we'll target the specific kind.
