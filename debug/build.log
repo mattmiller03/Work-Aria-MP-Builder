@@ -643,19 +643,11 @@ echo "Total ResourceKind elements: $(grep -c '<ResourceKind ' MicrosoftAzureAdap
 
 
 
- [ /tmp/pak-inspect ]# grep -nE 'ResourceAttribute key="[^"]*\|' MicrosoftAzureAdapter/conf/describe.xml | head -20
-956:      <ResourceAttribute key="SERVICE_DESCRIPTORS|AZURE_SUBSCRIPTION_ID" nameKey="13" unit="" dashboardOrder="0" dataType="string" isProperty="true" isRate="false" isDiscrete="true" isImpact="false" defaultMonitored="true" keyAttribute="false"/>
-957:      <ResourceAttribute key="SERVICE_DESCRIPTORS|AZURE_RESOURCE_GROUP" nameKey="22" unit="" dashboardOrder="1" dataType="string" isProperty="true" isRate="false" isDiscrete="true" isImpact="false" defaultMonitored="true" keyAttribute="false"/>
-958:      <ResourceAttribute key="SERVICE_DESCRIPTORS|AZURE_REGION" nameKey="23" unit="" dashboardOrder="2" dataType="string" isProperty="true" isRate="false" isDiscrete="true" isImpact="false" defaultMonitored="true" keyAttribute="false"/>
-959:      <ResourceAttribute key="SERVICE_DESCRIPTORS|AZURE_SERVICE" nameKey="41" unit="" dashboardOrder="3" dataType="string" isProperty="true" isRate="false" isDiscrete="true" isImpact="false" defaultMonitored="true" keyAttribute="false"/>
- [ /tmp/pak-inspect ]# 
- [ /tmp/pak-inspect ]# 
- [ /tmp/pak-inspect ]# echo "=== ResourceKind containing the first pipe-key ==="
-=== ResourceKind containing the first pipe-key ===
- [ /tmp/pak-inspect ]# LINE=$(grep -nE 'ResourceAttribute key="[^"]*\|' MicrosoftAzureAdapter/conf/describe.xml | head -1 | cut -d: -f1)
- [ /tmp/pak-inspect ]# echo "First offending line: $LINE"
-First offending line: 956
- [ /tmp/pak-inspect ]# sed -n "1,${LINE}p" MicrosoftAzureAdapter/conf/describe.xml | grep -oE '<ResourceKind key="[^"]+"' | tail -1
-<ResourceKind key="AZURE_PUBLIC_IPADDRESSES"
- [ /tmp/pak-inspect ]# echo "Total ResourceKind elements: $(grep -c '<ResourceKind ' MicrosoftAzureAdapter/conf/describe.xml)"
-Total ResourceKind elements: 46
+# How many AZURE_PUBLIC_IPADDRESSES blocks?
+grep -c '<ResourceKind key="AZURE_PUBLIC_IPADDRESSES"' MicrosoftAzureAdapter/conf/describe.xml
+
+# Show the line numbers of EVERY ResourceKind, look for duplicates
+grep -n '<ResourceKind key=' MicrosoftAzureAdapter/conf/describe.xml | sort -t'"' -k2 | uniq -c -f1 -w 50 | sort -rn | head
+
+# Or simpler — list duplicates
+grep -oE '<ResourceKind key="[^"]+"' MicrosoftAzureAdapter/conf/describe.xml | sort | uniq -c | sort -rn | head
