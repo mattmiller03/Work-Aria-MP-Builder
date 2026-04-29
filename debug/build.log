@@ -651,3 +651,32 @@ grep -n '<ResourceKind key=' MicrosoftAzureAdapter/conf/describe.xml | sort -t'"
 
 # Or simpler — list duplicates
 grep -oE '<ResourceKind key="[^"]+"' MicrosoftAzureAdapter/conf/describe.xml | sort | uniq -c | sort -rn | head
+
+
+
+
+ [ /tmp/pak-inspect ]# grep -c '<ResourceKind key="AZURE_PUBLIC_IPADDRESSES"' MicrosoftAzureAdapter/conf/describe.xml
+2
+ [ /tmp/pak-inspect ]# grep -n '<ResourceKind key=' MicrosoftAzureAdapter/conf/describe.xml | sort -t'"' -k2 | uniq -c -f1 -w 50 | sort -rn | head
+      2 1709:    <ResourceKind key="AZURE_NETAPPACCOUNT_CAPACITYPOOLS" nameKey="2027" type="4">
+      1 961:    <ResourceKind key="AZURE_EXPRESSROUTE_CIRCUITS" nameKey="2017" type="4">
+      1 951:    <ResourceKind key="AZURE_PUBLIC_IPADDRESSES" nameKey="326" type="1">
+      1 912:    <ResourceKind key="AZURE_DEDICATE_HOST" nameKey="3206" type="4">
+      1 878:    <ResourceKind key="AZURE_COMPUTE_HOSTGROUPS" nameKey="2008" type="4">
+      1 850:    <ResourceKind key="AZURE_MYSQL_SERVER" nameKey="22" type="4">
+      1 821:    <ResourceKind key="AZURE_POSTGRESQL_SERVER" nameKey="21" type="4">
+      1 803:    <ResourceKind key="AZURE_DB_ACCOUNT" nameKey="16" type="4">
+      1 763:    <ResourceKind key="AZURE_APP_SERVICE_PLAN" nameKey="2244" type="4">
+      1 712:    <ResourceKind key="AZURE_FUNCTIONS_APP" nameKey="2001" type="4">
+ [ /tmp/pak-inspect ]# 
+ [ /tmp/pak-inspect ]# grep -oE '<ResourceKind key="[^"]+"' MicrosoftAzureAdapter/conf/describe.xml | sort | uniq -c | sort -rn | head
+      2 <ResourceKind key="AZURE_PUBLIC_IPADDRESSES"
+      1 <ResourceKind key="MicrosoftAzureAdapter Instance"
+      1 <ResourceKind key="AZURE_WORLD"
+      1 <ResourceKind key="AZURE_VIRTUAL_SCALESET_INSTANCE"
+      1 <ResourceKind key="AZURE_VIRTUAL_NETWORK"
+      1 <ResourceKind key="AZURE_VIRTUAL_MACHINE"
+      1 <ResourceKind key="AZURE_SYNAPSE_ANALYTICS_SQL_POOL"
+      1 <ResourceKind key="AZURE_SYNAPSE_ANALYTICS_BIGDATA_POOL"
+      1 <ResourceKind key="azure_subscription"
+      1 <ResourceKind key="azure_subnet"
