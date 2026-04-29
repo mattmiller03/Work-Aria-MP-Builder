@@ -487,3 +487,218 @@ sudo grep -n -B 2 -A 30 "977741b6-8f7e-4bfe-9587-80f8a5ee1ffb\|MicrosoftAzureAda
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+  sudo ls -la /storage/log/vcops/log/analytics-*.log* 2>/dev/null
+-rw-r----- 1 admin admin  1469277 Apr 29 13:25 /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log
+-rw-r----- 1 admin admin 10486860 Apr 29 08:26 /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.1
+-rw-r----- 1 admin admin 10486077 Apr 17 11:32 /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.10
+-rw-r----- 1 admin admin 10487367 Apr 16 00:38 /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.11
+-rw-r----- 1 admin admin 10485886 Apr 10 12:02 /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.12
+-rw-r----- 1 admin admin 10486078 Apr 10 12:01 /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.13
+-rw-r----- 1 admin admin 10485926 Mar 29 02:59 /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.14
+-rw-r----- 1 admin admin 10485805 Mar 17 20:09 /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.15
+-rw-r----- 1 admin admin 10485766 Mar  6 12:48 /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.16
+-rw-r----- 1 admin admin 10485870 Feb 27 01:53 /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.17
+-rw-r----- 1 admin admin 10485832 Feb 15 07:57 /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.18
+-rw-r----- 1 admin admin 10485937 Feb  3 08:33 /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.19
+-rw-r----- 1 admin admin 10485868 Apr 27 21:25 /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.2
+-rw-r----- 1 admin admin 10486000 Jan 22 15:06 /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.20
+-rw-r----- 1 admin admin 10485891 Jan 12 16:47 /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.21
+-rw-r----- 1 admin admin 10486054 Jan  1 23:45 /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.22
+-rw-r----- 1 admin admin 10485893 Dec 20 17:25 /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.23
+-rw-r----- 1 admin admin 10485791 Dec  9 08:26 /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.24
+-rw-r----- 1 admin admin 10485920 Dec  2 04:30 /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.25
+-rw-r----- 1 admin admin 10485962 Nov 19 23:45 /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.26
+-rw-r----- 1 admin admin 10485789 Nov 10 06:09 /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.27
+-rw-r----- 1 admin admin 10485808 Nov  2 16:55 /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.28
+-rw-r----- 1 admin admin 10485790 Oct 24  2025 /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.29
+-rw-r----- 1 admin admin 10486539 Apr 26 09:54 /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.3
+-rw-r----- 1 admin admin 10485948 Oct 15  2025 /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.30
+-rw-r----- 1 admin admin 10486016 Oct  7  2025 /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.31
+-rw-r----- 1 admin admin 10485806 Sep 27  2025 /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.32
+-rw-r----- 1 admin admin 10485817 Sep 18  2025 /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.33
+-rw-r----- 1 admin admin 10485821 Sep  9  2025 /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.34
+-rw-r----- 1 admin admin 10485908 Aug 30  2025 /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.35
+-rw-r----- 1 admin admin 10486279 Apr 24 22:20 /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.4
+-rw-r----- 1 admin admin 10486275 Apr 23 10:27 /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.5
+-rw-r----- 1 admin admin 10485774 Apr 22 07:18 /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.6
+-rw-r----- 1 admin admin 10486017 Apr 20 16:24 /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.7
+-rw-r----- 1 admin admin 10486746 Apr 19 01:17 /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.8
+-rw-r----- 1 admin admin 10486094 Apr 17 11:32 /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.9
+-rw-r----- 1 admin admin  5577504 Mar 30 15:23 /storage/log/vcops/log/analytics-gc-20260324152118.log.3.gz
+-rw-r----- 1 admin admin  5713914 Apr  1 11:56 /storage/log/vcops/log/analytics-gc-20260324152118.log.4.gz
+-rw-r----- 1 admin admin  4841186 Apr  1 11:56 /storage/log/vcops/log/analytics-gc-20260324152118.log.gz
+-rw-r----- 1 admin admin  5448843 Apr  3 11:56 /storage/log/vcops/log/analytics-gc-20260331115533.log.0.gz
+-rw-r----- 1 admin admin  5514266 Apr  9 19:43 /storage/log/vcops/log/analytics-gc-20260331115533.log.1.gz
+-rw-r----- 1 admin admin  3700415 Apr  9 19:43 /storage/log/vcops/log/analytics-gc-20260331115533.log.gz
+-rw-r----- 1 admin admin   114469 Apr  9 19:43 /storage/log/vcops/log/analytics-gc-20260408193710.log.gz
+-rw-r----- 1 admin admin  5535558 Apr 11 19:43 /storage/log/vcops/log/analytics-gc-20260408194313.log.0.gz
+-rw-r----- 1 admin admin  6093447 Apr 12 19:43 /storage/log/vcops/log/analytics-gc-20260408194313.log.1.gz
+-rw-r----- 1 admin admin  6104646 Apr 16 22:30 /storage/log/vcops/log/analytics-gc-20260408194313.log.2.gz
+-rw-r----- 1 admin admin  2265399 Apr 16 22:30 /storage/log/vcops/log/analytics-gc-20260408194313.log.gz
+-rw-r----- 1 admin admin   146714 Apr 16 22:30 /storage/log/vcops/log/analytics-gc-20260415214437.log.gz
+-rw-r----- 1 admin admin 40090317 Apr 29 13:26 /storage/log/vcops/log/analytics-gc-20260415223040.log
+-rw-r----- 1 admin admin 62914564 Apr 28 12:03 /storage/log/vcops/log/analytics-gc-20260415223040.log.0
+-rw-r----- 1 admin admin  5512799 Apr 18 22:30 /storage/log/vcops/log/analytics-gc-20260415223040.log.0.gz
+-rw-r----- 1 admin admin  6104147 Apr 20 22:30 /storage/log/vcops/log/analytics-gc-20260415223040.log.1.gz
+-rw-r----- 1 admin admin  6004184 Apr 23 22:30 /storage/log/vcops/log/analytics-gc-20260415223040.log.2.gz
+-rw-r----- 1 admin admin  6058448 Apr 25 22:30 /storage/log/vcops/log/analytics-gc-20260415223040.log.3.gz
+-rw-r----- 1 admin admin  6129707 Apr 28 22:30 /storage/log/vcops/log/analytics-gc-20260415223040.log.4.gz
+-rw-r----- 1 admin admin  1168640 Apr 29 06:05 /storage/log/vcops/log/analytics-stats-provider-6b281004-1325-4f5b-be20-3b5ffacd06c7.log
+-rw-r----- 1 admin admin  4277087 Apr 29 11:16 /storage/log/vcops/log/analytics-wrapper.log
+-rw-r----- 1 admin admin 10485764 Jan 31 20:48 /storage/log/vcops/log/analytics-wrapper.log.1
+-rw-r--r-- 1 admin admin 10485879 Oct 30  2022 /storage/log/vcops/log/analytics-wrapper.log.10
+-rw-r----- 1 admin admin 10485820 Jun 28  2025 /storage/log/vcops/log/analytics-wrapper.log.2
+-rw-r----- 1 admin admin 10485771 Mar 17  2025 /storage/log/vcops/log/analytics-wrapper.log.3
+-rw-r----- 1 admin admin 10485778 Feb 15  2025 /storage/log/vcops/log/analytics-wrapper.log.4
+-rw-r----- 1 admin admin 10485866 Jan 18  2025 /storage/log/vcops/log/analytics-wrapper.log.5
+-rw-r----- 1 admin admin 10485804 Dec 21  2024 /storage/log/vcops/log/analytics-wrapper.log.6
+-rw-r----- 1 admin admin 10485809 Nov 23  2024 /storage/log/vcops/log/analytics-wrapper.log.7
+-rw-r----- 1 admin admin 10485805 Sep 20  2024 /storage/log/vcops/log/analytics-wrapper.log.8
+-rw-r--r-- 1 admin admin 10485830 Dec  7  2023 /storage/log/vcops/log/analytics-wrapper.log.9
+root@daisv0tp003 [ ~ ]# 
+root@daisv0tp003 [ ~ ]# 
+root@daisv0tp003 [ ~ ]# 
+root@daisv0tp003 [ ~ ]# 
+root@daisv0tp003 [ ~ ]# sudo grep -n -B 2 -A 30 "977741b6-8f7e-4bfe-9587-80f8a5ee1ffb" \
+  /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.1
+45840-2026-04-28T19:26:04,107+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.ProblemAlertManager.getEvaluatedIdentifierResult - result null for population id:null
+45841-2026-04-28T19:26:04,111+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.SymptomSetEvaluator.evaluateSubSet - Self relation can't be applied to symptom defs of other resource kinds. resource(AK,RK)=(vCenter Operations Adapter,vC-Ops-Cluster), alertDef(AK,RK)=(vCenter Operations Adapter,vc), alertDefId:AlertDefinition-SDDCHealthAdapter-NodenotSized
+45842:2026-04-28T19:26:04,111+0000 INFO  [ServerConnection on port 10000 Thread 4075] [dpcSH0QfBhK2NfdBI9UweTHkAx9FmmCX] com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - try to acquire lock for TaskStatus-977741b6-8f7e-4bfe-9587-80f8a5ee1ffb
+45843-2026-04-28T19:26:04,111+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.ProblemAlertManager.getEvaluatedIdentifierResult - result null for population id:null
+45844:2026-04-28T19:26:04,112+0000 INFO  [ServerConnection on port 10000 Thread 4075]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - got the distributed lock TaskStatus-977741b6-8f7e-4bfe-9587-80f8a5ee1ffb in 0 msec
+45845:2026-04-28T19:26:04,114+0000 INFO  [ServerConnection on port 10000 Thread 4075]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - release lock:TaskStatus-977741b6-8f7e-4bfe-9587-80f8a5ee1ffb
+45846-2026-04-28T19:26:04,114+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.SymptomSetEvaluator.evaluateSubSet - Self relation can't be applied to symptom defs of other resource kinds. resource(AK,RK)=(vCenter Operations Adapter,vC-Ops-Cluster), alertDef(AK,RK)=(vCenter Operations Adapter,vc), alertDefId:AlertDefinition-SDDCHealthAdapter-NodenotSized
+45847-2026-04-28T19:26:04,114+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.ProblemAlertManager.getEvaluatedIdentifierResult - result null for population id:null
+45848-2026-04-28T19:26:04,115+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.SymptomSetEvaluator.evaluateSubSet - Self relation can't be applied to symptom defs of other resource kinds. resource(AK,RK)=(vCenter Operations Adapter,vC-Ops-Cluster), alertDef(AK,RK)=(vCenter Operations Adapter,vc), alertDefId:AlertDefinition-SDDCHealthAdapter-NodenotSized
+45849-2026-04-28T19:26:04,115+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.ProblemAlertManager.getEvaluatedIdentifierResult - result null for population id:null
+45850-2026-04-28T19:26:04,116+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.SymptomSetEvaluator.evaluateSubSet - Self relation can't be applied to symptom defs of other resource kinds. resource(AK,RK)=(vCenter Operations Adapter,vC-Ops-Cluster), alertDef(AK,RK)=(vCenter Operations Adapter,vc), alertDefId:AlertDefinition-SDDCHealthAdapter-NodenotSized
+45851-2026-04-28T19:26:04,116+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.ProblemAlertManager.getEvaluatedIdentifierResult - result null for population id:null
+45852-2026-04-28T19:26:04,118+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.SymptomSetEvaluator.evaluateSubSet - Self relation can't be applied to symptom defs of other resource kinds. resource(AK,RK)=(vCenter Operations Adapter,vC-Ops-Cluster), alertDef(AK,RK)=(vCenter Operations Adapter,vc), alertDefId:AlertDefinition-SDDCHealthAdapter-NodenotSized
+45853-2026-04-28T19:26:04,118+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.ProblemAlertManager.getEvaluatedIdentifierResult - result null for population id:null
+45854-2026-04-28T19:26:04,119+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.SymptomSetEvaluator.evaluateSubSet - Self relation can't be applied to symptom defs of other resource kinds. resource(AK,RK)=(vCenter Operations Adapter,vC-Ops-Cluster), alertDef(AK,RK)=(vCenter Operations Adapter,vc), alertDefId:AlertDefinition-SDDCHealthAdapter-NodenotSized
+45855-2026-04-28T19:26:04,120+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.ProblemAlertManager.getEvaluatedIdentifierResult - result null for population id:null
+45856-2026-04-28T19:26:04,121+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.SymptomSetEvaluator.evaluateSubSet - Self relation can't be applied to symptom defs of other resource kinds. resource(AK,RK)=(vCenter Operations Adapter,vC-Ops-Cluster), alertDef(AK,RK)=(vCenter Operations Adapter,vc), alertDefId:AlertDefinition-SDDCHealthAdapter-NodenotSized
+45857-2026-04-28T19:26:04,122+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.ProblemAlertManager.getEvaluatedIdentifierResult - result null for population id:null
+45858-2026-04-28T19:26:04,123+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.SymptomSetEvaluator.evaluateSubSet - Self relation can't be applied to symptom defs of other resource kinds. resource(AK,RK)=(vCenter Operations Adapter,vC-Ops-Cluster), alertDef(AK,RK)=(vCenter Operations Adapter,vc), alertDefId:AlertDefinition-SDDCHealthAdapter-NodenotSized
+45859-2026-04-28T19:26:04,123+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.ProblemAlertManager.getEvaluatedIdentifierResult - result null for population id:null
+45860-2026-04-28T19:26:04,124+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.SymptomSetEvaluator.evaluateSubSet - Self relation can't be applied to symptom defs of other resource kinds. resource(AK,RK)=(vCenter Operations Adapter,vC-Ops-Cluster), alertDef(AK,RK)=(vCenter Operations Adapter,vc), alertDefId:AlertDefinition-SDDCHealthAdapter-NodenotSized
+45861-2026-04-28T19:26:04,124+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.ProblemAlertManager.getEvaluatedIdentifierResult - result null for population id:null
+45862-2026-04-28T19:26:04,126+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.SymptomSetEvaluator.evaluateSubSet - Self relation can't be applied to symptom defs of other resource kinds. resource(AK,RK)=(vCenter Operations Adapter,vC-Ops-Cluster), alertDef(AK,RK)=(vCenter Operations Adapter,vc), alertDefId:AlertDefinition-SDDCHealthAdapter-NodenotSized
+45863-2026-04-28T19:26:04,126+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.ProblemAlertManager.getEvaluatedIdentifierResult - result null for population id:null
+45864-2026-04-28T19:26:04,127+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.SymptomSetEvaluator.evaluateSubSet - Self relation can't be applied to symptom defs of other resource kinds. resource(AK,RK)=(vCenter Operations Adapter,vC-Ops-Cluster), alertDef(AK,RK)=(vCenter Operations Adapter,vc), alertDefId:AlertDefinition-SDDCHealthAdapter-NodenotSized
+45865-2026-04-28T19:26:04,128+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.ProblemAlertManager.getEvaluatedIdentifierResult - result null for population id:null
+45866-2026-04-28T19:26:04,128+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.SymptomSetEvaluator.evaluateSubSet - Self relation can't be applied to symptom defs of other resource kinds. resource(AK,RK)=(vCenter Operations Adapter,vC-Ops-Cluster), alertDef(AK,RK)=(vCenter Operations Adapter,vc), alertDefId:AlertDefinition-SDDCHealthAdapter-NodenotSized
+45867-2026-04-28T19:26:04,129+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.ProblemAlertManager.getEvaluatedIdentifierResult - result null for population id:null
+45868-2026-04-28T19:26:04,130+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.SymptomSetEvaluator.evaluateSubSet - Self relation can't be applied to symptom defs of other resource kinds. resource(AK,RK)=(vCenter Operations Adapter,vC-Ops-Cluster), alertDef(AK,RK)=(vCenter Operations Adapter,vc), alertDefId:AlertDefinition-SDDCHealthAdapter-NodenotSized
+45869-2026-04-28T19:26:04,130+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.ProblemAlertManager.getEvaluatedIdentifierResult - result null for population id:null
+45870-2026-04-28T19:26:04,131+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.SymptomSetEvaluator.evaluateSubSet - Self relation can't be applied to symptom defs of other resource kinds. resource(AK,RK)=(vCenter Operations Adapter,vC-Ops-Cluster), alertDef(AK,RK)=(vCenter Operations Adapter,vc), alertDefId:AlertDefinition-SDDCHealthAdapter-NodenotSized
+45871-2026-04-28T19:26:04,131+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.ProblemAlertManager.getEvaluatedIdentifierResult - result null for population id:null
+45872-2026-04-28T19:26:04,133+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.SymptomSetEvaluator.evaluateSubSet - Self relation can't be applied to symptom defs of other resource kinds. resource(AK,RK)=(vCenter Operations Adapter,vC-Ops-Cluster), alertDef(AK,RK)=(vCenter Operations Adapter,vc), alertDefId:AlertDefinition-SDDCHealthAdapter-NodenotSized
+45873-2026-04-28T19:26:04,133+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.ProblemAlertManager.getEvaluatedIdentifierResult - result null for population id:null
+45874-2026-04-28T19:26:04,135+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.SymptomSetEvaluator.evaluateSubSet - Self relation can't be applied to symptom defs of other resource kinds. resource(AK,RK)=(vCenter Operations Adapter,vC-Ops-Cluster), alertDef(AK,RK)=(vCenter Operations Adapter,vc), alertDefId:AlertDefinition-SDDCHealthAdapter-NodenotSized
+45875-2026-04-28T19:26:04,135+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.ProblemAlertManager.getEvaluatedIdentifierResult - result null for population id:null
+--
+45900-2026-04-28T19:26:04,238+0000 INFO  [pool-19-thread-1]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - try to acquire lock for SearchEngineLock
+45901-2026-04-28T19:26:04,238+0000 INFO  [pool-19-thread-1]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - got the distributed lock SearchEngineLock in 0 msec
+45902:2026-04-28T19:26:04,315+0000 INFO  [ServerConnection on port 10000 Thread 4075]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - try to acquire lock for TaskStatus-977741b6-8f7e-4bfe-9587-80f8a5ee1ffb
+45903:2026-04-28T19:26:04,315+0000 INFO  [ServerConnection on port 10000 Thread 4075]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - got the distributed lock TaskStatus-977741b6-8f7e-4bfe-9587-80f8a5ee1ffb in 0 msec
+45904:2026-04-28T19:26:04,316+0000 INFO  [ServerConnection on port 10000 Thread 4075]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - release lock:TaskStatus-977741b6-8f7e-4bfe-9587-80f8a5ee1ffb
+45905-2026-04-28T19:26:04,687+0000 INFO  [pool-19-thread-1]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - release lock:SearchEngineLock
+45906-2026-04-28T19:26:04,687+0000 INFO  [pool-19-thread-1]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - try to acquire lock for SearchEngineLock
+45907-2026-04-28T19:26:04,687+0000 INFO  [pool-19-thread-1]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - got the distributed lock SearchEngineLock in 0 msec
+45908:2026-04-28T19:26:06,135+0000 INFO  [ServerConnection on port 10000 Thread 4075]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - try to acquire lock for TaskStatus-977741b6-8f7e-4bfe-9587-80f8a5ee1ffb
+45909:2026-04-28T19:26:06,135+0000 INFO  [ServerConnection on port 10000 Thread 4075]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - got the distributed lock TaskStatus-977741b6-8f7e-4bfe-9587-80f8a5ee1ffb in 0 msec
+45910:2026-04-28T19:26:06,137+0000 INFO  [ServerConnection on port 10000 Thread 4075]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - release lock:TaskStatus-977741b6-8f7e-4bfe-9587-80f8a5ee1ffb
+45911-2026-04-28T19:26:06,468+0000 INFO  [pool-19-thread-1]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - release lock:SearchEngineLock
+45912-2026-04-28T19:26:06,468+0000 INFO  [pool-19-thread-1]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - try to acquire lock for SearchEngineLock
+45913-2026-04-28T19:26:06,468+0000 INFO  [pool-19-thread-1]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - got the distributed lock SearchEngineLock in 0 msec
+45914-2026-04-28T19:26:06,758+0000 INFO  [pool-19-thread-1]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - release lock:SearchEngineLock
+45915-2026-04-28T19:26:06,758+0000 INFO  [pool-19-thread-1]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - try to acquire lock for SearchEngineLock
+45916-2026-04-28T19:26:06,758+0000 INFO  [pool-19-thread-1]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - got the distributed lock SearchEngineLock in 0 msec
+45917-2026-04-28T19:26:06,762+0000 INFO  [pool-19-thread-1]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - release lock:SearchEngineLock
+45918-2026-04-28T19:26:06,762+0000 INFO  [pool-19-thread-1]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - try to acquire lock for SearchEngineLock
+45919-2026-04-28T19:26:06,762+0000 INFO  [pool-19-thread-1]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - got the distributed lock SearchEngineLock in 0 msec
+45920-2026-04-28T19:26:06,762+0000 INFO  [pool-19-thread-1]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - release lock:SearchEngineLock
+45921-2026-04-28T19:26:06,762+0000 INFO  [pool-19-thread-1]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - try to acquire lock for SearchEngineLock
+45922-2026-04-28T19:26:06,762+0000 INFO  [pool-19-thread-1]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - got the distributed lock SearchEngineLock in 0 msec
+45923-2026-04-28T19:26:06,763+0000 INFO  [pool-19-thread-1]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - release lock:SearchEngineLock
+45924-2026-04-28T19:26:06,763+0000 INFO  [pool-19-thread-1]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - try to acquire lock for SearchEngineLock
+45925-2026-04-28T19:26:06,763+0000 INFO  [pool-19-thread-1]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - got the distributed lock SearchEngineLock in 0 msec
+45926-2026-04-28T19:26:06,763+0000 INFO  [pool-19-thread-1]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - release lock:SearchEngineLock
+45927-2026-04-28T19:26:06,763+0000 INFO  [pool-19-thread-1]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - try to acquire lock for SearchEngineLock
+45928-2026-04-28T19:26:06,763+0000 INFO  [pool-19-thread-1]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - got the distributed lock SearchEngineLock in 0 msec
+45929-2026-04-28T19:26:06,763+0000 INFO  [pool-19-thread-1]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - release lock:SearchEngineLock
+45930-2026-04-28T19:26:06,763+0000 INFO  [pool-19-thread-1]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - try to acquire lock for SearchEngineLock
+45931-2026-04-28T19:26:06,763+0000 INFO  [pool-19-thread-1]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - got the distributed lock SearchEngineLock in 0 msec
+45932-2026-04-28T19:26:06,763+0000 INFO  [pool-19-thread-1]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - release lock:SearchEngineLock
+45933-2026-04-28T19:26:06,763+0000 INFO  [pool-19-thread-1]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - try to acquire lock for SearchEngineLock
+45934-2026-04-28T19:26:06,763+0000 INFO  [pool-19-thread-1]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - got the distributed lock SearchEngineLock in 0 msec
+45935-2026-04-28T19:26:06,763+0000 INFO  [pool-19-thread-1]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - release lock:SearchEngineLock
+45936-2026-04-28T19:26:06,763+0000 INFO  [pool-19-thread-1]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - try to acquire lock for SearchEngineLock
+45937-2026-04-28T19:26:06,763+0000 INFO  [pool-19-thread-1]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - got the distributed lock SearchEngineLock in 0 msec
+45938-2026-04-28T19:26:06,763+0000 INFO  [pool-19-thread-1]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - release lock:SearchEngineLock
+45939-2026-04-28T19:26:06,763+0000 INFO  [pool-19-thread-1]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - try to acquire lock for SearchEngineLock
+45940-2026-04-28T19:26:06,763+0000 INFO  [pool-19-thread-1]  com.vmware.statsplatform.persistence.util.LockUtils.executeWithLock - got the distributed lock SearchEngineLock in 0 msec
+
+
+
+
+
+
+
+
+
+sudo grep -n -B 2 -A 10 -iE "MicrosoftAzureAdapter-8192|SAXParse|describe.xml|adapter_kinds.*reject|addAdapterKind" \
+  /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.1 | tail -100
+44920-2026-04-28T19:03:28,087+0000 WARN  [DistTaskDistributedTaskInstallUninstallAdapters]  com.integrien.alive.common.adapter3.describe.AdapterDescribe.loadDescribe - Failed to load resource kind describe 47
+44921-2026-04-28T19:03:28,087+0000 WARN  [DistTaskDistributedTaskInstallUninstallAdapters]  com.integrien.alive.controller.DistributedTaskInstallUninstallAdapters.getAdapterKindAndVersion - Unable to create AdapterDescribe object.
+44922:2026-04-28T19:03:28,087+0000 ERROR [DistTaskDistributedTaskInstallUninstallAdapters]  com.integrien.alive.controller.DistributedTaskInstallUninstallAdapters.getKindsAndRemoveOldAdapters - Cannot check version for adapter MicrosoftAzureAdapter.conf: Incorrect format in describe.xml
+44923:2026-04-28T19:03:28,093+0000 ERROR [DistTaskDistributedTaskInstallUninstallAdapters]  com.integrien.alive.controller.DistributedTaskInstallUninstallAdapters.installAdapters - DistributedTaskInstallUninstallAdapters finished with Fail: Cannot check version for adapter MicrosoftAzureAdapter.conf: Incorrect format in describe.xml
+44924-2026-04-28T19:03:28,094+0000 ERROR [Function Execution Processor378]  com.integrien.analytics.dataobject.SymptomSetEvaluator.evaluateSubSet - Self relation can't be applied to symptom defs of other resource kinds. resource(AK,RK)=(vCenter Operations Adapter,vC-Ops-Cluster), alertDef(AK,RK)=(vCenter Operations Adapter,vc), alertDefId:AlertDefinition-SDDCHealthAdapter-NodenotSized
+44925-2026-04-28T19:03:28,094+0000 ERROR [Function Execution Processor378]  com.integrien.analytics.dataobject.ProblemAlertManager.getEvaluatedIdentifierResult - result null for population id:null
+44926-2026-04-28T19:03:28,095+0000 ERROR [Function Execution Processor378]  com.integrien.analytics.dataobject.SymptomSetEvaluator.evaluateSubSet - Self relation can't be applied to symptom defs of other resource kinds. resource(AK,RK)=(vCenter Operations Adapter,vC-Ops-Cluster), alertDef(AK,RK)=(vCenter Operations Adapter,vc), alertDefId:AlertDefinition-SDDCHealthAdapter-NodenotSized
+44927-2026-04-28T19:03:28,096+0000 ERROR [Function Execution Processor378]  com.integrien.analytics.dataobject.ProblemAlertManager.getEvaluatedIdentifierResult - result null for population id:null
+44928-2026-04-28T19:03:28,097+0000 ERROR [Function Execution Processor378]  com.integrien.analytics.dataobject.SymptomSetEvaluator.evaluateSubSet - Self relation can't be applied to symptom defs of other resource kinds. resource(AK,RK)=(vCenter Operations Adapter,vC-Ops-Cluster), alertDef(AK,RK)=(vCenter Operations Adapter,vc), alertDefId:AlertDefinition-SDDCHealthAdapter-NodenotSized
+44929-2026-04-28T19:03:28,097+0000 ERROR [Function Execution Processor378]  com.integrien.analytics.dataobject.ProblemAlertManager.getEvaluatedIdentifierResult - result null for population id:null
+44930-2026-04-28T19:03:28,098+0000 ERROR [Function Execution Processor378]  com.integrien.analytics.dataobject.SymptomSetEvaluator.evaluateSubSet - Self relation can't be applied to symptom defs of other resource kinds. resource(AK,RK)=(vCenter Operations Adapter,vC-Ops-Cluster), alertDef(AK,RK)=(vCenter Operations Adapter,vc), alertDefId:AlertDefinition-SDDCHealthAdapter-NodenotSized
+44931-2026-04-28T19:03:28,098+0000 ERROR [Function Execution Processor378]  com.integrien.analytics.dataobject.ProblemAlertManager.getEvaluatedIdentifierResult - result null for population id:null
+44932-2026-04-28T19:03:28,099+0000 ERROR [Function Execution Processor378]  com.integrien.analytics.dataobject.SymptomSetEvaluator.evaluateSubSet - Self relation can't be applied to symptom defs of other resource kinds. resource(AK,RK)=(vCenter Operations Adapter,vC-Ops-Cluster), alertDef(AK,RK)=(vCenter Operations Adapter,vc), alertDefId:AlertDefinition-SDDCHealthAdapter-NodenotSized
+44933-2026-04-28T19:03:28,099+0000 ERROR [Function Execution Processor378]  com.integrien.analytics.dataobject.ProblemAlertManager.getEvaluatedIdentifierResult - result null for population id:null
+--
+45813-2026-04-28T19:26:04,090+0000 WARN  [DistTaskDistributedTaskInstallUninstallAdapters]  com.integrien.alive.common.adapter3.describe.AdapterDescribe.loadDescribe - Failed to load resource kind describe 47
+45814-2026-04-28T19:26:04,090+0000 WARN  [DistTaskDistributedTaskInstallUninstallAdapters]  com.integrien.alive.controller.DistributedTaskInstallUninstallAdapters.getAdapterKindAndVersion - Unable to create AdapterDescribe object.
+45815:2026-04-28T19:26:04,090+0000 ERROR [DistTaskDistributedTaskInstallUninstallAdapters]  com.integrien.alive.controller.DistributedTaskInstallUninstallAdapters.getKindsAndRemoveOldAdapters - Cannot check version for adapter MicrosoftAzureAdapter.conf: Incorrect format in describe.xml
+45816:2026-04-28T19:26:04,093+0000 ERROR [DistTaskDistributedTaskInstallUninstallAdapters]  com.integrien.alive.controller.DistributedTaskInstallUninstallAdapters.installAdapters - DistributedTaskInstallUninstallAdapters finished with Fail: Cannot check version for adapter MicrosoftAzureAdapter.conf: Incorrect format in describe.xml
+45817-2026-04-28T19:26:04,094+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.SymptomSetEvaluator.evaluateSubSet - Self relation can't be applied to symptom defs of other resource kinds. resource(AK,RK)=(vCenter Operations Adapter,vC-Ops-Cluster), alertDef(AK,RK)=(vCenter Operations Adapter,vc), alertDefId:AlertDefinition-SDDCHealthAdapter-NodenotSized
+45818-2026-04-28T19:26:04,094+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.ProblemAlertManager.getEvaluatedIdentifierResult - result null for population id:null
+45819-2026-04-28T19:26:04,095+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.SymptomSetEvaluator.evaluateSubSet - Self relation can't be applied to symptom defs of other resource kinds. resource(AK,RK)=(vCenter Operations Adapter,vC-Ops-Cluster), alertDef(AK,RK)=(vCenter Operations Adapter,vc), alertDefId:AlertDefinition-SDDCHealthAdapter-NodenotSized
+45820-2026-04-28T19:26:04,096+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.ProblemAlertManager.getEvaluatedIdentifierResult - result null for population id:null
+45821-2026-04-28T19:26:04,096+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.SymptomSetEvaluator.evaluateSubSet - Self relation can't be applied to symptom defs of other resource kinds. resource(AK,RK)=(vCenter Operations Adapter,vC-Ops-Cluster), alertDef(AK,RK)=(vCenter Operations Adapter,vc), alertDefId:AlertDefinition-SDDCHealthAdapter-NodenotSized
+45822-2026-04-28T19:26:04,096+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.ProblemAlertManager.getEvaluatedIdentifierResult - result null for population id:null
+45823-2026-04-28T19:26:04,097+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.SymptomSetEvaluator.evaluateSubSet - Self relation can't be applied to symptom defs of other resource kinds. resource(AK,RK)=(vCenter Operations Adapter,vC-Ops-Cluster), alertDef(AK,RK)=(vCenter Operations Adapter,vc), alertDefId:AlertDefinition-SDDCHealthAdapter-NodenotSized
+45824-2026-04-28T19:26:04,097+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.ProblemAlertManager.getEvaluatedIdentifierResult - result null for population id:null
+45825-2026-04-28T19:26:04,098+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.SymptomSetEvaluator.evaluateSubSet - Self relation can't be applied to symptom defs of other resource kinds. resource(AK,RK)=(vCenter Operations Adapter,vC-Ops-Cluster), alertDef(AK,RK)=(vCenter Operations Adapter,vc), alertDefId:AlertDefinition-SDDCHealthAdapter-NodenotSized
+45826-2026-04-28T19:26:04,098+0000 ERROR [Function Execution Processor379]  com.integrien.analytics.dataobject.ProblemAlertManager.getEvaluatedIdentifierResult - result null for population id:null
+
+
+
+
+
+
+
+
+
+
+
+
