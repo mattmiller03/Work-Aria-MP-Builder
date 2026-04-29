@@ -519,7 +519,7 @@ sudo grep -c "^2026-04-28T19:2[56]" "$TARGET"
 
 
 
-TARGET=$(sudo grep -l "977741b6-8f7e-4bfe-9587-80f8a5ee1ffb" /storage/log/vcops/log/analytics-*.log* 2>/dev/null | head -1)
+TARGET=$(sudo grep -l "977741b6-8f7e-4bfe-9587-80f8a5ee1ffb" /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.1 2>/dev/null | head -1)
 echo "Reading: $TARGET"
 
 # Pull all 19:25/19:26 lines into a manageable file (use double quotes for variable)
@@ -535,6 +535,80 @@ grep -n "Failed to load resource kind describe 47" /tmp/install-window.log
 LINE=$(grep -n "Failed to load resource kind describe 47" /tmp/install-window.log | head -1 | cut -d: -f1)
 sed -n "$((LINE-25)),$((LINE+5))p" /tmp/install-window.log
 
+
+
+
+
+root@ARIAOPS-NODE [ ~ ]# TARGET=$(sudo grep -l "977741b6-8f7e-4bfe-9587-80f8a5ee1ffb" /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.1 2>/dev/null | head -1)
+echo "Reading: $TARGET"
+Reading: /storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.1
+root@ARIAOPS-NODE [ ~ ]# 
+root@ARIAOPS-NODE [ ~ ]# 
+root@ARIAOPS-NODE [ ~ ]# sudo grep "^2026-04-28T19:2[56]" "$TARGET" > /tmp/install-window.log
+wc -l /tmp/install-window.log
+155 /tmp/install-window.log
+root@ARIAOPS-NODE [ ~ ]# 
+root@ARIAOPS-NODE [ ~ ]# grep -nE "AdapterDescribe|DistributedTaskInstall|describe\.xml|loadDescribe|MicrosoftAzureAdapter|Caused by:|^\s+at " /tmp/install-window.log
+2:2026-04-28T19:26:03,973+0000 INFO  [DistTaskSolutionManagerDistributedTask]  com.integrien.alive.controller.DistributedTaskInstallUninstallAdapters.<init> - isForceInstall = true, isForceUpdateContent = true
+3:2026-04-28T19:26:04,069+0000 INFORMATION [DistTaskDistributedTaskInstallUninstallAdapters]  com.integrien.alive.controller.DistributedTaskInstallUninstallAdapters.run - DistributedTaskInstallUninstallAdapters started ...
+12:2026-04-28T19:26:04,077+0000 INFO  [DistTaskDistributedTaskInstallUninstallAdapters]  com.integrien.alive.controller.DistributedTaskInstallUninstallAdapters.installAdapters - installAdapters Started ...
+13:2026-04-28T19:26:04,090+0000 ERROR [DistTaskDistributedTaskInstallUninstallAdapters]  com.integrien.alive.common.adapter3.describe.ResourceAttributeDescribe.load - Illegal symbols in attribute key: SERVICE_DESCRIPTORS|AZURE_SUBSCRIPTION_ID
+14:2026-04-28T19:26:04,090+0000 WARN  [DistTaskDistributedTaskInstallUninstallAdapters]  com.integrien.alive.common.adapter3.describe.AdapterDescribe.loadDescribe - Failed to load resource kind describe 47
+15:2026-04-28T19:26:04,090+0000 WARN  [DistTaskDistributedTaskInstallUninstallAdapters]  com.integrien.alive.controller.DistributedTaskInstallUninstallAdapters.getAdapterKindAndVersion - Unable to create AdapterDescribe object.
+16:2026-04-28T19:26:04,090+0000 ERROR [DistTaskDistributedTaskInstallUninstallAdapters]  com.integrien.alive.controller.DistributedTaskInstallUninstallAdapters.getKindsAndRemoveOldAdapters - Cannot check version for adapter MicrosoftAzureAdapter.conf: Incorrect format in describe.xml
+17:2026-04-28T19:26:04,093+0000 ERROR [DistTaskDistributedTaskInstallUninstallAdapters]  com.integrien.alive.controller.DistributedTaskInstallUninstallAdapters.installAdapters - DistributedTaskInstallUninstallAdapters finished with Fail: Cannot check version for adapter MicrosoftAzureAdapter.conf: Incorrect format in describe.xml
+87:2026-04-28T19:26:04,155+0000 INFORMATION [DistTaskDistributedTaskInstallUninstallAdapters]  com.integrien.alive.controller.DistributedTaskInstallUninstallAdapters.run - DistributedTaskInstallUninstallAdapters finished in 78ms.
+root@ARIAOPS-NODE [ ~ ]# 
+root@ARIAOPS-NODE [ ~ ]# 
+root@ARIAOPS-NODE [ ~ ]# grep -n "Failed to load resource kind describe 47" /tmp/install-window.log
+14:2026-04-28T19:26:04,090+0000 WARN  [DistTaskDistributedTaskInstallUninstallAdapters]  com.integrien.alive.common.adapter3.describe.AdapterDescribe.loadDescribe - Failed to load resource kind describe 47
+root@ARIAOPS-NODE [ ~ ]# 
+root@ARIAOPS-NODE [ ~ ]# 
+root@ARIAOPS-NODE [ ~ ]# 
+root@ARIAOPS-NODE [ ~ ]# LINE=$(grep -n "Failed to load resource kind describe 47" /tmp/install-window.log | head -1 | cut -d: -f1)
+sed -n "$((LINE-25)),$((LINE+5))p" /tmp/install-window.log
+sed: invalid option -- '1'
+Usage: sed [OPTION]... {script-only-if-no-other-script} [input-file]...
+
+  -n, --quiet, --silent
+                 suppress automatic printing of pattern space
+      --debug
+                 annotate program execution
+  -e script, --expression=script
+                 add the script to the commands to be executed
+  -f script-file, --file=script-file
+                 add the contents of script-file to the commands to be executed
+  --follow-symlinks
+                 follow symlinks when processing in place
+  -i[SUFFIX], --in-place[=SUFFIX]
+                 edit files in place (makes backup if SUFFIX supplied)
+  -l N, --line-length=N
+                 specify the desired line-wrap length for the `l' command
+  --posix
+                 disable all GNU extensions.
+  -E, -r, --regexp-extended
+                 use extended regular expressions in the script
+                 (for portability use POSIX -E).
+  -s, --separate
+                 consider files as separate rather than as a single,
+                 continuous long stream.
+      --sandbox
+                 operate in sandbox mode (disable e/r/w commands).
+  -u, --unbuffered
+                 load minimal amounts of data from the input files and flush
+                 the output buffers more often
+  -z, --null-data
+                 separate lines by NUL characters
+      --help     display this help and exit
+      --version  output version information and exit
+
+If no -e, --expression, -f, or --file option is given, then the first
+non-option argument is taken as the sed script to interpret.  All
+remaining arguments are names of input files; if no input files are
+specified, then the standard input is read.
+
+GNU sed home page: <https://www.gnu.org/software/sed/>.
+General help using GNU software: <https://www.gnu.org/gethelp/>.
 
 
 
