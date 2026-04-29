@@ -682,3 +682,8 @@ sudo xfs_growfs /                                # xfs
 
 df -h /                                          # should now show ~40 GB total
 
+cd /opt/aria/Aria-MP-Builder
+VERSION=$(awk -F'"' '/"version":/ {print $4}' Azure-Native-Build/manifest.txt)
+echo "Version: $VERSION"
+sudo docker tag microsoftazureadapter-test:$VERSION 214.73.76.134:5000/azuregovcloud-adapter:latest
+sudo docker push 214.73.76.134:5000/azuregovcloud-adapter:latest
