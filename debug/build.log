@@ -455,7 +455,18 @@ Step 4 (docker daemon restart) is the part we haven't tried yet — it nukes any
 
 sudo ls -lt /storage/log/vcops/log/analytics/analytics*.log | head -3
 sudo grep -n -B 2 -A 30 "977741b6-8f7e-4bfe-9587-80f8a5ee1ffb\|MicrosoftAzureAdapter-8192\|adapter_kinds\|addAdapterKind\|SAXParse" \
-  /storage/log/vcops/log/analytics/analytics*.log 2>/dev/null | tail -80
+  /storage/log/vcops/log/analytics*.log 2>/dev/null | tail -80
+
+
+
+  /storage/log/vcops/log/pakManager/vcopsPakManager.root.post_apply_adapter.log
+/storage/log/vcops/log/http_api.log.8
+/storage/log/vcops/log/api.log.13
+/storage/log/vcops/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.1
+/usr/lib/vmware-vcops/user/log/pakManager/vcopsPakManager.root.post_apply_adapter.log
+/usr/lib/vmware-vcops/user/log/http_api.log.8
+/usr/lib/vmware-vcops/user/log/api.log.13
+/usr/lib/vmware-vcops/user/log/analytics-6b281004-1325-4f5b-be20-3b5ffacd06c7.log.1
 
 
 
