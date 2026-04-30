@@ -1161,6 +1161,18 @@ exit codes:
             "at least one of --connection, --pak, --aria-ops, --report is required"
         )
 
+    # Default --out to a timestamped file when running a live collection.
+    # Live collect can take 15+ minutes; losing the JSON because the user
+    # forgot --out is a needlessly expensive mistake.
+    if args.connection and not args.out:
+        default_out = f"verify-{time.strftime('%Y%m%d-%H%M%S')}.json"
+        logger.warning(
+            "--out not specified for live collection; defaulting to %s "
+            "in cwd. Pass --out explicitly (or --no-default-out) to override.",
+            default_out,
+        )
+        args.out = default_out
+
     if args.quiet_collectors:
         quiet_collector_logs()
 
