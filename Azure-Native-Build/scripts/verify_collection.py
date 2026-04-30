@@ -794,6 +794,101 @@ def verify_aria_ops(
 
 
 # ---------------------------------------------------------------------------
+# Redaction (for sharing reports outside the secure environment)
+# ---------------------------------------------------------------------------
+
+# Azure tenant/subscription/client IDs are 8-4-4-4-12 GUIDs. Replace any
+# occurrence in free-text strings (error messages, content drift entries).
+_GUID_RE = re.compile(
+    r"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"
+)
+# ARM resource paths frequently embed names: /subscriptions/<guid>/resourceGroups/<name>/...
+_ARM_PATH_RE = re.compile(r"/(subscriptions|resourceGroups|providers)/[^/\s]+", re.IGNORECASE)
+
+
+def _redact_text(s: str) -> str:
+    if not isinstance(s, str):
+        return s
+    s = _GUID_RE.sub("<guid>", s)
+    s = _ARM_PATH_RE.sub(r"/\1/<redacted>", s)
+    return s
+
+
+def redact_report(report: dict) -> dict:
+    """Return a deep copy of the report with sensitive values stripped.
+
+    Removed: connection name, Aria Ops hostname, object names in the
+    Dedicated Host coverage section, GUIDs anywhere in error messages,
+    ARM-path-shaped substrings.
+    Kept: kind keys, attribute keys, counts, statuses, content file paths
+    (which are repo-relative and public), drift token names (schema-level).
+    """
+    import copy
+
+    r = copy.deepcopy(report)
+
+    if r.get("connection"):
+        r["connection"] = "<connection>"
+
+    live = r.get("live")
+    if isinstance(live, dict):
+        if live.get("error"):
+            live["error"] = _redact_text(live["error"])
+        # Dedicated Host coverage carries actual host names.
+        dh = live.get("dedicated_host_missing_attrs", [])
+        if isinstance(dh, list):
+            for i, entry in enumerate(dh):
+                if isinstance(entry, dict) and "name" in entry:
+                    entry["host_index"] = i + 1
+                    entry.pop("name", None)
+        # Per-kind reasons should be schema-only by construction, but redact
+        # GUIDs defensively in case an exception message snuck through.
+        per_kind = live.get("per_kind", {})
+        if isinstance(per_kind, dict):
+            for kinfo in per_kind.values():
+                if isinstance(kinfo, dict) and isinstance(kinfo.get("reasons"), list):
+                    kinfo["reasons"] = [_redact_text(x) for x in kinfo["reasons"]]
+
+    ao = r.get("aria_ops")
+    if isinstance(ao, dict):
+        if ao.get("host"):
+            ao["host"] = "<aria-ops-host>"
+        if ao.get("error"):
+            ao["error"] = _redact_text(ao["error"])
+        if isinstance(ao.get("mismatches"), list):
+            ao["mismatches"] = [_redact_text(m) for m in ao["mismatches"]]
+
+    da = r.get("describe_audit")
+    if isinstance(da, dict) and da.get("error"):
+        da["error"] = _redact_text(da["error"])
+
+    drift = r.get("content_drift")
+    if isinstance(drift, list):
+        redacted_drift = []
+        for item in drift:
+            if isinstance(item, (list, tuple)):
+                redacted_drift.append([_redact_text(str(x)) for x in item])
+            else:
+                redacted_drift.append(_redact_text(str(item)))
+        r["content_drift"] = redacted_drift
+
+    return r
+
+
+def quiet_collector_logs() -> None:
+    """Bump adapter/collector loggers to WARNING to suppress per-resource INFO."""
+    for name in (
+        "adapter",
+        "azure_client",
+        "auth",
+        "helpers",
+        "pricing",
+        "collectors",
+    ):
+        logging.getLogger(name).setLevel(logging.WARNING)
+
+
+# ---------------------------------------------------------------------------
 # Reports
 # ---------------------------------------------------------------------------
 
@@ -844,9 +939,9 @@ def render_text_report(report: dict) -> str:
             if dh_miss:
                 out.append("### Dedicated Host attribute coverage")
                 for entry in dh_miss:
+                    label = entry.get("name") or f"host-{entry.get('host_index', '?')}"
                     out.append(
-                        f"- `{entry['name']}` missing: "
-                        f"{', '.join(entry['missing'])}"
+                        f"- `{label}` missing: {', '.join(entry['missing'])}"
                     )
                 out.append("")
 
@@ -975,6 +1070,19 @@ examples:
   diff <(jq -S . verify-20260430-0900.json) \\
        <(jq -S . verify-20260501-0900.json)
 
+  # Quiet the per-resource INFO chatter from the collectors, useful when
+  # the run is going to scroll past 10k+ log lines
+  python scripts/verify_collection.py \\
+      --connection connections.json --pak build/...pak \\
+      --quiet-collectors \\
+      --out verify.json
+
+  # Re-render an existing report with sensitive values redacted (GUIDs,
+  # Aria Ops hostname, host names). Cheap — no Azure or Aria Ops calls.
+  # Use this to produce a shareable variant after running locally.
+  python scripts/verify_collection.py --report verify.json --redacted \\
+      --out verify-redacted.json
+
 exit codes:
   0  all PASS
   1  any FAIL (missing kind, missing parent, dropped metric, etc.)
@@ -1009,12 +1117,52 @@ exit codes:
         action="store_true",
         help="Suppress markdown stdout report",
     )
+    parser.add_argument(
+        "--redacted",
+        action="store_true",
+        help=(
+            "Strip GUIDs, Aria Ops hostname, connection name, and Dedicated "
+            "Host names from the rendered output. Use when sharing reports."
+        ),
+    )
+    parser.add_argument(
+        "--quiet-collectors",
+        action="store_true",
+        help=(
+            "Bump adapter/collector loggers to WARNING during live collection "
+            "(suppresses per-resource INFO chatter)."
+        ),
+    )
+    parser.add_argument(
+        "--report",
+        help=(
+            "Path to a previously-written JSON report; re-renders without "
+            "re-running collection. Combine with --redacted to produce a "
+            "shareable variant."
+        ),
+    )
     args = parser.parse_args(argv)
+
+    # --report short-circuits everything else: load the JSON, render, exit.
+    if args.report:
+        with open(args.report) as f:
+            cached = json.load(f)
+        rendered = redact_report(cached) if args.redacted else cached
+        if not args.no_text_report:
+            print(render_text_report(rendered))
+        if args.out:
+            render_json_report(rendered, args.out)
+            logger.info("Report written to %s", args.out)
+        exit_summary = cached.get("exit_summary", "PASS")
+        return {"FAIL": 1, "WARN": 2, "PASS": 0}.get(exit_summary, 0)
 
     if not (args.connection or args.pak or args.aria_ops):
         parser.error(
-            "at least one of --connection, --pak, --aria-ops is required"
+            "at least one of --connection, --pak, --aria-ops, --report is required"
         )
+
+    if args.quiet_collectors:
+        quiet_collector_logs()
 
     report: dict[str, Any] = {
         "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
@@ -1199,11 +1347,16 @@ exit codes:
         report["exit_summary"] = "PASS"
         exit_code = 0
 
+    rendered = redact_report(report) if args.redacted else report
     if not args.no_text_report:
-        print(render_text_report(report))
+        print(render_text_report(rendered))
     if args.out:
-        render_json_report(report, args.out)
-        logger.info("JSON report written to %s", args.out)
+        render_json_report(rendered, args.out)
+        logger.info(
+            "JSON report written to %s%s",
+            args.out,
+            " (redacted)" if args.redacted else "",
+        )
 
     return exit_code
 
