@@ -24,8 +24,10 @@ import json
 import logging
 import os
 import re
+import signal
 import ssl
 import sys
+import threading
 import time
 import urllib.error
 import urllib.request
@@ -412,7 +414,123 @@ def _ensure_aria_sdk(app_dir: Path) -> None:
         ) from e
 
 
-def run_collection(stub: StubAdapterInstance) -> tuple[Any, float]:
+def _install_sampling(sample_n: int) -> None:
+    """Monkey-patch AzureClient.get_all to truncate leaf-resource list calls.
+
+    The patch returns at most `sample_n` items from any path containing
+    `/providers/` (leaf-level enumeration: VMs, storage accounts, hosts,
+    etc.). Discovery paths (`/subscriptions`, `/subscriptions/{id}/
+    resourceGroups`) are passed through unchanged so parent-edge integrity
+    is preserved.
+
+    Note: the underlying call still paginates fully — we truncate only the
+    returned list. Pagination overhead is small compared to the per-resource
+    enrichment loops downstream (Dedicated Host's 10 ARM calls per host,
+    metric calls per VM/disk/etc.), which scale with the truncated list.
+    """
+    import azure_client
+
+    orig = azure_client.AzureClient.get_all
+
+    def sampled_get_all(self, path, *args, **kwargs):
+        results = orig(self, path, *args, **kwargs)
+        if (
+            "/providers/" in path.lower()
+            and isinstance(results, list)
+            and len(results) > sample_n
+        ):
+            logger.debug(
+                "Sampling: %s capped %d -> %d", path, len(results), sample_n
+            )
+            return results[:sample_n]
+        return results
+
+    azure_client.AzureClient.get_all = sampled_get_all
+    logger.info("Sampling enabled: leaf list calls capped at %d items", sample_n)
+
+
+def _install_crash_safe(report: dict, args: "argparse.Namespace") -> None:
+    """Register signal handlers and an excepthook so a partial JSON report
+    is written on any abnormal exit (Ctrl-C, SIGTERM, SIGHUP from a dropped
+    SSH session, unhandled exception). The handlers reference the same
+    `report` dict that main() mutates as audits complete, so whatever phase
+    finished before the crash is what gets persisted.
+
+    No-op when args.out is unset (without an output path there's nowhere
+    to dump the report).
+    """
+    if not args.out:
+        return
+
+    written = {"done": False}
+
+    def _persist(reason: str, code: int) -> None:
+        if written["done"]:
+            return
+        written["done"] = True
+        logger.warning("Crash-safe write triggered: %s", reason)
+        report.setdefault("partial", True)
+        report.setdefault("exit_summary", "INTERRUPTED")
+        report.setdefault("crash_reason", reason)
+        try:
+            rendered = redact_report(report) if args.redacted else report
+            render_json_report(rendered, args.out)
+            logger.info(
+                "Partial report written to %s%s",
+                args.out,
+                " (redacted)" if args.redacted else "",
+            )
+        except Exception as e:
+            logger.error("Failed to write partial report: %s", e)
+
+    def _signal_handler(signum: int, frame: Any) -> None:  # noqa: ANN001
+        _persist(f"signal {signum} ({signal.Signals(signum).name})", 130)
+        sys.exit(130)
+
+    def _excepthook(
+        exc_type: type, exc_value: BaseException, traceback: Any
+    ) -> None:
+        if issubclass(exc_type, KeyboardInterrupt):
+            _persist("KeyboardInterrupt", 130)
+        else:
+            report["error"] = f"{exc_type.__name__}: {exc_value}"
+            _persist(f"unhandled {exc_type.__name__}", 1)
+        sys.__excepthook__(exc_type, exc_value, traceback)
+
+    sys.excepthook = _excepthook
+    signal.signal(signal.SIGINT, _signal_handler)
+    signal.signal(signal.SIGTERM, _signal_handler)
+    sighup = getattr(signal, "SIGHUP", None)  # Unix only; dropped SSH sessions
+    if sighup is not None:
+        signal.signal(sighup, _signal_handler)
+
+
+def _start_heartbeat(interval: int) -> threading.Event:
+    """Background thread that logs elapsed time every `interval` seconds.
+
+    Returns the stop Event; caller calls `.set()` to halt the thread. The
+    thread is daemon so it dies with the process. Useful when paired with
+    `--quiet-collectors` so the user knows the run is making progress
+    rather than hung.
+    """
+    stop = threading.Event()
+    started = time.time()
+
+    def beat() -> None:
+        while not stop.wait(interval):
+            elapsed = time.time() - started
+            logger.info("Heartbeat: %.1f min elapsed", elapsed / 60)
+
+    t = threading.Thread(target=beat, daemon=True, name="verify-heartbeat")
+    t.start()
+    return stop
+
+
+def run_collection(
+    stub: StubAdapterInstance,
+    sample_n: Optional[int] = None,
+    heartbeat_interval: int = 60,
+) -> tuple[Any, float]:
     """Import adapter and run collect(). Returns (CollectResult, duration_seconds)."""
     here = Path(__file__).resolve().parent
     app_dir = here.parent / "app"
@@ -420,10 +538,19 @@ def run_collection(stub: StubAdapterInstance) -> tuple[Any, float]:
         raise FileNotFoundError(f"Expected app/ at {app_dir}")
     _ensure_aria_sdk(app_dir)
     sys.path.insert(0, str(app_dir))
+    if sample_n is not None and sample_n > 0:
+        _install_sampling(sample_n)
     import importlib  # noqa
     adapter_mod = importlib.import_module("adapter")
+    stop_heartbeat = (
+        _start_heartbeat(heartbeat_interval) if heartbeat_interval > 0 else None
+    )
     t0 = time.time()
-    result = adapter_mod.collect(stub)
+    try:
+        result = adapter_mod.collect(stub)
+    finally:
+        if stop_heartbeat is not None:
+            stop_heartbeat.set()
     return result, time.time() - t0
 
 
@@ -1083,6 +1210,25 @@ examples:
   python scripts/verify_collection.py --report verify.json --redacted \\
       --out verify-redacted.json
 
+  # Fast smoke run on a real tenant — caps each ARM list at 5 items per
+  # call, finishes in ~3-5 minutes instead of hours. Heartbeat every 30s
+  # confirms the run is alive even with --quiet-collectors.
+  python scripts/verify_collection.py \\
+      --connection connections.json \\
+      --pak build/MicrosoftAzureAdapter.pak \\
+      --sample 5 --quiet-collectors --heartbeat 30 \\
+      --out verify-smoke.json
+
+  # Survive session timeouts — run in background with nohup, tail the log.
+  # Crash-safe handlers flush a partial JSON to --out on SIGHUP/SIGTERM/
+  # Ctrl-C so dropped SSH connections don't lose the work.
+  nohup python scripts/verify_collection.py \\
+      --connection connections.json \\
+      --pak build/MicrosoftAzureAdapter.pak \\
+      --sample 20 --quiet-collectors \\
+      --out debug/verify.json > debug/verify.log 2>&1 &
+  tail -f debug/verify.log
+
 exit codes:
   0  all PASS
   1  any FAIL (missing kind, missing parent, dropped metric, etc.)
@@ -1141,6 +1287,28 @@ exit codes:
             "shareable variant."
         ),
     )
+    parser.add_argument(
+        "--sample",
+        type=int,
+        default=0,
+        metavar="N",
+        help=(
+            "Cap leaf ARM list calls at N items per call. Recommended: 5 for "
+            "smoke (~3-5 min on a real tenant), 20 for sample (~15 min). "
+            "Default: 0 (unlimited; full collection, can take hours)."
+        ),
+    )
+    parser.add_argument(
+        "--heartbeat",
+        type=int,
+        default=60,
+        metavar="SECS",
+        help=(
+            "Emit elapsed-time log every SECS during live collection. "
+            "Default: 60. Set 0 to disable. Useful with --quiet-collectors "
+            "to confirm the run is alive."
+        ),
+    )
     args = parser.parse_args(argv)
 
     # --report short-circuits everything else: load the JSON, render, exit.
@@ -1181,11 +1349,19 @@ exit codes:
     }
     if args.pak:
         report["pak"] = args.pak
+    if args.sample > 0:
+        report["sample"] = args.sample
+
+    # Register crash-safe handlers BEFORE the long-running audits so an
+    # SSH-session-kill / Ctrl-C / unhandled exception still produces a JSON
+    # report at args.out with whatever phases completed.
+    _install_crash_safe(report, args)
 
     has_fail = False
     has_warn = False
     expected_counts_for_aria: Optional[dict[str, int]] = None
     conn: Optional[dict] = None
+    exit_code = 0
 
     # --- Live collection ---------------------------------------------------
     if args.connection:
@@ -1194,7 +1370,11 @@ exit codes:
         stub = StubAdapterInstance(conn)
         logger.info("Running live collection...")
         try:
-            result, duration = run_collection(stub)
+            result, duration = run_collection(
+                stub,
+                sample_n=args.sample if args.sample > 0 else None,
+                heartbeat_interval=args.heartbeat,
+            )
         except Exception as e:
             logger.error("run_collection failed: %s", e, exc_info=True)
             report["live"] = {"error": f"{type(e).__name__}: {e}"}
@@ -1371,6 +1551,8 @@ exit codes:
         )
 
     return exit_code
+
+
 
 
 if __name__ == "__main__":
