@@ -361,12 +361,64 @@ class StubAdapterInstance:
 # Live collection
 # ---------------------------------------------------------------------------
 
+def _ensure_aria_sdk(app_dir: Path) -> None:
+    """Make `aria.ops` importable, falling back to the bundled wheels.
+
+    On the MP Builder server, the SDK is installed in the container that runs
+    mp-test/mp-build, but not necessarily in whatever Python the user invokes
+    this script with. Rather than require a separate `pip install`, we add
+    every `.whl` in `app/wheels/` to sys.path — wheels are zip archives with
+    a standard package layout, so this is enough to satisfy `import aria` and
+    its transitive deps (aenum, requests, urllib3, certifi, idna, charset-
+    normalizer, cryptography, cffi, pycparser).
+
+    Note: the cffi / cryptography / charset_normalizer wheels are
+    Linux-x86_64-only (manylinux) — this works on the Photon MP Builder
+    server but not on Windows. For Windows debugging, `pip install` from a
+    pip cache or PyPI proxy is the right path.
+    """
+    try:
+        import aria.ops  # noqa: F401
+        return
+    except ImportError:
+        pass
+
+    wheels_dir = app_dir / "wheels"
+    if not wheels_dir.is_dir():
+        raise ImportError(
+            f"aria SDK not installed and no wheels dir at {wheels_dir}. "
+            "Run `pip install app/wheels/*.whl` first."
+        )
+    wheels = sorted(wheels_dir.glob("*.whl"))
+    if not wheels:
+        raise ImportError(
+            f"No wheels found in {wheels_dir}. "
+            "Run `pip install app/wheels/*.whl` first."
+        )
+
+    # Insert in reverse order so the SDK wheel ends up at sys.path[0] last
+    # (purely cosmetic — Python checks each entry until something resolves).
+    for wheel in wheels:
+        sys.path.insert(0, str(wheel))
+    logger.info("Bootstrapped %d wheels from %s", len(wheels), wheels_dir)
+
+    try:
+        import aria.ops  # noqa: F401
+    except ImportError as e:
+        raise ImportError(
+            f"Failed to import aria.ops after adding {len(wheels)} wheels to "
+            f"sys.path. Likely a platform mismatch (Linux wheels on a "
+            f"non-Linux host). Original error: {e}"
+        ) from e
+
+
 def run_collection(stub: StubAdapterInstance) -> tuple[Any, float]:
     """Import adapter and run collect(). Returns (CollectResult, duration_seconds)."""
     here = Path(__file__).resolve().parent
     app_dir = here.parent / "app"
     if not app_dir.exists():
         raise FileNotFoundError(f"Expected app/ at {app_dir}")
+    _ensure_aria_sdk(app_dir)
     sys.path.insert(0, str(app_dir))
     import importlib  # noqa
     adapter_mod = importlib.import_module("adapter")
