@@ -274,6 +274,108 @@ def _fetch_from_api(region: str) -> dict:
     return prices
 
 
+# ---------------------------------------------------------------------------
+# Fallback memory table — Dedicated Host SKU memory capacity (GiB)
+# Source: Azure Compute SKU API + Microsoft Learn dedicated host SKU docs
+#         https://learn.microsoft.com/azure/virtual-machines/dedicated-host
+#
+# Used when Azure Gov's Microsoft.Compute/skus API doesn't surface the
+# `MemoryGB` capability for dedicated hosts (observed 2026-05-01 — the
+# capability is present in commercial Azure but missing from Gov even
+# when the SKU itself is returned). dedicated_hosts.py falls back to
+# this table to compute memory_utilization_pct.
+#
+# **Best-effort values** — verify against your tenant's actual SKU API
+# response when possible. Unknown SKUs log a WARNING from
+# get_dedicated_host_memory_fallback so operators can extend this table
+# as new host families are deployed. Both underscore and hyphen forms
+# are accepted by the lookup function.
+#
+# Last reviewed: 2026-05-01
+# ---------------------------------------------------------------------------
+FALLBACK_DEDICATED_HOST_MEMORY_GIB = {
+    # Dsv3 — General-purpose, Intel Xeon E5-2673 v4 (Broadwell)
+    "Dsv3_Type1": 256.0,
+    "Dsv3_Type2": 448.0,
+    "Dsv3_Type3": 576.0,
+    "Dsv3_Type4": 768.0,
+
+    # Dsv4 / Dasv4 / Ddsv4 — Intel Cascade Lake / AMD EPYC Rome
+    "Dsv4_Type1": 384.0,
+    "Dsv4_Type2": 768.0,
+    "Dasv4_Type1": 384.0,
+    "Dasv4_Type2": 768.0,
+    "Ddsv4_Type 1": 384.0,
+    "Ddsv4_Type2": 768.0,
+
+    # Dsv5 / Dadsv5 / Dasv5 — Intel Ice Lake / AMD EPYC Milan
+    "Dadsv5_Type1": 384.0,
+    "Dasv5_Type1": 384.0,
+
+    # Esv3 — Memory-optimized
+    "Esv3_Type1": 432.0,
+    "Esv3_Type2": 504.0,
+    "Esv3_Type3": 768.0,
+    "Esv3_Type4": 1008.0,
+
+    # Esv4 / Easv4 / Edsv4 — Memory-optimized newer gen
+    "Esv4_Type1": 504.0,
+    "Esv4_Type2": 1024.0,
+    "Easv4_Type1": 504.0,
+    "Easv4_Type2": 1024.0,
+    "Edsv4_Type 1": 504.0,
+    "Edsv4_Type2": 1024.0,
+
+    # Lsv2 — Storage-optimized
+    "Lsv2_Type1": 768.0,
+
+    # Fsv2 — Compute-optimized
+    "Fsv2_Type2": 288.0,
+    "Fsv2_Type3": 384.0,
+    "Fsv2_Type4": 504.0,
+
+    # Ms / Msv2 / Msmv2 — High-memory
+    "Ms_Type1": 3892.0,
+    "Msv2_Type1": 5700.0,
+    "Msmv2_Type1": 11400.0,
+
+    # DCsv2 — Confidential compute
+    "DCsv2 Type 1": 192.0,
+}
+
+
+def get_dedicated_host_memory_fallback(sku_name: str) -> float:
+    """Look up dedicated host memory capacity from the hardcoded table.
+
+    Used when the Azure SKU API doesn't return MemoryGB for dedicated
+    hosts (Azure Gov data quirk as of 2026-05-01). Tries both underscore
+    and hyphen forms of the SKU name to match whatever ARM returned.
+
+    Args:
+        sku_name: Dedicated host SKU name (e.g., "Dsv3-Type1" or "Dsv3_Type1").
+
+    Returns:
+        Memory capacity in GiB, or 0.0 if the SKU isn't in the fallback
+        table. Logs a WARNING on miss so operators see which SKUs need
+        to be added.
+    """
+    if not sku_name:
+        return 0.0
+
+    # Try direct match, then both name-format variants
+    for candidate in (sku_name, sku_name.replace("-", "_"), sku_name.replace("_", "-")):
+        if candidate in FALLBACK_DEDICATED_HOST_MEMORY_GIB:
+            return FALLBACK_DEDICATED_HOST_MEMORY_GIB[candidate]
+
+    logger.warning(
+        "No memory fallback for dedicated host SKU %r — extend "
+        "FALLBACK_DEDICATED_HOST_MEMORY_GIB in pricing.py to populate "
+        "memory_utilization_pct for hosts of this type",
+        sku_name,
+    )
+    return 0.0
+
+
 def get_all_dedicated_host_prices(regions: list) -> dict:
     """Fetch dedicated host prices across multiple regions.
 

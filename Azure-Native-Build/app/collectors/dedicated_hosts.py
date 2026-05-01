@@ -486,6 +486,19 @@ def collect_dedicated_hosts(client: AzureClient, result, adapter_kind: str,
                     host_memory_gb = collect_dedicated_hosts._host_sku_cache.get(
                         cache_key, {}).get(host_sku_name, 0)
 
+                    # Azure Gov's SKU API doesn't return MemoryGB for
+                    # dedicated hosts even when the SKU itself is listed.
+                    # Fall back to the hardcoded table in pricing.py so
+                    # memory_utilization_pct populates for known SKUs.
+                    if host_memory_gb == 0:
+                        from pricing import get_dedicated_host_memory_fallback
+                        host_memory_gb = get_dedicated_host_memory_fallback(host_sku_name)
+                        if host_memory_gb > 0:
+                            logger.info(
+                                "Using hardcoded memory fallback for %s: %.0f GiB",
+                                host_sku_name, host_memory_gb,
+                            )
+
                 safe_property(host_obj, "host_memory_capacity_gb", host_memory_gb)
                 if host_memory_gb > 0:
                     memory_utilization = round((total_memory_gb / host_memory_gb) * 100, 1)
