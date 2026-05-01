@@ -34,7 +34,16 @@ def collect_resource_groups(client: AzureClient, result, adapter_kind: str,
 
         for rg in rgs:
             rg_name = rg["name"]
-            rg_id = rg.get("id", "")
+            # Use the canonical f-string form so this object's Key matches
+            # what the 12 other collectors construct when they look up the
+            # RG via result.object() to set up parent edges. Azure's API
+            # returns rg["id"] in canonical case but with the URL-path
+            # casing of the request (we call /resourcegroups lowercase),
+            # which historically produced a small set of phantom RG
+            # objects (no parent edge) when other collectors created the
+            # camelCase variant. Forcing the same construction here
+            # eliminates that mismatch entirely.
+            rg_id = f"/subscriptions/{sub_id}/resourceGroups/{rg_name}"
             obj = result.object(
                 adapter_kind=adapter_kind,
                 object_kind=OBJ_RESOURCE_GROUP,
