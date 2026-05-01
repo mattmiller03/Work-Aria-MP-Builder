@@ -6,6 +6,8 @@ from azure_client import AzureClient
 from constants import (
     API_VERSIONS, OBJ_RESOURCE_GROUP, OBJ_SUBSCRIPTION,
     RES_IDENT_SUB, RES_IDENT_ID,
+    SD_SUBSCRIPTION, SD_RESOURCE_GROUP, SD_REGION, SD_SERVICE,
+    AZURE_SERVICE_NAMES,
 )
 from helpers import make_identifiers, safe_property, sanitize_tag_key
 
@@ -43,8 +45,18 @@ def collect_resource_groups(client: AzureClient, result, adapter_kind: str,
                 ]),
             )
 
+            # SERVICE_DESCRIPTORS — required for native-pak compatibility.
+            # Without these, downstream dashboards and traversal specs that
+            # filter by SD properties find no resource groups.
+            rg_location = rg.get("location", "")
+            safe_property(obj, SD_SUBSCRIPTION, sub_id)
+            safe_property(obj, SD_RESOURCE_GROUP, rg_name)
+            safe_property(obj, SD_REGION, rg_location)
+            safe_property(obj, SD_SERVICE,
+                          AZURE_SERVICE_NAMES.get(OBJ_RESOURCE_GROUP, ""))
+
             safe_property(obj, "name", rg_name)
-            safe_property(obj, "location", rg.get("location", ""))
+            safe_property(obj, "location", rg_location)
             safe_property(obj, "provisioning_state",
                           rg.get("properties", {}).get("provisioningState", ""))
             safe_property(obj, "subscription_id", sub_id)
