@@ -692,68 +692,45 @@ If dups is empty but dups2 has entries, the SDK emits more than the dict contain
 
 
 
-
-# What's around the duplicate? (line 2084)
-sed -n '2079,2100p' MicrosoftAzureAdapter/conf/describe.xml
-
-# Search the NATIVE describe.xml for ResourceKind blocks that REFERENCE AZURE_PUBLIC_IPADDRESSES inside them
-sudo grep -B 2 'AZURE_PUBLIC_IPADDRESSES' /opt/aria/Aria-MP-Builder/sdk_packages/MicrosoftAzureAdapter-818024067771/AzureAdapter/MicrosoftAzureAdapter/conf/describe.xml | head -30
-
-# How many times does AZURE_PUBLIC_IPADDRESSES appear in the native describe.xml?
-sudo grep -c 'AZURE_PUBLIC_IPADDRESSES' /opt/aria/Aria-MP-Builder/sdk_packages/MicrosoftAzureAdapter-818024067771/AzureAdapter/MicrosoftAzureAdapter/conf/describe.xml
-
-
- [ /tmp/pak-inspect ]# sed -n '2079,2100p' MicrosoftAzureAdapter/conf/describe.xml
-         </ResourceGroup>
-      </ResourceKind>
-    <ResourceKind key="AZURE_SERVICES_FROM_XML" showTag="false" nameKey="3000" type="4"/>
-
-           <!-- AZURE PUBLIC IP ADRESSES-->
-      <ResourceKind key="AZURE_PUBLIC_IPADDRESSES" nameKey="2000" type="4">
-         <ResourceIdentifier dispOrder="1" enum="false" identType="1" key="AZURE_SUBSCRIPTION_ID" length="" nameKey="5" required="true" type="string" />
-         <ResourceIdentifier dispOrder="2" enum="false" identType="1" key="AZURE_RESOURCE_GROUP" length="" nameKey="12" required="true" type="string" />
-         <ResourceIdentifier dispOrder="3" enum="false" identType="2" key="AZURE_REGION" length="" nameKey="13" required="true" type="string" />
-         <ResourceIdentifier dispOrder="4" enum="false" identType="1" key="ID" length="" nameKey="19" required="true" type="string" />
-
-         <ResourceGroup instanced="false" key="summary" nameKey="1100" validation="">
-            <ResourceAttribute key="name" nameKey="3010" dashboardOrder="1" dataType="string" isDiscrete="false" isProperty="true" />
-            <ResourceAttribute key="fqdn" nameKey="3011" dashboardOrder="2" dataType="string" isDiscrete="false" isProperty="true" />
-            <ResourceAttribute key="id" nameKey="3012" dashboardOrder="3" dataType="string" isDiscrete="false" isProperty="true" />
-            <ResourceAttribute key="ipAddress" nameKey="3013" dashboardOrder="4" dataType="string" isDiscrete="false" isProperty="true" />
-            <ResourceAttribute key="leafDomainLabel" nameKey="3015" dashboardOrder="6" dataType="string" isDiscrete="false" isProperty="true" />
-            <ResourceAttribute key="reverseFqdn" nameKey="3016" dashboardOrder="7" dataType="string" isDiscrete="false" isProperty="true" />
-            <ResourceAttribute key="type" nameKey="3017" dashboardOrder="8" dataType="string" isDiscrete="false" isProperty="true" />
-            <ResourceAttribute key="idleTimeoutInMinutes" nameKey="3018" dashboardOrder="9" dataType="string" isDiscrete="false" isProperty="true" />
-            <ResourceAttribute key="ipAllocationMethod" nameKey="3019" dashboardOrder="10" dataType="string" isDiscrete="false" isProperty="true" />
-            <ResourceAttribute key="hasAssignedLoadBalancer" nameKey="3020" dashboardOrder="11" dataType="string" isDiscrete="false" isProperty="true" />
- [ /tmp/pak-inspect ]# 
- [ /tmp/pak-inspect ]# 
- [ /tmp/pak-inspect ]# sudo grep -B 2 'AZURE_PUBLIC_IPADDRESSES' /opt/aria/Aria-MP-Builder/sdk_packages/MicrosoftAzureAdapter-818024067771/AzureAdapter/MicrosoftAzureAdapter/conf/describe.xml | head -30
-                <ComputedMetric key="summary|total_number_hdInsight" expression="count(${adaptertype=MicrosoftAzureAdapter, objecttype=AZURE_HDINSIGHT, attribute=System Attributes|availability, depth=10})"/>
-                <ComputedMetric key="summary|total_number_serviceBus" expression="count(${adaptertype=MicrosoftAzureAdapter, objecttype=AZURE_SERVICE_BUS, attribute=System Attributes|availability, depth=10})"/>
-                <ComputedMetric key="summary|total_number_publicIPAddresses" expression="count(${adaptertype=MicrosoftAzureAdapter, objecttype=AZURE_PUBLIC_IPADDRESSES, attribute=System Attributes|availability, depth=10})"/>
---
-              <ComputedMetric key="summary|total_number_hdInsight" expression="count(${adaptertype=MicrosoftAzureAdapter, objecttype=AZURE_HDINSIGHT, attribute=System Attributes|availability, depth=10})"/>
-              <ComputedMetric key="summary|total_number_serviceBus" expression="count(${adaptertype=MicrosoftAzureAdapter, objecttype=AZURE_SERVICE_BUS, attribute=System Attributes|availability, depth=10})"/>
-              <ComputedMetric key="summary|total_number_publicIPAddresses" expression="count(${adaptertype=MicrosoftAzureAdapter, objecttype=AZURE_PUBLIC_IPADDRESSES, attribute=System Attributes|availability, depth=10})"/>
---
-
-           <!-- AZURE PUBLIC IP ADRESSES-->
-      <ResourceKind key="AZURE_PUBLIC_IPADDRESSES" nameKey="2000" type="4">
---
-              <ComputedMetric key="summary|total_number_hdInsight" expression="count(${adaptertype=MicrosoftAzureAdapter, objecttype=AZURE_HDINSIGHT, attribute=System Attributes|availability, depth=10})"/>
-              <ComputedMetric key="summary|total_number_serviceBus" expression="count(${adaptertype=MicrosoftAzureAdapter, objecttype=AZURE_SERVICE_BUS, attribute=System Attributes|availability, depth=10})"/>
-              <ComputedMetric key="summary|total_number_publicIPAddresses" expression="count(${adaptertype=MicrosoftAzureAdapter, objecttype=AZURE_PUBLIC_IPADDRESSES, attribute=System Attributes|availability, depth=10})"/>
---
-                <ComputedMetric key="summary|total_number_hdInsight" expression="count(${adaptertype=MicrosoftAzureAdapter, objecttype=AZURE_HDINSIGHT, attribute=System Attributes|availability, depth=10})"/>
-                <ComputedMetric key="summary|total_number_serviceBus" expression="count(${adaptertype=MicrosoftAzureAdapter, objecttype=AZURE_SERVICE_BUS, attribute=System Attributes|availability, depth=10})"/>
-                <ComputedMetric key="summary|total_number_publicIPAddresses" expression="count(${adaptertype=MicrosoftAzureAdapter, objecttype=AZURE_PUBLIC_IPADDRESSES, attribute=System Attributes|availability, depth=10})"/>
---
-                <ComputedMetric key="summary|total_number_hdInsight" expression="count(${adaptertype=MicrosoftAzureAdapter, objecttype=AZURE_HDINSIGHT, attribute=System Attributes|availability, depth=10})"/>
-                <ComputedMetric key="summary|total_number_serviceBus" expression="count(${adaptertype=MicrosoftAzureAdapter, objecttype=AZURE_SERVICE_BUS, attribute=System Attributes|availability, depth=10})"/>
-                <ComputedMetric key="summary|total_number_publicIPAddresses" expression="count(${adaptertype=MicrosoftAzureAdapter, objecttype=AZURE_PUBLIC_IPADDRESSES, attribute=System Attributes|availability, depth=10})"/>
- [ /tmp/pak-inspect ]# 
- [ /tmp/pak-inspect ]# 
- [ /tmp/pak-inspect ]# 
- [ /tmp/pak-inspect ]# sudo grep -c 'AZURE_PUBLIC_IPADDRESSES' /opt/aria/Aria-MP-Builder/sdk_packages/MicrosoftAzureAdapter-818024067771/AzureAdapter/MicrosoftAzureAdapter/conf/describe.xml
-6
+2026-04-30 19:34:36,842 [ERROR] adapter: Regions/World collector failed: 'CollectResult' object has no attribute 'get_objects'
+Traceback (most recent call last):
+  File "/opt/aria/Aria-MP-Builder/Azure-Native-Build/app/adapter.py", line 852, in collect
+    collect_regions_and_world(
+  File "/opt/aria/Aria-MP-Builder/Azure-Native-Build/app/collectors/regions.py", line 75, in collect_regions_and_world
+    for obj in result.get_objects():
+AttributeError: 'CollectResult' object has no attribute 'get_objects'
+2026-04-30 19:34:36,941 [INFO] verify_collection: Auditing describe.xml in build/MicrosoftAzureAdapter_8.19.8.pak
+2026-04-30 19:34:36,959 [INFO] verify_collection: Auditing content drift against /opt/aria/Aria-MP-Builder/Azure-Native-Build/content
+2026-04-30 19:34:36,978 [INFO] verify_collection: Querying Aria Ops Suite-API at opssvr as admin
+2026-04-30 19:34:42,909 [WARNING] verify_collection: Crash-safe write triggered: unhandled InvalidURL
+2026-04-30 19:34:42,910 [ERROR] verify_collection: Failed to write partial report: [Errno 2] No such file or directory: 'debug/verify-smoke.json'
+Traceback (most recent call last):
+  File "/opt/aria/Aria-MP-Builder/Azure-Native-Build/scripts/verify_collection.py", line 1559, in <module>
+    sys.exit(main())
+  File "/opt/aria/Aria-MP-Builder/Azure-Native-Build/scripts/verify_collection.py", line 1522, in main
+    ao = verify_aria_ops(
+  File "/opt/aria/Aria-MP-Builder/Azure-Native-Build/scripts/verify_collection.py", line 904, in verify_aria_ops
+    resp = _aria_request(url, auth_headers, ctx)
+  File "/opt/aria/Aria-MP-Builder/Azure-Native-Build/scripts/verify_collection.py", line 841, in _aria_request
+    with urllib.request.urlopen(req, context=ctx, timeout=timeout) as resp:
+  File "/usr/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 1391, in https_open
+    return self.do_open(http.client.HTTPSConnection, req,
+  File "/usr/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/usr/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1294, in _send_request
+    self.putrequest(method, url, **skips)
+  File "/usr/lib/python3.10/http/client.py", line 1128, in putrequest
+    self._validate_path(url)
+  File "/usr/lib/python3.10/http/client.py", line 1228, in _validate_path
+    raise InvalidURL(f"URL can't contain control characters. {url!r} "
+http.client.InvalidURL: URL can't contain control characters. '/suite-api/api/resources?adapterKind=MicrosoftAzureAdapter&resourceKind=MicrosoftAzureAdapter Instance&pageSize=1' (found at least ' ')
