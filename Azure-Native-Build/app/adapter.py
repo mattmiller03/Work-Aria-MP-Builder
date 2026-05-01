@@ -588,7 +588,12 @@ def get_adapter_definition():
     dh.define_numeric_property("vm_count", "VM Count")
     dh.define_string_property("vm_names", "VM Names")
     dh.define_string_property("vm_size_summary", "VM Size Breakdown")
+    dh.define_numeric_property("vm_size_distinct_count", "Distinct VM Sizes on Host")
+    dh.define_string_property("vm_disk_skus", "VM Disk SKU Types")
     dh.define_string_property("allocatable_vm_summary", "Allocatable VM Capacity")
+    dh.define_numeric_property("max_available_slots", "Max Available VM Slots")
+    dh.define_string_property("smallest_vm_size", "Smallest Available VM Size")
+    dh.define_numeric_property("smallest_vm_available", "Smallest VM Available Slots")
     dh.define_numeric_property("hourly_rate", "Hourly Compute Rate (USD)")
     dh.define_numeric_property("monthly_rate_estimate", "Monthly Rate Estimate (USD)")
     # Memory tracking per dedicated host

@@ -89,7 +89,9 @@ KIND_SPECS: dict[str, dict[str, Any]] = {
     },
     "AZURE_DEDICATE_HOST": {  # native pak typo preserved
         "min_count": 0,
-        "parent_kind": "AZURE_RESOURCE_GROUP",
+        # Hierarchy: Host Group > Dedicated Host > VM > Disk
+        # (per project_phase_d_complete memory)
+        "parent_kind": "AZURE_COMPUTE_HOSTGROUPS",
         "required_props": {
             UNIVERSAL_PROP,
             "hourly_rate",
