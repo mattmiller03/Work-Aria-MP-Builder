@@ -212,6 +212,16 @@ def collect_virtual_machines(client: AzureClient, result, adapter_kind: str,
                     ]),
                 )
                 obj.add_parent(rg_obj)
+            else:
+                # VM ID didn't yield an RG — likely an Arc-managed VM or
+                # a non-standard resource shape. Log the resource_id once
+                # so the operator can audit which kinds of VMs are
+                # affected and decide whether to fall back to the
+                # subscription-level parent.
+                logger.warning(
+                    "VM %s has no resource group (id=%s); skipping RG parent edge",
+                    vm_name, resource_id,
+                )
 
             # Track for metrics collection
             # CPU capacity reference for Aria Ops capacity planning

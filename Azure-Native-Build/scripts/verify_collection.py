@@ -1342,6 +1342,27 @@ exit codes:
             "at least one of --connection, --pak, --aria-ops, --report is required"
         )
 
+    # Auto-detect newest pak in build/ if --pak missing or stale. Saves the
+    # "passed --pak path/to/old.8.pak after rebuilding to .9 and got
+    # 'pak not found'" footgun.
+    if args.pak and not Path(args.pak).exists():
+        logger.warning("--pak %s does not exist; trying auto-detect", args.pak)
+        args.pak = None
+    if args.pak is None and args.connection:
+        # Look near connections.json for a build/ dir
+        conn_parent = Path(args.connection).resolve().parent
+        for build_dir in (conn_parent / "build", Path("build"), Path("Azure-Native-Build/build")):
+            if build_dir.is_dir():
+                paks = sorted(
+                    build_dir.glob("MicrosoftAzureAdapter*.pak"),
+                    key=lambda p: p.stat().st_mtime,
+                    reverse=True,
+                )
+                if paks:
+                    args.pak = str(paks[0])
+                    logger.info("Auto-detected newest pak: %s", args.pak)
+                    break
+
     # Default --out to a timestamped file when running a live collection.
     # Live collect can take 15+ minutes; losing the JSON because the user
     # forgot --out is a needlessly expensive mistake.

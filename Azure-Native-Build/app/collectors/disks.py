@@ -126,6 +126,22 @@ def collect_disks(client: AzureClient, result, adapter_kind: str,
                         ]),
                     )
                     obj.add_parent(vm_obj)
+                    # Make sure the VM has its RG parent edge set, in case
+                    # this is a "phantom" VM that virtual_machines.py
+                    # didn't process (sampling, rate limits, or VM in a
+                    # subscription we couldn't enumerate). Without this,
+                    # disk-attached VMs surface as orphans in Aria Ops.
+                    vm_rg_id = f"/subscriptions/{sub_id}/resourceGroups/{vm_rg}"
+                    vm_rg_obj = result.object(
+                        adapter_kind=adapter_kind,
+                        object_kind=OBJ_RESOURCE_GROUP,
+                        name=vm_rg,
+                        identifiers=make_identifiers([
+                            (RES_IDENT_SUB, sub_id),
+                            (RES_IDENT_ID, vm_rg_id),
+                        ]),
+                    )
+                    vm_obj.add_parent(vm_rg_obj)
 
         total += len(disks)
 
