@@ -72,27 +72,26 @@ def collect_regions_and_world(result, adapter_kind, subscriptions,
     kind_counts = defaultdict(int)
     active_vms = 0
 
-    for obj in result.get_objects():
+    # SDK API: result.objects is a dict[Key, Object]; iterate its values.
+    # get_key().identifiers is a dict[str, Identifier]; iterate values.
+    # Object exposes get_metric(key) / get_last_metric_value(key), not get_metrics().
+    for obj in result.objects.values():
         obj_kind = obj.get_key().object_kind
 
-        # Count objects by kind
         kind_counts[obj_kind] += 1
 
-        # Extract region from identifiers
-        for ident in obj.get_key().identifiers:
+        for ident in obj.get_key().identifiers.values():
             if ident.key == RES_IDENT_REGION and ident.value:
                 regions.add(ident.value)
 
         # Count active VMs (general|running == 1.0)
         if obj_kind == OBJ_VIRTUAL_MACHINE:
-            for metric_data in obj.get_metrics():
-                if metric_data.key == "general|running":
-                    try:
-                        values = metric_data.get_values()
-                        if values and values[-1] == 1.0:
-                            active_vms += 1
-                    except Exception:
-                        pass
+            try:
+                last = obj.get_last_metric_value("general|running")
+                if last == 1.0:
+                    active_vms += 1
+            except Exception:
+                pass
 
     logger.info("Found %d unique regions across all objects", len(regions))
 

@@ -30,6 +30,7 @@ import sys
 import threading
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
 import zipfile
@@ -897,9 +898,12 @@ def verify_aria_ops(
     mismatches: list[str] = []
     for kind in kind_keys:
         try:
+            # URL-encode the kind: native pak uses literal spaces in some
+            # keys (e.g., "MicrosoftAzureAdapter Instance"), and urllib
+            # refuses to send a request with raw control characters.
             url = (
                 f"{base}/resources?adapterKind=MicrosoftAzureAdapter"
-                f"&resourceKind={kind}&pageSize=1"
+                f"&resourceKind={urllib.parse.quote(kind)}&pageSize=1"
             )
             resp = _aria_request(url, auth_headers, ctx)
             n = resp.get("pageInfo", {}).get("totalCount", 0)
@@ -1138,8 +1142,15 @@ def render_text_report(report: dict) -> str:
 
 
 def render_json_report(report: dict, path: str) -> None:
+    # Ensure the parent directory exists. Critical for the crash-safe
+    # write path: if the user passes --out debug/verify.json from a cwd
+    # where debug/ doesn't exist, the partial write would silently lose
+    # everything they just collected.
+    p = Path(path)
+    if p.parent and str(p.parent) not in ("", "."):
+        p.parent.mkdir(parents=True, exist_ok=True)
     serializable = json.loads(json.dumps(report, default=_json_default))
-    with open(path, "w") as f:
+    with open(p, "w") as f:
         json.dump(serializable, f, indent=2)
 
 
