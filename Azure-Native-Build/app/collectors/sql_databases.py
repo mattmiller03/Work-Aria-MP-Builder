@@ -81,7 +81,7 @@ def collect_sql_servers_and_databases(client: AzureClient, result,
 
             # Relationship: SQL Server -> Resource Group
             if rg_name:
-                rg_id = f"/subscriptions/{sub_id}/resourceGroups/{rg_name}"
+                rg_id = f"/subscriptions/{sub_id}/resourceGroups/{rg_name}".lower()
                 rg_obj = result.object(
                     adapter_kind=adapter_kind,
                     object_kind=OBJ_RESOURCE_GROUP,

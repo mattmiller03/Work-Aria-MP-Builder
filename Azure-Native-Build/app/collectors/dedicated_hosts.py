@@ -268,7 +268,7 @@ def collect_dedicated_hosts(client: AzureClient, result, adapter_kind: str,
 
             # Relationship: Host Group -> Resource Group
             if rg_name:
-                rg_id = f"/subscriptions/{sub_id}/resourceGroups/{rg_name}"
+                rg_id = f"/subscriptions/{sub_id}/resourceGroups/{rg_name}".lower()
                 rg_obj = result.object(
                     adapter_kind=adapter_kind,
                     object_kind=OBJ_RESOURCE_GROUP,

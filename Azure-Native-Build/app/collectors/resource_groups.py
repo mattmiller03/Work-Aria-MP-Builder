@@ -43,7 +43,7 @@ def collect_resource_groups(client: AzureClient, result, adapter_kind: str,
             # objects (no parent edge) when other collectors created the
             # camelCase variant. Forcing the same construction here
             # eliminates that mismatch entirely.
-            rg_id = f"/subscriptions/{sub_id}/resourceGroups/{rg_name}"
+            rg_id = f"/subscriptions/{sub_id}/resourceGroups/{rg_name}".lower()
             obj = result.object(
                 adapter_kind=adapter_kind,
                 object_kind=OBJ_RESOURCE_GROUP,

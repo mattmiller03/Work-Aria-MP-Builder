@@ -137,7 +137,7 @@ def collect_postgresql_servers(client: AzureClient, result,
 
             # Relationship: PostgreSQL Server -> Resource Group
             if rg_name:
-                rg_id = f"/subscriptions/{sub_id}/resourceGroups/{rg_name}"
+                rg_id = f"/subscriptions/{sub_id}/resourceGroups/{rg_name}".lower()
                 rg_obj = result.object(
                     adapter_kind=adapter_kind,
                     object_kind=OBJ_RESOURCE_GROUP,

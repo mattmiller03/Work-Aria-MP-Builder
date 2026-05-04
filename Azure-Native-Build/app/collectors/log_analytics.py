@@ -80,7 +80,7 @@ def collect_log_analytics_workspaces(client: AzureClient, result, adapter_kind: 
                     safe_property(obj, f"summary|tags|{key}", value)
 
             if rg_name:
-                rg_id = f"/subscriptions/{sub_id}/resourceGroups/{rg_name}"
+                rg_id = f"/subscriptions/{sub_id}/resourceGroups/{rg_name}".lower()
                 rg_obj = result.object(
                     adapter_kind=adapter_kind,
                     object_kind=OBJ_RESOURCE_GROUP,

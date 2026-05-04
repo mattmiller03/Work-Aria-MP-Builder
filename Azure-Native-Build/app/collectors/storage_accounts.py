@@ -99,7 +99,7 @@ def collect_storage_accounts(client: AzureClient, result, adapter_kind: str,
 
             # Relationship: Storage Account -> Resource Group
             if rg_name:
-                rg_id = f"/subscriptions/{sub_id}/resourceGroups/{rg_name}"
+                rg_id = f"/subscriptions/{sub_id}/resourceGroups/{rg_name}".lower()
                 rg_obj = result.object(
                     adapter_kind=adapter_kind,
                     object_kind=OBJ_RESOURCE_GROUP,
