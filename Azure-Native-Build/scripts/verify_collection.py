@@ -1123,6 +1123,23 @@ def redact_report(report: dict) -> dict:
                 if isinstance(kinfo, dict) and isinstance(kinfo.get("reasons"), list):
                     kinfo["reasons"] = [_redact_text(x) for x in kinfo["reasons"]]
 
+        # DH stats id_samples include identifier values (sub GUIDs, ARM paths,
+        # host names). Redact identifier values and clear the host name.
+        dh_stats = live.get("dh_stats")
+        if isinstance(dh_stats, dict):
+            samples = dh_stats.get("id_samples", [])
+            if isinstance(samples, list):
+                for i, s in enumerate(samples):
+                    if not isinstance(s, dict):
+                        continue
+                    s["sample_index"] = i + 1
+                    s.pop("name", None)
+                    idents = s.get("identifiers", {})
+                    if isinstance(idents, dict):
+                        s["identifiers"] = {
+                            k: _redact_text(str(v)) for k, v in idents.items()
+                        }
+
     ao = r.get("aria_ops")
     if isinstance(ao, dict):
         if ao.get("host"):
@@ -1585,7 +1602,29 @@ exit codes:
                 dh_kind = "AZURE_DEDICATE_HOST"
                 dh_miss: list[dict] = []
                 dh_prop_keys_sample: list[str] = []
+                dh_total = 0
+                dh_with_props = 0
+                dh_empty_props = 0
+                dh_with_group_parent = 0
+                dh_id_samples: list[dict] = []
                 for o in by_kind.get(dh_kind, []):
+                    dh_total += 1
+                    nprops = len(o["properties"])
+                    if nprops > 0:
+                        dh_with_props += 1
+                    else:
+                        dh_empty_props += 1
+                    if any(p["kind"] == "AZURE_COMPUTE_HOSTGROUPS"
+                           for p in o["parents"]):
+                        dh_with_group_parent += 1
+                    if len(dh_id_samples) < 4:
+                        dh_id_samples.append({
+                            "name": o["name"],
+                            "n_properties": nprops,
+                            "parent_kinds": sorted({p["kind"]
+                                                    for p in o["parents"]}),
+                            "identifiers": o["identifiers"],
+                        })
                     miss = [
                         a for a in DH_CUSTOM_ATTRS
                         if a not in o["properties"]
@@ -1605,6 +1644,13 @@ exit codes:
                     "per_kind": per_kind,
                     "dedicated_host_missing_attrs": dh_miss,
                     "dh_prop_keys_first_obj": dh_prop_keys_sample,
+                    "dh_stats": {
+                        "total": dh_total,
+                        "with_any_property": dh_with_props,
+                        "with_zero_properties": dh_empty_props,
+                        "with_hostgroup_parent": dh_with_group_parent,
+                        "id_samples": dh_id_samples,
+                    },
                 }
                 expected_counts_for_aria = {
                     k: len(v) for k, v in by_kind.items()

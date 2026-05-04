@@ -290,7 +290,7 @@ def collect_dedicated_hosts(client: AzureClient, result, adapter_kind: str,
                 params={"$expand": "instanceView"},
             )
 
-            logger.info("[DH-DIAG] group %s: found %d hosts", group_name, len(hosts))
+            logger.warning("[DH-DIAG] group %s: found %d hosts", group_name, len(hosts))
             for host in hosts:
                 host_name = host["name"]
                 host_resource_id = host.get("id", "")
@@ -299,23 +299,26 @@ def collect_dedicated_hosts(client: AzureClient, result, adapter_kind: str,
                 host_sku = host.get("sku", {})
                 instance_view = host_props.get("instanceView", {})
 
+                # Lowercase the variable identifier values so dedup with the
+                # VM collector's parent stub (virtual_machines.py) succeeds
+                # regardless of the case Azure returns from either API.
                 host_obj = result.object(
                     adapter_kind=adapter_kind,
                     object_kind=OBJ_DEDICATED_HOST,
                     name=host_name,
                     identifiers=make_identifiers([
                         (RES_IDENT_SUB, sub_id),
-                        (RES_IDENT_RG, rg_name),
-                        (RES_IDENT_REGION, host_location),
-                        (RES_IDENT_ID, host_resource_id),
-                        ("hostGroupName", group_name),
+                        (RES_IDENT_RG, rg_name.lower()),
+                        (RES_IDENT_REGION, host_location.lower()),
+                        (RES_IDENT_ID, host_resource_id.lower()),
+                        ("hostGroupName", group_name.lower()),
                     ]),
                 )
 
                 # SERVICE_DESCRIPTORS
                 safe_property(host_obj, SD_SUBSCRIPTION, sub_id)
-                logger.info("[DH-DIAG] host %s: _properties count after SD_SUBSCRIPTION = %d (obj id=%d)",
-                            host_name, len(host_obj._properties), id(host_obj))
+                logger.warning("[DH-DIAG] host %s: _properties count after SD_SUBSCRIPTION = %d (obj id=%d)",
+                               host_name, len(host_obj._properties), id(host_obj))
                 safe_property(host_obj, SD_RESOURCE_GROUP, rg_name)
                 safe_property(host_obj, SD_REGION, host_location)
                 safe_property(host_obj, SD_SERVICE, AZURE_SERVICE_NAMES.get(OBJ_DEDICATED_HOST, ""))
@@ -825,10 +828,10 @@ def collect_dedicated_hosts_with_instance_view(client: AzureClient, result,
                         name=host_name,
                         identifiers=make_identifiers([
                             (RES_IDENT_SUB, sub_id),
-                            (RES_IDENT_RG, rg_name),
-                            (RES_IDENT_REGION, iv_location),
-                            (RES_IDENT_ID, iv_host_id),
-                            ("hostGroupName", group_name),
+                            (RES_IDENT_RG, rg_name.lower()),
+                            (RES_IDENT_REGION, iv_location.lower()),
+                            (RES_IDENT_ID, iv_host_id.lower()),
+                            ("hostGroupName", group_name.lower()),
                         ]),
                     )
 

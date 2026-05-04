@@ -169,12 +169,19 @@ def collect_virtual_machines(client: AzureClient, result, adapter_kind: str,
             host_id = host_ref.get("id", "") if host_ref else ""
             safe_property(obj, "dedicated_host_id", host_id)
             if host_id:
-                # Extract host group name and host name from resource ID
-                # Format: .../hostGroups/{group}/hosts/{host}
+                # Extract host's rg + group + host names from resource ID.
+                # The DH stub identifiers MUST match dedicated_hosts.py — it
+                # uses the host's RG (not the VM's). VMs can be in a different
+                # RG than the dedicated host they're placed on.
+                # Format: /subscriptions/{sub}/resourceGroups/{rg}/providers
+                #         /Microsoft.Compute/hostGroups/{group}/hosts/{host}
                 parts = host_id.split("/")
                 dh_host_name = ""
                 dh_group_name = ""
+                dh_rg_name = ""
                 for i, part in enumerate(parts):
+                    if part.lower() == "resourcegroups" and i + 1 < len(parts):
+                        dh_rg_name = parts[i + 1]
                     if part.lower() == "hostgroups" and i + 1 < len(parts):
                         dh_group_name = parts[i + 1]
                     if part.lower() == "hosts" and i + 1 < len(parts):
@@ -184,17 +191,20 @@ def collect_virtual_machines(client: AzureClient, result, adapter_kind: str,
                     safe_property(obj, "dedicated_host_name", dh_host_name)
                     safe_property(obj, "dedicated_host_group", dh_group_name)
 
-                    # Relationship: VM -> Dedicated Host (parent)
+                    # Relationship: VM -> Dedicated Host (parent).
+                    # Identifiers are lowercased so they dedup with the
+                    # canonical host objects produced by dedicated_hosts.py
+                    # regardless of how Azure cased the IDs in either API.
                     dh_obj = result.object(
                         adapter_kind=adapter_kind,
                         object_kind=OBJ_DEDICATED_HOST,
                         name=dh_host_name,
                         identifiers=make_identifiers([
                             (RES_IDENT_SUB, sub_id),
-                            (RES_IDENT_RG, rg_name),
-                            (RES_IDENT_REGION, location),
-                            (RES_IDENT_ID, host_id),
-                            ("hostGroupName", dh_group_name),
+                            (RES_IDENT_RG, dh_rg_name.lower()),
+                            (RES_IDENT_REGION, location.lower()),
+                            (RES_IDENT_ID, host_id.lower()),
+                            ("hostGroupName", dh_group_name.lower()),
                         ]),
                     )
                     obj.add_parent(dh_obj)
