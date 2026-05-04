@@ -230,6 +230,108 @@ KIND_SPECS: dict[str, dict[str, Any]] = {
         "parent_kind": None,
         "required_props": set(),
     },
+    # Native kinds upgraded from None extra_fn — agency has actual objects
+    "AZURE_VIRTUAL_SCALESET": {
+        "min_count": 0,
+        "parent_kind": "AZURE_RESOURCE_GROUP",
+        "required_props": {UNIVERSAL_PROP},
+    },
+    "AZURE_AVAILABILITY_SETS": {
+        "min_count": 0,
+        "parent_kind": "AZURE_RESOURCE_GROUP",
+        "required_props": {UNIVERSAL_PROP},
+    },
+    "AZURE_NETWORK_WATCHERS": {
+        "min_count": 0,
+        "parent_kind": "AZURE_RESOURCE_GROUP",
+        "required_props": {UNIVERSAL_PROP},
+    },
+    "AZURE_EVENTHUBS_NAMESPACES": {
+        "min_count": 0,
+        "parent_kind": "AZURE_RESOURCE_GROUP",
+        "required_props": {UNIVERSAL_PROP},
+    },
+    "AZURE_COGNITIVE_SERVICES_ACCOUNTS": {
+        "min_count": 0,
+        "parent_kind": "AZURE_RESOURCE_GROUP",
+        "required_props": {UNIVERSAL_PROP},
+    },
+    "AZURE_SQL_MANAGEDINSTANCES": {
+        "min_count": 0,
+        "parent_kind": "AZURE_RESOURCE_GROUP",
+        "required_props": {UNIVERSAL_PROP},
+    },
+    "AZURE_DATA_EXPLORER_CLUSTER": {
+        "min_count": 0,
+        "parent_kind": "AZURE_RESOURCE_GROUP",
+        "required_props": {UNIVERSAL_PROP},
+    },
+    # New custom kinds — no SERVICE_DESCRIPTORS (flat keys only)
+    "azure_logic_workflow": {
+        "min_count": 0,
+        "parent_kind": "AZURE_RESOURCE_GROUP",
+        "required_props": set(),
+    },
+    "azure_arc_machine": {
+        "min_count": 0,
+        "parent_kind": "AZURE_RESOURCE_GROUP",
+        "required_props": set(),
+    },
+    "azure_bastion_host": {
+        "min_count": 0,
+        "parent_kind": "AZURE_RESOURCE_GROUP",
+        "required_props": set(),
+    },
+    "azure_private_endpoint": {
+        "min_count": 0,
+        "parent_kind": "AZURE_RESOURCE_GROUP",
+        "required_props": set(),
+    },
+    "azure_nat_gateway": {
+        "min_count": 0,
+        "parent_kind": "AZURE_RESOURCE_GROUP",
+        "required_props": set(),
+    },
+    "azure_compute_snapshot": {
+        "min_count": 0,
+        "parent_kind": "AZURE_RESOURCE_GROUP",
+        "required_props": set(),
+    },
+    "azure_disk_encryption_set": {
+        "min_count": 0,
+        "parent_kind": "AZURE_RESOURCE_GROUP",
+        "required_props": set(),
+    },
+    "azure_managed_identity": {
+        "min_count": 0,
+        "parent_kind": "AZURE_RESOURCE_GROUP",
+        "required_props": set(),
+    },
+    "azure_dns_resolver": {
+        "min_count": 0,
+        "parent_kind": "AZURE_RESOURCE_GROUP",
+        "required_props": set(),
+    },
+    "azure_backup_vault": {
+        "min_count": 0,
+        "parent_kind": "AZURE_RESOURCE_GROUP",
+        "required_props": set(),
+    },
+    "azure_sql_virtual_machine": {
+        "min_count": 0,
+        "parent_kind": "AZURE_RESOURCE_GROUP",
+        "required_props": set(),
+    },
+    "azure_app_service_environment": {
+        "min_count": 0,
+        "parent_kind": "AZURE_RESOURCE_GROUP",
+        "required_props": set(),
+    },
+    "azure_storage_sync": {
+        "min_count": 0,
+        "parent_kind": "AZURE_RESOURCE_GROUP",
+        "required_props": set(),
+    },
 }
 
 # Custom (non-native) kind keys — must not have pipe-keyed attrs.
@@ -238,6 +340,20 @@ CUSTOM_KIND_KEYS = {
     "azure_subnet",
     "azure_recovery_services_vault",
     "azure_log_analytics_workspace",
+    # New custom kinds added in bulk_resources.py
+    "azure_logic_workflow",
+    "azure_arc_machine",
+    "azure_bastion_host",
+    "azure_private_endpoint",
+    "azure_nat_gateway",
+    "azure_compute_snapshot",
+    "azure_disk_encryption_set",
+    "azure_managed_identity",
+    "azure_dns_resolver",
+    "azure_backup_vault",
+    "azure_sql_virtual_machine",
+    "azure_app_service_environment",
+    "azure_storage_sync",
 }
 
 # Dedicated Host custom attributes — must be present in the patched
