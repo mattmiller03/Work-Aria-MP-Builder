@@ -1584,6 +1584,7 @@ exit codes:
                 # Dedicated Host attribute coverage
                 dh_kind = "AZURE_DEDICATE_HOST"
                 dh_miss: list[dict] = []
+                dh_prop_keys_sample: list[str] = []
                 for o in by_kind.get(dh_kind, []):
                     miss = [
                         a for a in DH_CUSTOM_ATTRS
@@ -1592,6 +1593,8 @@ exit codes:
                     ]
                     if miss:
                         dh_miss.append({"name": o["name"], "missing": miss})
+                    if not dh_prop_keys_sample:
+                        dh_prop_keys_sample = sorted(o["properties"].keys())
                 if dh_miss:
                     has_warn = True
                 report["live"] = {
@@ -1601,6 +1604,7 @@ exit codes:
                     "kind_counts_unspecified": extras,
                     "per_kind": per_kind,
                     "dedicated_host_missing_attrs": dh_miss,
+                    "dh_prop_keys_first_obj": dh_prop_keys_sample,
                 }
                 expected_counts_for_aria = {
                     k: len(v) for k, v in by_kind.items()

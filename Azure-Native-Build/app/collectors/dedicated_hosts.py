@@ -290,6 +290,7 @@ def collect_dedicated_hosts(client: AzureClient, result, adapter_kind: str,
                 params={"$expand": "instanceView"},
             )
 
+            logger.info("[DH-DIAG] group %s: found %d hosts", group_name, len(hosts))
             for host in hosts:
                 host_name = host["name"]
                 host_resource_id = host.get("id", "")
@@ -313,6 +314,8 @@ def collect_dedicated_hosts(client: AzureClient, result, adapter_kind: str,
 
                 # SERVICE_DESCRIPTORS
                 safe_property(host_obj, SD_SUBSCRIPTION, sub_id)
+                logger.info("[DH-DIAG] host %s: _properties count after SD_SUBSCRIPTION = %d (obj id=%d)",
+                            host_name, len(host_obj._properties), id(host_obj))
                 safe_property(host_obj, SD_RESOURCE_GROUP, rg_name)
                 safe_property(host_obj, SD_REGION, host_location)
                 safe_property(host_obj, SD_SERVICE, AZURE_SERVICE_NAMES.get(OBJ_DEDICATED_HOST, ""))
