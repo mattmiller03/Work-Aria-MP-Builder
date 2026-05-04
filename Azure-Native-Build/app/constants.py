@@ -168,6 +168,21 @@ OBJ_REGION_PER_SUB = "AZURE_REGION_PER_SUB"
 OBJ_REGION = "AZURE_REGION"
 OBJ_WORLD = "AZURE_WORLD"
 
+# Custom kinds — no native pak equivalent; lowercase keys; no pipe-keyed attrs
+OBJ_LOGIC_WORKFLOW = "azure_logic_workflow"
+OBJ_ARC_MACHINE = "azure_arc_machine"
+OBJ_BASTION_HOST = "azure_bastion_host"
+OBJ_PRIVATE_ENDPOINT = "azure_private_endpoint"
+OBJ_NAT_GATEWAY = "azure_nat_gateway"
+OBJ_COMPUTE_SNAPSHOT = "azure_compute_snapshot"
+OBJ_DISK_ENCRYPTION_SET = "azure_disk_encryption_set"
+OBJ_MANAGED_IDENTITY = "azure_managed_identity"
+OBJ_DNS_RESOLVER = "azure_dns_resolver"
+OBJ_BACKUP_VAULT = "azure_backup_vault"
+OBJ_SQL_VIRTUAL_MACHINE = "azure_sql_virtual_machine"
+OBJ_APP_SERVICE_ENVIRONMENT = "azure_app_service_environment"
+OBJ_STORAGE_SYNC = "azure_storage_sync"
+
 # Stub-only resource kinds — every native ResourceKind that this pak doesn't
 # actively collect, registered as stubs so that:
 #  - existing native-pak dashboards / alert defs / reports keep their kind
@@ -612,4 +627,18 @@ AZURE_SERVICE_NAMES = {
     "AZURE_NETAPPACCOUNT": "Microsoft.NetApp/netAppAccounts",
     "AZURE_NOTIFICATIONHUBS_NAMESPACES": "Microsoft.NotificationHubs/namespaces",
     "AZURE_SIGNALR_SERVICES": "Microsoft.SignalRService/signalR",
+    # Custom kinds (no native equivalent)
+    OBJ_LOGIC_WORKFLOW: "Microsoft.Logic/workflows",
+    OBJ_ARC_MACHINE: "Microsoft.HybridCompute/machines",
+    OBJ_BASTION_HOST: "Microsoft.Network/bastionHosts",
+    OBJ_PRIVATE_ENDPOINT: "Microsoft.Network/privateEndpoints",
+    OBJ_NAT_GATEWAY: "Microsoft.Network/natGateways",
+    OBJ_COMPUTE_SNAPSHOT: "Microsoft.Compute/snapshots",
+    OBJ_DISK_ENCRYPTION_SET: "Microsoft.Compute/diskEncryptionSets",
+    OBJ_MANAGED_IDENTITY: "Microsoft.ManagedIdentity/userAssignedIdentities",
+    OBJ_DNS_RESOLVER: "Microsoft.Network/dnsResolvers",
+    OBJ_BACKUP_VAULT: "Microsoft.DataProtection/backupVaults",
+    OBJ_SQL_VIRTUAL_MACHINE: "Microsoft.SqlVirtualMachine/SqlVirtualMachines",
+    OBJ_APP_SERVICE_ENVIRONMENT: "Microsoft.Web/hostingEnvironments",
+    OBJ_STORAGE_SYNC: "Microsoft.StorageSync/storageSyncServices",
 }

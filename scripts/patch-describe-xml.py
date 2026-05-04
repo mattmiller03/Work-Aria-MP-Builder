@@ -207,6 +207,20 @@ CUSTOM_KIND_SKIPS = {
     "azure_subnet",
     "azure_recovery_services_vault",
     "azure_log_analytics_workspace",
+    # New custom kinds — no native equivalent in the VMware pak
+    "azure_logic_workflow",
+    "azure_arc_machine",
+    "azure_bastion_host",
+    "azure_private_endpoint",
+    "azure_nat_gateway",
+    "azure_compute_snapshot",
+    "azure_disk_encryption_set",
+    "azure_managed_identity",
+    "azure_dns_resolver",
+    "azure_backup_vault",
+    "azure_sql_virtual_machine",
+    "azure_app_service_environment",
+    "azure_storage_sync",
     "MicrosoftAzureAdapter_adapter_instance",  # adapter-instance, pre-rename
     "MicrosoftAzureAdapter Instance",          # adapter-instance, post-rename
 }

@@ -228,6 +228,385 @@ def _data_factory_props(obj, resource, props):
                       repo.get("accountName", ""))
 
 
+def _vmss_props(obj, resource, props):
+    """Virtual Machine Scale Set extra properties."""
+    sku = resource.get("sku", {})
+    safe_property(obj, "sku_name", sku.get("name", ""))
+    safe_property(obj, "sku_tier", sku.get("tier", ""))
+    safe_property(obj, "sku_capacity", sku.get("capacity", 0))
+    safe_property(obj, "upgrade_mode",
+                  props.get("upgradePolicy", {}).get("mode", ""))
+    safe_property(obj, "overprovision",
+                  str(props.get("overprovision", "")))
+    safe_property(obj, "single_placement_group",
+                  str(props.get("singlePlacementGroup", "")))
+    safe_property(obj, "zone_balance",
+                  str(props.get("zoneBalance", "")))
+    zones = resource.get("zones", [])
+    safe_property(obj, "zones", ", ".join(zones) if zones else "")
+    vm_profile = props.get("virtualMachineProfile", {})
+    os_profile = vm_profile.get("osProfile", {})
+    if os_profile.get("windowsConfiguration") is not None:
+        os_type = "Windows"
+    elif os_profile.get("linuxConfiguration") is not None:
+        os_type = "Linux"
+    else:
+        os_type = ""
+    safe_property(obj, "os_type", os_type)
+    storage = vm_profile.get("storageProfile", {})
+    image_ref = storage.get("imageReference", {})
+    safe_property(obj, "image_offer", image_ref.get("offer", ""))
+    safe_property(obj, "image_sku", image_ref.get("sku", ""))
+    safe_property(obj, "image_publisher", image_ref.get("publisher", ""))
+
+
+def _availability_set_props(obj, resource, props):
+    """Availability Set extra properties."""
+    safe_property(obj, "fault_domain_count",
+                  props.get("platformFaultDomainCount", 0))
+    safe_property(obj, "update_domain_count",
+                  props.get("platformUpdateDomainCount", 0))
+    vms = props.get("virtualMachines", [])
+    safe_property(obj, "vm_count", len(vms))
+    sku = resource.get("sku", {})
+    safe_property(obj, "managed",
+                  str(sku.get("name", "") == "Aligned"))
+
+
+def _network_watcher_props(obj, resource, props):
+    """Network Watcher extra properties."""
+    safe_property(obj, "provisioning_state",
+                  props.get("provisioningState", ""))
+    flow_analytics = props.get("flowAnalyticsConfiguration", {})
+    safe_property(obj, "flow_analytics_enabled",
+                  str(bool(flow_analytics)))
+
+
+def _eventhub_ns_props(obj, resource, props):
+    """Event Hub Namespace extra properties."""
+    sku = resource.get("sku", {})
+    safe_property(obj, "sku_name", sku.get("name", ""))
+    safe_property(obj, "sku_tier", sku.get("tier", ""))
+    safe_property(obj, "sku_capacity", sku.get("capacity", 0))
+    safe_property(obj, "status", props.get("status", ""))
+    safe_property(obj, "kafka_enabled",
+                  str(props.get("kafkaEnabled", "")))
+    safe_property(obj, "zone_redundant",
+                  str(props.get("zoneRedundant", "")))
+    safe_property(obj, "service_bus_endpoint",
+                  props.get("serviceBusEndpoint", ""))
+    safe_property(obj, "metric_id", props.get("metricId", ""))
+    safe_property(obj, "disable_local_auth",
+                  str(props.get("disableLocalAuth", "")))
+    safe_property(obj, "maximum_throughput_units",
+                  props.get("maximumThroughputUnits", 0))
+    safe_property(obj, "is_auto_inflate_enabled",
+                  str(props.get("isAutoInflateEnabled", "")))
+
+
+def _cognitive_services_props(obj, resource, props):
+    """Cognitive Services account extra properties."""
+    sku = resource.get("sku", {})
+    safe_property(obj, "sku_name", sku.get("name", ""))
+    safe_property(obj, "kind", resource.get("kind", ""))
+    safe_property(obj, "endpoint", props.get("endpoint", ""))
+    safe_property(obj, "public_network_access",
+                  props.get("publicNetworkAccess", ""))
+    safe_property(obj, "custom_subdomain_name",
+                  props.get("customSubDomainName", ""))
+    network_acls = props.get("networkAcls", {})
+    safe_property(obj, "network_rule_default_action",
+                  network_acls.get("defaultAction", ""))
+    safe_property(obj, "restore_allowed",
+                  str(props.get("restore", "")))
+    safe_property(obj, "disable_local_auth",
+                  str(props.get("disableLocalAuth", "")))
+
+
+def _sql_managed_instance_props(obj, resource, props):
+    """SQL Managed Instance extra properties."""
+    sku = resource.get("sku", {})
+    safe_property(obj, "sku_name", sku.get("name", ""))
+    safe_property(obj, "sku_tier", sku.get("tier", ""))
+    safe_property(obj, "v_cores", props.get("vCores", 0))
+    safe_property(obj, "storage_size_in_gb",
+                  props.get("storageSizeInGB", 0))
+    safe_property(obj, "state", props.get("state", ""))
+    safe_property(obj, "fully_qualified_domain_name",
+                  props.get("fullyQualifiedDomainName", ""))
+    safe_property(obj, "administrator_login",
+                  props.get("administratorLogin", ""))
+    safe_property(obj, "license_type", props.get("licenseType", ""))
+    safe_property(obj, "collation", props.get("collation", ""))
+    safe_property(obj, "public_data_endpoint_enabled",
+                  str(props.get("publicDataEndpointEnabled", "")))
+    safe_property(obj, "proxy_override", props.get("proxyOverride", ""))
+    safe_property(obj, "timezone_id", props.get("timezoneId", ""))
+    safe_property(obj, "zone_redundant",
+                  str(props.get("zoneRedundant", "")))
+    safe_property(obj, "minimal_tls_version",
+                  props.get("minimalTlsVersion", ""))
+
+
+def _data_explorer_props(obj, resource, props):
+    """Azure Data Explorer (Kusto) cluster extra properties."""
+    sku = resource.get("sku", {})
+    safe_property(obj, "sku_name", sku.get("name", ""))
+    safe_property(obj, "sku_tier", sku.get("tier", ""))
+    safe_property(obj, "sku_capacity", sku.get("capacity", 0))
+    safe_property(obj, "state", props.get("state", ""))
+    safe_property(obj, "uri", props.get("uri", ""))
+    safe_property(obj, "data_ingestion_uri",
+                  props.get("dataIngestionUri", ""))
+    safe_property(obj, "enable_streaming_ingest",
+                  str(props.get("enableStreamingIngest", "")))
+    safe_property(obj, "enable_purge",
+                  str(props.get("enablePurge", "")))
+    safe_property(obj, "enable_disk_encryption",
+                  str(props.get("enableDiskEncryption", "")))
+    trusted = props.get("trustedExternalTenants", [])
+    safe_property(obj, "trusted_external_tenant_count", len(trusted))
+    safe_property(obj, "engine_type", props.get("engineType", ""))
+    zones = resource.get("zones", [])
+    safe_property(obj, "zones", ", ".join(zones) if zones else "")
+
+
+# ---------------------------------------------------------------------------
+# Extractors for new custom kinds (no native pak equivalent)
+# ---------------------------------------------------------------------------
+
+def _logic_workflow_props(obj, resource, props):
+    """Logic App Workflow extra properties."""
+    safe_property(obj, "state", props.get("state", ""))
+    safe_property(obj, "created_time", props.get("createdTime", ""))
+    safe_property(obj, "changed_time", props.get("changedTime", ""))
+    safe_property(obj, "version", props.get("version", ""))
+    safe_property(obj, "sku_name",
+                  props.get("sku", {}).get("name", ""))
+    definition = props.get("definition", {})
+    actions = definition.get("actions", {})
+    safe_property(obj, "action_count", len(actions))
+    triggers = definition.get("triggers", {})
+    safe_property(obj, "trigger_count", len(triggers))
+    safe_property(obj, "integration_account_id",
+                  props.get("integrationAccount", {}).get("id", ""))
+
+
+def _arc_machine_props(obj, resource, props):
+    """Azure Arc (HybridCompute) machine extra properties."""
+    safe_property(obj, "os_type", props.get("osType", ""))
+    safe_property(obj, "os_name", props.get("osName", ""))
+    safe_property(obj, "os_version", props.get("osVersion", ""))
+    safe_property(obj, "agent_version", props.get("agentVersion", ""))
+    safe_property(obj, "status", props.get("status", ""))
+    safe_property(obj, "dns_fqdn", props.get("dnsFqdn", ""))
+    safe_property(obj, "machine_fqdn", props.get("machineFqdn", ""))
+    safe_property(obj, "vm_uuid", props.get("vmUuid", ""))
+    safe_property(obj, "cloud_metadata_provider",
+                  props.get("cloudMetadata", {}).get("provider", ""))
+    safe_property(obj, "license_profile_esu_status",
+                  props.get("licenseProfile", {}).get(
+                      "esuProfile", {}).get("assignedLicense", ""))
+    extensions = props.get("extensions", [])
+    safe_property(obj, "extension_count", len(extensions))
+
+
+def _bastion_host_props(obj, resource, props):
+    """Azure Bastion Host extra properties."""
+    safe_property(obj, "dns_name", props.get("dnsName", ""))
+    safe_property(obj, "scale_units", props.get("scaleUnits", 0))
+    safe_property(obj, "sku_name",
+                  resource.get("sku", {}).get("name", ""))
+    safe_property(obj, "disable_copy_paste",
+                  str(props.get("disableCopyPaste", "")))
+    safe_property(obj, "enable_tunneling",
+                  str(props.get("enableTunneling", "")))
+    safe_property(obj, "enable_ip_connect",
+                  str(props.get("enableIpConnect", "")))
+    safe_property(obj, "enable_shareable_link",
+                  str(props.get("enableShareableLink", "")))
+    safe_property(obj, "enable_kerberos",
+                  str(props.get("enableKerberos", "")))
+    ip_configs = props.get("ipConfigurations", [])
+    safe_property(obj, "ip_configuration_count", len(ip_configs))
+
+
+def _private_endpoint_props(obj, resource, props):
+    """Private Endpoint extra properties."""
+    connections = props.get("privateLinkServiceConnections", [])
+    if connections:
+        conn = connections[0]
+        conn_props = conn.get("properties", {})
+        state = conn_props.get("privateLinkServiceConnectionState", {})
+        safe_property(obj, "connection_status", state.get("status", ""))
+        safe_property(obj, "connection_description",
+                      state.get("description", ""))
+        group_ids = conn_props.get("groupIds", [])
+        safe_property(obj, "group_ids", ", ".join(group_ids))
+        safe_property(obj, "linked_resource_id",
+                      conn_props.get("privateLinkServiceId", ""))
+    else:
+        safe_property(obj, "connection_status", "")
+        safe_property(obj, "linked_resource_id", "")
+        safe_property(obj, "group_ids", "")
+    subnet = props.get("subnet", {})
+    safe_property(obj, "subnet_id", subnet.get("id", ""))
+    nics = props.get("networkInterfaces", [])
+    safe_property(obj, "network_interface_count", len(nics))
+    configs = props.get("customDnsConfigs", [])
+    ip_list = [c.get("ipAddresses", []) for c in configs]
+    flat_ips = [ip for sublist in ip_list for ip in sublist]
+    safe_property(obj, "ip_addresses", ", ".join(flat_ips) if flat_ips else "")
+
+
+def _nat_gateway_props(obj, resource, props):
+    """NAT Gateway extra properties."""
+    sku = resource.get("sku", {})
+    safe_property(obj, "sku_name", sku.get("name", ""))
+    safe_property(obj, "idle_timeout_minutes",
+                  props.get("idleTimeoutInMinutes", 0))
+    pub_ips = props.get("publicIpAddresses", [])
+    safe_property(obj, "public_ip_count", len(pub_ips))
+    pub_prefixes = props.get("publicIpPrefixes", [])
+    safe_property(obj, "public_ip_prefix_count", len(pub_prefixes))
+    subnets = props.get("subnets", [])
+    safe_property(obj, "subnet_count", len(subnets))
+    zones = resource.get("zones", [])
+    safe_property(obj, "zones", ", ".join(zones) if zones else "")
+
+
+def _snapshot_props(obj, resource, props):
+    """Compute Snapshot extra properties."""
+    safe_property(obj, "disk_size_gb", props.get("diskSizeGB", 0))
+    safe_property(obj, "os_type", props.get("osType", ""))
+    safe_property(obj, "disk_state", props.get("diskState", ""))
+    safe_property(obj, "incremental",
+                  str(props.get("incremental", "")))
+    safe_property(obj, "network_access_policy",
+                  props.get("networkAccessPolicy", ""))
+    safe_property(obj, "public_network_access",
+                  props.get("publicNetworkAccess", ""))
+    safe_property(obj, "hyper_v_generation",
+                  props.get("hyperVGeneration", ""))
+    safe_property(obj, "disk_access_id",
+                  props.get("diskAccessId", ""))
+    creation_data = props.get("creationData", {})
+    safe_property(obj, "create_option",
+                  creation_data.get("createOption", ""))
+    safe_property(obj, "source_resource_id",
+                  creation_data.get("sourceResourceId", ""))
+    sku = resource.get("sku", {})
+    safe_property(obj, "sku_name", sku.get("name", ""))
+
+
+def _disk_encryption_set_props(obj, resource, props):
+    """Disk Encryption Set extra properties."""
+    safe_property(obj, "encryption_type",
+                  props.get("encryptionType", ""))
+    safe_property(obj, "auto_key_rotation_enabled",
+                  str(props.get("autoKeyRotationError", {}) == {}
+                      and props.get("rotationToLatestKeyVersionEnabled", False)))
+    safe_property(obj, "rotation_to_latest_key_version_enabled",
+                  str(props.get("rotationToLatestKeyVersionEnabled", "")))
+    active_key = props.get("activeKey", {})
+    key_url = active_key.get("keyUrl", "")
+    safe_property(obj, "key_url", key_url)
+    source_vault = active_key.get("sourceVault", {})
+    safe_property(obj, "key_vault_id", source_vault.get("id", ""))
+    safe_property(obj, "federated_client_id",
+                  props.get("federatedClientId", ""))
+    prev_keys = props.get("previousKeys", [])
+    safe_property(obj, "previous_key_count", len(prev_keys))
+
+
+def _managed_identity_props(obj, resource, props):
+    """User-Assigned Managed Identity extra properties."""
+    safe_property(obj, "client_id", props.get("clientId", ""))
+    safe_property(obj, "principal_id", props.get("principalId", ""))
+    safe_property(obj, "tenant_id", props.get("tenantId", ""))
+
+
+def _dns_resolver_props(obj, resource, props):
+    """Azure DNS Resolver extra properties."""
+    safe_property(obj, "dns_resolver_state",
+                  props.get("dnsResolverState", ""))
+    vnet = props.get("virtualNetwork", {})
+    safe_property(obj, "virtual_network_id", vnet.get("id", ""))
+
+
+def _backup_vault_props(obj, resource, props):
+    """Azure Backup Vault (DataProtection) extra properties."""
+    storage_settings = props.get("storageSettings", [])
+    if storage_settings:
+        ss = storage_settings[0]
+        safe_property(obj, "storage_redundancy",
+                      ss.get("storageDataStoreType", ""))
+        safe_property(obj, "datastore_type",
+                      ss.get("datastoreType", ""))
+    else:
+        safe_property(obj, "storage_redundancy", "")
+        safe_property(obj, "datastore_type", "")
+    safe_property(obj, "immutability_state",
+                  props.get("securitySettings", {}).get(
+                      "immutabilitySettings", {}).get("state", ""))
+    safe_property(obj, "soft_delete_state",
+                  props.get("securitySettings", {}).get(
+                      "softDeleteSettings", {}).get("softDeleteState", ""))
+    sku = resource.get("sku", {})
+    safe_property(obj, "sku_name", sku.get("name", ""))
+    safe_property(obj, "sku_tier", sku.get("tier", ""))
+
+
+def _sql_vm_props(obj, resource, props):
+    """SQL Virtual Machine extra properties."""
+    safe_property(obj, "sql_image_sku", props.get("sqlImageSku", ""))
+    safe_property(obj, "sql_management", props.get("sqlManagement", ""))
+    safe_property(obj, "sql_server_license_type",
+                  props.get("sqlServerLicenseType", ""))
+    safe_property(obj, "virtual_machine_id",
+                  props.get("virtualMachineResourceId", ""))
+    safe_property(obj, "sql_image_offer", props.get("sqlImageOffer", ""))
+    conn_settings = props.get("serverConfigurationsManagementSettings", {})
+    sql_conn = conn_settings.get("sqlConnectivityUpdateSettings", {})
+    safe_property(obj, "sql_connectivity_type",
+                  sql_conn.get("connectivityType", ""))
+    safe_property(obj, "sql_workload_type",
+                  props.get("sqlVirtualMachineGroupResourceId", ""))
+    wl_settings = props.get("sqlWorkloadTypeUpdateSettings", {})
+    safe_property(obj, "workload_type",
+                  wl_settings.get("sqlWorkloadType", ""))
+
+
+def _app_service_env_props(obj, resource, props):
+    """App Service Environment (ASE) extra properties."""
+    safe_property(obj, "status", props.get("status", ""))
+    safe_property(obj, "kind", resource.get("kind", ""))
+    safe_property(obj, "internal_load_balancing_mode",
+                  props.get("internalLoadBalancingMode", ""))
+    safe_property(obj, "multi_size", props.get("multiSize", ""))
+    vnet = props.get("virtualNetwork", {})
+    safe_property(obj, "virtual_network_id", vnet.get("id", ""))
+    safe_property(obj, "subnet_id", vnet.get("subnet", ""))
+    worker_pools = props.get("workerPools", [])
+    safe_property(obj, "worker_pool_count", len(worker_pools))
+    safe_property(obj, "maximum_number_of_machines",
+                  props.get("maximumNumberOfMachines", 0))
+    safe_property(obj, "front_end_scale_factor",
+                  props.get("frontEndScaleFactor", 0))
+    safe_property(obj, "upgrade_preference",
+                  props.get("upgradePreference", ""))
+
+
+def _storage_sync_props(obj, resource, props):
+    """Storage Sync Service extra properties."""
+    safe_property(obj, "incoming_traffic_policy",
+                  props.get("incomingTrafficPolicy", ""))
+    safe_property(obj, "storage_sync_service_status",
+                  str(props.get("storageSyncServiceStatus", "")))
+    safe_property(obj, "use_private_link_enabled",
+                  str(props.get("usePrivateLinkEnabled", "")))
+
+
 # ---------------------------------------------------------------------------
 # Resource type definitions: (resource_kind, arm_path, api_version, extra_fn)
 # ---------------------------------------------------------------------------
@@ -259,7 +638,7 @@ RESOURCE_TYPE_DEFINITIONS = [
     ("AZURE_DDOS_PROTECTION_PLAN", "Microsoft.Network/ddosProtectionPlans",
      "2023-05-01", None),
     ("AZURE_NETWORK_WATCHERS", "Microsoft.Network/networkWatchers",
-     "2023-05-01", None),
+     "2023-05-01", _network_watcher_props),
 
     # --- Containers (5) ---
     ("AZURE_KUBERNATE_CLUSTER", "Microsoft.ContainerService/managedClusters",
@@ -274,9 +653,9 @@ RESOURCE_TYPE_DEFINITIONS = [
 
     # --- Compute (7) ---
     ("AZURE_VIRTUAL_SCALESET", "Microsoft.Compute/virtualMachineScaleSets",
-     "2023-03-01", None),
+     "2023-03-01", _vmss_props),
     ("AZURE_AVAILABILITY_SETS", "Microsoft.Compute/availabilitySets",
-     "2023-03-01", None),
+     "2023-03-01", _availability_set_props),
     ("AZURE_PROXIMITY_PLACEMENT_GROUP", "Microsoft.Compute/proximityPlacementGroups",
      "2023-03-01", None),
     ("AZURE_BATCH_ACCOUNT", "Microsoft.Batch/batchAccounts",
@@ -289,7 +668,7 @@ RESOURCE_TYPE_DEFINITIONS = [
     ("AZURE_CACHE_REDIS", "Microsoft.Cache/redis",
      "2023-04-01", _redis_props),
     ("AZURE_SQL_MANAGEDINSTANCES", "Microsoft.Sql/managedInstances",
-     "2023-05-01-preview", None),
+     "2023-05-01-preview", _sql_managed_instance_props),
     ("AZURE_MARIADB_SERVER", "Microsoft.DBforMariaDB/servers",
      "2018-06-01", None),
     # AZURE_SQL_MANAGEDINSTANCES_DATABASE and AZURE_MARIA_DBSERVER_DATABASE
@@ -299,7 +678,7 @@ RESOURCE_TYPE_DEFINITIONS = [
     ("AZURE_SERVICE_BUS", "Microsoft.ServiceBus/namespaces",
      "2022-10-01-preview", _service_bus_props),
     ("AZURE_EVENTHUBS_NAMESPACES", "Microsoft.EventHub/namespaces",
-     "2022-10-01-preview", None),
+     "2022-10-01-preview", _eventhub_ns_props),
     ("AZURE_EVENT_GRID_DOMAIN", "Microsoft.EventGrid/domains",
      "2022-06-15", None),
     ("AZURE_EVENT_GRID_TOPIC", "Microsoft.EventGrid/topics",
@@ -318,7 +697,7 @@ RESOURCE_TYPE_DEFINITIONS = [
     ("AZURE_HDINSIGHT", "Microsoft.HDInsight/clusters",
      "2023-06-01-preview", None),
     ("AZURE_DATA_EXPLORER_CLUSTER", "Microsoft.Kusto/clusters",
-     "2023-05-02", None),
+     "2023-05-02", _data_explorer_props),
     ("AZURE_STREAM_ANALYTICS_JOBS", "Microsoft.StreamAnalytics/streamingjobs",
      "2021-10-01-preview", None),
     ("AZURE_STREAM_ANALYTICS_CLUSTERS", "Microsoft.StreamAnalytics/clusters",
@@ -326,7 +705,7 @@ RESOURCE_TYPE_DEFINITIONS = [
 
     # --- AI/ML & Cognitive (7) ---
     ("AZURE_COGNITIVE_SERVICES_ACCOUNTS", "Microsoft.CognitiveServices/accounts",
-     "2023-05-01", None),
+     "2023-05-01", _cognitive_services_props),
     ("AZURE_MACHINE_LEARNING", "Microsoft.MachineLearningServices/workspaces",
      "2023-04-01", None),
     ("AZURE_SEARCH_SERVICES", "Microsoft.Search/searchServices",
@@ -382,6 +761,34 @@ RESOURCE_TYPE_DEFINITIONS = [
      "2021-01-01", None),
     ("AZURE_DATA_BOX", "Microsoft.DataBox/jobs",
      "2022-12-01", None),
+
+    # --- Custom kinds — no native pak equivalent (13) ---
+    ("azure_logic_workflow", "Microsoft.Logic/workflows",
+     "2019-05-01", _logic_workflow_props),
+    ("azure_arc_machine", "Microsoft.HybridCompute/machines",
+     "2023-03-15-preview", _arc_machine_props),
+    ("azure_bastion_host", "Microsoft.Network/bastionHosts",
+     "2023-05-01", _bastion_host_props),
+    ("azure_private_endpoint", "Microsoft.Network/privateEndpoints",
+     "2023-05-01", _private_endpoint_props),
+    ("azure_nat_gateway", "Microsoft.Network/natGateways",
+     "2023-05-01", _nat_gateway_props),
+    ("azure_compute_snapshot", "Microsoft.Compute/snapshots",
+     "2023-04-02", _snapshot_props),
+    ("azure_disk_encryption_set", "Microsoft.Compute/diskEncryptionSets",
+     "2023-04-02", _disk_encryption_set_props),
+    ("azure_managed_identity", "Microsoft.ManagedIdentity/userAssignedIdentities",
+     "2023-01-31", _managed_identity_props),
+    ("azure_dns_resolver", "Microsoft.Network/dnsResolvers",
+     "2022-07-01", _dns_resolver_props),
+    ("azure_backup_vault", "Microsoft.DataProtection/backupVaults",
+     "2023-05-01", _backup_vault_props),
+    ("azure_sql_virtual_machine", "Microsoft.SqlVirtualMachine/sqlVirtualMachines",
+     "2023-01-01-preview", _sql_vm_props),
+    ("azure_app_service_environment", "Microsoft.Web/hostingEnvironments",
+     "2023-01-01", _app_service_env_props),
+    ("azure_storage_sync", "Microsoft.StorageSync/storageSyncServices",
+     "2022-06-01", _storage_sync_props),
 ]
 
 

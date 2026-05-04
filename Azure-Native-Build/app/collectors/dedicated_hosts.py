@@ -287,6 +287,7 @@ def collect_dedicated_hosts(client: AzureClient, result, adapter_kind: str,
                 path=(f"/subscriptions/{sub_id}/resourceGroups/{rg_name}"
                       f"/providers/Microsoft.Compute/hostGroups/{group_name}/hosts"),
                 api_version=API_VERSIONS["dedicated_hosts"],
+                params={"$expand": "instanceView"},
             )
 
             for host in hosts:
@@ -360,7 +361,8 @@ def collect_dedicated_hosts(client: AzureClient, result, adapter_kind: str,
                     parts = vm_id.split("/")
                     if parts:
                         vm_names.append(parts[-1])
-                safe_property(host_obj, "vm_names", ", ".join(vm_names))
+                safe_property(host_obj, "vm_names",
+                              ", ".join(vm_names) if vm_names else "None")
 
                 # --- VM size breakdown from vm_lookup ---
                 vm_size_counts = Counter()
@@ -391,7 +393,7 @@ def collect_dedicated_hosts(client: AzureClient, result, adapter_kind: str,
                 size_parts = [f"{size} x{cnt}"
                               for size, cnt in vm_size_counts.most_common()]
                 safe_property(host_obj, "vm_size_summary",
-                              ", ".join(size_parts) if size_parts else "")
+                              ", ".join(size_parts) if size_parts else "None")
                 safe_property(host_obj, "vm_size_distinct_count",
                               len(vm_size_counts))
 
@@ -451,7 +453,7 @@ def collect_dedicated_hosts(client: AzureClient, result, adapter_kind: str,
 
                 safe_property(host_obj, "total_vm_memory_gb", total_memory_gb)
                 safe_property(host_obj, "vm_memory_breakdown",
-                              ", ".join(memory_breakdown) if memory_breakdown else "")
+                              ", ".join(memory_breakdown) if memory_breakdown else "None")
 
                 # Get host SKU memory capacity from the same SKU cache
                 # Dedicated host SKU names map to host-level capacity
@@ -505,11 +507,14 @@ def collect_dedicated_hosts(client: AzureClient, result, adapter_kind: str,
                     safe_property(host_obj, "memory_utilization_pct", memory_utilization)
                     safe_property(host_obj, "memory_available_gb",
                                   round(host_memory_gb - total_memory_gb, 1))
+                else:
+                    safe_property(host_obj, "memory_utilization_pct", 0.0)
+                    safe_property(host_obj, "memory_available_gb", 0.0)
 
                 # Disk SKUs across all VMs on this host
                 safe_property(host_obj, "vm_disk_skus",
                               ", ".join(sorted(vm_disk_skus))
-                              if vm_disk_skus else "")
+                              if vm_disk_skus else "None")
 
                 # Instance view — available capacity and health
 
@@ -588,7 +593,7 @@ def collect_dedicated_hosts(client: AzureClient, result, adapter_kind: str,
                     safe_property(host_obj, "cost_month_to_date",
                                   host_costs.get("cost_month_to_date", 0.0))
                     safe_property(host_obj, "cost_currency",
-                                  host_costs.get("cost_currency", ""))
+                                  host_costs.get("cost_currency") or "USD")
                     safe_property(host_obj, "cost_last_30_days",
                                   host_costs.get("cost_last_30_days", 0.0))
                 except Exception as e:
@@ -646,9 +651,9 @@ def collect_dedicated_hosts(client: AzureClient, result, adapter_kind: str,
                     else:
                         safe_property(host_obj, "maintenance_pending", False)
                         safe_property(host_obj, "maintenance_impact_type", "None")
-                        safe_property(host_obj, "maintenance_status", "")
-                        safe_property(host_obj, "maintenance_not_before", "")
-                        safe_property(host_obj, "maintenance_not_after", "")
+                        safe_property(host_obj, "maintenance_status", "None")
+                        safe_property(host_obj, "maintenance_not_before", "None")
+                        safe_property(host_obj, "maintenance_not_after", "None")
                 except Exception as e:
                     logger.warning("Maintenance query failed for host %s: %s",
                                    host_name, e)
@@ -661,12 +666,12 @@ def collect_dedicated_hosts(client: AzureClient, result, adapter_kind: str,
                                   host_advisor.get("count", 0))
                     descs = host_advisor.get("descriptions", [])
                     safe_property(host_obj, "advisor_recommendations",
-                                  ", ".join(descs) if descs else "")
+                                  ", ".join(descs) if descs else "None")
                     safe_property(host_obj, "advisor_impact",
-                                  host_advisor.get("impact", ""))
+                                  host_advisor.get("impact") or "None")
                     cats = host_advisor.get("categories", set())
                     safe_property(host_obj, "advisor_category",
-                                  ", ".join(sorted(cats)) if cats else "")
+                                  ", ".join(sorted(cats)) if cats else "None")
                 except Exception as e:
                     logger.warning("Advisor enrichment failed for host %s: %s",
                                    host_name, e)
@@ -705,10 +710,10 @@ def collect_dedicated_hosts(client: AzureClient, result, adapter_kind: str,
                         safe_property(host_obj, "last_operation_caller",
                                       latest_event.get("caller", ""))
                     else:
-                        safe_property(host_obj, "last_operation", "")
-                        safe_property(host_obj, "last_operation_time", "")
-                        safe_property(host_obj, "last_operation_status", "")
-                        safe_property(host_obj, "last_operation_caller", "")
+                        safe_property(host_obj, "last_operation", "None")
+                        safe_property(host_obj, "last_operation_time", "None")
+                        safe_property(host_obj, "last_operation_status", "None")
+                        safe_property(host_obj, "last_operation_caller", "None")
                 except Exception as e:
                     logger.warning("Activity Log query failed for host %s: %s",
                                    host_name, e)
@@ -719,11 +724,11 @@ def collect_dedicated_hosts(client: AzureClient, result, adapter_kind: str,
 
                 # --- Source 10: Missing ARM properties ---
                 safe_property(host_obj, "time_created",
-                              host_props.get("timeCreated", ""))
+                              host_props.get("timeCreated") or "None")
                 safe_property(host_obj, "sku_tier",
-                              host_sku.get("tier", ""))
+                              host_sku.get("tier") or "Dedicated")
                 safe_property(host_obj, "sku_capacity",
-                              host_sku.get("capacity", ""))
+                              str(host_sku.get("capacity") or 1))
                 # Health status time and message from instanceView statuses
                 health_status_time = ""
                 health_status_message = ""
@@ -1034,6 +1039,8 @@ def _enrich_host_with_computed_metrics(host_obj, host_resource_id, vm_lookup,
             vcpu_util = round(
                 (total_vm_vcpus / host_vcpu_capacity) * 100, 1)
             safe_property(host_obj, "vcpu_utilization_pct", vcpu_util)
+        else:
+            safe_property(host_obj, "vcpu_utilization_pct", 0.0)
     except Exception as e:
         logger.debug("vCPU enrichment failed for %s: %s",
                      host_resource_id.split("/")[-1], e)
@@ -1100,8 +1107,8 @@ def _enrich_host_with_computed_metrics(host_obj, host_resource_id, vm_lookup,
             .get(sub_id, []))
 
         reservation_status = "PayAsYouGo"
-        reservation_id = ""
-        reservation_expiry = ""
+        reservation_id = "None"
+        reservation_expiry = "None"
 
         for order in reservations:
             order_props = order.get("properties", {})
@@ -1130,6 +1137,6 @@ def _enrich_host_with_computed_metrics(host_obj, host_resource_id, vm_lookup,
     except Exception as e:
         logger.debug("Reservations lookup failed for %s: %s",
                      host_resource_id.split("/")[-1], e)
-        safe_property(host_obj, "reservation_status", "")
-        safe_property(host_obj, "reservation_id", "")
-        safe_property(host_obj, "reservation_expiry", "")
+        safe_property(host_obj, "reservation_status", "Unknown")
+        safe_property(host_obj, "reservation_id", "None")
+        safe_property(host_obj, "reservation_expiry", "None")

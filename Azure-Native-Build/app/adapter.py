@@ -30,6 +30,11 @@ from constants import (
     OBJ_FUNCTIONS_APP, OBJ_APP_SERVICE_PLAN, OBJ_COSMOS_DB,
     OBJ_POSTGRESQL, OBJ_MYSQL,
     OBJ_REGION, OBJ_REGION_PER_SUB, OBJ_WORLD,
+    OBJ_LOGIC_WORKFLOW, OBJ_ARC_MACHINE, OBJ_BASTION_HOST,
+    OBJ_PRIVATE_ENDPOINT, OBJ_NAT_GATEWAY, OBJ_COMPUTE_SNAPSHOT,
+    OBJ_DISK_ENCRYPTION_SET, OBJ_MANAGED_IDENTITY, OBJ_DNS_RESOLVER,
+    OBJ_BACKUP_VAULT, OBJ_SQL_VIRTUAL_MACHINE, OBJ_APP_SERVICE_ENVIRONMENT,
+    OBJ_STORAGE_SYNC,
     ALL_NATIVE_STUB_KINDS,
     SD_SUBSCRIPTION, SD_RESOURCE_GROUP, SD_REGION, SD_SERVICE,
 )
@@ -681,6 +686,25 @@ def get_adapter_definition():
     # See note above re: SERVICE_DESCRIPTORS exclusion for custom kinds.
     la = definition.define_object_type(OBJ_LOG_ANALYTICS, "Azure Log Analytics Workspace")
     _add_standard_identifiers(la)
+
+    # -- New custom kinds (no native equivalent) — flat keys, no SERVICE_DESCRIPTORS --
+    for _ck, _label in [
+        (OBJ_LOGIC_WORKFLOW,          "Azure Logic Workflow"),
+        (OBJ_ARC_MACHINE,             "Azure Arc Machine"),
+        (OBJ_BASTION_HOST,            "Azure Bastion Host"),
+        (OBJ_PRIVATE_ENDPOINT,        "Azure Private Endpoint"),
+        (OBJ_NAT_GATEWAY,             "Azure NAT Gateway"),
+        (OBJ_COMPUTE_SNAPSHOT,        "Azure Compute Snapshot"),
+        (OBJ_DISK_ENCRYPTION_SET,     "Azure Disk Encryption Set"),
+        (OBJ_MANAGED_IDENTITY,        "Azure Managed Identity"),
+        (OBJ_DNS_RESOLVER,            "Azure DNS Resolver"),
+        (OBJ_BACKUP_VAULT,            "Azure Backup Vault"),
+        (OBJ_SQL_VIRTUAL_MACHINE,     "Azure SQL Virtual Machine"),
+        (OBJ_APP_SERVICE_ENVIRONMENT, "Azure App Service Environment"),
+        (OBJ_STORAGE_SYNC,            "Azure Storage Sync Service"),
+    ]:
+        _ck_obj = definition.define_object_type(_ck, _label)
+        _add_standard_identifiers(_ck_obj)
 
     # ===================================================================
     # Region / World aggregation kinds — match native pak describe.xml
