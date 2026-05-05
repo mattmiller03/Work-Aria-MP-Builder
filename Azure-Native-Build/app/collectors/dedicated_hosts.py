@@ -203,11 +203,19 @@ def collect_dedicated_hosts(client: AzureClient, result, adapter_kind: str,
                                sub_id, e)
                 advisor_cache[sub_id] = {}
 
-        # List all host groups in subscription
-        host_groups = client.get_all(
-            path=f"/subscriptions/{sub_id}/providers/Microsoft.Compute/hostGroups",
-            api_version=API_VERSIONS["host_groups"],
-        )
+        # List all host groups in subscription. Wrap so one sub's failure
+        # doesn't kill the collector for the remaining 5 subs.
+        try:
+            host_groups = client.get_all(
+                path=f"/subscriptions/{sub_id}/providers/Microsoft.Compute/hostGroups",
+                api_version=API_VERSIONS["host_groups"],
+            )
+        except Exception as e:
+            logger.warning("[DH-DIAG] hostGroups fetch failed for sub %s: %s",
+                           sub_id, e)
+            host_groups = []
+        logger.warning("[DH-DIAG] sub %s: found %d host groups",
+                       sub_id, len(host_groups))
 
         for group in host_groups:
             group_name = group["name"]
@@ -282,15 +290,27 @@ def collect_dedicated_hosts(client: AzureClient, result, adapter_kind: str,
 
             total_groups += 1
 
-            # Now get each host in this group with instance view
-            hosts = client.get_all(
-                path=(f"/subscriptions/{sub_id}/resourceGroups/{rg_name}"
-                      f"/providers/Microsoft.Compute/hostGroups/{group_name}/hosts"),
-                api_version=API_VERSIONS["dedicated_hosts"],
-                params={"$expand": "instanceView"},
-            )
+            # Now get each host in this group with instance view. Wrap so a
+            # 502/timeout on one group doesn't kill the collector for every
+            # subsequent group + sub. Without this, the v6/v7 reports showed
+            # AZURE_COMPUTE_HOSTGROUPS=1 because the first group's host fetch
+            # threw and the outer try/except in adapter.py swallowed the rest.
+            try:
+                hosts = client.get_all(
+                    path=(f"/subscriptions/{sub_id}/resourceGroups/{rg_name}"
+                          f"/providers/Microsoft.Compute/hostGroups/{group_name}/hosts"),
+                    api_version=API_VERSIONS["dedicated_hosts"],
+                    params={"$expand": "instanceView"},
+                )
+            except Exception as e:
+                logger.warning(
+                    "[DH-DIAG] hosts fetch failed for group %s (sub %s): %s",
+                    group_name, sub_id, e,
+                )
+                hosts = []
 
-            logger.warning("[DH-DIAG] group %s: found %d hosts", group_name, len(hosts))
+            logger.warning("[DH-DIAG] group %s: found %d hosts",
+                           group_name, len(hosts))
             for host in hosts:
                 host_name = host["name"]
                 host_resource_id = host.get("id", "")
