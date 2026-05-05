@@ -1,0 +1,2447 @@
+{
+  "timestamp": "2026-05-05T13:21:46",
+  "pak": "build/MicrosoftAzureAdapter_8.19.15.pak",
+  "connection": "<connection>",
+  "live": {
+    "duration": 7036.61133813858,
+    "total_objects": 26849,
+    "kind_counts": {
+      "azure_subscription": 6,
+      "AZURE_RESOURCE_GROUP": 528,
+      "AZURE_VIRTUAL_MACHINE": 4021,
+      "AZURE_DEDICATE_HOST": 171,
+      "AZURE_STORAGE_DISK": 8286,
+      "AZURE_NW_INTERFACE": 4602,
+      "AZURE_VIRTUAL_NETWORK": 44,
+      "azure_subnet": 338,
+      "AZURE_STORAGE_ACCOUNT": 301,
+      "AZURE_LB": 31,
+      "AZURE_KEY_VAULTS": 86,
+      "AZURE_SQL_SERVER": 12,
+      "AZURE_SQL_DATABASE": 76,
+      "AZURE_APP_SERVICE": 6,
+      "AZURE_FUNCTIONS_APP": 2,
+      "AZURE_APP_SERVICE_PLAN": 6,
+      "AZURE_MYSQL_SERVER": 5,
+      "AZURE_COMPUTE_HOSTGROUPS": 34,
+      "AZURE_PUBLIC_IPADDRESSES": 23,
+      "AZURE_EXPRESSROUTE_CIRCUITS": 3,
+      "azure_recovery_services_vault": 237,
+      "azure_log_analytics_workspace": 25,
+      "AZURE_NETWORK_SECURITY_GROUP": 103,
+      "AZURE_ROUTE_TABLES": 92,
+      "AZURE_DNS_ZONES": 2,
+      "AZURE_PRIVATE_DNSZONES": 82,
+      "AZURE_FIREWALLS": 3,
+      "AZURE_VIRTUAL_NETWORK_GATEWAY": 2,
+      "AZURE_APPLICATION_GATEWAY": 1,
+      "AZURE_VIRTUAL_HUBS": 2,
+      "AZURE_NETWORK_WATCHERS": 13,
+      "AZURE_KUBERNATE_CLUSTER": 9,
+      "AZURE_CONTAINER_REGISTRIES": 6,
+      "AZURE_VIRTUAL_SCALESET": 54,
+      "AZURE_AVAILABILITY_SETS": 16,
+      "AZURE_AUTOMATION": 20,
+      "AZURE_CACHE_REDIS": 4,
+      "AZURE_SQL_MANAGEDINSTANCES": 1,
+      "AZURE_EVENTHUBS_NAMESPACES": 5,
+      "AZURE_DATA_FACTORY": 2,
+      "AZURE_DATA_EXPLORER_CLUSTER": 1,
+      "AZURE_COGNITIVE_SERVICES_ACCOUNTS": 3,
+      "azure_logic_workflow": 2,
+      "azure_arc_machine": 702,
+      "azure_bastion_host": 1,
+      "azure_private_endpoint": 88,
+      "azure_nat_gateway": 3,
+      "azure_compute_snapshot": 6624,
+      "azure_disk_encryption_set": 47,
+      "azure_managed_identity": 54,
+      "azure_dns_resolver": 9,
+      "azure_backup_vault": 1,
+      "azure_sql_virtual_machine": 39,
+      "azure_app_service_environment": 1,
+      "azure_storage_sync": 1,
+      "AZURE_REGION": 6,
+      "AZURE_REGION_PER_SUB": 6,
+      "AZURE_WORLD": 1
+    },
+    "kind_counts_unspecified": {
+      "AZURE_NETWORK_SECURITY_GROUP": 103,
+      "AZURE_ROUTE_TABLES": 92,
+      "AZURE_DNS_ZONES": 2,
+      "AZURE_PRIVATE_DNSZONES": 82,
+      "AZURE_FIREWALLS": 3,
+      "AZURE_VIRTUAL_NETWORK_GATEWAY": 2,
+      "AZURE_APPLICATION_GATEWAY": 1,
+      "AZURE_VIRTUAL_HUBS": 2,
+      "AZURE_KUBERNATE_CLUSTER": 9,
+      "AZURE_CONTAINER_REGISTRIES": 6,
+      "AZURE_AUTOMATION": 20,
+      "AZURE_CACHE_REDIS": 4,
+      "AZURE_DATA_FACTORY": 2
+    },
+    "per_kind": {
+      "azure_subscription": {
+        "status": "PASS",
+        "count": 6,
+        "reasons": []
+      },
+      "AZURE_RESOURCE_GROUP": {
+        "status": "PASS",
+        "count": 528,
+        "reasons": []
+      },
+      "AZURE_VIRTUAL_MACHINE": {
+        "status": "PASS",
+        "count": 4021,
+        "reasons": []
+      },
+      "AZURE_STORAGE_DISK": {
+        "status": "PASS",
+        "count": 8286,
+        "reasons": []
+      },
+      "AZURE_COMPUTE_HOSTGROUPS": {
+        "status": "PASS",
+        "count": 34,
+        "reasons": []
+      },
+      "AZURE_DEDICATE_HOST": {
+        "status": "PASS",
+        "count": 171,
+        "reasons": []
+      },
+      "AZURE_NW_INTERFACE": {
+        "status": "PASS",
+        "count": 4602,
+        "reasons": []
+      },
+      "AZURE_VIRTUAL_NETWORK": {
+        "status": "PASS",
+        "count": 44,
+        "reasons": []
+      },
+      "azure_subnet": {
+        "status": "PASS",
+        "count": 338,
+        "reasons": []
+      },
+      "AZURE_LB": {
+        "status": "PASS",
+        "count": 31,
+        "reasons": []
+      },
+      "AZURE_PUBLIC_IPADDRESSES": {
+        "status": "PASS",
+        "count": 23,
+        "reasons": []
+      },
+      "AZURE_EXPRESSROUTE_CIRCUITS": {
+        "status": "PASS",
+        "count": 3,
+        "reasons": []
+      },
+      "AZURE_STORAGE_ACCOUNT": {
+        "status": "WARN",
+        "count": 301,
+        "reasons": [
+          "metric 'summary|usedCapacity' absent on every object (optional)"
+        ]
+      },
+      "AZURE_KEY_VAULTS": {
+        "status": "PASS",
+        "count": 86,
+        "reasons": []
+      },
+      "AZURE_SQL_SERVER": {
+        "status": "PASS",
+        "count": 12,
+        "reasons": []
+      },
+      "AZURE_SQL_DATABASE": {
+        "status": "PASS",
+        "count": 76,
+        "reasons": []
+      },
+      "AZURE_POSTGRESQL_SERVER": {
+        "status": "WARN",
+        "count": 0,
+        "reasons": [
+          "no objects (tenant may have none)"
+        ]
+      },
+      "AZURE_MYSQL_SERVER": {
+        "status": "WARN",
+        "count": 5,
+        "reasons": [
+          "metric 'CPU_PERCENT' absent on every object (optional)"
+        ]
+      },
+      "AZURE_DB_ACCOUNT": {
+        "status": "WARN",
+        "count": 0,
+        "reasons": [
+          "no objects (tenant may have none)"
+        ]
+      },
+      "AZURE_APP_SERVICE": {
+        "status": "WARN",
+        "count": 6,
+        "reasons": [
+          "metric 'summary|requests' absent on every object (optional)"
+        ]
+      },
+      "AZURE_FUNCTIONS_APP": {
+        "status": "PASS",
+        "count": 2,
+        "reasons": []
+      },
+      "AZURE_APP_SERVICE_PLAN": {
+        "status": "PASS",
+        "count": 6,
+        "reasons": []
+      },
+      "azure_recovery_services_vault": {
+        "status": "PASS",
+        "count": 237,
+        "reasons": []
+      },
+      "azure_log_analytics_workspace": {
+        "status": "PASS",
+        "count": 25,
+        "reasons": []
+      },
+      "AZURE_WORLD": {
+        "status": "PASS",
+        "count": 1,
+        "reasons": []
+      },
+      "AZURE_REGION": {
+        "status": "PASS",
+        "count": 6,
+        "reasons": []
+      },
+      "AZURE_REGION_PER_SUB": {
+        "status": "PASS",
+        "count": 6,
+        "reasons": []
+      },
+      "AZURE_VIRTUAL_SCALESET": {
+        "status": "PASS",
+        "count": 54,
+        "reasons": []
+      },
+      "AZURE_AVAILABILITY_SETS": {
+        "status": "PASS",
+        "count": 16,
+        "reasons": []
+      },
+      "AZURE_NETWORK_WATCHERS": {
+        "status": "PASS",
+        "count": 13,
+        "reasons": []
+      },
+      "AZURE_EVENTHUBS_NAMESPACES": {
+        "status": "PASS",
+        "count": 5,
+        "reasons": []
+      },
+      "AZURE_COGNITIVE_SERVICES_ACCOUNTS": {
+        "status": "PASS",
+        "count": 3,
+        "reasons": []
+      },
+      "AZURE_SQL_MANAGEDINSTANCES": {
+        "status": "PASS",
+        "count": 1,
+        "reasons": []
+      },
+      "AZURE_DATA_EXPLORER_CLUSTER": {
+        "status": "PASS",
+        "count": 1,
+        "reasons": []
+      },
+      "azure_logic_workflow": {
+        "status": "PASS",
+        "count": 2,
+        "reasons": []
+      },
+      "azure_arc_machine": {
+        "status": "PASS",
+        "count": 702,
+        "reasons": []
+      },
+      "azure_bastion_host": {
+        "status": "PASS",
+        "count": 1,
+        "reasons": []
+      },
+      "azure_private_endpoint": {
+        "status": "PASS",
+        "count": 88,
+        "reasons": []
+      },
+      "azure_nat_gateway": {
+        "status": "PASS",
+        "count": 3,
+        "reasons": []
+      },
+      "azure_compute_snapshot": {
+        "status": "PASS",
+        "count": 6624,
+        "reasons": []
+      },
+      "azure_disk_encryption_set": {
+        "status": "PASS",
+        "count": 47,
+        "reasons": []
+      },
+      "azure_managed_identity": {
+        "status": "PASS",
+        "count": 54,
+        "reasons": []
+      },
+      "azure_dns_resolver": {
+        "status": "PASS",
+        "count": 9,
+        "reasons": []
+      },
+      "azure_backup_vault": {
+        "status": "PASS",
+        "count": 1,
+        "reasons": []
+      },
+      "azure_sql_virtual_machine": {
+        "status": "PASS",
+        "count": 39,
+        "reasons": []
+      },
+      "azure_app_service_environment": {
+        "status": "PASS",
+        "count": 1,
+        "reasons": []
+      },
+      "azure_storage_sync": {
+        "status": "PASS",
+        "count": 1,
+        "reasons": []
+      }
+    },
+    "dedicated_host_missing_attrs": [
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 1
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 2
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 3
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 4
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 5
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 6
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 7
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 8
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 9
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 10
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 11
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 12
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 13
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 14
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 15
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 16
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 17
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 18
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 19
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 20
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 21
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 22
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 23
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 24
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 25
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 26
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 27
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 28
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 29
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 30
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 31
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 32
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 33
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 34
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 35
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 36
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 37
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 38
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 39
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 40
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 41
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 42
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 43
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 44
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 45
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 46
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 47
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 48
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 49
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 50
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 51
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 52
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 53
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 54
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 55
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 56
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 57
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 58
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 59
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 60
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 61
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 62
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 63
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 64
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 65
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 66
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 67
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 68
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 69
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 70
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 71
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 72
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 73
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 74
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 75
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 76
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 77
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 78
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 79
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 80
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 81
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 82
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 83
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 84
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 85
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 86
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 87
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 88
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 89
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 90
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 91
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 92
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 93
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 94
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 95
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 96
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 97
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 98
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 99
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 100
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 101
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 102
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 103
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 104
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 105
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 106
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 107
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 108
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 109
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 110
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 111
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 112
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 113
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 114
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 115
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 116
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 117
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 118
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 119
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 120
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 121
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 122
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 123
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 124
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 125
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 126
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 127
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 128
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 129
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 130
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 131
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 132
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 133
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 134
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 135
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 136
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 137
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 138
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 139
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 140
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 141
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 142
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 143
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 144
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 145
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 146
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 147
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 148
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 149
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 150
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 151
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 152
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 153
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 154
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 155
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 156
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 157
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 158
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 159
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 160
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 161
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 162
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 163
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 164
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 165
+      },
+      {
+        "missing": [
+          "max_available_slots",
+          "smallest_vm_size",
+          "smallest_vm_available",
+          "allocatable_vm_summary",
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 166
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 167
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 168
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 169
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 170
+      },
+      {
+        "missing": [
+          "health_detailed_status",
+          "health_reason_type",
+          "maintenance_pending",
+          "maintenance_impact_type",
+          "maintenance_status"
+        ],
+        "host_index": 171
+      }
+    ],
+    "dh_prop_keys_first_obj": [
+      "SERVICE_DESCRIPTORS|AZURE_REGION",
+      "SERVICE_DESCRIPTORS|AZURE_RESOURCE_GROUP",
+      "SERVICE_DESCRIPTORS|AZURE_SERVICE",
+      "SERVICE_DESCRIPTORS|AZURE_SUBSCRIPTION_ID",
+      "advisor_category",
+      "advisor_impact",
+      "advisor_recommendation_count",
+      "advisor_recommendations",
+      "allocatable_vm_summary",
+      "available_Standard_D16ds_v5",
+      "available_Standard_D2ds_v5",
+      "available_Standard_D32ds_v5",
+      "available_Standard_D48ds_v5",
+      "available_Standard_D4ds_v5",
+      "available_Standard_D64ds_v5",
+      "available_Standard_D8ds_v5",
+      "available_Standard_D96ds_v5",
+      "cost_currency",
+      "cost_last_30_days",
+      "cost_month_to_date",
+      "genericsummary|Id",
+      "genericsummary|Location",
+      "genericsummary|Name",
+      "genericsummary|Sku",
+      "genericsummary|Type",
+      "health_availability_state",
+      "health_detailed_status",
+      "health_occurred_time",
+      "health_reason_type",
+      "health_state",
+      "health_status_message",
+      "health_status_time",
+      "health_summary",
+      "host_cpu_avg",
+      "host_cpu_max",
+      "host_cpu_min",
+      "host_disk_read_total",
+      "host_disk_write_total",
+      "host_group_name",
+      "host_memory_capacity_gb",
+      "host_network_in_total",
+      "host_network_out_total",
+      "host_vcpu_capacity",
+      "hourly_rate",
+      "last_operation",
+      "last_operation_caller",
+      "last_operation_status",
+      "last_operation_time",
+      "max_available_slots",
+      "memory_available_gb",
+      "memory_utilization_pct",
+      "monthly_rate_estimate",
+      "policy_compliance_state",
+      "policy_non_compliant_count",
+      "recent_operations_count",
+      "reservation_expiry",
+      "reservation_id",
+      "reservation_status",
+      "resource_group",
+      "sku_capacity",
+      "sku_name",
+      "sku_tier",
+      "smallest_vm_available",
+      "smallest_vm_size",
+      "subscription_id",
+      "summary|autoReplaceOnFailure",
+      "summary|hostId",
+      "summary|id",
+      "summary|instanceView",
+      "summary|licenseTypes",
+      "summary|name",
+      "summary|platformFaultDomain",
+      "summary|provisioningState",
+      "summary|provisioningTime",
+      "summary|regionName",
+      "summary|tags",
+      "summary|tags|Cloud-origin",
+      "summary|tags|Environment",
+      "summary|type",
+      "time_created",
+      "total_vm_memory_gb",
+      "total_vm_vcpus_allocated",
+      "vcpu_utilization_pct",
+      "vm_count",
+      "vm_disk_skus",
+      "vm_ids",
+      "vm_memory_breakdown",
+      "vm_names",
+      "vm_size_distinct_count",
+      "vm_size_summary"
+    ],
+    "dh_stats": {
+      "total": 171,
+      "with_any_property": 171,
+      "with_zero_properties": 0,
+      "with_hostgroup_parent": 171,
+      "id_samples": [
+        {
+          "n_properties": 90,
+          "parent_kinds": [
+            "AZURE_COMPUTE_HOSTGROUPS"
+          ],
+          "identifiers": {
+            "AZURE_SUBSCRIPTION_ID": "<guid>",
+            "AZURE_RESOURCE_GROUP": "hub-dedicated-hosts-virginia",
+            "AZURE_REGION": "usgovvirginia",
+            "ID": "/subscriptions/<redacted>/resourcegroups/<redacted>/providers/<redacted>/hostgroups/hub-ddsv5-type1-virginia/hosts/azespep0750",
+            "hostGroupName": "hub-ddsv5-type1-virginia"
+          },
+          "sample_index": 1
+        },
+        {
+          "n_properties": 89,
+          "parent_kinds": [
+            "AZURE_COMPUTE_HOSTGROUPS"
+          ],
+          "identifiers": {
+            "AZURE_SUBSCRIPTION_ID": "<guid>",
+            "AZURE_RESOURCE_GROUP": "hub-dedicated-hosts-virginia",
+            "AZURE_REGION": "usgovvirginia",
+            "ID": "/subscriptions/<redacted>/resourcegroups/<redacted>/providers/<redacted>/hostgroups/hub-dsv3-type3-group-virginia/hosts/azespes0500",
+            "hostGroupName": "hub-dsv3-type3-group-virginia"
+          },
+          "sample_index": 2
+        },
+        {
+          "n_properties": 89,
+          "parent_kinds": [
+            "AZURE_COMPUTE_HOSTGROUPS"
+          ],
+          "identifiers": {
+            "AZURE_SUBSCRIPTION_ID": "<guid>",
+            "AZURE_RESOURCE_GROUP": "hub-dedicated-hosts-virginia",
+            "AZURE_REGION": "usgovvirginia",
+            "ID": "/subscriptions/<redacted>/resourcegroups/<redacted>/providers/<redacted>/hostgroups/hub-dsv3-type3-group-virginia/hosts/azespes0501",
+            "hostGroupName": "hub-dsv3-type3-group-virginia"
+          },
+          "sample_index": 3
+        },
+        {
+          "n_properties": 90,
+          "parent_kinds": [
+            "AZURE_COMPUTE_HOSTGROUPS"
+          ],
+          "identifiers": {
+            "AZURE_SUBSCRIPTION_ID": "<guid>",
+            "AZURE_RESOURCE_GROUP": "hub-dedicated-hosts-virginia",
+            "AZURE_REGION": "usgovvirginia",
+            "ID": "/subscriptions/<redacted>/resourcegroups/<redacted>/providers/<redacted>/hostgroups/hub-fsv2type3-dh-group-va/hosts/azespes0800",
+            "hostGroupName": "hub-fsv2type3-dh-group-va"
+          },
+          "sample_index": 4
+        }
+      ]
+    }
+  },
+  "describe_audit": {
+    "kind_count": 115,
+    "missing_kinds": [],
+    "dedicated_host_attrs_missing": [],
+    "custom_kinds_with_pipe_attrs": {}
+  },
+  "content_drift": [
+    [
+      "/opt/aria/Aria-MP-Builder/Azure-Native-Build/content/traversalspecs/MicrosoftAzureTraversalSpecs.xml",
+      "offset 14975",
+      "unknown kind AZURE_SYNAPSE_ANALYTICS"
+    ],
+    [
+      "/opt/aria/Aria-MP-Builder/Azure-Native-Build/content/traversalspecs/MicrosoftAzureTraversalSpecs.xml",
+      "offset 29861",
+      "unknown kind AZURE_SYNAPSE_ANALYTICS"
+    ],
+    [
+      "/opt/aria/Aria-MP-Builder/Azure-Native-Build/content/alertdefs/Microsoft_Azure_Alert_Defs.xml",
+      "Condition",
+      "unknown attr CPU|CPU_USAGE in @key"
+    ],
+    [
+      "/opt/aria/Aria-MP-Builder/Azure-Native-Build/content/alertdefs/Microsoft_Azure_Alert_Defs.xml",
+      "Condition",
+      "unknown attr CPU|CPU_USAGE in @key"
+    ],
+    [
+      "/opt/aria/Aria-MP-Builder/Azure-Native-Build/content/alertdefs/Microsoft_Azure_Alert_Defs.xml",
+      "Condition",
+      "unknown attr CPU|CPU_USAGE in @key"
+    ],
+    [
+      "/opt/aria/Aria-MP-Builder/Azure-Native-Build/content/alertdefs/Microsoft_Azure_Alert_Defs.xml",
+      "Condition",
+      "unknown attr summary|runtime|powerState in @key"
+    ],
+    [
+      "/opt/aria/Aria-MP-Builder/Azure-Native-Build/content/alertdefs/Microsoft_Azure_Alert_Defs.xml",
+      "Condition",
+      "unknown attr CPU|CPU_USAGE in @key"
+    ],
+    [
+      "/opt/aria/Aria-MP-Builder/Azure-Native-Build/content/alertdefs/Microsoft_Azure_Alert_Defs.xml",
+      "Condition",
+      "unknown attr CPU|CPU_USAGE in @key"
+    ],
+    [
+      "/opt/aria/Aria-MP-Builder/Azure-Native-Build/content/alertdefs/Microsoft_Azure_Alert_Defs.xml",
+      "Condition",
+      "unknown attr CPU|CPU_USAGE in @key"
+    ],
+    [
+      "/opt/aria/Aria-MP-Builder/Azure-Native-Build/content/alertdefs/Microsoft_Azure_Alert_Defs.xml",
+      "Condition",
+      "unknown attr NETWORK|throughput in @key"
+    ],
+    [
+      "/opt/aria/Aria-MP-Builder/Azure-Native-Build/content/alertdefs/Microsoft_Azure_Alert_Defs.xml",
+      "Condition",
+      "unknown attr memory|kube_node_status_allocatable_memory_bytes in @key"
+    ],
+    [
+      "/opt/aria/Aria-MP-Builder/Azure-Native-Build/content/alertdefs/Microsoft_Azure_Alert_Defs.xml",
+      "Condition",
+      "unknown attr summary|availability in @key"
+    ],
+    [
+      "/opt/aria/Aria-MP-Builder/Azure-Native-Build/content/alertdefs/Microsoft_Azure_Alert_Defs.xml",
+      "Condition",
+      "unknown attr summary|statusOfPrimary in @key"
+    ],
+    [
+      "/opt/aria/Aria-MP-Builder/Azure-Native-Build/content/alertdefs/Microsoft_Azure_Alert_Defs.xml",
+      "Condition",
+      "unknown attr summary|powerState in @key"
+    ],
+    [
+      "/opt/aria/Aria-MP-Builder/Azure-Native-Build/content/alertdefs/Microsoft_Azure_Alert_Defs.xml",
+      "Condition",
+      "unknown attr summary|provisioningState in @key"
+    ],
+    [
+      "/opt/aria/Aria-MP-Builder/Azure-Native-Build/content/alertdefs/Microsoft_Azure_Alert_Defs.xml",
+      "Condition",
+      "unknown attr cpu|percentage_cpu in @key"
+    ],
+    [
+      "/opt/aria/Aria-MP-Builder/Azure-Native-Build/content/alertdefs/Microsoft_Azure_Alert_Defs.xml",
+      "Condition",
+      "unknown attr summary|provisioningState in @key"
+    ],
+    [
+      "/opt/aria/Aria-MP-Builder/Azure-Native-Build/content/alertdefs/Microsoft_Azure_Alert_Defs.xml",
+      "Condition",
+      "unknown attr cpu|percentage_cpu in @key"
+    ],
+    [
+      "/opt/aria/Aria-MP-Builder/Azure-Native-Build/content/alertdefs/Microsoft_Azure_Alert_Defs.xml",
+      "Condition",
+      "unknown attr cpu|percentage_cpu in @key"
+    ],
+    [
+      "/opt/aria/Aria-MP-Builder/Azure-Native-Build/content/alertdefs/Microsoft_Azure_Alert_Defs.xml",
+      "Condition",
+      "unknown attr summary|state in @key"
+    ]
+  ],
+  "aria_ops": {
+    "host": "<aria-ops-host>",
+    "kind_count": 115,
+    "counts": {
+      "AZURE_DATA_EXPLORER_DATABASE": 0,
+      "azure_app_service_environment": 1,
+      "azure_arc_machine": 702,
+      "azure_backup_vault": 1,
+      "azure_bastion_host": 1,
+      "azure_compute_snapshot": 6752,
+      "azure_disk_encryption_set": 47,
+      "azure_dns_resolver": 9,
+      "azure_log_analytics_workspace": 25,
+      "azure_logic_workflow": 2,
+      "AZURE_SYNAPSE_ANALYTICS_WORKSPACE": 0,
+      "azure_managed_identity": 54,
+      "azure_nat_gateway": 3,
+      "azure_private_endpoint": 88,
+      "azure_recovery_services_vault": 237,
+      "azure_sql_virtual_machine": 39,
+      "azure_storage_sync": 1,
+      "azure_subnet": 338,
+      "AZURE_SQL_SERVER": 15,
+      "azure_subscription": 6,
+      "AZURE_POSTGRESQL_SERVER": 0,
+      "AZURE_ANALYSIS_SERVICES": 0,
+      "AZURE_API_MANAGEMENT": 0,
+      "AZURE_APP_CONFIGURATION": 0,
+      "AZURE_APP_SERVICE_PLAN": 7,
+      "AZURE_AUTOMATION": 24,
+      "AZURE_AVAILABILITY_SETS": 20,
+      "AZURE_BATCH_ACCOUNT": 0,
+      "AZURE_BOT_SERVICES": 0,
+      "AZURE_CACHE_REDIS": 4,
+      "AZURE_CDN_PROFILES": 0,
+      "AZURE_CDN_PROFILES_ENDPOINTS": 0,
+      "AZURE_COGNITIVE_SERVICES_ACCOUNTS": 3,
+      "AZURE_COMPUTE_DOMAINNAMES": 0,
+      "AZURE_COMPUTE_HOSTGROUPS": 24,
+      "AZURE_CONTAINER": 0,
+      "AZURE_CONTAINER_REGISTRIES": 7,
+      "AZURE_CONTIANER_CONTAINERGROUPS": 0,
+      "AZURE_DATA_BOX": 0,
+      "AZURE_DATALAKE_STORE": 0,
+      "AZURE_DDOS_PROTECTION_PLAN": 0,
+      "AZURE_DEDICATE_HOST": 415,
+      "AZURE_DIGITAL_TWINS": 0,
+      "AZURE_DNS_ZONES": 2,
+      "AZURE_EVENT_GRID_DOMAIN": 0,
+      "AZURE_EVENT_GRID_SUBSCRIPTION": 0,
+      "AZURE_EVENT_GRID_TOPIC": 0,
+      "AZURE_EVENT_HUBS": 0,
+      "AZURE_EVENTHUBS_NAMESPACES": 5,
+      "AZURE_EXPRESSROUTE_CIRCUITS": 3,
+      "AZURE_FIREWALLS": 3,
+      "AZURE_FRONT_DOORS": 0,
+      "AZURE_FUNCTIONS_APP": 3,
+      "AZURE_IOT_CENTRAL": 0,
+      "AZURE_IOT_HUB": 0,
+      "AZURE_KEY_VAULTS": 99,
+      "AZURE_MACHINE_LEARNING": 0,
+      "AZURE_MARIA_DBSERVER_DATABASE": 0,
+      "AZURE_MARIADB_SERVER": 0,
+      "AZURE_MEDIA_SERVICES": 0,
+      "AZURE_MEDIASERVICES_LIVEEVENTS": 0,
+      "AZURE_MEDIASERVICES_STREAMINGEP": 0,
+      "AZURE_NETAPPACCOUNT": 0,
+      "AZURE_NETAPPACCOUNT_CAPACITYPOOLS": 0,
+      "AZURE_NETAPPACCOUNT_CAPACITYPOOLS_VOLUMES": 0,
+      "AZURE_NETWORK_SECURITY_GROUP": 112,
+      "AZURE_NETWORK_WATCHERS": 14,
+      "AZURE_NH_NAMESPACES_NOTIFICATIONHUBS": 0,
+      "AZURE_NOTIFICATIONHUBS_NAMESPACES": 0,
+      "AZURE_OPENSHIFT_CLUSTERS": 0,
+      "AZURE_POWER_BI_EMBEDDED": 0,
+      "AZURE_PRIVATE_DNSZONES": 97,
+      "AZURE_PROXIMITY_PLACEMENT_GROUP": 0,
+      "AZURE_PUBLIC_IPADDRESSES": 23,
+      "AZURE_PURVIEW_ACCOUNTS": 0,
+      "AZURE_REGION": 61,
+      "AZURE_REGION_PER_SUB": 23,
+      "AZURE_ROUTE_TABLES": 99,
+      "AZURE_SEARCH_SERVICES": 0,
+      "AZURE_SERVICES_FROM_XML": 0,
+      "AZURE_SIGNALR_SERVICES": 0,
+      "AZURE_SPATIAL_ANCHORS": 0,
+      "AZURE_SQL_MANAGEDINSTANCES": 2,
+      "AZURE_SQL_MANAGEDINSTANCES_DATABASE": 0,
+      "AZURE_RESOURCE_GROUP": 528,
+      "AZURE_STREAM_ANALYTICS_CLUSTERS": 0,
+      "AZURE_STREAM_ANALYTICS_JOBS": 0,
+      "AZURE_TIME_SERIES_INSIGHTS": 0,
+      "AZURE_TRAFFIC_MANAGER_PROFILES": 0,
+      "AZURE_VIRTUAL_HUBS": 2,
+      "AZURE_VIRTUAL_WAN": 0,
+      "AZURE_WORLD": 1,
+      "AZURE_VIRTUAL_SCALESET_INSTANCE": 0,
+      "AZURE_VIRTUAL_SCALESET": 56,
+      "AZURE_KUBERNATE_CLUSTER": 10,
+      "AZURE_DATA_FACTORY": 2,
+      "AZURE_VIRTUAL_MACHINE": 3217,
+      "AZURE_VIRTUAL_NETWORK_GATEWAY": 2,
+      "AZURE_APPLICATION_GATEWAY": 1,
+      "AZURE_SYNAPSE_ANALYTICS_BIGDATA_POOL": 0,
+      "AZURE_VIRTUAL_NETWORK": 48,
+      "AZURE_APP_SERVICE": 7,
+      "AZURE_DB_ACCOUNT": 0,
+      "AZURE_STORAGE_ACCOUNT": 351,
+      "MicrosoftAzureAdapter Instance": 9,
+      "AZURE_SYNAPSE_ANALYTICS_SQL_POOL": 0,
+      "AZURE_STORAGE_DISK": 10525,
+      "AZURE_SERVICE_BUS": 0,
+      "AZURE_MYSQL_SERVER": 6,
+      "AZURE_SQL_DATABASE": 83,
+      "AZURE_DATA_LAKE_ANALYTICS": 0,
+      "AZURE_DATA_EXPLORER_CLUSTER": 1,
+      "AZURE_LB": 34,
+      "AZURE_NW_INTERFACE": 5031,
+      "AZURE_HDINSIGHT": 0
+    },
+    "mismatches": [
+      "AZURE_SQL_SERVER: aria=15 live=12",
+      "AZURE_AUTOMATION: aria=24 live=20",
+      "AZURE_AVAILABILITY_SETS: aria=20 live=16",
+      "AZURE_COMPUTE_HOSTGROUPS: aria=24 live=34",
+      "AZURE_DEDICATE_HOST: aria=415 live=171",
+      "AZURE_KEY_VAULTS: aria=99 live=86",
+      "AZURE_PRIVATE_DNSZONES: aria=97 live=82",
+      "AZURE_REGION: aria=61 live=6",
+      "AZURE_REGION_PER_SUB: aria=23 live=6",
+      "AZURE_VIRTUAL_MACHINE: aria=3217 live=4021",
+      "AZURE_STORAGE_ACCOUNT: aria=351 live=301",
+      "AZURE_STORAGE_DISK: aria=10525 live=8286"
+    ]
+  },
+  "exit_summary": "WARN"
+}
