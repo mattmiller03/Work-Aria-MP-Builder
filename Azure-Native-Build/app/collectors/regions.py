@@ -22,6 +22,7 @@ regions, REGION_PER_SUB must be a child of azure_subscription too.
 import logging
 from collections import defaultdict
 
+from helpers import safe_property
 from constants import (
     OBJ_REGION, OBJ_REGION_PER_SUB, OBJ_WORLD, OBJ_SUBSCRIPTION,
     OBJ_VIRTUAL_MACHINE, OBJ_STORAGE_ACCOUNT, OBJ_SQL_SERVER,
@@ -33,6 +34,33 @@ from constants import (
 )
 
 logger = logging.getLogger(__name__)
+
+
+# Map Azure Gov ARM region codes to the display names used in
+# content/regions/azureregions.json. The Aria Ops home-tab globe widget
+# joins AZURE_REGION objects to that file by name, so the region object's
+# `name` MUST match a `name` entry in the JSON for the geo coords to
+# attach. lat/lon are duplicated as object properties so widgets that
+# read coords directly (rather than via name join) also work.
+_GOV_REGION_GEO = {
+    "usgovvirginia":  ("Azure GovCloud (US Gov Virginia)", 37.623159, -78.39411),
+    "usgovtexas":     ("Azure GovCloud (US Gov Texas)",     31.56443,  -99.208076),
+    "usgovarizona":   ("Azure GovCloud (US Gov Arizona)",   34.42527,  -111.7046),
+    "usdodcentral":   ("Azure GovCloud (US DoD Central)",   42.41475,  -92.561731),
+    "usdodeast":      ("Azure GovCloud (US DoD East)",      37.70926,  -77.84588),
+}
+
+
+def _resolve_region_display(region_code):
+    """Map an Azure region code to (display_name, latitude, longitude).
+
+    Falls back to "Azure {code}" with no geo when the code isn't in the
+    Gov mapping, so non-Gov collectors still produce sane region objects.
+    """
+    entry = _GOV_REGION_GEO.get(region_code.lower())
+    if entry:
+        return entry
+    return (f"Azure {region_code}", None, None)
 
 
 # Mapping from object kind to AZURE_WORLD summary metric key.
@@ -150,19 +178,32 @@ def collect_regions_and_world(result, adapter_kind, subscriptions,
 
     # ------------------------------------------------------------------
     # 2. Create AZURE_REGION objects (one per unique region)
+    #    Names match content/regions/azureregions.json exactly so the
+    #    Aria Ops home-tab globe joins by name. Lat/lon are also stamped
+    #    as properties so widgets that read coords directly work too.
     # ------------------------------------------------------------------
     region_objects = {}
     for region_name in unique_regions:
-        region_label = f"Azure {region_name}"
+        display_name, lat, lon = _resolve_region_display(region_name)
         region_obj = result.object(
             adapter_kind=adapter_kind,
             object_kind=OBJ_REGION,
-            name=region_label,
+            name=display_name,
             identifiers=[],
         )
+        safe_property(region_obj, "azure_region_code", region_name)
+        if lat is not None and lon is not None:
+            safe_property(region_obj, "latitude", lat)
+            safe_property(region_obj, "longitude", lon)
+            safe_property(region_obj, "geolocation|latitude", lat)
+            safe_property(region_obj, "geolocation|longitude", lon)
         region_objects[region_name] = region_obj
 
-    logger.info("Created %d AZURE_REGION objects", len(region_objects))
+    logger.info(
+        "Created %d AZURE_REGION objects (geo coords applied to %d)",
+        len(region_objects),
+        sum(1 for r in unique_regions if _resolve_region_display(r)[1] is not None),
+    )
 
     # ------------------------------------------------------------------
     # 3. Create AZURE_REGION_PER_SUB per (sub_id, region) pair, parented
