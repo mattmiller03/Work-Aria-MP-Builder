@@ -1,16 +1,16 @@
 {
-  "timestamp": "2026-05-04T18:56:21",
+  "timestamp": "2026-05-05T11:56:38",
   "pak": "build/MicrosoftAzureAdapter_8.19.15.pak",
   "connection": "<connection>",
   "live": {
-    "duration": 2596.08650803566,
-    "total_objects": 26661,
+    "duration": 2832.0244534015656,
+    "total_objects": 26731,
     "kind_counts": {
       "azure_subscription": 6,
       "AZURE_RESOURCE_GROUP": 528,
-      "AZURE_VIRTUAL_MACHINE": 3921,
+      "AZURE_VIRTUAL_MACHINE": 3966,
       "AZURE_DEDICATE_HOST": 138,
-      "AZURE_STORAGE_DISK": 8237,
+      "AZURE_STORAGE_DISK": 8256,
       "AZURE_NW_INTERFACE": 4602,
       "AZURE_VIRTUAL_NETWORK": 44,
       "azure_subnet": 338,
@@ -23,7 +23,7 @@
       "AZURE_FUNCTIONS_APP": 2,
       "AZURE_APP_SERVICE_PLAN": 6,
       "AZURE_MYSQL_SERVER": 5,
-      "AZURE_COMPUTE_HOSTGROUPS": 1,
+      "AZURE_COMPUTE_HOSTGROUPS": 34,
       "AZURE_PUBLIC_IPADDRESSES": 23,
       "AZURE_EXPRESSROUTE_CIRCUITS": 3,
       "azure_recovery_services_vault": 237,
@@ -53,7 +53,7 @@
       "azure_bastion_host": 1,
       "azure_private_endpoint": 88,
       "azure_nat_gateway": 3,
-      "azure_compute_snapshot": 6651,
+      "azure_compute_snapshot": 6624,
       "azure_disk_encryption_set": 47,
       "azure_managed_identity": 54,
       "azure_dns_resolver": 9,
@@ -93,17 +93,17 @@
       },
       "AZURE_VIRTUAL_MACHINE": {
         "status": "PASS",
-        "count": 3921,
+        "count": 3966,
         "reasons": []
       },
       "AZURE_STORAGE_DISK": {
         "status": "PASS",
-        "count": 8237,
+        "count": 8256,
         "reasons": []
       },
       "AZURE_COMPUTE_HOSTGROUPS": {
         "status": "PASS",
-        "count": 1,
+        "count": 34,
         "reasons": []
       },
       "AZURE_DEDICATE_HOST": {
@@ -111,13 +111,13 @@
         "count": 138,
         "reasons": [
           "138/138 missing parent AZURE_COMPUTE_HOSTGROUPS",
-          "prop 'host_vcpu_capacity' not populated on any object",
-          "prop 'hourly_rate' not populated on any object",
-          "prop 'memory_utilization_pct' not populated on any object",
           "prop 'policy_compliance_state' not populated on any object",
-          "prop 'vm_size_summary' not populated on any object",
           "prop 'health_availability_state' not populated on any object",
+          "prop 'hourly_rate' not populated on any object",
+          "prop 'host_vcpu_capacity' not populated on any object",
           "prop 'monthly_rate_estimate' not populated on any object",
+          "prop 'vm_size_summary' not populated on any object",
+          "prop 'memory_utilization_pct' not populated on any object",
           "prop 'SERVICE_DESCRIPTORS|AZURE_SUBSCRIPTION_ID' not populated on any object"
         ]
       },
@@ -298,7 +298,7 @@
       },
       "azure_compute_snapshot": {
         "status": "PASS",
-        "count": 6651,
+        "count": 6624,
         "reasons": []
       },
       "azure_disk_encryption_set": {
@@ -7552,7 +7552,7 @@
       "azure_arc_machine": 702,
       "azure_backup_vault": 1,
       "azure_bastion_host": 1,
-      "azure_compute_snapshot": 6653,
+      "azure_compute_snapshot": 6752,
       "azure_disk_encryption_set": 47,
       "azure_dns_resolver": 9,
       "azure_log_analytics_workspace": 25,
@@ -7643,7 +7643,7 @@
       "AZURE_VIRTUAL_SCALESET": 56,
       "AZURE_KUBERNATE_CLUSTER": 10,
       "AZURE_DATA_FACTORY": 2,
-      "AZURE_VIRTUAL_MACHINE": 3211,
+      "AZURE_VIRTUAL_MACHINE": 3216,
       "AZURE_VIRTUAL_NETWORK_GATEWAY": 2,
       "AZURE_APPLICATION_GATEWAY": 1,
       "AZURE_SYNAPSE_ANALYTICS_BIGDATA_POOL": 0,
@@ -7653,29 +7653,29 @@
       "AZURE_STORAGE_ACCOUNT": 351,
       "MicrosoftAzureAdapter Instance": 9,
       "AZURE_SYNAPSE_ANALYTICS_SQL_POOL": 0,
-      "AZURE_STORAGE_DISK": 9672,
+      "AZURE_STORAGE_DISK": 10478,
       "AZURE_SERVICE_BUS": 0,
       "AZURE_MYSQL_SERVER": 6,
       "AZURE_SQL_DATABASE": 83,
       "AZURE_DATA_LAKE_ANALYTICS": 0,
       "AZURE_DATA_EXPLORER_CLUSTER": 1,
       "AZURE_LB": 34,
-      "AZURE_NW_INTERFACE": 5033,
+      "AZURE_NW_INTERFACE": 5031,
       "AZURE_HDINSIGHT": 0
     },
     "mismatches": [
       "AZURE_SQL_SERVER: aria=15 live=12",
       "AZURE_AUTOMATION: aria=24 live=20",
       "AZURE_AVAILABILITY_SETS: aria=20 live=16",
-      "AZURE_COMPUTE_HOSTGROUPS: aria=24 live=1",
+      "AZURE_COMPUTE_HOSTGROUPS: aria=24 live=34",
       "AZURE_DEDICATE_HOST: aria=415 live=138",
       "AZURE_KEY_VAULTS: aria=99 live=86",
       "AZURE_PRIVATE_DNSZONES: aria=97 live=82",
       "AZURE_REGION: aria=61 live=6",
       "AZURE_REGION_PER_SUB: aria=23 live=6",
-      "AZURE_VIRTUAL_MACHINE: aria=3211 live=3921",
+      "AZURE_VIRTUAL_MACHINE: aria=3216 live=3966",
       "AZURE_STORAGE_ACCOUNT: aria=351 live=301",
-      "AZURE_STORAGE_DISK: aria=9672 live=8237"
+      "AZURE_STORAGE_DISK: aria=10478 live=8256"
     ]
   },
   "exit_summary": "FAIL"
