@@ -2,24 +2,34 @@
 
 Creates the three aggregation object types used by native pak dashboards:
 - AZURE_REGION — one per unique region across all subscriptions
-- AZURE_REGION_PER_SUB — one per region per subscription
+- AZURE_REGION_PER_SUB — one per (subscription, region) pair
 - AZURE_WORLD — single root object with total_number_* count metrics
 
 Must run AFTER all other collectors so it can scan the result for objects
-to build region mappings and resource counts.
+to build region mappings, attach REGION_PER_SUB parents, and roll up counts.
+
+Native traversal expectations (content/traversalspecs/MicrosoftAzureTraversalSpecs.xml):
+  - Azure Resources By Region:
+        AZURE_REGION -> AZURE_REGION_PER_SUB -> resources (VM, Disk, ...)
+  - Azure Resources By Subscription:
+        Adapter Instance -> AZURE_RESOURCE_GROUP -> resources
+
+For "By Region" to work, every collected resource must be a child of its
+REGION_PER_SUB; for the dashboards' Subscription drill-down to find
+regions, REGION_PER_SUB must be a child of azure_subscription too.
 """
 
 import logging
 from collections import defaultdict
 
 from constants import (
-    OBJ_REGION, OBJ_REGION_PER_SUB, OBJ_WORLD,
+    OBJ_REGION, OBJ_REGION_PER_SUB, OBJ_WORLD, OBJ_SUBSCRIPTION,
     OBJ_VIRTUAL_MACHINE, OBJ_STORAGE_ACCOUNT, OBJ_SQL_SERVER,
     OBJ_LOAD_BALANCER, OBJ_NETWORK_INTERFACE, OBJ_VIRTUAL_NETWORK,
     OBJ_APP_SERVICE, OBJ_DISK, OBJ_HOST_GROUP, OBJ_DEDICATED_HOST,
     OBJ_PUBLIC_IP, OBJ_EXPRESSROUTE, OBJ_KEY_VAULT,
     OBJ_POSTGRESQL, OBJ_MYSQL, OBJ_FUNCTIONS_APP,
-    RES_IDENT_REGION,
+    RES_IDENT_REGION, RES_IDENT_SUB,
 )
 
 logger = logging.getLogger(__name__)
@@ -47,59 +57,102 @@ _WORLD_COUNT_METRICS = {
 }
 
 
+# Aggregation kinds — never become children of REGION_PER_SUB.
+_AGGREGATION_KINDS = {
+    OBJ_REGION, OBJ_REGION_PER_SUB, OBJ_WORLD, OBJ_SUBSCRIPTION,
+}
+
+
 def collect_regions_and_world(result, adapter_kind, subscriptions,
                               adapter_instance_name):
-    """Create AZURE_REGION, AZURE_REGION_PER_SUB, and AZURE_WORLD objects.
+    """Create AZURE_REGION, AZURE_REGION_PER_SUB, and AZURE_WORLD objects
+    and wire up the topology that native pak dashboards expect.
 
-    Scans all objects already in the result to:
-    1. Build region-to-objects mapping from AZURE_REGION identifiers
-    2. Create one AZURE_REGION per unique region
-    3. Create one AZURE_REGION_PER_SUB per region (name includes instance)
-    4. Create a single AZURE_WORLD with total_number_* count metrics
+    1. Build a (sub_id, region) index from existing object identifiers.
+    2. Create one AZURE_REGION per unique region.
+    3. Create one AZURE_REGION_PER_SUB per (sub, region) pair, with
+       parents = [AZURE_REGION, azure_subscription].
+    4. Add REGION_PER_SUB as a parent of every collected resource so the
+       "By Region" traversal returns objects.
+    5. Create one AZURE_WORLD with total_number_* count metrics.
 
     Args:
         result: CollectResult populated by prior collectors.
         adapter_kind: Adapter kind string (MicrosoftAzureAdapter).
         subscriptions: List of subscription dicts.
-        adapter_instance_name: Display name for the adapter instance.
+        adapter_instance_name: Display name for the adapter instance,
+            used as a fallback when a sub display name is not available.
     """
     logger.info("Collecting regions and world objects")
 
     # ------------------------------------------------------------------
-    # 1. Scan all existing objects for region info and kind counts
+    # 1. Build lookups by scanning existing objects
     # ------------------------------------------------------------------
-    regions = set()
+    # subscription_id -> azure_subscription Object
+    sub_lookup = {}
+    # set of (sub_id, region) pairs found on collected resources
+    sub_region_pairs = set()
+    # list of (resource_obj, sub_id, region) for the link-back step
+    resources_to_link = []
+    # per-kind counts for AZURE_WORLD
     kind_counts = defaultdict(int)
     active_vms = 0
 
-    # SDK API: result.objects is a dict[Key, Object]; iterate its values.
-    # get_key().identifiers is a dict[str, Identifier]; iterate values.
-    # Object exposes get_metric(key) / get_last_metric_value(key), not get_metrics().
-    for obj in result.objects.values():
-        obj_kind = obj.get_key().object_kind
+    # Snapshot the values list — we'll be calling add_parent below which
+    # mutates parent sets but not the result.objects dict, so this is
+    # purely defensive.
+    all_objects = list(result.objects.values())
 
+    for obj in all_objects:
+        obj_kind = obj.get_key().object_kind
         kind_counts[obj_kind] += 1
 
+        # Build subscription lookup
+        if obj_kind == OBJ_SUBSCRIPTION:
+            for ident in obj.get_key().identifiers.values():
+                if ident.key == "subscription_id" and ident.value:
+                    sub_lookup[ident.value] = obj
+                    break
+            continue
+
+        # Skip aggregation kinds for region indexing + linking
+        if obj_kind in _AGGREGATION_KINDS:
+            continue
+
+        # Pull (sub_id, region) from this resource's identifiers
+        sub_id = ""
+        region = ""
         for ident in obj.get_key().identifiers.values():
-            if ident.key == RES_IDENT_REGION and ident.value:
-                regions.add(ident.value)
+            if ident.key == RES_IDENT_SUB and ident.value:
+                sub_id = ident.value
+            elif ident.key == RES_IDENT_REGION and ident.value:
+                region = ident.value
+
+        if sub_id and region:
+            sub_region_pairs.add((sub_id, region))
+            resources_to_link.append((obj, sub_id, region))
 
         # Count active VMs (general|running == 1.0)
         if obj_kind == OBJ_VIRTUAL_MACHINE:
             try:
-                last = obj.get_last_metric_value("general|running")
-                if last == 1.0:
+                if obj.get_last_metric_value("general|running") == 1.0:
                     active_vms += 1
             except Exception:
                 pass
 
-    logger.info("Found %d unique regions across all objects", len(regions))
+    unique_regions = sorted({r for _, r in sub_region_pairs})
+    logger.info(
+        "Region scan: %d unique regions, %d (sub, region) pairs, "
+        "%d resources eligible for region linking, %d subscriptions",
+        len(unique_regions), len(sub_region_pairs),
+        len(resources_to_link), len(sub_lookup),
+    )
 
     # ------------------------------------------------------------------
-    # 2. Create AZURE_REGION objects (no identifiers, name-only)
+    # 2. Create AZURE_REGION objects (one per unique region)
     # ------------------------------------------------------------------
     region_objects = {}
-    for region_name in sorted(regions):
+    for region_name in unique_regions:
         region_label = f"Azure {region_name}"
         region_obj = result.object(
             adapter_kind=adapter_kind,
@@ -112,29 +165,59 @@ def collect_regions_and_world(result, adapter_kind, subscriptions,
     logger.info("Created %d AZURE_REGION objects", len(region_objects))
 
     # ------------------------------------------------------------------
-    # 3. Create AZURE_REGION_PER_SUB objects (no identifiers, name-only)
+    # 3. Create AZURE_REGION_PER_SUB per (sub_id, region) pair, parented
+    #    to BOTH the AZURE_REGION and the azure_subscription so that:
+    #      - By-Region traversal walks REGION -> REGION_PER_SUB -> resources
+    #      - Subscription-rooted dashboards find regions as children
     # ------------------------------------------------------------------
-    region_per_sub_count = 0
-    for region_name in sorted(regions):
-        per_sub_label = f"{region_name} - {adapter_instance_name}"
+    per_sub_objects = {}  # (sub_id, region) -> AZURE_REGION_PER_SUB obj
+    for sub_id, region_name in sorted(sub_region_pairs):
+        sub_obj = sub_lookup.get(sub_id)
+        # Prefer the subscription's display name in the per-sub label so
+        # multi-sub deployments produce distinct, human-readable names.
+        sub_display = (
+            sub_obj.get_key().name if sub_obj else adapter_instance_name
+        )
+        per_sub_label = f"{region_name} - {sub_display}"
         per_sub_obj = result.object(
             adapter_kind=adapter_kind,
             object_kind=OBJ_REGION_PER_SUB,
             name=per_sub_label,
             identifiers=[],
         )
-
-        # Parent: AZURE_REGION
         region_obj = region_objects.get(region_name)
         if region_obj:
             per_sub_obj.add_parent(region_obj)
+        if sub_obj:
+            per_sub_obj.add_parent(sub_obj)
+        per_sub_objects[(sub_id, region_name)] = per_sub_obj
 
-        region_per_sub_count += 1
-
-    logger.info("Created %d AZURE_REGION_PER_SUB objects", region_per_sub_count)
+    logger.info(
+        "Created %d AZURE_REGION_PER_SUB objects "
+        "(linked to %d subs and %d regions)",
+        len(per_sub_objects), len(sub_lookup), len(region_objects),
+    )
 
     # ------------------------------------------------------------------
-    # 4. Create AZURE_WORLD object with total_number_* metrics
+    # 4. Add REGION_PER_SUB as a parent of every collected resource so
+    #    the "By Region" traversal can reach them. Resources already have
+    #    AZURE_RESOURCE_GROUP as a parent for the "By Subscription" view;
+    #    multiple parents are allowed and expected.
+    # ------------------------------------------------------------------
+    linked_count = 0
+    for obj, sub_id, region in resources_to_link:
+        per_sub_obj = per_sub_objects.get((sub_id, region))
+        if per_sub_obj is not None:
+            obj.add_parent(per_sub_obj)
+            linked_count += 1
+
+    logger.info(
+        "Linked %d resources as children of their AZURE_REGION_PER_SUB",
+        linked_count,
+    )
+
+    # ------------------------------------------------------------------
+    # 5. AZURE_WORLD with total_number_* metrics
     # ------------------------------------------------------------------
     world_obj = result.object(
         adapter_kind=adapter_kind,
@@ -143,23 +226,17 @@ def collect_regions_and_world(result, adapter_kind, subscriptions,
         identifiers=[],
     )
 
-    # Set count metrics for each resource kind we track
     for obj_kind, metric_key in _WORLD_COUNT_METRICS.items():
         world_obj.with_metric(metric_key, float(kind_counts.get(obj_kind, 0)))
 
-    # Active VMs
     world_obj.with_metric("summary|active_number_vms", float(active_vms))
-
-    # Region count (AZURE_REGION_PER_SUB objects)
     world_obj.with_metric("summary|total_number_regions",
-                          float(region_per_sub_count))
-
-    # Subscription count
+                          float(len(per_sub_objects)))
     world_obj.with_metric("summary|total_number_subscriptions",
                           float(len(subscriptions)))
 
     logger.info(
         "Created AZURE_WORLD with %d resource kind counts, "
-        "%d regions, %d subscriptions",
-        len(_WORLD_COUNT_METRICS), len(regions), len(subscriptions),
+        "%d region-per-sub, %d subscriptions",
+        len(_WORLD_COUNT_METRICS), len(per_sub_objects), len(subscriptions),
     )
