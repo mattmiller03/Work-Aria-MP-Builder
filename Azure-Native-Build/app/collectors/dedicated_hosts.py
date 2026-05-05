@@ -290,30 +290,44 @@ def collect_dedicated_hosts(client: AzureClient, result, adapter_kind: str,
 
             total_groups += 1
 
-            # Now get each host in this group with instance view. Wrap so a
-            # 502/timeout on one group doesn't kill the collector for every
-            # subsequent group + sub. Without this, the v6/v7 reports showed
-            # AZURE_COMPUTE_HOSTGROUPS=1 because the first group's host fetch
-            # threw and the outer try/except in adapter.py swallowed the rest.
+            # Now get each host in this group. The list-by-host-group
+            # endpoint does NOT support $expand=instanceView (per Azure docs
+            # that's only on the single-host GET) -- v6/v7/v8 reports showed
+            # 0 hosts collected across all 34 groups, consistent with a 400
+            # from passing $expand here. We fetch the bare list, then GET
+            # each host individually with $expand to pick up instanceView.
             try:
                 hosts = client.get_all(
                     path=(f"/subscriptions/{sub_id}/resourceGroups/{rg_name}"
                           f"/providers/Microsoft.Compute/hostGroups/{group_name}/hosts"),
                     api_version=API_VERSIONS["dedicated_hosts"],
-                    params={"$expand": "instanceView"},
                 )
             except Exception as e:
                 logger.warning(
-                    "[DH-DIAG] hosts fetch failed for group %s (sub %s): %s",
+                    "[DH-DIAG] hosts list fetch failed for group %s (sub %s): %s",
                     group_name, sub_id, e,
                 )
                 hosts = []
 
             logger.warning("[DH-DIAG] group %s: found %d hosts",
                            group_name, len(hosts))
-            for host in hosts:
-                host_name = host["name"]
-                host_resource_id = host.get("id", "")
+            for host_summary in hosts:
+                host_name = host_summary.get("name", "")
+                host_resource_id = host_summary.get("id", "")
+                # Single-host GET with $expand=instanceView to pull
+                # availableCapacity + status fields the list call omits.
+                try:
+                    host = client.get(
+                        path=host_resource_id,
+                        api_version=API_VERSIONS["dedicated_hosts"],
+                        params={"$expand": "instanceView"},
+                    )
+                except Exception as e:
+                    logger.warning(
+                        "[DH-DIAG] host detail fetch failed for %s: %s",
+                        host_name, e,
+                    )
+                    host = host_summary
                 host_location = host.get("location", "")
                 host_props = host.get("properties", {})
                 host_sku = host.get("sku", {})
