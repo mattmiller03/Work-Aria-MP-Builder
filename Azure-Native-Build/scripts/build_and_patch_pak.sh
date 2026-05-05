@@ -78,15 +78,40 @@ LATEST_PAK="$(ls -t "${PAKS[@]}" | head -n 1)"
 echo "    Built pak: $LATEST_PAK"
 
 # ---------------------------------------------------------------------------
-# Step 2: Extract describe.xml from inside the pak
-# describe.xml lives inside adapter.zip inside the pak.
+# Step 2: Extract describe.xml from inside the pak.
+# It may live at any depth (typically conf/describe.xml) and may be
+# bundled directly inside the pak OR nested inside an adapter.zip --
+# match the layout-agnostic search done by scripts/verify_collection.py.
 # ---------------------------------------------------------------------------
 echo
 echo "==> [2/4] Extracting describe.xml from $LATEST_PAK"
-unzip -p "$LATEST_PAK" adapter.zip > "$TMPDIR/adapter.zip"
-unzip -p "$TMPDIR/adapter.zip" describe.xml > "$TMPDIR/describe.xml"
+
+# Try the outer pak first.
+DIRECT_PATH="$(unzip -Z1 "$LATEST_PAK" | grep -E '(^|/)describe\.xml$' | head -n 1 || true)"
+if [[ -n "$DIRECT_PATH" ]]; then
+    echo "    Found at $DIRECT_PATH (in pak)"
+    unzip -p "$LATEST_PAK" "$DIRECT_PATH" > "$TMPDIR/describe.xml"
+else
+    # Fall back to scanning each adapter.zip for a nested describe.xml.
+    NESTED_ZIP="$(unzip -Z1 "$LATEST_PAK" | grep -E '(^|/)adapter\.zip$' | head -n 1 || true)"
+    if [[ -z "$NESTED_ZIP" ]]; then
+        echo "ERROR: pak has neither a describe.xml nor an adapter.zip" >&2
+        exit 1
+    fi
+    echo "    Pak has no top-level describe.xml -- looking inside $NESTED_ZIP"
+    unzip -p "$LATEST_PAK" "$NESTED_ZIP" > "$TMPDIR/adapter.zip"
+    INNER_PATH="$(unzip -Z1 "$TMPDIR/adapter.zip" | grep -E '(^|/)describe\.xml$' | head -n 1 || true)"
+    if [[ -z "$INNER_PATH" ]]; then
+        echo "ERROR: adapter.zip has no describe.xml entry" >&2
+        echo "       (entries: $(unzip -Z1 "$TMPDIR/adapter.zip" | head -n 20))" >&2
+        exit 1
+    fi
+    echo "    Found at $INNER_PATH (in adapter.zip)"
+    unzip -p "$TMPDIR/adapter.zip" "$INNER_PATH" > "$TMPDIR/describe.xml"
+fi
+
 if [[ ! -s "$TMPDIR/describe.xml" ]]; then
-    echo "ERROR: describe.xml is empty -- pak layout may have changed" >&2
+    echo "ERROR: describe.xml extracted empty -- pak layout may have changed" >&2
     exit 1
 fi
 echo "    Extracted: $TMPDIR/describe.xml ($(wc -c < "$TMPDIR/describe.xml") bytes)"
