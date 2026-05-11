@@ -734,3 +734,26 @@ Traceback (most recent call last):
   File "/usr/lib/python3.10/http/client.py", line 1228, in _validate_path
     raise InvalidURL(f"URL can't contain control characters. {url!r} "
 http.client.InvalidURL: URL can't contain control characters. '/suite-api/api/resources?adapterKind=MicrosoftAzureAdapter&resourceKind=MicrosoftAzureAdapter Instance&pageSize=1' (found at least ' ')
+
+
+
+
+
+cd /opt/aria/Aria-MP-Builder/Azure-Native-Build
+
+# 1. Sync to 1037e74
+git pull
+
+# 2. Reset dashboard.json in case a previous patcher run modified it on disk
+git checkout -- content/dashboards/azure/dashboard.json
+
+# 3. Plain mp-build (no patcher, no wrapper). Replace <REGISTRY-IP>:
+sudo mp-build -i --no-ttl --registry-tag "<REGISTRY-IP>:5000/azuregovcloud-adapter" -P 8181 2>&1 | tee /tmp/mpbuild-unpatched.log
+
+# 4. Try to install the resulting .pak in dev Aria Ops via the UI.
+#    When it fails (or succeeds), capture:
+#      - The exact dialog text from the UI
+#      - Tail of the cluster log:
+sudo tail -200 /usr/lib/vmware-vcops/user/log/web.log
+sudo tail -200 /usr/lib/vmware-vcops/user/log/analyticsproc.log
+sudo tail -200 /usr/lib/vmware-vcops/user/log/analytics-*.log | grep -i azure
