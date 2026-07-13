@@ -116,6 +116,10 @@ if $NO_PATCH; then
 # disk at conf/describe.xml, so the expected path is the "else" fallback below.
 elif [ -f conf/describe.xml ]; then
     "$PYTHON_BIN" "$SCRIPT_DIR/patch-describe-xml.py" conf/describe.xml
+    "$PYTHON_BIN" "$SCRIPT_DIR/cleanup-describe-xml.py" conf/describe.xml --validate || {
+        echo "FATAL: describe.xml failed schema validation after cleanup — aborting build"
+        exit 1
+    }
 else
     echo "Patching describe.xml inside the built .pak..."
 
@@ -137,7 +141,17 @@ else
 
             DESCRIBE="$TEMP_DIR/adapter/$ADAPTER_KIND/conf/describe.xml"
             if [ -f "$DESCRIBE" ]; then
+                cp "$DESCRIBE" /opt/aria/Aria-MP-Builder/debug/describe-sdk-prepatch.xml
                 "$PYTHON_BIN" "$SCRIPT_DIR/patch-describe-xml.py" "$DESCRIBE"
+
+                # Final sanitization + schema self-check (fixes that unblocked
+                # APPLY_ADAPTER on 2026-07-08 — see scripts/cleanup-describe-xml.py)
+                "$PYTHON_BIN" "$SCRIPT_DIR/cleanup-describe-xml.py" "$DESCRIBE" --validate || {
+                    echo "FATAL: describe.xml failed schema validation after cleanup — aborting build"
+                    exit 1
+                }
+
+                # Repack adapter.zip (remove old archive so zip doesn't just update it)
 
                 # Repack adapter.zip (remove old archive so zip doesn't just update it)
                 rm -f "$TEMP_DIR/pak/adapter.zip"

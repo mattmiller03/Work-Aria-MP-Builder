@@ -843,8 +843,7 @@ def collect(adapter_instance):
         # 4. All resource collectors — each wrapped independently
         collectors = [
             ("Virtual Machines", lambda: collect_virtual_machines(client, result, ADAPTER_KIND, subscriptions, vm_lookup)),
-            ("Disks", lambda: collect_disks(client, result, ADAPTER_KIND, subscriptions)),
-            ("Network Interfaces", lambda: collect_network_interfaces(client, result, ADAPTER_KIND, subscriptions)),
+            ("Disks", lambda: collect_disks(client, result, ADAPTER_KIND, subscriptions, vm_lookup)),            ("Network Interfaces", lambda: collect_network_interfaces(client, result, ADAPTER_KIND, subscriptions)),
             ("Virtual Networks", lambda: collect_virtual_networks(client, result, ADAPTER_KIND, subscriptions)),
             ("Storage Accounts", lambda: collect_storage_accounts(client, result, ADAPTER_KIND, subscriptions)),
             ("Load Balancers", lambda: collect_load_balancers(client, result, ADAPTER_KIND, subscriptions)),
@@ -868,6 +867,9 @@ def collect(adapter_instance):
                 collector_fn()
             except Exception as e:
                 logger.error("Collector %s failed: %s", name, e, exc_info=True)
+                import traceback
+                print(f"COLLECTOR FAILED: {name}: {e}")
+                traceback.print_exc()
 
         # 5. Bulk generic ARM resources (networking, containers, compute, etc.)
         try:

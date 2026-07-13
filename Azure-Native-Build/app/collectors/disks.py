@@ -1,31 +1,51 @@
 """Collector for Azure Managed Disks."""
-
+ 
 import logging
-
+ 
 from azure_client import AzureClient
 from constants import (
-    API_VERSIONS, OBJ_DISK, OBJ_RESOURCE_GROUP, OBJ_VIRTUAL_MACHINE,
+    API_VERSIONS, OBJ_DISK, OBJ_RESOURCE_GROUP,
     RES_IDENT_SUB, RES_IDENT_RG, RES_IDENT_REGION, RES_IDENT_ID,
     SD_SUBSCRIPTION, SD_RESOURCE_GROUP, SD_REGION, SD_SERVICE, AZURE_SERVICE_NAMES,
 )
-from helpers import make_identifiers, extract_resource_group, safe_property, sanitize_tag_key
-
+from helpers import (
+    make_identifiers, extract_resource_group, safe_property, sanitize_tag_key,
+    reference_vm,
+)
+ 
 logger = logging.getLogger(__name__)
-
-
+ 
+from typing import Optional
+ 
 def collect_disks(client: AzureClient, result, adapter_kind: str,
-                  subscriptions: list):
-    """Collect managed disks across all subscriptions."""
+                  subscriptions: list, vm_lookup: Optional[dict] = None):
+    """Collect managed disks across all subscriptions.
+ 
+    Args:
+        client: Azure REST client.
+        result: CollectResult to populate.
+        adapter_kind: Adapter kind string.
+        subscriptions: List of subscription dicts.
+        vm_lookup: Dict mapping lowercased VM resource IDs to VM dicts
+            from the Azure VM API (populated by virtual_machines.py,
+            which runs before this collector). Used to resolve managedBy
+            references to canonical VM objects. Without it, Disk->VM
+            relationships are skipped rather than risk creating phantom
+            VM objects (see helpers.reference_vm docstring).
+    """
     logger.info("Collecting disks")
+    if vm_lookup is None:
+        vm_lookup = {}
     total = 0
-
+    skipped_vm_refs = 0
+ 
     for sub in subscriptions:
         sub_id = sub["subscriptionId"]
         disks = client.get_all(
             path=f"/subscriptions/{sub_id}/providers/Microsoft.Compute/disks",
             api_version=API_VERSIONS["disks"],
         )
-
+ 
         for disk in disks:
             disk_name = disk["name"]
             resource_id = disk.get("id", "")
@@ -33,7 +53,7 @@ def collect_disks(client: AzureClient, result, adapter_kind: str,
             location = disk.get("location", "")
             props = disk.get("properties", {})
             sku = disk.get("sku", {})
-
+ 
             obj = result.object(
                 adapter_kind=adapter_kind,
                 object_kind=OBJ_DISK,
@@ -45,13 +65,13 @@ def collect_disks(client: AzureClient, result, adapter_kind: str,
                     (RES_IDENT_ID, resource_id),
                 ]),
             )
-
+ 
             # SERVICE_DESCRIPTORS
             safe_property(obj, SD_SUBSCRIPTION, sub_id)
             safe_property(obj, SD_RESOURCE_GROUP, rg_name)
             safe_property(obj, SD_REGION, location)
             safe_property(obj, SD_SERVICE, AZURE_SERVICE_NAMES.get(OBJ_DISK, ""))
-
+ 
             safe_property(obj, "summary|name", disk_name)
             safe_property(obj, "resource_id", resource_id)
             safe_property(obj, "location", location)
@@ -77,18 +97,18 @@ def collect_disks(client: AzureClient, result, adapter_kind: str,
                           props.get("creationData", {}).get("createOption", ""))
             safe_property(obj, "summary|source",
                           props.get("creationData", {}).get("sourceResourceId", ""))
-
+ 
             # Tags
             tags = disk.get("tags", {})
             if tags:
                 for key, value in tags.items():
                     safe_property(obj, f"summary|tags|{key}", value)
-
+ 
             # Zones
             zones = disk.get("zones", [])
             if zones:
                 safe_property(obj, "availability_zone", ", ".join(zones))
-
+ 
             # Relationship: Disk -> Resource Group
             if rg_name:
                 rg_id = f"/subscriptions/{sub_id}/resourceGroups/{rg_name}".lower()
@@ -102,47 +122,44 @@ def collect_disks(client: AzureClient, result, adapter_kind: str,
                     ]),
                 )
                 obj.add_parent(rg_obj)
-
-            # Relationship: Disk -> VM (parent) via managedBy
+ 
+            # Relationship: Disk -> VM (parent) via managedBy.
+            #
+            # PHANTOM-VM FIX (2026-07-09): previously this block built the
+            # VM reference directly from the disk API's managedBy string.
+            # Azure APIs disagree on resource-ID casing between endpoints,
+            # so those identifiers didn't byte-match the canonical VM
+            # objects from virtual_machines.py — the SDK minted a second,
+            # property-less "phantom" VM per real VM (684 collected vs 332
+            # real). Now we resolve managedBy through vm_lookup via
+            # helpers.reference_vm, which reconstructs the reference from
+            # the VM API's own field values. If the VM isn't in inventory
+            # (deleted VM, stale managedBy), we SKIP the edge — never
+            # create a fallback object.
             managed_by = disk.get("managedBy", "")
             safe_property(obj, "summary|virtualMachineId", managed_by)
             safe_property(obj, "summary|isAttachedToVirtualMachine",
                           str(bool(managed_by)))
             if managed_by:
-                vm_name = managed_by.split("/")[-1] if managed_by else ""
-                vm_rg = extract_resource_group(managed_by)
-                if vm_name and vm_rg:
-                    safe_property(obj, "attached_vm_name", vm_name)
-                    # Derive VM location from disk location (same region)
-                    vm_obj = result.object(
-                        adapter_kind=adapter_kind,
-                        object_kind=OBJ_VIRTUAL_MACHINE,
-                        name=vm_name,
-                        identifiers=make_identifiers([
-                            (RES_IDENT_SUB, sub_id),
-                            (RES_IDENT_RG, vm_rg),
-                            (RES_IDENT_REGION, location),
-                            (RES_IDENT_ID, managed_by),
-                        ]),
-                    )
+                vm_name = managed_by.split("/")[-1]
+                safe_property(obj, "attached_vm_name", vm_name)
+                vm_obj = reference_vm(result, adapter_kind, sub_id,
+                                      managed_by, vm_lookup)
+                if vm_obj is not None:
                     obj.add_parent(vm_obj)
-                    # Make sure the VM has its RG parent edge set, in case
-                    # this is a "phantom" VM that virtual_machines.py
-                    # didn't process (sampling, rate limits, or VM in a
-                    # subscription we couldn't enumerate). Without this,
-                    # disk-attached VMs surface as orphans in Aria Ops.
-                    vm_rg_id = f"/subscriptions/{sub_id}/resourceGroups/{vm_rg}".lower()
-                    vm_rg_obj = result.object(
-                        adapter_kind=adapter_kind,
-                        object_kind=OBJ_RESOURCE_GROUP,
-                        name=vm_rg,
-                        identifiers=make_identifiers([
-                            (RES_IDENT_SUB, sub_id),
-                            (RES_IDENT_ID, vm_rg_id),
-                        ]),
+                else:
+                    skipped_vm_refs += 1
+                    logger.info(
+                        "Disk %s: managedBy VM not in inventory "
+                        "(deleted or out of scope): %s",
+                        disk_name, managed_by,
                     )
-                    vm_obj.add_parent(vm_rg_obj)
-
+ 
         total += len(disks)
-
+ 
+    if skipped_vm_refs:
+        logger.warning(
+            "Skipped %d Disk->VM relationship(s) for VMs not in inventory",
+            skipped_vm_refs,
+        )
     logger.info("Collected %d disks", total)
