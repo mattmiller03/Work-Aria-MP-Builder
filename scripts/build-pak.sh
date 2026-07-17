@@ -45,6 +45,18 @@ NO_PATCH=false
 DEBUG_DIR="/opt/aria/Aria-MP-Builder/debug"
 SDK_SNAPSHOT="$DEBUG_DIR/describe-sdk-prepatch.xml"
 
+# --- Self-logging ----------------------------------------------------------
+# Mirror ALL script output to $DEBUG_DIR/build.log at an ABSOLUTE path, so
+# the log lands in the same place regardless of the directory the script is
+# launched from (repo root vs Azure-Native-Build/ — a relative
+# `| tee debug/build.log` writes to whichever debug/ is under the CWD).
+# An outer `... 2>&1 | tee debug/build.log` is no longer needed, but harmless.
+BUILD_LOG="$DEBUG_DIR/build.log"
+mkdir -p "$DEBUG_DIR"
+exec > >(tee "$BUILD_LOG") 2>&1
+echo "=== build-pak.sh run started $(date '+%Y-%m-%d %H:%M:%S') ==="
+echo "=== log: $BUILD_LOG ==="
+
 # Pin the host-side Python to the 3.12 we installed at /opt/python312
 # (Photon's default python3 is 3.10/3.11, which may not match the SDK).
 # Override with PYTHON_BIN=/some/python if needed.

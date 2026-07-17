@@ -20,8 +20,11 @@ Azure-Native-Build/logs/
 Azure/app/conf/
 Azure-Native-Build/app/conf/
 
-# Debug/scratch files — track only README and scrub script
-!debug/*
+# Debug/scratch files — logs are machine-local and must never be tracked:
+# the server workflow starts with `git reset --hard origin/main`, which
+# reverts a tracked build.log to the stale committed copy, silently wiping
+# fresh build output. README, scrub.py, and redacted verify JSONs stay tracked.
+debug/*.log
 
 
 # Python
