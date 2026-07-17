@@ -57,6 +57,12 @@ KIND_LABELS = {
     "AZURE_RESOURCE_GROUP": "Azure Resource Group",
     "AZURE_STORAGE_DISK": "Azure Disk",
     "AZURE_NW_INTERFACE": "Azure Network Interface",
+    # 2026-07-17: was missing from the table — the SDK resources dictionary
+    # renumbered after the rg-casing adapter.py changes and the VM kind's
+    # native nameKey landed on the SDK "Directory (Tenant) ID" entry,
+    # renaming the whole VM category in inventory/search. Pinning a 30000-
+    # range label makes it immune to future dictionary drift.
+    "AZURE_VIRTUAL_MACHINE": "Azure Virtual Machine",
     "AZURE_VIRTUAL_NETWORK": "Azure Virtual Network",
     "AZURE_STORAGE_ACCOUNT": "Azure Storage Account",
     "AZURE_LB": "Azure Load Balancer",
