@@ -8,14 +8,18 @@ from constants import (
     RES_IDENT_SUB, RES_IDENT_RG, RES_IDENT_REGION, RES_IDENT_ID,
     SD_SUBSCRIPTION, SD_RESOURCE_GROUP, SD_REGION, SD_SERVICE, AZURE_SERVICE_NAMES,
 )
-from helpers import make_identifiers, extract_resource_group, safe_property, sanitize_tag_key
+from helpers import (
+    make_identifiers, extract_resource_group, safe_property, sanitize_tag_key,
+    reference_resource_group,
+)
 from collectors.metrics import collect_metrics_for_objects
 
 logger = logging.getLogger(__name__)
 
 
 def collect_sql_servers_and_databases(client: AzureClient, result,
-                                     adapter_kind: str, subscriptions: list):
+                                     adapter_kind: str, subscriptions: list,
+                                     rg_lookup: dict = None):
     """Collect SQL servers and their databases across all subscriptions."""
     logger.info("Collecting SQL servers and databases")
     total_servers = 0
@@ -81,17 +85,15 @@ def collect_sql_servers_and_databases(client: AzureClient, result,
 
             # Relationship: SQL Server -> Resource Group
             if rg_name:
-                rg_id = f"/subscriptions/{sub_id}/resourceGroups/{rg_name}".lower()
-                rg_obj = result.object(
-                    adapter_kind=adapter_kind,
-                    object_kind=OBJ_RESOURCE_GROUP,
-                    name=rg_name,
-                    identifiers=make_identifiers([
-                        (RES_IDENT_SUB, sub_id),
-                        (RES_IDENT_ID, rg_id),
-                    ]),
-                )
-                srv_obj.add_parent(rg_obj)
+                # 2026-07-16 fix: previously built an f-string rg_id with
+                # .lower(), which could never resolve against the original-cased
+                # RG objects in Aria Ops (the "zero relationships" defect). Now
+                # resolves through the canonical rg_lookup; on a miss the edge
+                # is skipped — never fabricate an RG identifier.
+                rg_obj = reference_resource_group(
+                    result, adapter_kind, sub_id, rg_name, rg_lookup)
+                if rg_obj is not None:
+                    srv_obj.add_parent(rg_obj)
 
             if srv_resource_id:
                 srv_objects[srv_resource_id] = srv_obj

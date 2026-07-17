@@ -9,20 +9,31 @@ from constants import (
     SD_SUBSCRIPTION, SD_RESOURCE_GROUP, SD_REGION, SD_SERVICE,
     AZURE_SERVICE_NAMES,
 )
-from helpers import make_identifiers, safe_property, sanitize_tag_key
+from helpers import (build_rg_lookup, make_identifiers, safe_property,
+                     sanitize_tag_key)
 
 logger = logging.getLogger(__name__)
 
 
 def collect_resource_groups(client: AzureClient, result, adapter_kind: str,
-                            subscriptions: list):
+                            subscriptions: list, rg_lookup: dict = None):
     """Collect resource groups across all subscriptions.
 
+    Also populates `rg_lookup` (see helpers.build_rg_lookup) — the
+    canonical RG resolution table every child collector must use when
+    building RG parent references. Pass a shared dict in from adapter.py
+    so downstream collectors see it; a fresh dict is created if omitted.
+
     Returns:
-        Dict mapping subscription_id -> list of resource group dicts.
+        Tuple of (all_rgs, rg_lookup):
+          all_rgs   — dict mapping subscription_id -> list of RG dicts
+          rg_lookup — dict mapping lowercased canonical RG ID ->
+                      {"id", "name", "location"} (original casing)
     """
     logger.info("Collecting resource groups")
     all_rgs = {}
+    if rg_lookup is None:
+        rg_lookup = {}
 
     for sub in subscriptions:
         sub_id = sub["subscriptionId"]
@@ -31,19 +42,26 @@ def collect_resource_groups(client: AzureClient, result, adapter_kind: str,
             api_version=API_VERSIONS["resource_groups"],
         )
         all_rgs[sub_id] = rgs
+        build_rg_lookup(sub_id, rgs, rg_lookup)
 
         for rg in rgs:
             rg_name = rg["name"]
-            # Use the canonical f-string form so this object's Key matches
-            # what the 12 other collectors construct when they look up the
-            # RG via result.object() to set up parent edges. Azure's API
-            # returns rg["id"] in canonical case but with the URL-path
-            # casing of the request (we call /resourcegroups lowercase),
-            # which historically produced a small set of phantom RG
-            # objects (no parent edge) when other collectors created the
-            # camelCase variant. Forcing the same construction here
-            # eliminates that mismatch entirely.
-            rg_id = f"/subscriptions/{sub_id}/resourceGroups/{rg_name}".lower()
+            # CANONICAL RECIPE (2026-07-16, replaces the .lower() form):
+            # camelCase /resourceGroups/ segment + name in created casing.
+            # This byte-matches (a) the RG population already ingested in
+            # Aria Ops, and (b) every reference built by child collectors
+            # via helpers.canonical_rg_id()/reference_resource_group(),
+            # which resolve through rg_lookup to this exact string.
+            #
+            # Do NOT use rg["id"] verbatim here — ARM echoes the request
+            # path's casing (/resourcegroups lowercase) in the id field.
+            # Do NOT reintroduce .lower() — ID is uniqueness-bearing, and
+            # lowercased declarations orphan every edge referencing the
+            # original-cased objects (the 2026-07 "zero relationships"
+            # defect) while forking a duplicate RG population.
+            rg_id = rg_lookup[
+                f"/subscriptions/{sub_id}/resourcegroups/{rg_name}".lower()
+            ]["id"]
             obj = result.object(
                 adapter_kind=adapter_kind,
                 object_kind=OBJ_RESOURCE_GROUP,
@@ -69,7 +87,7 @@ def collect_resource_groups(client: AzureClient, result, adapter_kind: str,
             safe_property(obj, "provisioning_state",
                           rg.get("properties", {}).get("provisioningState", ""))
             safe_property(obj, "subscription_id", sub_id)
-            safe_property(obj, "resource_id", rg.get("id", ""))
+            safe_property(obj, "resource_id", rg_id)
 
             tags = rg.get("tags", {})
             if tags:
@@ -86,6 +104,7 @@ def collect_resource_groups(client: AzureClient, result, adapter_kind: str,
             obj.add_parent(sub_obj)
 
     total = sum(len(rgs) for rgs in all_rgs.values())
-    logger.info("Collected %d resource groups across %d subscriptions",
-                total, len(subscriptions))
-    return all_rgs
+    logger.info("Collected %d resource groups across %d subscriptions "
+                "(rg_lookup: %d entries)",
+                total, len(subscriptions), len(rg_lookup))
+    return all_rgs, rg_lookup

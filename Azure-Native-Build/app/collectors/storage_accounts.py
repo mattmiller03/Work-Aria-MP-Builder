@@ -9,14 +9,18 @@ from constants import (
     SD_SUBSCRIPTION, SD_RESOURCE_GROUP, SD_REGION, SD_SERVICE, AZURE_SERVICE_NAMES,
     MONITOR_METRICS,
 )
-from helpers import make_identifiers, extract_resource_group, safe_property, sanitize_tag_key
+from helpers import (
+    make_identifiers, extract_resource_group, safe_property, sanitize_tag_key,
+    reference_resource_group,
+)
 from collectors.metrics import collect_metrics_for_objects
 
 logger = logging.getLogger(__name__)
 
 
 def collect_storage_accounts(client: AzureClient, result, adapter_kind: str,
-                             subscriptions: list):
+                             subscriptions: list,
+                             rg_lookup: dict = None):
     """Collect storage accounts across all subscriptions."""
     logger.info("Collecting storage accounts")
     total = 0
@@ -99,17 +103,15 @@ def collect_storage_accounts(client: AzureClient, result, adapter_kind: str,
 
             # Relationship: Storage Account -> Resource Group
             if rg_name:
-                rg_id = f"/subscriptions/{sub_id}/resourceGroups/{rg_name}".lower()
-                rg_obj = result.object(
-                    adapter_kind=adapter_kind,
-                    object_kind=OBJ_RESOURCE_GROUP,
-                    name=rg_name,
-                    identifiers=make_identifiers([
-                        (RES_IDENT_SUB, sub_id),
-                        (RES_IDENT_ID, rg_id),
-                    ]),
-                )
-                obj.add_parent(rg_obj)
+                # 2026-07-16 fix: previously built an f-string rg_id with
+                # .lower(), which could never resolve against the original-cased
+                # RG objects in Aria Ops (the "zero relationships" defect). Now
+                # resolves through the canonical rg_lookup; on a miss the edge
+                # is skipped — never fabricate an RG identifier.
+                rg_obj = reference_resource_group(
+                    result, adapter_kind, sub_id, rg_name, rg_lookup)
+                if rg_obj is not None:
+                    obj.add_parent(rg_obj)
 
             if resource_id:
                 sa_objects[resource_id] = obj

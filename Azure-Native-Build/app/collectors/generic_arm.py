@@ -19,7 +19,10 @@ from constants import (
     SD_SUBSCRIPTION, SD_RESOURCE_GROUP, SD_REGION, SD_SERVICE,
     AZURE_SERVICE_NAMES,
 )
-from helpers import make_identifiers, extract_resource_group, safe_property
+from helpers import (
+    make_identifiers, extract_resource_group, safe_property,
+    reference_resource_group,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -33,6 +36,7 @@ def collect_generic_arm_resources(
     arm_provider_path: str,
     api_version: str,
     extra_properties_fn=None,
+    rg_lookup: dict = None,
 ):
     """Collect resources of a given type from the ARM API.
 
@@ -131,17 +135,15 @@ def collect_generic_arm_resources(
 
             # Parent: Resource Group
             if rg_name:
-                rg_id = f"/subscriptions/{sub_id}/resourceGroups/{rg_name}".lower()
-                rg_obj = result.object(
-                    adapter_kind=adapter_kind,
-                    object_kind=OBJ_RESOURCE_GROUP,
-                    name=rg_name,
-                    identifiers=make_identifiers([
-                        (RES_IDENT_SUB, sub_id),
-                        (RES_IDENT_ID, rg_id),
-                    ]),
-                )
-                obj.add_parent(rg_obj)
+                # 2026-07-16 fix: previously built an f-string rg_id with
+                # .lower(), which could never resolve against the original-cased
+                # RG objects in Aria Ops (the "zero relationships" defect). Now
+                # resolves through the canonical rg_lookup; on a miss the edge
+                # is skipped — never fabricate an RG identifier.
+                rg_obj = reference_resource_group(
+                    result, adapter_kind, sub_id, rg_name, rg_lookup)
+                if rg_obj is not None:
+                    obj.add_parent(rg_obj)
 
             total += 1
 
