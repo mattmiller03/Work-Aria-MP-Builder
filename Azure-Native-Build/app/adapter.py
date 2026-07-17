@@ -67,11 +67,11 @@ from collectors import (
 )
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
-    stream=sys.stdout,
-)
+# NOTE: do NOT call logging.basicConfig() here. The SDK's
+# adapter_logging.setup_logging("adapter.log") in main() configures the
+# root logger via basicConfig, which is a silent no-op if a handler
+# already exists — an import-time basicConfig left adapter.log
+# permanently empty (all output diverted to container stdout).
 
 
 # ---------------------------------------------------------------------------
