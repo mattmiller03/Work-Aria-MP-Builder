@@ -332,6 +332,16 @@ MONITOR_METRICS = {
         # Custom: Memory metrics (requires Azure Monitor Agent or diagnostics extension)
         ("Available Memory Bytes", "MEMORY|AVAILABLE_MEMORY_BYTES", "Average"),
     ],
+    # constants.py — new entry alongside the existing "virtual_machines"
+    "virtual_machines_extended": [
+        # (azure_metric_name,                    aria_key,                              aggregation)
+        ("Available Memory Bytes",               "MEMORY|available_memory_bytes",       "Average"),
+        ("VmAvailabilityMetric",                 "summary|vm_availability",             "Average"),
+        ("VM Uncached IOPS Consumed Percentage", "STORAGE|uncached_iops_consumed_pct",  "Average"),
+        ("VM Uncached Bandwidth Consumed Percentage", "STORAGE|uncached_bw_consumed_pct", "Average"),
+        ("OS Disk IOPS Consumed Percentage",     "STORAGE|os_disk_iops_consumed_pct",   "Average"),
+        ("Data Disk IOPS Consumed Percentage",   "STORAGE|data_disk_iops_consumed_pct", "Average"),
+    ],
     "network_interfaces": [
         # Native pak: flat metrics (no group prefix)
         ("BytesSentRate", "BYTES_SENT", "Total"),

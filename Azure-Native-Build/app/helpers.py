@@ -8,6 +8,9 @@ _logger = logging.getLogger(__name__)
 # Track unique resource_id patterns we couldn't extract an RG from. Avoids
 # log spam when many resources share the same non-standard ID shape.
 _extract_rg_misses: set[str] = set()
+# Track RG references that missed the rg_lookup (deleted RGs, or RGs from
+# subscriptions outside the enumerated set). One log line per unique miss.
+_rg_lookup_misses: set[str] = set()
  
  
 def make_identifiers(pairs):
@@ -29,6 +32,11 @@ def extract_resource_group(resource_id):
     (e.g., subscription-level resources, Arc-managed resources with
     non-standard IDs). Logs a warning once per unique ID shape so the
     caller can decide whether to skip parent linking or fall back.
+ 
+    NOTE (casing): the returned name carries whatever casing the *child*
+    resource's ID path used, which Azure does not keep consistent across
+    resources in the same RG. Never emit this value into identifiers
+    directly — resolve through rg_lookup / canonical_rg_* first.
     """
     parts = resource_id.split("/")
     for i, part in enumerate(parts):
@@ -51,6 +59,146 @@ def extract_resource_group(resource_id):
     return ""
  
  
+# ---------------------------------------------------------------------------
+# Canonical Resource Group resolution
+# ---------------------------------------------------------------------------
+#
+# Fixes the "RG casing fork" defect (2026-07-16): ~20 collectors built RG
+# parent references with
+#     rg_id = f"/subscriptions/{sub_id}/resourceGroups/{rg_name}".lower()
+# while the RG objects already ingested in Aria Ops are keyed with Azure's
+# original casing. ID is a uniqueness-bearing identifier, so lowercased edge
+# references can never resolve against original-cased RG objects — the node
+# silently skips every such edge (confirmed via Suite API: 341 camelCase RGs
+# vs 184 lowercase duplicates minted by the lowercasing code; a lowercase RG
+# showed CHILD:2 proving edges attach when keys byte-match).
+#
+# THE RULE (same as the phantom-VM fix): lowercase is for dict LOOKUP KEYS
+# only. Emitted identifier values always carry Azure's original casing,
+# byte-identical between the declaring collector and every referencing
+# collector.
+#
+# Pattern:
+#   1. resource_groups.py runs first, declares each RG using the RG list
+#      API's own `id`/`name` fields VERBATIM (no .lower()), and populates
+#      rg_lookup via build_rg_lookup().
+#   2. adapter.py passes rg_lookup to every child collector (same plumbing
+#      as vm_lookup).
+#   3. Child collectors call canonical_rg_id() / reference_resource_group()
+#      instead of f-stringing their own rg_id.
+#   4. On a lookup miss, callers SKIP the parent link — never construct a
+#      fallback RG identifier, or the duplicate population comes back.
+ 
+ 
+def build_rg_lookup(raw_rgs, rg_lookup=None):
+    """Build/extend the canonical RG lookup from Azure RG list API results.
+ 
+    The RG list API (GET /subscriptions/{sub}/resourcegroups) returns each
+    RG's `id` and `name` in the true casing the RG was created with — this
+    is the canonical recipe every emitted identifier must match.
+ 
+    Args:
+        raw_rgs: Iterable of RG dicts from the Azure API (must have "id",
+            "name"; "location" used if present).
+        rg_lookup: Optional existing dict to extend (multi-subscription
+            collects call this once per subscription).
+ 
+    Returns:
+        Dict mapping LOWERCASED RG resource ID -> {"id": <original-cased
+        ARM ID>, "name": <original-cased name>, "location": <region>}.
+    """
+    if rg_lookup is None:
+        rg_lookup = {}
+    for rg in raw_rgs:
+        rg_id = rg.get("id", "")
+        rg_name = rg.get("name", "")
+        if not rg_id or not rg_name:
+            continue
+        rg_lookup[rg_id.lower()] = {
+            "id": rg_id,                      # original casing — canonical
+            "name": rg_name,                  # original casing — canonical
+            "location": rg.get("location", ""),
+        }
+    return rg_lookup
+ 
+ 
+def canonical_rg_id(sub_id, rg_name, rg_lookup):
+    """Resolve the canonical (original-cased) RG resource ID, or None.
+ 
+    Args:
+        sub_id: Subscription ID the resource belongs to.
+        rg_name: RG name in ANY casing (typically parsed out of a child
+            resource's ID path via extract_resource_group()).
+        rg_lookup: Dict from build_rg_lookup().
+ 
+    Returns:
+        The RG's canonical ARM resource ID exactly as the RG list API
+        reported it, or None if the RG isn't in the lookup (deleted RG, or
+        subscription outside the enumerated set). Callers must SKIP the
+        parent link on None — never fabricate an ID.
+    """
+    if not sub_id or not rg_name or not rg_lookup:
+        return None
+    key = f"/subscriptions/{sub_id}/resourcegroups/{rg_name}".lower()
+    entry = rg_lookup.get(key)
+    if entry is None:
+        miss = f"{sub_id}/{rg_name}".lower()
+        if miss not in _rg_lookup_misses:
+            _rg_lookup_misses.add(miss)
+            _logger.warning(
+                "canonical_rg_id: RG %r (sub %s) not in rg_lookup — "
+                "skipping parent link", rg_name, sub_id,
+            )
+        return None
+    return entry["id"]
+ 
+ 
+def reference_resource_group(result, adapter_kind, sub_id, rg_name, rg_lookup):
+    """Return the canonical RG object for a parent/child link, or None.
+ 
+    Sibling of reference_vm(): resolves any-cased RG names through
+    rg_lookup and builds name + identifiers from the RG list API's OWN
+    field values — byte-identical to the declaration recipe in
+    resource_groups.py. Keep the two recipes in lockstep: if the
+    identifier list there ever changes, change it here too.
+ 
+    Returns None when the RG isn't in the lookup. Callers should SKIP the
+    relationship in that case — never create a fallback object.
+ 
+    Args:
+        result: CollectResult being populated.
+        adapter_kind: Adapter kind string.
+        sub_id: Subscription ID the referencing resource belongs to.
+        rg_name: RG name in any casing (e.g., from
+            extract_resource_group(child_resource_id)).
+        rg_lookup: Dict from build_rg_lookup().
+ 
+    Returns:
+        The canonical RG object, or None if the RG is not in inventory.
+    """
+    # Local import to avoid a circular import at module load time.
+    from constants import OBJ_RESOURCE_GROUP, RES_IDENT_SUB, RES_IDENT_ID
+ 
+    if not sub_id or not rg_name or not rg_lookup:
+        return None
+    entry = rg_lookup.get(
+        f"/subscriptions/{sub_id}/resourcegroups/{rg_name}".lower())
+    if entry is None:
+        # canonical_rg_id handles the one-shot warning; reuse it.
+        canonical_rg_id(sub_id, rg_name, rg_lookup)
+        return None
+ 
+    return result.object(
+        adapter_kind=adapter_kind,
+        object_kind=OBJ_RESOURCE_GROUP,
+        name=entry["name"],
+        identifiers=make_identifiers([
+            (RES_IDENT_SUB, sub_id),
+            (RES_IDENT_ID, entry["id"]),
+        ]),
+    )
+ 
+ 
 def reference_vm(result, adapter_kind, sub_id, vm_resource_id, vm_lookup):
     """Return the canonical VM object for a resource ID, or None.
  
@@ -70,6 +218,13 @@ def reference_vm(result, adapter_kind, sub_id, vm_resource_id, vm_lookup):
     to the canonical creation recipe in virtual_machines.py. Keep the two
     recipes in lockstep: if the identifier list there ever changes, change
     it here too.
+ 
+    FIX (2026-07-16): the identifier list below previously used literal
+    lowercase keys ("subscription_id", "resource_group", "region",
+    "resource_id") while importing — but never using — the RES_IDENT_*
+    constants. The ingested VM objects are keyed with the constants'
+    AZURE_* identifier names, so references built with the literals could
+    never resolve. Now uses the constants, matching virtual_machines.py.
  
     Returns None when the VM isn't in the lookup (deleted VM with a stale
     managedBy, or a VM outside the enumerated subscriptions). Callers
@@ -109,10 +264,10 @@ def reference_vm(result, adapter_kind, sub_id, vm_resource_id, vm_lookup):
         object_kind=OBJ_VIRTUAL_MACHINE,
         name=vm_name,
         identifiers=make_identifiers([
-            ("subscription_id", sub_id),
-            ("resource_group", extract_resource_group(resource_id)),
-            ("region", vm.get("location", "")),
-            ("resource_id", resource_id),
+            (RES_IDENT_SUB, sub_id),
+            (RES_IDENT_RG, extract_resource_group(resource_id)),
+            (RES_IDENT_REGION, vm.get("location", "")),
+            (RES_IDENT_ID, resource_id),
         ]),
     )
  

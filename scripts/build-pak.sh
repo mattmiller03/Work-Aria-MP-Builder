@@ -4,8 +4,24 @@
 #
 # Wraps mp-build to:
 # 1. Run mp-build as normal
-# 2. Patch the generated describe.xml with UI integration attributes
-#    (type, subType, worldObjectName, PowerState, showTag)
+# 2. Run the describe.xml pipeline on the generated pak:
+#      a. patch-describe-xml.py    — native-kind substitution + UI attributes
+#                                    (type, subType, worldObjectName,
+#                                    PowerState, showTag, SERVICES/REGIONS)
+#      b. merge-custom-attrs.py    — graft SDK-defined custom attrs (flat and
+#                                    grouped) that native substitution drops;
+#                                    fixes the ~87K "not defined in
+#                                    describe.xml" warnings
+#      c. fix-namekeys.py          — remap kind nameKeys that collide with the
+#                                    SDK resources dictionary (label impostors
+#                                    like AZURE_STORAGE_DISK -> "Network In")
+#      d. cleanup-describe-xml.py  — strip constructs the SDK schema rejects
+#                                    (enumUnselected, advanced, empty length,
+#                                    dup attrs, dispOrder collisions) and
+#                                    VALIDATE against the pak's own XSD.
+#                                    Build ABORTS on validation failure —
+#                                    this gate is what prevents another
+#                                    silent APPLY_ADAPTER reject.
 # 3. Optionally sign the .pak with a custom certificate
 #
 # Usage:
@@ -24,6 +40,10 @@ PORT="${PORT:-8181}"
 SIGN=false
 TEST_ONLY=false
 NO_PATCH=false
+
+# Where the pre-patch SDK describe.xml snapshot is saved for merge-custom-attrs
+DEBUG_DIR="/opt/aria/Aria-MP-Builder/debug"
+SDK_SNAPSHOT="$DEBUG_DIR/describe-sdk-prepatch.xml"
 
 # Pin the host-side Python to the 3.12 we installed at /opt/python312
 # (Photon's default python3 is 3.10/3.11, which may not match the SDK).
@@ -69,6 +89,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 cd "$ADAPTER_DIR"
+mkdir -p "$DEBUG_DIR"
 
 # Unified cleanup run on EXIT (success or failure). Two responsibilities:
 #
@@ -109,13 +130,16 @@ echo "=== Step 1: Building pak with mp-build ==="
 sudo mp-build -i --no-ttl --registry-tag "$REGISTRY_TAG" -P "$PORT"
 
 echo ""
-echo "=== Step 2: Patching describe.xml ==="
+echo "=== Step 2: describe.xml pipeline (patch -> merge -> namekeys -> cleanup+validate) ==="
 if $NO_PATCH; then
     echo "Skipped (--no-patch). Pak will ship with pure SDK-generated describe.xml."
 # mp-build generates describe.xml inside adapter.zip inside the .pak, not on
 # disk at conf/describe.xml, so the expected path is the "else" fallback below.
 elif [ -f conf/describe.xml ]; then
+    cp conf/describe.xml "$SDK_SNAPSHOT"
     "$PYTHON_BIN" "$SCRIPT_DIR/patch-describe-xml.py" conf/describe.xml
+    "$PYTHON_BIN" "$SCRIPT_DIR/merge-custom-attrs.py" conf/describe.xml "$SDK_SNAPSHOT"
+    "$PYTHON_BIN" "$SCRIPT_DIR/fix-namekeys.py" conf/describe.xml
     "$PYTHON_BIN" "$SCRIPT_DIR/cleanup-describe-xml.py" conf/describe.xml --validate || {
         echo "FATAL: describe.xml failed schema validation after cleanup — aborting build"
         exit 1
@@ -141,17 +165,30 @@ else
 
             DESCRIBE="$TEMP_DIR/adapter/$ADAPTER_KIND/conf/describe.xml"
             if [ -f "$DESCRIBE" ]; then
-                cp "$DESCRIBE" /opt/aria/Aria-MP-Builder/debug/describe-sdk-prepatch.xml
+                # --- Stage 0: snapshot the raw SDK-emitted describe.xml
+                #     (input for merge-custom-attrs below)
+                cp "$DESCRIBE" "$SDK_SNAPSHOT"
+
+                # --- Stage 1: native-kind substitution + UI attribute patches
                 "$PYTHON_BIN" "$SCRIPT_DIR/patch-describe-xml.py" "$DESCRIBE"
 
-                # Final sanitization + schema self-check (fixes that unblocked
-                # APPLY_ADAPTER on 2026-07-08 — see scripts/cleanup-describe-xml.py)
+                # --- Stage 2: graft SDK-defined grouped/flat custom attrs
+                #     lost in native substitution (fixes the ~87K "not
+                #     defined in describe.xml" warnings — Defect A)
+                "$PYTHON_BIN" "$SCRIPT_DIR/merge-custom-attrs.py" "$DESCRIBE" "$SDK_SNAPSHOT"
+
+                # --- Stage 3: fix kind display names (native nameKeys
+                #     collide with the SDK resources dictionary — the
+                #     "Network In" / "Tenant ID" label impostors)
+                "$PYTHON_BIN" "$SCRIPT_DIR/fix-namekeys.py" "$DESCRIBE"
+
+                # --- Stage 4: final sanitization + schema self-check
+                #     (fixes that unblocked APPLY_ADAPTER on 2026-07-08).
+                #     HARD GATE: build aborts on any validation error.
                 "$PYTHON_BIN" "$SCRIPT_DIR/cleanup-describe-xml.py" "$DESCRIBE" --validate || {
                     echo "FATAL: describe.xml failed schema validation after cleanup — aborting build"
                     exit 1
                 }
-
-                # Repack adapter.zip (remove old archive so zip doesn't just update it)
 
                 # Repack adapter.zip (remove old archive so zip doesn't just update it)
                 rm -f "$TEMP_DIR/pak/adapter.zip"

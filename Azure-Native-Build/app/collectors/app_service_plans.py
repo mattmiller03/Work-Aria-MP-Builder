@@ -8,14 +8,21 @@ from constants import (
     RES_IDENT_SUB, RES_IDENT_RG, RES_IDENT_REGION, RES_IDENT_ID,
     SD_SUBSCRIPTION, SD_RESOURCE_GROUP, SD_REGION, SD_SERVICE, AZURE_SERVICE_NAMES,
 )
-from helpers import make_identifiers, extract_resource_group, safe_property, sanitize_tag_key
+from helpers import (make_identifiers, extract_resource_group,
+                     reference_resource_group, safe_property, sanitize_tag_key)
 
 logger = logging.getLogger(__name__)
 
 
 def collect_app_service_plans(client: AzureClient, result, adapter_kind: str,
-                              subscriptions: list):
-    """Collect app service plans across all subscriptions."""
+                              subscriptions: list, rg_lookup: dict = None):
+    """Collect app service plans across all subscriptions.
+
+    Args:
+        rg_lookup: Canonical RG lookup from resource_groups.py (see
+            helpers.build_rg_lookup). Used to resolve RG parent edges with
+            original-cased IDs; without it, RG edges are skipped.
+    """
     logger.info("Collecting app service plans")
     total = 0
 
@@ -124,19 +131,17 @@ def collect_app_service_plans(client: AzureClient, result, adapter_kind: str,
                 for key, value in tags.items():
                     safe_property(obj, f"summary|tags|{key}", value)
 
-            # Relationship: App Service Plan -> Resource Group
+            # Relationship: App Service Plan -> Resource Group (parent).
+            # 2026-07-16 fix: previously built an f-string rg_id with
+            # .lower(), which could never resolve against the original-cased
+            # RG objects in Aria Ops (the "zero relationships" defect). Now
+            # resolves through the canonical rg_lookup; on a miss the edge
+            # is skipped — never fabricate an RG identifier.
             if rg_name:
-                rg_id = f"/subscriptions/{sub_id}/resourceGroups/{rg_name}".lower()
-                rg_obj = result.object(
-                    adapter_kind=adapter_kind,
-                    object_kind=OBJ_RESOURCE_GROUP,
-                    name=rg_name,
-                    identifiers=make_identifiers([
-                        (RES_IDENT_SUB, sub_id),
-                        (RES_IDENT_ID, rg_id),
-                    ]),
-                )
-                obj.add_parent(rg_obj)
+                rg_obj = reference_resource_group(
+                    result, adapter_kind, sub_id, rg_name, rg_lookup)
+                if rg_obj is not None:
+                    obj.add_parent(rg_obj)
 
             total += 1
 

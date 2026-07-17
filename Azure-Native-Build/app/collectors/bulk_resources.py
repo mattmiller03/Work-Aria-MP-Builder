@@ -793,10 +793,17 @@ RESOURCE_TYPE_DEFINITIONS = [
 
 
 def collect_all_generic_resources(client: AzureClient, result,
-                                  adapter_kind: str, subscriptions: list):
+                                  adapter_kind: str, subscriptions: list,
+                                  rg_lookup: dict = None):
     """Collect all generic ARM resource types.
 
     Each type is collected independently — failure in one doesn't affect others.
+
+    Args:
+        rg_lookup: Canonical RG lookup from resource_groups.py (see
+            helpers.build_rg_lookup). Threaded through to
+            collect_generic_arm_resources for RG parent edges; without it,
+            RG edges are skipped.
     """
     total_types = 0
     total_resources = 0
@@ -812,6 +819,7 @@ def collect_all_generic_resources(client: AzureClient, result,
                 arm_provider_path=arm_path,
                 api_version=api_version,
                 extra_properties_fn=extra_fn,
+                rg_lookup=rg_lookup,
             )
             total_types += 1
             total_resources += count

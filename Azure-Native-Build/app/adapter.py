@@ -812,9 +812,14 @@ def collect(adapter_instance):
             if not subscriptions:
                 logger.warning("Configured subscription %s not found", target_sub)
 
-        # 2. Resource Groups
-        rgs_by_sub = collect_resource_groups(client, result, ADAPTER_KIND,
-                                             subscriptions)
+        # 2. Resource Groups — also builds rg_lookup, the canonical RG
+        #    resolution table (2026-07-16 casing fix). Every child collector
+        #    that emits an RG parent edge MUST resolve it through rg_lookup
+        #    (helpers.reference_resource_group / canonical_rg_id) instead of
+        #    constructing its own rg_id string. See helpers.py for the rule:
+        #    lowercase for lookups, NEVER for emitted identifiers.
+        rgs_by_sub, rg_lookup = collect_resource_groups(
+            client, result, ADAPTER_KIND, subscriptions)
 
         # 3. Collect VMs first and build lookup for dedicated host enrichment
         vm_lookup = {}
@@ -840,26 +845,30 @@ def collect(adapter_instance):
         except Exception as e:
             logger.warning("Failed to build VM lookup: %s", e)
 
-        # 4. All resource collectors — each wrapped independently
+        # 4. All resource collectors — each wrapped independently.
+        #    rg_lookup is passed by keyword so a collector that hasn't been
+        #    migrated yet fails loudly (TypeError) rather than silently
+        #    reverting to self-built rg_id strings.
         collectors = [
-            ("Virtual Machines", lambda: collect_virtual_machines(client, result, ADAPTER_KIND, subscriptions, vm_lookup)),
-            ("Disks", lambda: collect_disks(client, result, ADAPTER_KIND, subscriptions, vm_lookup)),            ("Network Interfaces", lambda: collect_network_interfaces(client, result, ADAPTER_KIND, subscriptions)),
-            ("Virtual Networks", lambda: collect_virtual_networks(client, result, ADAPTER_KIND, subscriptions)),
-            ("Storage Accounts", lambda: collect_storage_accounts(client, result, ADAPTER_KIND, subscriptions)),
-            ("Load Balancers", lambda: collect_load_balancers(client, result, ADAPTER_KIND, subscriptions)),
-            ("Key Vaults", lambda: collect_key_vaults(client, result, ADAPTER_KIND, subscriptions, rgs_by_sub)),
-            ("SQL Databases", lambda: collect_sql_servers_and_databases(client, result, ADAPTER_KIND, subscriptions)),
-            ("App Services", lambda: collect_app_services(client, result, ADAPTER_KIND, subscriptions)),
-            ("Function Apps", lambda: collect_functions_apps(client, result, ADAPTER_KIND, subscriptions)),
-            ("App Service Plans", lambda: collect_app_service_plans(client, result, ADAPTER_KIND, subscriptions)),
-            ("Cosmos DB", lambda: collect_cosmos_db_accounts(client, result, ADAPTER_KIND, subscriptions)),
-            ("PostgreSQL Servers", lambda: collect_postgresql_servers(client, result, ADAPTER_KIND, subscriptions)),
-            ("MySQL Servers", lambda: collect_mysql_servers(client, result, ADAPTER_KIND, subscriptions)),
-            ("Dedicated Hosts", lambda: collect_dedicated_hosts(client, result, ADAPTER_KIND, subscriptions, vm_lookup)),
-            ("Public IPs", lambda: collect_public_ips(client, result, ADAPTER_KIND, subscriptions)),
-            ("ExpressRoute", lambda: collect_expressroute_circuits(client, result, ADAPTER_KIND, subscriptions)),
-            ("Recovery Vaults", lambda: collect_recovery_vaults(client, result, ADAPTER_KIND, subscriptions)),
-            ("Log Analytics", lambda: collect_log_analytics_workspaces(client, result, ADAPTER_KIND, subscriptions)),
+            ("Virtual Machines", lambda: collect_virtual_machines(client, result, ADAPTER_KIND, subscriptions, vm_lookup, rg_lookup=rg_lookup)),
+            ("Disks", lambda: collect_disks(client, result, ADAPTER_KIND, subscriptions, vm_lookup, rg_lookup=rg_lookup)),
+            ("Network Interfaces", lambda: collect_network_interfaces(client, result, ADAPTER_KIND, subscriptions, rg_lookup=rg_lookup)),
+            ("Virtual Networks", lambda: collect_virtual_networks(client, result, ADAPTER_KIND, subscriptions, rg_lookup=rg_lookup)),
+            ("Storage Accounts", lambda: collect_storage_accounts(client, result, ADAPTER_KIND, subscriptions, rg_lookup=rg_lookup)),
+            ("Load Balancers", lambda: collect_load_balancers(client, result, ADAPTER_KIND, subscriptions, rg_lookup=rg_lookup)),
+            ("Key Vaults", lambda: collect_key_vaults(client, result, ADAPTER_KIND, subscriptions, rgs_by_sub, rg_lookup=rg_lookup)),
+            ("SQL Databases", lambda: collect_sql_servers_and_databases(client, result, ADAPTER_KIND, subscriptions, rg_lookup=rg_lookup)),
+            ("App Services", lambda: collect_app_services(client, result, ADAPTER_KIND, subscriptions, rg_lookup=rg_lookup)),
+            ("Function Apps", lambda: collect_functions_apps(client, result, ADAPTER_KIND, subscriptions, rg_lookup=rg_lookup)),
+            ("App Service Plans", lambda: collect_app_service_plans(client, result, ADAPTER_KIND, subscriptions, rg_lookup=rg_lookup)),
+            ("Cosmos DB", lambda: collect_cosmos_db_accounts(client, result, ADAPTER_KIND, subscriptions, rg_lookup=rg_lookup)),
+            ("PostgreSQL Servers", lambda: collect_postgresql_servers(client, result, ADAPTER_KIND, subscriptions, rg_lookup=rg_lookup)),
+            ("MySQL Servers", lambda: collect_mysql_servers(client, result, ADAPTER_KIND, subscriptions, rg_lookup=rg_lookup)),
+            ("Dedicated Hosts", lambda: collect_dedicated_hosts(client, result, ADAPTER_KIND, subscriptions, vm_lookup, rg_lookup=rg_lookup)),
+            ("Public IPs", lambda: collect_public_ips(client, result, ADAPTER_KIND, subscriptions, rg_lookup=rg_lookup)),
+            ("ExpressRoute", lambda: collect_expressroute_circuits(client, result, ADAPTER_KIND, subscriptions, rg_lookup=rg_lookup)),
+            ("Recovery Vaults", lambda: collect_recovery_vaults(client, result, ADAPTER_KIND, subscriptions, rg_lookup=rg_lookup)),
+            ("Log Analytics", lambda: collect_log_analytics_workspaces(client, result, ADAPTER_KIND, subscriptions, rg_lookup=rg_lookup)),
         ]
 
         for name, collector_fn in collectors:
@@ -873,7 +882,8 @@ def collect(adapter_instance):
 
         # 5. Bulk generic ARM resources (networking, containers, compute, etc.)
         try:
-            collect_all_generic_resources(client, result, ADAPTER_KIND, subscriptions)
+            collect_all_generic_resources(client, result, ADAPTER_KIND,
+                                          subscriptions, rg_lookup=rg_lookup)
         except Exception as e:
             logger.error("Bulk resource collection failed: %s", e, exc_info=True)
 

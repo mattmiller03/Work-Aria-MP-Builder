@@ -1,7 +1,7 @@
 """Collector for Azure Managed Disks."""
- 
+
 import logging
- 
+
 from azure_client import AzureClient
 from constants import (
     API_VERSIONS, OBJ_DISK, OBJ_RESOURCE_GROUP,
@@ -10,17 +10,18 @@ from constants import (
 )
 from helpers import (
     make_identifiers, extract_resource_group, safe_property, sanitize_tag_key,
-    reference_vm,
+    reference_vm, reference_resource_group,
 )
- 
+
 logger = logging.getLogger(__name__)
- 
+
 from typing import Optional
- 
+
 def collect_disks(client: AzureClient, result, adapter_kind: str,
-                  subscriptions: list, vm_lookup: Optional[dict] = None):
+                  subscriptions: list, vm_lookup: Optional[dict] = None,
+                  rg_lookup: Optional[dict] = None):
     """Collect managed disks across all subscriptions.
- 
+
     Args:
         client: Azure REST client.
         result: CollectResult to populate.
@@ -32,20 +33,24 @@ def collect_disks(client: AzureClient, result, adapter_kind: str,
             references to canonical VM objects. Without it, Disk->VM
             relationships are skipped rather than risk creating phantom
             VM objects (see helpers.reference_vm docstring).
+        rg_lookup: Canonical RG lookup from resource_groups.py (see
+            helpers.build_rg_lookup). Used to resolve Disk->RG parent
+            edges with original-cased IDs. Without it, RG edges are
+            skipped rather than risk minting duplicate RG objects.
     """
     logger.info("Collecting disks")
     if vm_lookup is None:
         vm_lookup = {}
     total = 0
     skipped_vm_refs = 0
- 
+
     for sub in subscriptions:
         sub_id = sub["subscriptionId"]
         disks = client.get_all(
             path=f"/subscriptions/{sub_id}/providers/Microsoft.Compute/disks",
             api_version=API_VERSIONS["disks"],
         )
- 
+
         for disk in disks:
             disk_name = disk["name"]
             resource_id = disk.get("id", "")
@@ -53,7 +58,7 @@ def collect_disks(client: AzureClient, result, adapter_kind: str,
             location = disk.get("location", "")
             props = disk.get("properties", {})
             sku = disk.get("sku", {})
- 
+
             obj = result.object(
                 adapter_kind=adapter_kind,
                 object_kind=OBJ_DISK,
@@ -65,13 +70,13 @@ def collect_disks(client: AzureClient, result, adapter_kind: str,
                     (RES_IDENT_ID, resource_id),
                 ]),
             )
- 
+
             # SERVICE_DESCRIPTORS
             safe_property(obj, SD_SUBSCRIPTION, sub_id)
             safe_property(obj, SD_RESOURCE_GROUP, rg_name)
             safe_property(obj, SD_REGION, location)
             safe_property(obj, SD_SERVICE, AZURE_SERVICE_NAMES.get(OBJ_DISK, ""))
- 
+
             safe_property(obj, "summary|name", disk_name)
             safe_property(obj, "resource_id", resource_id)
             safe_property(obj, "location", location)
@@ -97,32 +102,30 @@ def collect_disks(client: AzureClient, result, adapter_kind: str,
                           props.get("creationData", {}).get("createOption", ""))
             safe_property(obj, "summary|source",
                           props.get("creationData", {}).get("sourceResourceId", ""))
- 
+
             # Tags
             tags = disk.get("tags", {})
             if tags:
                 for key, value in tags.items():
                     safe_property(obj, f"summary|tags|{key}", value)
- 
+
             # Zones
             zones = disk.get("zones", [])
             if zones:
                 safe_property(obj, "availability_zone", ", ".join(zones))
- 
-            # Relationship: Disk -> Resource Group
+
+            # Relationship: Disk -> Resource Group (parent).
+            # 2026-07-16 fix: previously built an f-string rg_id with
+            # .lower(), which could never resolve against the original-cased
+            # RG objects in Aria Ops (the "zero relationships" defect). Now
+            # resolves through the canonical rg_lookup; on a miss the edge
+            # is skipped — never fabricate an RG identifier.
             if rg_name:
-                rg_id = f"/subscriptions/{sub_id}/resourceGroups/{rg_name}".lower()
-                rg_obj = result.object(
-                    adapter_kind=adapter_kind,
-                    object_kind=OBJ_RESOURCE_GROUP,
-                    name=rg_name,
-                    identifiers=make_identifiers([
-                        (RES_IDENT_SUB, sub_id),
-                        (RES_IDENT_ID, rg_id),
-                    ]),
-                )
-                obj.add_parent(rg_obj)
- 
+                rg_obj = reference_resource_group(
+                    result, adapter_kind, sub_id, rg_name, rg_lookup)
+                if rg_obj is not None:
+                    obj.add_parent(rg_obj)
+
             # Relationship: Disk -> VM (parent) via managedBy.
             #
             # PHANTOM-VM FIX (2026-07-09): previously this block built the
@@ -154,9 +157,9 @@ def collect_disks(client: AzureClient, result, adapter_kind: str,
                         "(deleted or out of scope): %s",
                         disk_name, managed_by,
                     )
- 
+
         total += len(disks)
- 
+
     if skipped_vm_refs:
         logger.warning(
             "Skipped %d Disk->VM relationship(s) for VMs not in inventory",

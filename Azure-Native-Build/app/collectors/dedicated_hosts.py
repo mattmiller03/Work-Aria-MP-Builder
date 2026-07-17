@@ -10,14 +10,16 @@ from constants import (
     RES_IDENT_SUB, RES_IDENT_RG, RES_IDENT_REGION, RES_IDENT_ID,
     SD_SUBSCRIPTION, SD_RESOURCE_GROUP, SD_REGION, SD_SERVICE, AZURE_SERVICE_NAMES,
 )
-from helpers import make_identifiers, extract_resource_group, safe_property, sanitize_tag_key
+from helpers import (make_identifiers, extract_resource_group,
+                     reference_resource_group, safe_property, sanitize_tag_key)
 from pricing import get_dedicated_host_prices
 
 logger = logging.getLogger(__name__)
 
 
 def collect_dedicated_hosts(client: AzureClient, result, adapter_kind: str,
-                            subscriptions: list, vm_lookup: dict = None):
+                            subscriptions: list, vm_lookup: dict = None,
+                            rg_lookup: dict = None):
     """Collect dedicated host groups and hosts across all subscriptions.
 
     Args:
@@ -28,6 +30,20 @@ def collect_dedicated_hosts(client: AzureClient, result, adapter_kind: str,
         vm_lookup: Optional dict mapping VM resource ID (lowered) to VM dict
                    from the Azure API. Used to enrich hosts with VM size
                    breakdowns and disk info.
+        rg_lookup: Canonical RG lookup from resource_groups.py (see
+                   helpers.build_rg_lookup). Required for Host Group -> RG
+                   parent edges; without it those edges are skipped.
+
+    CASING CONVENTIONS IN THIS FILE (2026-07-16 audit — do not "fix"):
+      - Resource Group references: canonical original casing via
+        reference_resource_group() / rg_lookup. NEVER .lower().
+      - Dedicated Host identifiers (RES_IDENT_RG/REGION/ID, hostGroupName):
+        DELIBERATELY lowercased, matching the VM->DH parent stub recipe in
+        virtual_machines.py byte-for-byte. Both sides of every DH edge use
+        the same lowercase recipe, so these edges resolve. Changing one
+        side without the other (in the same commit) breaks VM->DH edges.
+      - All other .lower() calls are dict-lookup keys or comparisons and
+        are never emitted.
     """
     logger.info("Collecting dedicated host groups and hosts")
     if vm_lookup is None:
@@ -274,19 +290,16 @@ def collect_dedicated_hosts(client: AzureClient, result, adapter_kind: str,
                 for key, value in tags.items():
                     safe_property(group_obj, f"summary|tags|{key}", value)
 
-            # Relationship: Host Group -> Resource Group
+            # Relationship: Host Group -> Resource Group (parent).
+            # 2026-07-16 fix: previously built an f-string rg_id with
+            # .lower(), which could never resolve against the original-cased
+            # RG objects in Aria Ops. Now resolves through the canonical
+            # rg_lookup; on a miss the edge is skipped.
             if rg_name:
-                rg_id = f"/subscriptions/{sub_id}/resourceGroups/{rg_name}".lower()
-                rg_obj = result.object(
-                    adapter_kind=adapter_kind,
-                    object_kind=OBJ_RESOURCE_GROUP,
-                    name=rg_name,
-                    identifiers=make_identifiers([
-                        (RES_IDENT_SUB, sub_id),
-                        (RES_IDENT_ID, rg_id),
-                    ]),
-                )
-                group_obj.add_parent(rg_obj)
+                rg_obj = reference_resource_group(
+                    result, adapter_kind, sub_id, rg_name, rg_lookup)
+                if rg_obj is not None:
+                    group_obj.add_parent(rg_obj)
 
             total_groups += 1
 
@@ -336,6 +349,9 @@ def collect_dedicated_hosts(client: AzureClient, result, adapter_kind: str,
                 # Lowercase the variable identifier values so dedup with the
                 # VM collector's parent stub (virtual_machines.py) succeeds
                 # regardless of the case Azure returns from either API.
+                # (Deliberate DH convention — see docstring. Do NOT change
+                # to canonical casing without changing virtual_machines.py's
+                # VM->DH stub in the same commit.)
                 host_obj = result.object(
                     adapter_kind=adapter_kind,
                     object_kind=OBJ_DEDICATED_HOST,
@@ -854,6 +870,8 @@ def collect_dedicated_hosts_with_instance_view(client: AzureClient, result,
                     # identifiers as the primary collector.  We don't
                     # have the full resource_id / location here, so
                     # build them from what the group detail gives us.
+                    # (Deliberate DH lowercase convention — matches the
+                    # primary collector and virtual_machines.py.)
                     iv_host_id = iv_host.get("assetId", "")
                     iv_location = group_detail.get("location", "")
                     host_obj = result.object(
