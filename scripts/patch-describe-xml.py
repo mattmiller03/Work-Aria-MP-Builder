@@ -525,6 +525,72 @@ def _append_remapped_labels(describe_path: str) -> int:
     return added
 
 
+def _graft_instance_metric_groups(content: str, native_xml_path: str,
+                                  instance_kind: str) -> tuple[str, int]:
+    """Graft the native adapter-instance kind's <ResourceGroup> blocks
+    (azure_services_general + summary total_number_* metrics) into OUR
+    instance kind (2026-07-17).
+
+    In the native pak the adapter instance IS the subscription: its summary
+    page and dashboards read summary|total_number_* metrics defined on the
+    instance kind. Our SDK-emitted instance kind has no metric attributes,
+    so the counts the collector now reports onto the instance (see
+    regions.py step 6) would be undefined-in-describe. We copy the native
+    groups verbatim — nameKeys remapped through the same 40000+ scheme so
+    labels resolve to the native names.
+
+    We deliberately do NOT substitute the whole native instance kind: its
+    credentialKind and identifier layout differ from ours, and replacing
+    them would break existing configured connections. Groups only.
+
+    Idempotent: skipped if total_number_vms is already defined on content.
+    Runs AFTER the rename step (targets the final instance kind key).
+    """
+    if 'key="total_number_vms"' in content:
+        return content, 0
+    if not os.path.exists(native_xml_path):
+        return content, 0
+
+    with open(native_xml_path, "r", encoding="utf-8") as f:
+        native_content = f.read()
+
+    # Native instance kind span (same key as our post-rename kind).
+    m = re.search(
+        r'<ResourceKind\s+key="' + re.escape(instance_kind) + r'"[^>]*>',
+        native_content)
+    if not m:
+        return content, 0
+    close = native_content.find("</ResourceKind>", m.end())
+    if close == -1:
+        return content, 0
+    native_span = native_content[m.start():close]
+
+    groups = re.findall(r'<ResourceGroup\b.*?</ResourceGroup>',
+                        native_span, flags=re.DOTALL)
+    if not groups:
+        return content, 0
+
+    remapped = []
+    for g in groups:
+        g2, local_map = _remap_span_namekeys(g)
+        _remapped_namekeys.update(local_map)
+        remapped.append(g2)
+    graft = "\n         " + "\n         ".join(remapped) + "\n      "
+
+    # Our instance kind span in the pak content (post-rename key).
+    m2 = re.search(
+        r'<ResourceKind\s+key="' + re.escape(instance_kind) + r'"[^>]*>',
+        content)
+    if not m2:
+        return content, 0
+    close2 = content.find("</ResourceKind>", m2.end())
+    if close2 == -1:
+        return content, 0
+
+    content = content[:close2] + graft + content[close2:]
+    return content, len(remapped)
+
+
 def _substitute_resource_kind(content: str, kind: str, block: str) -> tuple[str, int]:
     """Replace the entire `<ResourceKind key="KIND">...</ResourceKind>` span
     with `block`. Idempotent: if the literal block is already a substring of
@@ -972,6 +1038,21 @@ def patch_describe_xml(filepath: str) -> int:
             print(f"  [PATCHED] rename ResourceKind: {old_key} -> {new_key}")
         else:
             print(f"  [SKIP]    rename {old_key} (not found — already renamed?)")
+
+    # 7. Graft native instance-kind metric groups (summary total_number_*)
+    # onto our renamed instance kind so the instance-level metrics reported
+    # by regions.py step 6 are defined with native labels. Must run after
+    # the rename (targets the final key).
+    native_xml_path = os.environ.get("NATIVE_DESCRIBE_XML", DEFAULT_NATIVE_DESCRIBE_XML)
+    content, count = _graft_instance_metric_groups(
+        content, native_xml_path, RENAME_KINDS[ADAPTER_INSTANCE_KIND])
+    if count > 0:
+        applied += count
+        print(f"  [PATCHED] grafted {count} native metric ResourceGroup(s) "
+              "onto the adapter-instance kind")
+    else:
+        print("  [SKIP]    instance metric-group graft (already present or "
+              "native describe unavailable)")
 
     if content != original:
         with open(filepath, "w", encoding="utf-8") as f:

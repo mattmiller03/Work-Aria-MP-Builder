@@ -22,7 +22,7 @@ regions, REGION_PER_SUB must be a child of azure_subscription too.
 import logging
 from collections import defaultdict
 
-from helpers import safe_property
+from helpers import safe_property, make_identifiers
 from constants import (
     OBJ_REGION, OBJ_REGION_PER_SUB, OBJ_WORLD, OBJ_SUBSCRIPTION,
     OBJ_VIRTUAL_MACHINE, OBJ_STORAGE_ACCOUNT, OBJ_SQL_SERVER,
@@ -30,7 +30,9 @@ from constants import (
     OBJ_APP_SERVICE, OBJ_DISK, OBJ_HOST_GROUP, OBJ_DEDICATED_HOST,
     OBJ_PUBLIC_IP, OBJ_EXPRESSROUTE, OBJ_KEY_VAULT,
     OBJ_POSTGRESQL, OBJ_MYSQL, OBJ_FUNCTIONS_APP,
+    OBJ_RESOURCE_GROUP, OBJ_ADAPTER_INSTANCE,
     RES_IDENT_REGION, RES_IDENT_SUB,
+    IDENT_SUBSCRIPTION_ID, IDENT_TENANT_ID,
 )
 
 logger = logging.getLogger(__name__)
@@ -92,7 +94,8 @@ _AGGREGATION_KINDS = {
 
 
 def collect_regions_and_world(result, adapter_kind, subscriptions,
-                              adapter_instance_name):
+                              adapter_instance_name,
+                              instance_identity: dict = None):
     """Create AZURE_REGION, AZURE_REGION_PER_SUB, and AZURE_WORLD objects
     and wire up the topology that native pak dashboards expect.
 
@@ -103,6 +106,15 @@ def collect_regions_and_world(result, adapter_kind, subscriptions,
     4. Add REGION_PER_SUB as a parent of every collected resource so the
        "By Region" traversal returns objects.
     5. Create one AZURE_WORLD with total_number_* count metrics.
+    6. Report onto the ADAPTER INSTANCE object itself (2026-07-17): in the
+       native pak the instance IS the subscription — its summary page
+       (region/RG counts, Instances map) and Relationship widget
+       (Azure World above, Region-Per-Sub + Resource Groups below) all
+       bind to the adapter-instance kind. We merge with the configured
+       instance by emitting an object of OBJ_ADAPTER_INSTANCE with the
+       instance's own identity (AZURE_SUBSCRIPTION_ID + AZURE_TENANT_ID,
+       the only identType=1 identifiers) and attach the same summary
+       count metrics plus the native topology edges.
 
     Args:
         result: CollectResult populated by prior collectors.
@@ -110,6 +122,10 @@ def collect_regions_and_world(result, adapter_kind, subscriptions,
         subscriptions: List of subscription dicts.
         adapter_instance_name: Display name for the adapter instance,
             used as a fallback when a sub display name is not available.
+        instance_identity: Optional dict with the configured adapter
+            instance's identity: {"sub_id": ..., "tenant_id": ...,
+            "name": ...}. When absent or incomplete, step 6 is skipped
+            (backward compatible).
     """
     logger.info("Collecting regions and world objects")
 
@@ -131,9 +147,15 @@ def collect_regions_and_world(result, adapter_kind, subscriptions,
     # purely defensive.
     all_objects = list(result.objects.values())
 
+    # Resource Group objects — children of the adapter instance in step 6.
+    rg_objects = []
+
     for obj in all_objects:
         obj_kind = obj.get_key().object_kind
         kind_counts[obj_kind] += 1
+
+        if obj_kind == OBJ_RESOURCE_GROUP:
+            rg_objects.append(obj)
 
         # Build subscription lookup
         if obj_kind == OBJ_SUBSCRIPTION:
@@ -281,3 +303,49 @@ def collect_regions_and_world(result, adapter_kind, subscriptions,
         "%d region-per-sub, %d subscriptions",
         len(_WORLD_COUNT_METRICS), len(per_sub_objects), len(subscriptions),
     )
+
+    # ------------------------------------------------------------------
+    # 6. Report onto the ADAPTER INSTANCE (native subscription parity).
+    #    The emitted object merges with the user's configured instance
+    #    because kind + identType=1 identifiers (SUB + TENANT) match the
+    #    connection config byte-for-byte. Name is display-only; we pass
+    #    the configured instance name when the caller could read it.
+    # ------------------------------------------------------------------
+    inst_sub = (instance_identity or {}).get("sub_id") or ""
+    inst_tenant = (instance_identity or {}).get("tenant_id") or ""
+    if inst_sub and inst_tenant:
+        inst_obj = result.object(
+            adapter_kind=adapter_kind,
+            object_kind=OBJ_ADAPTER_INSTANCE,
+            name=(instance_identity.get("name") or adapter_instance_name),
+            identifiers=make_identifiers([
+                (IDENT_SUBSCRIPTION_ID, inst_sub),
+                (IDENT_TENANT_ID, inst_tenant),
+            ]),
+        )
+
+        # Topology: Azure World above; Region-Per-Sub + RGs below —
+        # mirrors the native pak's Relationship widget (World/Universe ->
+        # subscription -> regions + resource groups).
+        inst_obj.add_parent(world_obj)
+        for per_sub_obj in per_sub_objects.values():
+            per_sub_obj.add_parent(inst_obj)
+        for rg_obj in rg_objects:
+            rg_obj.add_parent(inst_obj)
+
+        # Same summary count metrics the native instance kind defines.
+        for obj_kind, metric_key in _WORLD_COUNT_METRICS.items():
+            inst_obj.with_metric(metric_key, float(kind_counts.get(obj_kind, 0)))
+        inst_obj.with_metric("summary|active_number_vms", float(active_vms))
+        inst_obj.with_metric("summary|total_number_regions",
+                             float(len(per_sub_objects)))
+
+        logger.info(
+            "Reported adapter instance '%s': %d RG children, %d region-per-sub "
+            "children, world parent, %d summary metrics",
+            inst_obj.get_key().name, len(rg_objects), len(per_sub_objects),
+            len(_WORLD_COUNT_METRICS) + 2,
+        )
+    else:
+        logger.info(
+            "Adapter-instance reporting skipped (no instance identity passed)")

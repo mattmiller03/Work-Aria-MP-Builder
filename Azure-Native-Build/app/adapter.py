@@ -890,8 +890,19 @@ def collect(adapter_instance):
         # 6. Region & World aggregation — must run AFTER all resource collectors
         try:
             adapter_instance_name = target_sub or "Azure"
+            # Configured instance display name (best effort — identity is
+            # carried by the identifiers, name is display-only).
+            try:
+                instance_name = adapter_instance.get_key().name
+            except Exception:
+                instance_name = None
             collect_regions_and_world(
                 result, ADAPTER_KIND, subscriptions, adapter_instance_name,
+                instance_identity={
+                    "sub_id": target_sub,
+                    "tenant_id": tenant_id,
+                    "name": instance_name,
+                },
             )
         except Exception as e:
             logger.error("Regions/World collector failed: %s", e, exc_info=True)
