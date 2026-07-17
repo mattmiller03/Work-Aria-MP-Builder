@@ -408,12 +408,136 @@ ROOT_ATTRS = {
 _ATTR_RE = re.compile(r'([\w:]+)="([^"]*)"')
 
 
+# ---------------------------------------------------------------------------
+# nameKey remapping for spliced native spans (2026-07-17).
+#
+# Native spans carry the NATIVE pak's nameKey numbering on EVERY level —
+# ResourceKind, ResourceIdentifier, ResourceGroup, ResourceAttribute. Our pak
+# ships the SDK-generated resources.properties, whose numbering is different
+# AND unstable (it renumbers whenever the adapter definition changes). Result:
+# group/attribute/identifier labels resolve to impostor dictionary entries
+# (VM metric groups displayed as "Available Memory Bytes"/"File Availability";
+# earlier, the VM kind itself displayed as "Directory (Tenant) ID").
+#
+# Fix: at splice time, shift every nameKey in a native span into the 40000+
+# range (guaranteed free of both SDK numbering and fix-namekeys.py's 30000
+# block), and append the NATIVE pak's own label for each shifted key to the
+# pak's resources.properties. Applied inside _substitute_resource_kind, so it
+# covers both the manual BLOCK_SUBSTITUTIONS literals and the dynamic loader,
+# while attrs injected later by _inject_custom_attrs keep their SDK numbering
+# (which is correct for them — they exist in the SDK dictionary).
+#
+# fix-namekeys.py still runs afterwards and re-pins KIND-level labels to its
+# curated 30000-range table; that remains correct and idempotent on top of
+# this remap.
+# ---------------------------------------------------------------------------
+
+NAMEKEY_OFFSET = 40000
+
+DEFAULT_NATIVE_RESOURCES_PROPERTIES = os.path.normpath(
+    os.path.join(
+        os.path.dirname(os.path.abspath(__file__)),
+        "..",
+        "sdk_packages",
+        "MicrosoftAzureAdapter-818024067771",
+        "AzureAdapter",
+        "MicrosoftAzureAdapter",
+        "conf",
+        "resources",
+        "resources.properties",
+    )
+)
+
+_native_labels: dict | None = None   # {int: label} from the native pak
+_remapped_namekeys: dict = {}        # {shifted_key: native label or None}
+
+
+def _load_native_labels() -> dict:
+    """Lazy-load the native pak's resources.properties (N=Label lines)."""
+    global _native_labels
+    if _native_labels is not None:
+        return _native_labels
+    _native_labels = {}
+    path = os.environ.get("NATIVE_RESOURCES_PROPERTIES",
+                          DEFAULT_NATIVE_RESOURCES_PROPERTIES)
+    if os.path.exists(path):
+        with open(path, "r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line or line.startswith("#") or "=" not in line:
+                    continue
+                key, _, label = line.partition("=")
+                if key.strip().isdigit():
+                    _native_labels[int(key.strip())] = label.strip()
+    else:
+        print(f"  [WARN]    native resources.properties not found at {path}; "
+              "spliced nameKeys will be shifted without label entries")
+    return _native_labels
+
+
+def _remap_span_namekeys(span: str) -> tuple[str, dict]:
+    """Shift every nameKey in a native span into the 40000+ range. Returns
+    (shifted_span, {shifted_key: native label or None}). Idempotent: keys
+    already >= 40000 are left untouched but still recorded, so labels can be
+    re-appended if resources.properties is ever regenerated."""
+    labels = _load_native_labels()
+    local: dict = {}
+
+    def _shift(m):
+        n = int(m.group(1))
+        if n >= NAMEKEY_OFFSET:
+            local.setdefault(n, labels.get(n - NAMEKEY_OFFSET))
+            return m.group(0)
+        shifted = NAMEKEY_OFFSET + n
+        local.setdefault(shifted, labels.get(n))
+        return f'nameKey="{shifted}"'
+
+    return re.sub(r'nameKey="(\d+)"', _shift, span), local
+
+
+def _append_remapped_labels(describe_path: str) -> int:
+    """Append native labels for all shifted nameKeys to the pak's
+    resources.properties (sitting at <describe_dir>/resources/). Skips keys
+    already present (idempotent) and keys with no native label (Aria then
+    derives a fallback name, same as before this fix)."""
+    res_path = os.path.join(os.path.dirname(describe_path),
+                            "resources", "resources.properties")
+    if not _remapped_namekeys:
+        return 0
+    if not os.path.exists(res_path):
+        print(f"  [WARN]    pak resources.properties not found at {res_path}; "
+              "native labels for spliced spans NOT appended")
+        return 0
+    existing = set()
+    with open(res_path, "r", encoding="utf-8") as f:
+        for line in f:
+            key = line.split("=", 1)[0].strip()
+            if key.isdigit():
+                existing.add(int(key))
+    added = 0
+    with open(res_path, "a", encoding="utf-8") as f:
+        for key in sorted(_remapped_namekeys):
+            label = _remapped_namekeys[key]
+            if key in existing or label is None:
+                continue
+            f.write(f"{key} = {label}\n")
+            added += 1
+    return added
+
+
 def _substitute_resource_kind(content: str, kind: str, block: str) -> tuple[str, int]:
     """Replace the entire `<ResourceKind key="KIND">...</ResourceKind>` span
     with `block`. Idempotent: if the literal block is already a substring of
     `content`, returns unchanged.
+
+    The block's nameKeys are shifted into the 40000+ range first (see the
+    nameKey-remapping section above) so native numbering never collides with
+    the SDK dictionary. Shifted-key labels are recorded only when the block
+    actually lands in the output (fresh substitution or already present).
     """
+    block, local_map = _remap_span_namekeys(block)
     if block in content:
+        _remapped_namekeys.update(local_map)   # already spliced on a prior run
         return content, 0
 
     open_re = re.compile(
@@ -421,14 +545,15 @@ def _substitute_resource_kind(content: str, kind: str, block: str) -> tuple[str,
     )
     match = open_re.search(content)
     if not match:
-        return content, 0
+        return content, 0   # kind absent — discard local_map
 
     close_tag = "</ResourceKind>"
     close_start = content.find(close_tag, match.end())
     if close_start == -1:
         return content, 0
-    full_end = close_start + len(close_tag)
 
+    full_end = close_start + len(close_tag)
+    _remapped_namekeys.update(local_map)
     return content[:match.start()] + block + content[full_end:], 1
 
 
@@ -854,6 +979,15 @@ def patch_describe_xml(filepath: str) -> int:
         print(f"\n{applied} patches applied to {filepath}")
     else:
         print(f"\nNo patches needed for {filepath}")
+
+    # Append native labels for all nameKeys shifted during span splicing so
+    # group/attribute/identifier labels resolve to the NATIVE names instead
+    # of impostor SDK dictionary entries. Runs even when content is unchanged
+    # (idempotent re-run must still ensure the labels are present).
+    n_labels = _append_remapped_labels(filepath)
+    print(f"  [PATCHED] nameKey remap: {len(_remapped_namekeys)} spliced keys "
+          f"shifted to {NAMEKEY_OFFSET}+ range, {n_labels} native label(s) "
+          "appended to resources.properties")
 
     return applied
 
