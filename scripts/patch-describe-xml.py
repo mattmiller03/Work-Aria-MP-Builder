@@ -543,11 +543,22 @@ def _graft_instance_metric_groups(content: str, native_xml_path: str,
     credentialKind and identifier layout differ from ours, and replacing
     them would break existing configured connections. Groups only.
 
-    Idempotent: skipped if total_number_vms is already defined on content.
+    Idempotent: skipped if total_number_vms is already defined WITHIN the
+    instance kind's span (AZURE_WORLD defines the same key — a whole-content
+    check false-skips, which shipped a graftless .236).
     Runs AFTER the rename step (targets the final instance kind key).
     """
-    if 'key="total_number_vms"' in content:
+    m2 = re.search(
+        r'<ResourceKind\s+key="' + re.escape(instance_kind) + r'"[^>]*>',
+        content)
+    if not m2:
         return content, 0
+    close2 = content.find("</ResourceKind>", m2.end())
+    if close2 == -1:
+        return content, 0
+    if 'key="total_number_vms"' in content[m2.start():close2]:
+        return content, 0   # already grafted on a prior run
+
     if not os.path.exists(native_xml_path):
         return content, 0
 
@@ -577,16 +588,7 @@ def _graft_instance_metric_groups(content: str, native_xml_path: str,
         remapped.append(g2)
     graft = "\n         " + "\n         ".join(remapped) + "\n      "
 
-    # Our instance kind span in the pak content (post-rename key).
-    m2 = re.search(
-        r'<ResourceKind\s+key="' + re.escape(instance_kind) + r'"[^>]*>',
-        content)
-    if not m2:
-        return content, 0
-    close2 = content.find("</ResourceKind>", m2.end())
-    if close2 == -1:
-        return content, 0
-
+    # Insert before our instance kind's close tag (span located above).
     content = content[:close2] + graft + content[close2:]
     return content, len(remapped)
 
