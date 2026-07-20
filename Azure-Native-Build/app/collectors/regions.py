@@ -321,7 +321,7 @@ def collect_regions_and_world(result, adapter_kind, subscriptions,
             identifiers=make_identifiers([
                 (IDENT_SUBSCRIPTION_ID, inst_sub),
                 (IDENT_TENANT_ID, inst_tenant),
-            ]),
+            ], OBJ_ADAPTER_INSTANCE),
         )
 
         # Topology: Azure World above; Region-Per-Sub + RGs below —

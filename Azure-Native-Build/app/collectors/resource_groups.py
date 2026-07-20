@@ -69,7 +69,7 @@ def collect_resource_groups(client: AzureClient, result, adapter_kind: str,
                 identifiers=make_identifiers([
                     (RES_IDENT_SUB, sub_id),
                     (RES_IDENT_ID, rg_id),
-                ]),
+                ], OBJ_RESOURCE_GROUP),
             )
 
             # SERVICE_DESCRIPTORS — required for native-pak compatibility.
@@ -99,7 +99,7 @@ def collect_resource_groups(client: AzureClient, result, adapter_kind: str,
                 adapter_kind=adapter_kind,
                 object_kind=OBJ_SUBSCRIPTION,
                 name=sub.get("displayName", sub_id),
-                identifiers=make_identifiers([("subscription_id", sub_id)]),
+                identifiers=make_identifiers([("subscription_id", sub_id)], OBJ_SUBSCRIPTION),
             )
             obj.add_parent(sub_obj)
 

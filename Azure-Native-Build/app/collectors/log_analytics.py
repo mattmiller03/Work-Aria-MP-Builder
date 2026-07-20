@@ -45,7 +45,7 @@ def collect_log_analytics_workspaces(client: AzureClient, result, adapter_kind: 
                     (RES_IDENT_RG, rg_name),
                     (RES_IDENT_REGION, location),
                     (RES_IDENT_ID, resource_id),
-                ]),
+                ], OBJ_LOG_ANALYTICS),
             )
 
             # SERVICE_DESCRIPTORS group is omitted on this custom kind — see

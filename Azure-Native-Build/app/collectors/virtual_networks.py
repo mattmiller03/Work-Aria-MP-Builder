@@ -47,7 +47,7 @@ def collect_virtual_networks(client: AzureClient, result, adapter_kind: str,
                     (RES_IDENT_RG, rg_name),
                     (RES_IDENT_REGION, location),
                     (RES_IDENT_ID, resource_id),
-                ]),
+                ], OBJ_VIRTUAL_NETWORK),
             )
 
             # SERVICE_DESCRIPTORS
@@ -110,7 +110,7 @@ def collect_virtual_networks(client: AzureClient, result, adapter_kind: str,
                         ("subscription_id", sub_id),
                         ("vnet_id", vnet.get("id", "")),
                         ("subnet_name", subnet_name),
-                    ]),
+                    ], OBJ_SUBNET),
                 )
 
                 safe_property(subnet_obj, "subnet_name", subnet_name)

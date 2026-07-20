@@ -49,7 +49,7 @@ def collect_cosmos_db_accounts(client: AzureClient, result, adapter_kind: str,
                     (RES_IDENT_RG, rg_name),
                     (RES_IDENT_REGION, location),
                     (RES_IDENT_ID, resource_id),
-                ]),
+                ], OBJ_COSMOS_DB),
             )
 
             # SERVICE_DESCRIPTORS

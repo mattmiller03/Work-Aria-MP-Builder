@@ -50,7 +50,7 @@ def collect_storage_accounts(client: AzureClient, result, adapter_kind: str,
                     (RES_IDENT_RG, rg_name),
                     (RES_IDENT_REGION, location),
                     (RES_IDENT_ID, resource_id),
-                ]),
+                ], OBJ_STORAGE_ACCOUNT),
             )
 
             # SERVICE_DESCRIPTORS

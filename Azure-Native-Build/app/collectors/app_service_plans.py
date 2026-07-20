@@ -50,7 +50,7 @@ def collect_app_service_plans(client: AzureClient, result, adapter_kind: str,
                     (RES_IDENT_RG, rg_name),
                     (RES_IDENT_REGION, location),
                     (RES_IDENT_ID, resource_id),
-                ]),
+                ], OBJ_APP_SERVICE_PLAN),
             )
 
             # SERVICE_DESCRIPTORS

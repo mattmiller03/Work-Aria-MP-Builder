@@ -90,7 +90,7 @@ def collect_virtual_machines(client: AzureClient, result, adapter_kind: str,
                     (RES_IDENT_RG, rg_name),
                     (RES_IDENT_REGION, location),
                     (RES_IDENT_ID, resource_id),
-                ]),
+                ], OBJ_VIRTUAL_MACHINE),
             )
 
             # SERVICE_DESCRIPTORS
@@ -239,7 +239,7 @@ def collect_virtual_machines(client: AzureClient, result, adapter_kind: str,
                             (RES_IDENT_REGION, location.lower()),
                             (RES_IDENT_ID, host_id.lower()),
                             ("hostGroupName", dh_group_name.lower()),
-                        ]),
+                        ], OBJ_DEDICATED_HOST),
                     )
                     obj.add_parent(dh_obj)
 

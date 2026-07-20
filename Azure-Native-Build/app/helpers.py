@@ -4,7 +4,15 @@ import logging
 
 from aria.ops.object import Identifier
 
+try:
+    # Per-kind {identifier_key: is_part_of_uniqueness} map, auto-generated
+    # from the native describe.xml (scripts/gen-identifier-uniqueness.py).
+    from identifier_uniqueness import KIND_IDENTIFIER_UNIQUENESS
+except Exception:  # pragma: no cover - defensive if module missing
+    KIND_IDENTIFIER_UNIQUENESS = {}
+
 _logger = logging.getLogger(__name__)
+
 # Track unique resource_id patterns we couldn't extract an RG from. Avoids
 # log spam when many resources share the same non-standard ID shape.
 _extract_rg_misses: set[str] = set()
@@ -13,16 +21,45 @@ _extract_rg_misses: set[str] = set()
 _rg_lookup_misses: set[str] = set()
 
 
-def make_identifiers(pairs):
+def make_identifiers(pairs, object_kind=None):
     """Convert a list of (key, value) tuples to Identifier objects.
 
+    CRITICAL (2026-07 relationship-binding fix): each Identifier's
+    ``is_part_of_uniqueness`` MUST match the identType declared for that key
+    on that ResourceKind in the (native-spliced) describe.xml. If it does
+    not, Aria stores the object fine (it keys objects by the describe's
+    identType="1" identifiers) but the relationship endpoints the adapter
+    emits are keyed on a *different* identity, so Aria cannot resolve them
+    and SILENTLY drops every parent/child edge — no reject is logged. This
+    is why resource-level relationships (VM->RG, Disk->VM, ...) never bound
+    while RG->Instance (whose identifiers are all identType="1") did.
+
+    When ``object_kind`` is given, uniqueness flags are taken from
+    ``KIND_IDENTIFIER_UNIQUENESS`` (auto-generated from the native
+    describe.xml) for that kind. Any key not present in the map — and every
+    identifier when ``object_kind`` is None or is one of our custom kinds
+    whose describe is SDK-generated (e.g. azure_subnet, azure_subscription,
+    azure_log_analytics_workspace) — defaults to unique, which matches the
+    SDK-generated describe for those kinds. Only the native-spliced kinds
+    (whose describe was replaced with native identTypes) are adjusted, which
+    is exactly where the mismatch lived.
+
     Args:
-        pairs: List of (key, value) tuples
+        pairs: List of (key, value) tuples.
+        object_kind: The ResourceKind these identifiers belong to. Pass it
+            whenever the object carries an ``AZURE_RESOURCE_GROUP`` and/or
+            ``AZURE_REGION`` identifier so the correct per-kind uniqueness is
+            applied.
 
     Returns:
-        List of Identifier objects
+        List of Identifier objects.
     """
-    return [Identifier(key, value) for key, value in pairs]
+    umap = KIND_IDENTIFIER_UNIQUENESS.get(object_kind, {}) if object_kind else {}
+    idents = []
+    for key, value in pairs:
+        unique = umap.get(key, True)
+        idents.append(Identifier(key, value, is_part_of_uniqueness=unique))
+    return idents
 
 
 def extract_resource_group(resource_id):
@@ -205,7 +242,7 @@ def reference_resource_group(result, adapter_kind, sub_id, rg_name, rg_lookup):
         identifiers=make_identifiers([
             (RES_IDENT_SUB, sub_id),
             (RES_IDENT_ID, entry["id"]),
-        ]),
+        ], OBJ_RESOURCE_GROUP),
     )
 
 
@@ -278,7 +315,7 @@ def reference_vm(result, adapter_kind, sub_id, vm_resource_id, vm_lookup):
             (RES_IDENT_RG, extract_resource_group(resource_id)),
             (RES_IDENT_REGION, vm.get("location", "")),
             (RES_IDENT_ID, resource_id),
-        ]),
+        ], OBJ_VIRTUAL_MACHINE),
     )
 
 

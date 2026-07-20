@@ -52,7 +52,7 @@ def collect_sql_servers_and_databases(client: AzureClient, result,
                     (RES_IDENT_RG, rg_name),
                     (RES_IDENT_REGION, srv_location),
                     (RES_IDENT_ID, srv_resource_id),
-                ]),
+                ], OBJ_SQL_SERVER),
             )
 
             # SERVICE_DESCRIPTORS
@@ -126,7 +126,7 @@ def collect_sql_servers_and_databases(client: AzureClient, result,
                         (RES_IDENT_REGION, db_location),
                         (RES_IDENT_ID, db_resource_id),
                         ("SERVER_ID", srv_resource_id),
-                    ]),
+                    ], OBJ_SQL_DATABASE),
                 )
 
                 # SERVICE_DESCRIPTORS

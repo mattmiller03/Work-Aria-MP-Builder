@@ -56,7 +56,7 @@ def collect_functions_apps(client: AzureClient, result, adapter_kind: str,
                     (RES_IDENT_RG, rg_name),
                     (RES_IDENT_REGION, location),
                     (RES_IDENT_ID, resource_id),
-                ]),
+                ], OBJ_FUNCTIONS_APP),
             )
 
             # SERVICE_DESCRIPTORS
@@ -167,7 +167,7 @@ def collect_functions_apps(client: AzureClient, result, adapter_kind: str,
                             (RES_IDENT_RG, plan_rg),
                             (RES_IDENT_REGION, location),
                             (RES_IDENT_ID, server_farm_id),
-                        ]),
+                        ], OBJ_APP_SERVICE_PLAN),
                     )
                     obj.add_parent(plan_obj)
 

@@ -250,7 +250,7 @@ def collect_dedicated_hosts(client: AzureClient, result, adapter_kind: str,
                     (RES_IDENT_RG, rg_name),
                     (RES_IDENT_REGION, group_location),
                     (RES_IDENT_ID, group_resource_id),
-                ]),
+                ], OBJ_HOST_GROUP),
             )
 
             # SERVICE_DESCRIPTORS
@@ -362,7 +362,7 @@ def collect_dedicated_hosts(client: AzureClient, result, adapter_kind: str,
                         (RES_IDENT_REGION, host_location.lower()),
                         (RES_IDENT_ID, host_resource_id.lower()),
                         ("hostGroupName", group_name.lower()),
-                    ]),
+                    ], OBJ_DEDICATED_HOST),
                 )
 
                 # SERVICE_DESCRIPTORS
@@ -884,7 +884,7 @@ def collect_dedicated_hosts_with_instance_view(client: AzureClient, result,
                             (RES_IDENT_REGION, iv_location.lower()),
                             (RES_IDENT_ID, iv_host_id.lower()),
                             ("hostGroupName", group_name.lower()),
-                        ]),
+                        ], OBJ_DEDICATED_HOST),
                     )
 
                     # Update with instance view capacity data

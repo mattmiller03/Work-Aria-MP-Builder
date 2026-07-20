@@ -42,6 +42,7 @@ The SDK lib is v1.1.0. These patterns differ from newer SDK versions:
 - **TestResult:** Has no `with_message()` method — a successful test just returns without calling `with_error()`
 - **Entry point:** adapter.py uses pipe-based dispatch via `main(sys.argv[1:])`, not `start_adapter()`
 - **Identifiers must be `Identifier` objects**, not tuples — use `make_identifiers()` from helpers.py
+- **Identifier uniqueness MUST match describe.xml identType (native-substitution builds):** call `make_identifiers(pairs, OBJECT_KIND)` — always pass the object kind. The per-kind flags come from `app/identifier_uniqueness.py` (auto-generated from the native describe.xml via `scripts/gen-identifier-uniqueness.py`). `AZURE_REGION` is identType=2 on every native kind and `AZURE_RESOURCE_GROUP` is identType=2 on leaf kinds (VM/Disk/NIC/…) but identType=1 on containers (Dedicated Host/Key Vault/…). If the runtime `is_part_of_uniqueness` flags don't match the describe, Aria stores the objects but **silently drops every parent/child relationship** (no error logged) because the relationship endpoints resolve to a different identity than the stored objects. This was the root cause of "resource relationships never bind while RG→Instance does." Regenerate the map whenever the native describe.xml changes.
 
 ## Build Commands (Air-Gapped)
 

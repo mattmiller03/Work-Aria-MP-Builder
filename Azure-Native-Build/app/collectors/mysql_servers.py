@@ -63,7 +63,7 @@ def collect_mysql_servers(client: AzureClient, result,
                     (RES_IDENT_RG, rg_name),
                     (RES_IDENT_REGION, location),
                     (RES_IDENT_ID, resource_id),
-                ]),
+                ], OBJ_MYSQL),
             )
 
             # SERVICE_DESCRIPTORS

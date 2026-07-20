@@ -46,7 +46,7 @@ def collect_recovery_vaults(client: AzureClient, result, adapter_kind: str,
                     (RES_IDENT_RG, rg_name),
                     (RES_IDENT_REGION, location),
                     (RES_IDENT_ID, resource_id),
-                ]),
+                ], OBJ_RECOVERY_VAULT),
             )
 
             # SERVICE_DESCRIPTORS group is omitted on this custom kind — see

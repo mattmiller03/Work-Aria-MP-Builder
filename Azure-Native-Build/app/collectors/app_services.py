@@ -52,7 +52,7 @@ def collect_app_services(client: AzureClient, result, adapter_kind: str,
                     (RES_IDENT_RG, rg_name),
                     (RES_IDENT_REGION, location),
                     (RES_IDENT_ID, resource_id),
-                ]),
+                ], OBJ_APP_SERVICE),
             )
 
             # SERVICE_DESCRIPTORS

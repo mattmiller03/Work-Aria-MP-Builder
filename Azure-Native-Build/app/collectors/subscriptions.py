@@ -27,7 +27,7 @@ def collect_subscriptions(client: AzureClient, result, adapter_kind: str):
             adapter_kind=adapter_kind,
             object_kind=OBJ_SUBSCRIPTION,
             name=sub.get("displayName", sub_id),
-            identifiers=make_identifiers([("subscription_id", sub_id)]),
+            identifiers=make_identifiers([("subscription_id", sub_id)], OBJ_SUBSCRIPTION),
         )
 
         safe_property(obj, "subscription_id", sub_id)

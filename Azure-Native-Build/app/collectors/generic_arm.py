@@ -87,7 +87,7 @@ def collect_generic_arm_resources(
                     (RES_IDENT_RG, rg_name),
                     (RES_IDENT_REGION, location),
                     (RES_IDENT_ID, resource_id),
-                ]),
+                ], resource_kind),
             )
 
             # SERVICE_DESCRIPTORS

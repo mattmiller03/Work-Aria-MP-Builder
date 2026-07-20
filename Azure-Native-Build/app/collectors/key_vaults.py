@@ -54,7 +54,7 @@ def collect_key_vaults(client: AzureClient, result, adapter_kind: str,
                         (RES_IDENT_RG, rg_name),
                         (RES_IDENT_REGION, location),
                         (RES_IDENT_ID, resource_id),
-                    ]),
+                    ], OBJ_KEY_VAULT),
                 )
 
                 # SERVICE_DESCRIPTORS
