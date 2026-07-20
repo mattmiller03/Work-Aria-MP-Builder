@@ -417,6 +417,8 @@ def _bastion_host_props(obj, resource, props):
     safe_property(obj, "scale_units", props.get("scaleUnits", 0))
     safe_property(obj, "sku_name",
                   resource.get("sku", {}).get("name", ""))
+
+    # --- Feature flags (security posture) ---
     safe_property(obj, "disable_copy_paste",
                   str(props.get("disableCopyPaste", "")))
     safe_property(obj, "enable_tunneling",
@@ -427,8 +429,55 @@ def _bastion_host_props(obj, resource, props):
                   str(props.get("enableShareableLink", "")))
     safe_property(obj, "enable_kerberos",
                   str(props.get("enableKerberos", "")))
+    # File copy control (data-movement) — available on the 2023-05-01 API.
+    safe_property(obj, "enable_file_copy",
+                  str(props.get("enableFileCopy", "")))
+    # Newer flags: populate only once the bastion API version is bumped to
+    # 2023-11-01+ (and Azure Gov exposes them). Absent -> blank, not "False".
+    safe_property(obj, "enable_session_recording",
+                  str(props.get("enableSessionRecording", "")))
+    safe_property(obj, "enable_private_only_bastion",
+                  str(props.get("enablePrivateOnlyBastion", "")))
+
+    # --- Availability zones (HA placement) — top-level on the resource ---
+    zones = resource.get("zones", []) or []
+    safe_property(obj, "availability_zones",
+                  ", ".join(zones) if zones else "")
+    safe_property(obj, "zone_count", len(zones))
+
+    # --- IP configuration detail (previously only counted) ---
     ip_configs = props.get("ipConfigurations", [])
     safe_property(obj, "ip_configuration_count", len(ip_configs))
+    if ip_configs:
+        cfg_props = ip_configs[0].get("properties", {})
+        subnet_id = (cfg_props.get("subnet") or {}).get("id", "")
+        public_ip_id = (cfg_props.get("publicIPAddress") or {}).get("id", "")
+        safe_property(obj, "subnet_id", subnet_id)
+        safe_property(obj, "public_ip_id", public_ip_id)
+        safe_property(obj, "private_ip_allocation_method",
+                      cfg_props.get("privateIPAllocationMethod", ""))
+        # Derived posture: no attached public IP => private-only deployment.
+        safe_property(obj, "has_public_ip", str(bool(public_ip_id)))
+        safe_property(obj, "deployment_mode",
+                      "Public" if public_ip_id else "Private Only")
+    else:
+        safe_property(obj, "subnet_id", "")
+        safe_property(obj, "public_ip_id", "")
+        safe_property(obj, "private_ip_allocation_method", "")
+        safe_property(obj, "has_public_ip", "")
+        safe_property(obj, "deployment_mode", "")
+
+    # --- Network ACL source-IP allow-list (IP rules) ---
+    ip_rules = (props.get("networkAcls") or {}).get("ipRules", []) or []
+    prefixes = [r.get("addressPrefix", "")
+                for r in ip_rules if r.get("addressPrefix")]
+    safe_property(obj, "network_acl_ip_rules",
+                  ", ".join(prefixes) if prefixes else "")
+    safe_property(obj, "network_acl_rule_count", len(prefixes))
+
+    # --- VNet reference (Developer SKU) ---
+    safe_property(obj, "virtual_network_id",
+                  (props.get("virtualNetwork") or {}).get("id", ""))
 
 
 def _private_endpoint_props(obj, resource, props):
