@@ -852,7 +852,7 @@ def collect(adapter_instance):
         collectors = [
             ("Virtual Machines", lambda: collect_virtual_machines(client, result, ADAPTER_KIND, subscriptions, vm_lookup, rg_lookup=rg_lookup)),
             ("Disks", lambda: collect_disks(client, result, ADAPTER_KIND, subscriptions, vm_lookup, rg_lookup=rg_lookup)),
-            ("Network Interfaces", lambda: collect_network_interfaces(client, result, ADAPTER_KIND, subscriptions, rg_lookup=rg_lookup)),
+            ("Network Interfaces", lambda: collect_network_interfaces(client, result, ADAPTER_KIND, subscriptions, vm_lookup, rg_lookup=rg_lookup)),
             ("Virtual Networks", lambda: collect_virtual_networks(client, result, ADAPTER_KIND, subscriptions, rg_lookup=rg_lookup)),
             ("Storage Accounts", lambda: collect_storage_accounts(client, result, ADAPTER_KIND, subscriptions, rg_lookup=rg_lookup)),
             ("Load Balancers", lambda: collect_load_balancers(client, result, ADAPTER_KIND, subscriptions, rg_lookup=rg_lookup)),

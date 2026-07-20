@@ -10,7 +10,7 @@ from constants import (
 )
 from helpers import (
     make_identifiers, extract_resource_group, safe_property, sanitize_tag_key,
-    reference_resource_group,
+    reference_resource_group, reference_vm,
 )
 from collectors.metrics import collect_metrics_for_objects
 
@@ -19,10 +19,22 @@ logger = logging.getLogger(__name__)
 
 def collect_network_interfaces(client: AzureClient, result, adapter_kind: str,
                                subscriptions: list,
+                               vm_lookup: dict = None,
                                rg_lookup: dict = None):
-    """Collect network interfaces across all subscriptions."""
+    """Collect network interfaces across all subscriptions.
+
+    vm_lookup (from virtual_machines.py, keyed on lowercased VM resource IDs)
+    is used to resolve the NIC's attached VM (properties.virtualMachine.id) to
+    the canonical VM object so the NIC becomes a child of its VM — matching the
+    native model, where a VM's Related-Objects lists its NICs. Without it, or
+    on a miss (unattached NIC / VM out of scope), the NIC->VM edge is skipped
+    rather than risk a phantom VM (see helpers.reference_vm).
+    """
     logger.info("Collecting network interfaces")
+    if vm_lookup is None:
+        vm_lookup = {}
     total = 0
+    skipped_vm_refs = 0
     nic_objects = {}  # resource_id -> aria obj
 
     for sub in subscriptions:
@@ -130,11 +142,31 @@ def collect_network_interfaces(client: AzureClient, result, adapter_kind: str,
                 if rg_obj is not None:
                     obj.add_parent(rg_obj)
 
+            # Relationship: NIC -> VM (parent). The native model hangs NICs
+            # under their VM (a VM's Related-Objects view lists its NICs).
+            # Resolve the attached VM via properties.virtualMachine.id through
+            # vm_lookup — the same phantom-safe recipe disks use. Skip on a
+            # miss (unattached NIC, or VM outside the enumerated subs); never
+            # fabricate a VM object.
+            vm_id = vm_ref.get("id", "")
+            if vm_id:
+                vm_obj = reference_vm(result, adapter_kind, sub_id, vm_id,
+                                      vm_lookup)
+                if vm_obj is not None:
+                    obj.add_parent(vm_obj)
+                else:
+                    skipped_vm_refs += 1
+
             if resource_id:
                 nic_objects[resource_id] = obj
 
         total += len(nics)
 
+    if skipped_vm_refs:
+        logger.warning(
+            "Skipped %d NIC->VM relationship(s) for VMs not in inventory",
+            skipped_vm_refs,
+        )
     logger.info("Collected %d network interfaces", total)
 
     if nic_objects:
