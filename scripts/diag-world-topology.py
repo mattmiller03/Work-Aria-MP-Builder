@@ -15,18 +15,75 @@ Answers two things the aggregate health check can't:
      The health check's "parent 8/8" only proves a NIC has *some* parent (RG
      counts). This lists parent kinds so we can see the VM edge specifically.
 
+Output is SCRUBBED by default: every real object name / id is replaced with a
+stable token (same object -> same token *within a run*, so the topology stays
+fully readable), but no real names leave the environment. Tokens are re-salted
+each run so they can't be correlated across runs; set SCRUB_SALT=... for a
+fixed salt if you need run-to-run stability.
+ResourceKind keys (AZURE_VIRTUAL_MACHINE, ...) and metric values are schema /
+counts, not sensitive, so they are shown as-is. Set SCRUB=0 to see real names.
+
 Run on the Aria Ops data/UI node (the one with Suite API / analytics logs).
 Usage:
     python3 diag-world-topology.py
     ARIA_HOST=https://localhost ARIA_PW=secret python3 diag-world-topology.py
+    SCRUB=0 python3 diag-world-topology.py        # show real names (local only)
 """
-import os, json, getpass, urllib.request, urllib.error, ssl, collections
+import os, json, getpass, hashlib, urllib.request, urllib.error, ssl, collections
 
 HOST = os.environ.get("ARIA_HOST", "https://localhost").rstrip("/")
 ADAPTER = "MicrosoftAzureAdapter"
+SCRUB = os.environ.get("SCRUB", "1") != "0"
 CTX = ssl.create_default_context(); CTX.check_hostname = False; CTX.verify_mode = ssl.CERT_NONE
 
 
+# --- Scrubbing --------------------------------------------------------------
+# Deterministic pseudonymisation: a real string always maps to the same token,
+# so relationships/uniqueness in the output are preserved (you can still tell
+# "same World" from "different World") while the real name is never shown. The
+# token is a short salted hash — stable within a run, and NOT reversible back
+# to the original without the salt (which is random per run and never printed).
+_SALT = os.environ.get("SCRUB_SALT", "") or os.urandom(8).hex()
+_seen = {}
+
+
+def scrub(value, prefix="obj"):
+    """Return a stable token for `value`. Pass-through when SCRUB is off."""
+    if not SCRUB or value in (None, "", "?"):
+        return value
+    s = str(value)
+    if s not in _seen:
+        h = hashlib.blake2s((_SALT + s).encode(), digest_size=3).hexdigest()
+        _seen[s] = f"{prefix}-{h}"
+    return _seen[s]
+
+
+# Short, human-friendly prefix per ResourceKind so scrubbed tokens still hint
+# at what they are (vm-ab12, nic-cd34) without revealing the name.
+_PREFIX = {
+    "AZURE_VIRTUAL_MACHINE": "vm",
+    "AZURE_NW_INTERFACE": "nic",
+    "AZURE_STORAGE_ACCOUNT": "sa",
+    "AZURE_RESOURCE_GROUP": "rg",
+    "AZURE_STORAGE_DISK": "disk",
+    "AZURE_REGION_PER_SUB": "rps",
+    "AZURE_REGION": "region",
+    "AZURE_WORLD": "world",
+    "MicrosoftAzureAdapter Instance": "inst",
+}
+
+
+def sn(r):
+    """Scrub the display name of a resource dict, prefixed by its kind."""
+    return scrub(name_of(r), _PREFIX.get(kind_of(r), "obj"))
+
+
+def si(rid, prefix="id"):
+    """Scrub an internal resource identifier (Aria UUID)."""
+    return scrub(rid, prefix)
+
+
+# --- Suite API --------------------------------------------------------------
 def req(path, method="GET", body=None, token=None):
     url = HOST + path
     data = json.dumps(body).encode() if body is not None else None
@@ -89,6 +146,7 @@ def latest_stat(rid, key, token):
 
 def main():
     token = get_token()
+    print(f"[names are {'SCRUBBED — identical tokens mean the same object' if SCRUB else 'REAL (SCRUB=0)'}]")
 
     print("=" * 72)
     print("PART 1 — Azure World object(s) and their instance children")
@@ -101,13 +159,13 @@ def main():
         kids = rels(rid, "CHILD", token)
         inst_kids = [k for k in kids if kind_of(k) == "MicrosoftAzureAdapter Instance"]
         subs = latest_stat(rid, "summary|total_number_subscriptions", token)
-        print(f"\n  World '{name_of(w)}'  id={rid}")
+        print(f"\n  World '{sn(w)}'  id={si(rid, 'world')}")
         print(f"    computed total_number_subscriptions = {subs}")
         print(f"    direct children: {len(kids)}  |  adapter-instance children: {len(inst_kids)}")
         for k, c in collections.Counter(kind_of(k) for k in kids).most_common():
             print(f"        {c:>4}  {k}")
         for ik in inst_kids:
-            print(f"          instance child: {name_of(ik)}")
+            print(f"          instance child: {sn(ik)}")
 
     print("\n" + "=" * 72)
     print("PART 2 — Adapter Instances: does each point at the SAME World?")
@@ -121,12 +179,12 @@ def main():
         for wp in wps:
             world_parents[wp["identifier"]] += 1
         tag = "World OK" if wps else "*** NO WORLD PARENT ***"
-        print(f"  {name_of(i):32} parent-kinds={sorted(set(kind_of(p) for p in ps))}  [{tag}]")
+        print(f"  {sn(i):20} parent-kinds={sorted(set(kind_of(p) for p in ps))}  [{tag}]")
     print(f"\n  Distinct AZURE_WORLD ids across all instances: {len(world_parents)}")
     print("  1 distinct id  -> shared World (good); the count bug is elsewhere.")
     print("  N distinct ids -> each instance made its own World (the bug).")
     for wid, n in world_parents.items():
-        print(f"      {n} instance(s) -> World {wid}")
+        print(f"      {n} instance(s) -> World {si(wid, 'world')}")
 
     print("\n" + "=" * 72)
     print("PART 3 — NIC parent kinds (sample 10): is the VM edge bound?")
@@ -134,7 +192,7 @@ def main():
     for n in list_kind("AZURE_NW_INTERFACE", token)[:10]:
         ps = rels(n["identifier"], "PARENT", token)
         kinds = sorted(set(kind_of(p) for p in ps))
-        print(f"  NIC {name_of(n):30} parents={kinds}  "
+        print(f"  NIC {sn(n):18} parents={kinds}  "
               f"{'VM-OK' if 'AZURE_VIRTUAL_MACHINE' in kinds else '*** NO VM PARENT ***'}")
 
     print("\n" + "=" * 72)
@@ -142,7 +200,7 @@ def main():
     print("=" * 72)
     for v in list_kind("AZURE_VIRTUAL_MACHINE", token)[:10]:
         ks = collections.Counter(kind_of(k) for k in rels(v["identifier"], "CHILD", token))
-        print(f"  VM {name_of(v):30} children={dict(ks)}")
+        print(f"  VM {sn(v):18} children={dict(ks)}")
 
 
 if __name__ == "__main__":
