@@ -23,11 +23,19 @@ fixed salt if you need run-to-run stability.
 ResourceKind keys (AZURE_VIRTUAL_MACHINE, ...) and metric values are schema /
 counts, not sensitive, so they are shown as-is. Set SCRUB=0 to see real names.
 
-Run on the Aria Ops data/UI node (the one with Suite API / analytics logs).
+Run ON the Aria Ops data/UI node, or REMOTELY against it (any box that can
+reach the node on 443 — TLS verification is disabled, so self-signed certs are
+fine). Env vars:
+    ARIA_HOST        target, e.g. https://prod-aria.example.mil  (default https://localhost)
+    ARIA_USER        login user (default: admin)
+    ARIA_AUTHSOURCE  auth source for non-local AD/LDAP accounts (omit for local admin)
+    ARIA_PW          password (else prompted)
+    SCRUB=0          show real names (local use only)
+
 Usage:
-    python3 diag-world-topology.py
-    ARIA_HOST=https://localhost ARIA_PW=secret python3 diag-world-topology.py
-    SCRUB=0 python3 diag-world-topology.py        # show real names (local only)
+    python3 diag-world-topology.py                                    # local node
+    ARIA_HOST=https://prod-aria python3 diag-world-topology.py        # remote
+    ARIA_HOST=https://prod-aria ARIA_USER=svc_ro ARIA_AUTHSOURCE=CORP python3 diag-world-topology.py
 """
 import os, json, getpass, hashlib, urllib.request, urllib.error, ssl, collections
 
@@ -98,9 +106,14 @@ def req(path, method="GET", body=None, token=None):
 
 
 def get_token():
-    pw = os.environ.get("ARIA_PW") or getpass.getpass("Aria admin password: ")
-    return req("/suite-api/api/auth/token/acquire", "POST",
-               {"username": "admin", "password": pw})["token"]
+    user = os.environ.get("ARIA_USER", "admin")
+    pw = os.environ.get("ARIA_PW") or getpass.getpass(f"Aria password for {user}: ")
+    body = {"username": user, "password": pw}
+    # authSource is needed for non-local (AD/LDAP) accounts; omit for local admin.
+    src = os.environ.get("ARIA_AUTHSOURCE")
+    if src:
+        body["authSource"] = src
+    return req("/suite-api/api/auth/token/acquire", "POST", body)["token"]
 
 
 def list_kind(kind, token, page_size=1000, pages=20):
