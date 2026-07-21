@@ -171,3 +171,83 @@ def collect_network_interfaces(client: AzureClient, result, adapter_kind: str,
 
     if nic_objects:
         collect_metrics_for_objects(client, nic_objects, "network_interfaces")
+
+
+def link_network_interfaces_to_vms(result, adapter_kind, vm_lookup):
+    """Link each NIC to its VM using the VM's networkProfile (VM-side resolve).
+
+    collect_network_interfaces builds the NIC->VM edge from the NIC's own
+    properties.virtualMachine.id back-reference — but the subscription-scoped
+    networkInterfaces LIST in Azure Gov frequently OMITS that field, so vm_id
+    is empty and the edge never fires (disks bind fine because the disk list
+    DOES return managedBy). Confirmed against Prod: the native pak shows NICs
+    as children of their VM, so the edge is correct — we just weren't creating
+    it.
+
+    The VM API reliably returns properties.networkProfile.networkInterfaces[],
+    so we resolve the edge from the VM side instead: for every collected VM,
+    attach each NIC it references as a child (nic.add_parent(vm)). Uses
+    vm_lookup (raw VM dicts already fetched in adapter.collect()) for the
+    networkProfile, and matches NIC references against the AZURE_NW_INTERFACE
+    objects already in `result` by resource id (exact match, no identifier
+    reconstruction / silent-drop risk). Idempotent with the in-collector edge
+    when the back-reference IS present.
+
+    Run AFTER collect_virtual_machines and collect_network_interfaces have
+    populated `result`.
+
+    Args:
+        result: CollectResult already populated by both collectors.
+        adapter_kind: Adapter kind string (unused; kept for call symmetry).
+        vm_lookup: {lowercased VM resource id -> raw VM dict}.
+
+    Returns:
+        Number of NIC -> VM edges added.
+    """
+    from constants import (OBJ_VIRTUAL_MACHINE, OBJ_NETWORK_INTERFACE,
+                           RES_IDENT_ID)
+
+    # AZURE_NW_INTERFACE objects keyed by lowercased ARM resource id.
+    nic_by_id = {}
+    # AZURE_VIRTUAL_MACHINE objects keyed by lowercased ARM resource id.
+    vm_by_id = {}
+    for obj in list(result.objects.values()):
+        kind = obj.get_key().object_kind
+        if kind == OBJ_NETWORK_INTERFACE:
+            for ident in obj.get_key().identifiers.values():
+                if ident.key == RES_IDENT_ID and ident.value:
+                    nic_by_id[ident.value.lower()] = obj
+                    break
+        elif kind == OBJ_VIRTUAL_MACHINE:
+            for ident in obj.get_key().identifiers.values():
+                if ident.key == RES_IDENT_ID and ident.value:
+                    vm_by_id[ident.value.lower()] = obj
+                    break
+
+    linked = 0
+    missing_nic = 0
+    for vm_id_lower, raw in vm_lookup.items():
+        vm_obj = vm_by_id.get(vm_id_lower)
+        if vm_obj is None:
+            continue
+        nic_refs = (raw.get("properties", {})
+                       .get("networkProfile", {})
+                       .get("networkInterfaces", []) or [])
+        for ref in nic_refs:
+            nic_id = (ref.get("id") or "").lower()
+            if not nic_id:
+                continue
+            nic_obj = nic_by_id.get(nic_id)
+            if nic_obj is None:
+                # NIC referenced by the VM but not in inventory (deleted, or
+                # outside the enumerated sub). Skip — never fabricate.
+                missing_nic += 1
+                continue
+            nic_obj.add_parent(vm_obj)
+            linked += 1
+
+    logger.info(
+        "Linked %d NIC->VM edges from VM networkProfile (%d referenced NICs "
+        "not in inventory)", linked, missing_nic,
+    )
+    return linked

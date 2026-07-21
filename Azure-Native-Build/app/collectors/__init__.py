@@ -7,7 +7,10 @@ from collectors.virtual_machines import (
     link_boot_diagnostics_storage,
 )
 from collectors.disks import collect_disks
-from collectors.network_interfaces import collect_network_interfaces
+from collectors.network_interfaces import (
+    collect_network_interfaces,
+    link_network_interfaces_to_vms,
+)
 from collectors.virtual_networks import collect_virtual_networks
 from collectors.storage_accounts import collect_storage_accounts
 from collectors.load_balancers import collect_load_balancers
@@ -34,6 +37,7 @@ __all__ = [
     "link_boot_diagnostics_storage",
     "collect_disks",
     "collect_network_interfaces",
+    "link_network_interfaces_to_vms",
     "collect_virtual_networks",
     "collect_storage_accounts",
     "collect_load_balancers",

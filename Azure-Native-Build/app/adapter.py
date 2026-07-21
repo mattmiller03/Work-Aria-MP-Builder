@@ -47,6 +47,7 @@ from collectors import (
     link_boot_diagnostics_storage,
     collect_disks,
     collect_network_interfaces,
+    link_network_interfaces_to_vms,
     collect_virtual_networks,
     collect_storage_accounts,
     collect_load_balancers,
@@ -898,6 +899,16 @@ def collect(adapter_instance):
         except Exception as e:
             logger.error("Boot-diagnostics storage linking failed: %s", e,
                          exc_info=True)
+
+        # 5c. NIC->VM edges resolved from the VM's networkProfile. The
+        #     subscription-scoped NIC list in Azure Gov often omits
+        #     properties.virtualMachine, so the in-collector back-ref edge
+        #     never fires; the VM API reliably lists its NIC ids. Native pak
+        #     shows NICs as VM children, so this restores that.
+        try:
+            link_network_interfaces_to_vms(result, ADAPTER_KIND, vm_lookup)
+        except Exception as e:
+            logger.error("NIC->VM linking failed: %s", e, exc_info=True)
 
         # 6. Region & World aggregation — must run AFTER all resource collectors
         try:

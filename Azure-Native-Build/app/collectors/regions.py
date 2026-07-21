@@ -305,10 +305,19 @@ def collect_regions_and_world(result, adapter_kind, subscriptions,
         identifiers=[],
     )
 
+    # Native parity: AZURE_REGION objects are DIRECT children of the World.
+    # Prod (native pak) shows the shared "Azure World" with ~56 AZURE_REGION
+    # children; our pack was hanging regions only under Region-Per-Sub, leaving
+    # the World's region tier empty. This edge also backs the native
+    # total_number_regions ComputedMetric and the home-tab globe rollup.
+    for region_obj in region_objects.values():
+        region_obj.add_parent(world_obj)
+
     logger.info(
-        "Created AZURE_WORLD topology node (this instance: %d region-per-sub, "
-        "%d subscription(s); summary counts left to native ComputedMetrics)",
-        len(per_sub_objects), len(subscriptions),
+        "Created AZURE_WORLD topology node (this instance: %d regions, "
+        "%d region-per-sub, %d subscription(s); summary counts left to native "
+        "ComputedMetrics)",
+        len(region_objects), len(per_sub_objects), len(subscriptions),
     )
 
     # ------------------------------------------------------------------
