@@ -131,6 +131,22 @@ def name_of(r):
     return (r.get("resourceKey") or {}).get("name", "?")
 
 
+def status_of(r):
+    return (r.get("resourceStatusStates") or [{}])[0].get("resourceStatus", "?")
+
+
+def prop_of(rid, key, token):
+    """Read one property value off a resource (or None)."""
+    try:
+        d = req(f"/suite-api/api/resources/{rid}/properties", token=token)
+        for p in d.get("property", []):
+            if p.get("name") == key:
+                return p.get("value")
+    except Exception:
+        return None
+    return None
+
+
 def latest_stat(rid, key, token):
     try:
         d = req(f"/suite-api/api/resources/{rid}/stats/latest", token=token)
@@ -187,18 +203,36 @@ def main():
         print(f"      {n} instance(s) -> World {si(wid, 'world')}")
 
     print("\n" + "=" * 72)
-    print("PART 3 — NIC parent kinds (sample 10): is the VM edge bound?")
+    print("PART 3 — NIC parents: sample ATTACHED, DATA_RECEIVING NICs only")
     print("=" * 72)
-    for n in list_kind("AZURE_NW_INTERFACE", token)[:10]:
-        ps = rels(n["identifier"], "PARENT", token)
+    print("  (attached_vm resolved = the NIC's Azure API DID report a VM;")
+    print("   so if parents lack AZURE_VIRTUAL_MACHINE, the edge is dropped, not absent)")
+    all_nics = list_kind("AZURE_NW_INTERFACE", token)
+    healthy_nics = [n for n in all_nics if status_of(n) == "DATA_RECEIVING"]
+    print(f"  NICs total={len(all_nics)}  DATA_RECEIVING={len(healthy_nics)}")
+    shown = 0
+    for n in healthy_nics:
+        rid = n["identifier"]
+        attached = prop_of(rid, "attached_vm_id", token)
+        if not attached:
+            continue  # only look at NICs the API says are attached to a VM
+        ps = rels(rid, "PARENT", token)
         kinds = sorted(set(kind_of(p) for p in ps))
-        print(f"  NIC {sn(n):18} parents={kinds}  "
-              f"{'VM-OK' if 'AZURE_VIRTUAL_MACHINE' in kinds else '*** NO VM PARENT ***'}")
+        print(f"  NIC {sn(n):18} attached_vm=YES  parents={kinds}  "
+              f"{'VM-OK' if 'AZURE_VIRTUAL_MACHINE' in kinds else '*** VM EDGE DROPPED ***'}")
+        shown += 1
+        if shown >= 10:
+            break
+    if shown == 0:
+        print("  (no attached DATA_RECEIVING NIC found in the pages scanned — "
+              "attached_vm_id property empty on all; the API ref may be missing)")
 
     print("\n" + "=" * 72)
-    print("PART 4 — VM child kinds (sample 10): does the NIC show as a child?")
+    print("PART 4 — VM child kinds: sample DATA_RECEIVING VMs")
     print("=" * 72)
-    for v in list_kind("AZURE_VIRTUAL_MACHINE", token)[:10]:
+    vms = [v for v in list_kind("AZURE_VIRTUAL_MACHINE", token)
+           if status_of(v) == "DATA_RECEIVING"][:10]
+    for v in vms:
         ks = collections.Counter(kind_of(k) for k in rels(v["identifier"], "CHILD", token))
         print(f"  VM {sn(v):18} children={dict(ks)}")
 
