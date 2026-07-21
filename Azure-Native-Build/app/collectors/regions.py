@@ -280,7 +280,23 @@ def collect_regions_and_world(result, adapter_kind, subscriptions,
     )
 
     # ------------------------------------------------------------------
-    # 5. AZURE_WORLD with total_number_* metrics
+    # 5. AZURE_WORLD — topology root only. Do NOT push summary counts here.
+    #
+    #    On the native AZURE_WORLD kind, EVERY summary|total_number_* metric
+    #    (and summary|active_number_vms) is a ComputedMetric — Aria rolls it
+    #    up itself by counting objects across the shared-World subtree at
+    #    depth 10 (e.g. total_number_subscriptions = count of
+    #    "MicrosoftAzureAdapter Instance" objects; total_number_regions =
+    #    count of AZURE_REGION objects).
+    #
+    #    This adapter runs as one instance PER SUBSCRIPTION, and all
+    #    instances write to the same singleton "Azure World" object. Pushing
+    #    a per-instance value here (len(subscriptions) == 1 for a per-sub
+    #    instance, or this instance's local kind_counts) just clobbers the
+    #    shared node — last writer wins — which is why "Azure World" reported
+    #    1 subscription instead of the global total. Leave the counts to the
+    #    native ComputedMetrics; the adapter only needs to create the World
+    #    object and wire the topology edges (step 6) so the rollups resolve.
     # ------------------------------------------------------------------
     world_obj = result.object(
         adapter_kind=adapter_kind,
@@ -289,19 +305,10 @@ def collect_regions_and_world(result, adapter_kind, subscriptions,
         identifiers=[],
     )
 
-    for obj_kind, metric_key in _WORLD_COUNT_METRICS.items():
-        world_obj.with_metric(metric_key, float(kind_counts.get(obj_kind, 0)))
-
-    world_obj.with_metric("summary|active_number_vms", float(active_vms))
-    world_obj.with_metric("summary|total_number_regions",
-                          float(len(per_sub_objects)))
-    world_obj.with_metric("summary|total_number_subscriptions",
-                          float(len(subscriptions)))
-
     logger.info(
-        "Created AZURE_WORLD with %d resource kind counts, "
-        "%d region-per-sub, %d subscriptions",
-        len(_WORLD_COUNT_METRICS), len(per_sub_objects), len(subscriptions),
+        "Created AZURE_WORLD topology node (this instance: %d region-per-sub, "
+        "%d subscription(s); summary counts left to native ComputedMetrics)",
+        len(per_sub_objects), len(subscriptions),
     )
 
     # ------------------------------------------------------------------

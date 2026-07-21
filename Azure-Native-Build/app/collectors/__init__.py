@@ -2,7 +2,10 @@
 
 from collectors.subscriptions import collect_subscriptions
 from collectors.resource_groups import collect_resource_groups
-from collectors.virtual_machines import collect_virtual_machines
+from collectors.virtual_machines import (
+    collect_virtual_machines,
+    link_boot_diagnostics_storage,
+)
 from collectors.disks import collect_disks
 from collectors.network_interfaces import collect_network_interfaces
 from collectors.virtual_networks import collect_virtual_networks
@@ -28,6 +31,7 @@ __all__ = [
     "collect_subscriptions",
     "collect_resource_groups",
     "collect_virtual_machines",
+    "link_boot_diagnostics_storage",
     "collect_disks",
     "collect_network_interfaces",
     "collect_virtual_networks",

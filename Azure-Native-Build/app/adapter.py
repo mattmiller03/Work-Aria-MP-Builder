@@ -44,6 +44,7 @@ from collectors import (
     collect_subscriptions,
     collect_resource_groups,
     collect_virtual_machines,
+    link_boot_diagnostics_storage,
     collect_disks,
     collect_network_interfaces,
     collect_virtual_networks,
@@ -886,6 +887,17 @@ def collect(adapter_instance):
                                           subscriptions, rg_lookup=rg_lookup)
         except Exception as e:
             logger.error("Bulk resource collection failed: %s", e, exc_info=True)
+
+        # 5b. Boot-diagnostics storage edges — must run AFTER both the VM and
+        #     Storage Account collectors have populated `result`. Links each VM
+        #     to its boot-diag storage account (native parity: surfaces the
+        #     storage account + its RG as VM ancestors). Uses vm_lookup for the
+        #     raw storageUri Azure only exposes as a blob endpoint.
+        try:
+            link_boot_diagnostics_storage(result, ADAPTER_KIND, vm_lookup)
+        except Exception as e:
+            logger.error("Boot-diagnostics storage linking failed: %s", e,
+                         exc_info=True)
 
         # 6. Region & World aggregation — must run AFTER all resource collectors
         try:

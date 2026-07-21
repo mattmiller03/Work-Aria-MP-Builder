@@ -305,3 +305,96 @@ def _extract_power_state(instance_view: dict) -> str:
         if code.startswith("PowerState/"):
             return _POWER_STATE_MAP.get(code, "Unknown")
     return "Unknown"
+
+
+def link_boot_diagnostics_storage(result, adapter_kind, vm_lookup):
+    """Link each VM to its boot-diagnostics storage account.
+
+    The native pak surfaces the boot-diagnostics storage account in a VM's
+    relationships (e.g. 'stagevirginiabootdiags'), and because that storage
+    account lives in its own RG (e.g. 'stage-bootdiagnostics'), the VM ends
+    up with a SECOND resource-group ancestor in the native relationship tree.
+    Our VM collector only read diagnosticsProfile.bootDiagnostics.enabled for
+    a property and never built the edge, so both the storage account and its
+    RG were missing from the VM view.
+
+    Azure exposes the account only as a blob endpoint URI
+    (properties.diagnosticsProfile.bootDiagnostics.storageUri ->
+    https://<account>.blob.core.usgovcloudapi.net/), so we parse the account
+    name from the URI and match it against the AZURE_STORAGE_ACCOUNT objects
+    already collected. Storage-account names are globally unique and
+    lowercase, so a name match is exact — no identifier reconstruction (and
+    thus none of the byte-match / silent-drop risk that plagued the phantom-VM
+    and RG-casing bugs); we bind two objects that both already exist in
+    `result`.
+
+    Direction: the storage account is made a PARENT of the VM
+    (vm.add_parent(storage)). The native tree shows the boot-diag storage —
+    and, transitively, its resource group — as ANCESTORS of the VM (this is
+    what produces the VM's second Resource Group). A shared boot-diag account
+    simply gains one VM child per VM that uses it (multi-child is expected).
+
+    Must run AFTER both collect_virtual_machines and collect_storage_accounts
+    have populated `result`.
+
+    Args:
+        result: CollectResult already populated by both collectors.
+        adapter_kind: Adapter kind string (unused today; kept for symmetry
+            with the other collectors and future reference helpers).
+        vm_lookup: {lowercased VM resource id -> raw VM dict} built in
+            adapter.collect(); carries the raw storageUri the VM objects drop.
+
+    Returns:
+        Number of VM -> boot-diagnostics-storage edges added.
+    """
+    from constants import OBJ_VIRTUAL_MACHINE, OBJ_STORAGE_ACCOUNT, RES_IDENT_ID
+
+    # AZURE_STORAGE_ACCOUNT objects keyed by lowercased account name.
+    storage_by_name = {}
+    # AZURE_VIRTUAL_MACHINE objects keyed by lowercased ARM resource id.
+    vm_by_id = {}
+    for obj in list(result.objects.values()):
+        kind = obj.get_key().object_kind
+        if kind == OBJ_STORAGE_ACCOUNT:
+            name = obj.get_key().name
+            if name:
+                storage_by_name[name.lower()] = obj
+        elif kind == OBJ_VIRTUAL_MACHINE:
+            for ident in obj.get_key().identifiers.values():
+                if ident.key == RES_IDENT_ID and ident.value:
+                    vm_by_id[ident.value.lower()] = obj
+                    break
+
+    linked = 0
+    missing_account = 0
+    for vm_id_lower, raw in vm_lookup.items():
+        uri = (raw.get("properties", {})
+                  .get("diagnosticsProfile", {})
+                  .get("bootDiagnostics", {})
+                  .get("storageUri", "") or "")
+        if not uri:
+            continue
+        # https://<account>.blob.core.usgovcloudapi.net/  ->  <account>
+        host = uri.split("://", 1)[-1].split("/", 1)[0]
+        account = host.split(".", 1)[0].lower()
+        if not account:
+            continue
+
+        vm_obj = vm_by_id.get(vm_id_lower)
+        storage_obj = storage_by_name.get(account)
+        if vm_obj is None:
+            continue
+        if storage_obj is None:
+            # Boot-diag account not in inventory (e.g. in an unenumerated sub,
+            # or a managed-storage boot-diag that reports no account). Skip —
+            # never fabricate a storage object, mirroring reference_vm.
+            missing_account += 1
+            continue
+        vm_obj.add_parent(storage_obj)
+        linked += 1
+
+    logger.info(
+        "Linked %d VM->boot-diagnostics-storage edges (%d VMs referenced a "
+        "storage account not in inventory)", linked, missing_account,
+    )
+    return linked
