@@ -298,52 +298,34 @@ def collect_regions_and_world(result, adapter_kind, subscriptions,
     #    native ComputedMetrics; the adapter only needs to create the World
     #    object and wire the topology edges (step 6) so the rollups resolve.
     # ------------------------------------------------------------------
-    world_obj = result.object(
-        adapter_kind=adapter_kind,
-        object_kind=OBJ_WORLD,
-        name="Azure World",
-        identifiers=[],
-    )
-
-    # Native parity: seed the FULL Azure region set (globe pins) as direct
-    # children of the World, exactly like the native pak. We create every
-    # region from the embedded ALL_AZURE_REGIONS table (from
-    # content/regions/azureregions.json) and parent each to the World. The
-    # in-use regions created in step 2 merge with these by name (AZURE_REGION
-    # has no identifiers -> name identity), so they keep their region_code +
-    # resource links AND gain the globe coords.
+    # ==================================================================
+    # PLATFORM-WORLD EXPERIMENT (2026-07-22)
+    # ------------------------------------------------------------------
+    # Do NOT hand-create the AZURE_WORLD object, do NOT seed regions onto it,
+    # and do NOT link instances to it (step 6). Prod (native) shows ALL 6
+    # adapter instances under one shared World, EACH carrying its own RG
+    # subtree — which is impossible via per-instance collect() when a single
+    # "owner" instance owns the shared World object (verified: only the owner's
+    # subtree connects; the other 5 instances are bare under World). Native
+    # therefore relies on the PLATFORM auto-parenting adapter instances under
+    # the type=8 / subType=6 / worldObjectName="Azure World" object declared in
+    # the describe. Hypothesis: our manual World creation was suppressing that
+    # platform behavior. This build removes all adapter-side World manipulation
+    # so the platform can take over.
     #
-    # WHY seed the full set in every instance: each adapter instance's
-    # collect() is ISOLATED, and only the instance that "owns" the shared World
-    # keeps its World-child edges. By emitting the IDENTICAL full region set
-    # from every instance, whichever instance owns the World contributes all of
-    # them -> all regions bind. (This is how native shows 56 regions under one
-    # World across per-sub instances.)
-    from azure_regions_data import ALL_AZURE_REGIONS
-    for disp_name, lat, lon in ALL_AZURE_REGIONS:
-        r = result.object(
-            adapter_kind=adapter_kind,
-            object_kind=OBJ_REGION,
-            name=disp_name,
-            identifiers=[],
-        )
-        if lat is not None and lon is not None:
-            safe_property(r, "latitude", lat)
-            safe_property(r, "longitude", lon)
-            safe_property(r, "geolocation|latitude", lat)
-            safe_property(r, "geolocation|longitude", lon)
-        r.add_parent(world_obj)
-    # In-use regions (with region_code + resource children) — link too; they
-    # merge by name with the seeded set above.
-    for region_obj in region_objects.values():
-        region_obj.add_parent(world_obj)
-
+    # PASS  -> probe shows 6 real instances under a platform AZURE_WORLD WITH
+    #          their RG subtrees (VM->World drill-down whole). Then re-add
+    #          region->World seeding referencing the platform world.
+    # FAIL  -> instances stay under Universe / no World. Revert to b968f7f
+    #          (which gives the World COUNTS) and escalate to VMware.
+    # ==================================================================
+    world_obj = None
     logger.info(
-        "Created AZURE_WORLD; seeded %d regions (globe) + %d in-use, "
-        "%d region-per-sub, %d subscription(s); summary counts left to native "
-        "ComputedMetrics",
-        len(ALL_AZURE_REGIONS), len(region_objects), len(per_sub_objects),
-        len(subscriptions),
+        "PLATFORM-WORLD EXPERIMENT: adapter created NO AZURE_WORLD / region / "
+        "instance World-links this cycle (%d in-use regions, %d region-per-sub, "
+        "%d sub(s) this instance) — relying on platform type-8 world "
+        "auto-parenting",
+        len(region_objects), len(per_sub_objects), len(subscriptions),
     )
 
     # ------------------------------------------------------------------
@@ -366,10 +348,13 @@ def collect_regions_and_world(result, adapter_kind, subscriptions,
             ], OBJ_ADAPTER_INSTANCE),
         )
 
-        # Topology: Azure World above; Region-Per-Sub + RGs below —
-        # mirrors the native pak's Relationship widget (World/Universe ->
-        # subscription -> regions + resource groups).
-        inst_obj.add_parent(world_obj)
+        # Resource subtree UNDER the instance (Region-Per-Sub + RGs). The
+        # instance's World PARENT is intentionally NOT set here — the
+        # platform-world experiment relies on the platform to parent this
+        # instance under the type-8 world (see step 5). Each instance building
+        # its own subtree under its own instance object binds fine (same-instance
+        # ownership); the missing piece native gets from the platform is the
+        # instance->World edge.
         for per_sub_obj in per_sub_objects.values():
             per_sub_obj.add_parent(inst_obj)
         for rg_obj in rg_objects:
@@ -384,42 +369,9 @@ def collect_regions_and_world(result, adapter_kind, subscriptions,
 
         logger.info(
             "Reported adapter instance '%s': %d RG children, %d region-per-sub "
-            "children, world parent, %d summary metrics",
+            "children, %d summary metrics (World parent left to platform)",
             inst_obj.get_key().name, len(rg_objects), len(per_sub_objects),
             len(_WORLD_COUNT_METRICS) + 2,
-        )
-
-        # Native-parity subscription count: World -> ALL adapter instances.
-        # total_number_subscriptions is a ComputedMetric counting adapter
-        # instances reachable from the World. Under per-instance collect
-        # isolation, only the World-owning instance's inst->World edge sticks,
-        # so hand-linking just THIS instance yields 1. Fix (same trick as the
-        # region seed): every instance emits an adapter-instance node for EVERY
-        # enumerated subscription (identity SUB+TENANT, which merges with each
-        # real instance) and parents it to the World — so the World owner
-        # contributes all of them and the count reflects every subscription.
-        #
-        # Single-tenant assumption: all subs share this instance's tenant
-        # (true here — one service principal, one tenant). A multi-tenant
-        # deployment would need each subscription's own tenantId instead.
-        linked_insts = 0
-        for s_id, s_obj in sub_lookup.items():
-            if not s_id:
-                continue
-            w_inst = result.object(
-                adapter_kind=adapter_kind,
-                object_kind=OBJ_ADAPTER_INSTANCE,
-                name=(s_obj.get_key().name if s_obj else s_id),
-                identifiers=make_identifiers([
-                    (IDENT_SUBSCRIPTION_ID, s_id),
-                    (IDENT_TENANT_ID, inst_tenant),
-                ], OBJ_ADAPTER_INSTANCE),
-            )
-            w_inst.add_parent(world_obj)
-            linked_insts += 1
-        logger.info(
-            "Linked %d adapter-instance node(s) to World (full-set, for the "
-            "native total_number_subscriptions rollup)", linked_insts,
         )
     else:
         logger.info(
