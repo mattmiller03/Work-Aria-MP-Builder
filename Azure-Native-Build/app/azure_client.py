@@ -1,5 +1,7 @@
 """Azure REST API client with pagination and rate-limit handling."""
 
+import os
+import json
 import time
 import logging
 from typing import Optional
@@ -14,6 +16,45 @@ from constants import (
 )
 
 logger = logging.getLogger(__name__)
+
+
+# ---------------------------------------------------------------------------
+# In-memory inventory cache ("delta" collection)
+# ---------------------------------------------------------------------------
+# The adapter container is long-lived, so state persists between collect()
+# cycles. Azure ARM LIST endpoints (get_all) return full inventory, which
+# changes slowly — re-enumerating every ~10-min cycle is the bulk of the read
+# load (and the SP throttling pressure). We cache each LIST response here and
+# serve it for INVENTORY_CACHE_TTL_SECONDS, so most cycles skip the Azure
+# inventory calls entirely and only pull fresh METRICS (get_metrics is NEVER
+# cached). Every TTL window one cycle re-enumerates live — the "delta"
+# checkpoint that catches adds/removes/property changes.
+#
+# Object aging is NOT a risk: the collectors still build and report the FULL
+# object set to Aria every cycle (from cached data), so nothing ages out — we
+# only skip the Azure round-trips, not the Aria reporting.
+#
+# Cold start / container restart => empty cache => next cycle fetches live
+# (one heavier cycle), which is a safe fallback.
+#
+# Tunables (env vars, read at import):
+#   INVENTORY_CACHE_TTL_SECONDS  default 3300 (~55 min => hourly refresh on a
+#                                10-min interval). Set 0 to effectively disable.
+#   INVENTORY_CACHE_ENABLED      "0" to bypass the cache entirely (always live).
+_INVENTORY_CACHE = {}            # key -> (fetched_at_epoch, list)
+_CACHE_TTL = float(os.environ.get("INVENTORY_CACHE_TTL_SECONDS", "3300"))
+_CACHE_ENABLED = os.environ.get("INVENTORY_CACHE_ENABLED", "1") != "0"
+_cache_stats = {"served_cached": 0, "fetched_live": 0, "refreshed": 0}
+
+
+def inventory_cache_stats() -> dict:
+    """Return a copy of the per-process inventory-cache counters."""
+    return dict(_cache_stats)
+
+
+def reset_inventory_cache_stats() -> None:
+    """Zero the cache counters (call at the start of each collect cycle)."""
+    _cache_stats.update(served_cached=0, fetched_live=0, refreshed=0)
 
 
 class AzureClient:
@@ -74,11 +115,33 @@ class AzureClient:
 
     def get_all(self, path: str, api_version: str,
                 params: Optional[dict] = None) -> list:
-        """Make a paginated GET request, following nextLink until exhausted.
+        """Paginated GET (follows nextLink), served from the in-memory
+        inventory cache when a fresh entry exists.
 
-        Returns:
-            Combined list of all items from the 'value' arrays across pages.
+        Inventory LIST responses are cached for INVENTORY_CACHE_TTL_SECONDS so
+        light collection cycles skip the Azure re-enumeration. Metrics go
+        through get_metrics(), which is never cached, so they stay live every
+        cycle. Returns the combined list of all 'value' items across pages.
         """
+        if not _CACHE_ENABLED:
+            return self._get_all_live(path, api_version, params)
+
+        key = "%s|%s|%s" % (path, api_version,
+                            json.dumps(params or {}, sort_keys=True))
+        now = time.time()
+        entry = _INVENTORY_CACHE.get(key)
+        if entry is not None and (now - entry[0]) < _CACHE_TTL:
+            _cache_stats["served_cached"] += 1
+            return entry[1]
+
+        data = self._get_all_live(path, api_version, params)
+        _INVENTORY_CACHE[key] = (now, data)
+        _cache_stats["refreshed" if entry is not None else "fetched_live"] += 1
+        return data
+
+    def _get_all_live(self, path: str, api_version: str,
+                      params: Optional[dict] = None) -> list:
+        """Uncached paginated GET — the live Azure round-trip."""
         url = f"{self.arm_endpoint}{path}"
         query = {"api-version": api_version}
         if params:

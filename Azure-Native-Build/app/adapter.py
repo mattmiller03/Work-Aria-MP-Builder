@@ -39,7 +39,9 @@ from constants import (
     SD_SUBSCRIPTION, SD_RESOURCE_GROUP, SD_REGION, SD_SERVICE,
 )
 from auth import AzureAuthenticator
-from azure_client import AzureClient
+from azure_client import (
+    AzureClient, inventory_cache_stats, reset_inventory_cache_stats,
+)
 from collectors import (
     collect_subscriptions,
     collect_resource_groups,
@@ -783,6 +785,10 @@ def collect(adapter_instance):
 
     result = CollectResult()
 
+    # Reset the inventory-cache counters for this cycle so the end-of-collect
+    # log reflects only this run (cache itself persists across cycles).
+    reset_inventory_cache_stats()
+
     try:
         # Extract instance identifiers
         tenant_id = adapter_instance.get_identifier_value(IDENT_TENANT_ID)
@@ -933,6 +939,18 @@ def collect(adapter_instance):
     except Exception as e:
         logger.error("Collection failed: %s", e, exc_info=True)
         result.with_error(f"Collection failed: {e}")
+
+    # Inventory-cache summary: how many LIST calls this cycle were served from
+    # the in-memory cache (skipped Azure) vs fetched live. On a "light" cycle
+    # served_cached should dominate; on the periodic refresh cycle refreshed/
+    # fetched_live rises. Metrics are never cached (always live).
+    cs = inventory_cache_stats()
+    logger.info(
+        "Inventory cache: %d served from cache, %d fetched live, %d refreshed "
+        "(live inventory calls this cycle = %d)",
+        cs["served_cached"], cs["fetched_live"], cs["refreshed"],
+        cs["fetched_live"] + cs["refreshed"],
+    )
 
     return result
 
