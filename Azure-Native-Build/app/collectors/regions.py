@@ -305,19 +305,45 @@ def collect_regions_and_world(result, adapter_kind, subscriptions,
         identifiers=[],
     )
 
-    # Native parity: AZURE_REGION objects are DIRECT children of the World.
-    # Prod (native pak) shows the shared "Azure World" with ~56 AZURE_REGION
-    # children; our pack was hanging regions only under Region-Per-Sub, leaving
-    # the World's region tier empty. This edge also backs the native
-    # total_number_regions ComputedMetric and the home-tab globe rollup.
+    # Native parity: seed the FULL Azure region set (globe pins) as direct
+    # children of the World, exactly like the native pak. We create every
+    # region from the embedded ALL_AZURE_REGIONS table (from
+    # content/regions/azureregions.json) and parent each to the World. The
+    # in-use regions created in step 2 merge with these by name (AZURE_REGION
+    # has no identifiers -> name identity), so they keep their region_code +
+    # resource links AND gain the globe coords.
+    #
+    # WHY seed the full set in every instance: each adapter instance's
+    # collect() is ISOLATED, and only the instance that "owns" the shared World
+    # keeps its World-child edges. By emitting the IDENTICAL full region set
+    # from every instance, whichever instance owns the World contributes all of
+    # them -> all regions bind. (This is how native shows 56 regions under one
+    # World across per-sub instances.)
+    from azure_regions_data import ALL_AZURE_REGIONS
+    for disp_name, lat, lon in ALL_AZURE_REGIONS:
+        r = result.object(
+            adapter_kind=adapter_kind,
+            object_kind=OBJ_REGION,
+            name=disp_name,
+            identifiers=[],
+        )
+        if lat is not None and lon is not None:
+            safe_property(r, "latitude", lat)
+            safe_property(r, "longitude", lon)
+            safe_property(r, "geolocation|latitude", lat)
+            safe_property(r, "geolocation|longitude", lon)
+        r.add_parent(world_obj)
+    # In-use regions (with region_code + resource children) — link too; they
+    # merge by name with the seeded set above.
     for region_obj in region_objects.values():
         region_obj.add_parent(world_obj)
 
     logger.info(
-        "Created AZURE_WORLD topology node (this instance: %d regions, "
+        "Created AZURE_WORLD; seeded %d regions (globe) + %d in-use, "
         "%d region-per-sub, %d subscription(s); summary counts left to native "
-        "ComputedMetrics)",
-        len(region_objects), len(per_sub_objects), len(subscriptions),
+        "ComputedMetrics",
+        len(ALL_AZURE_REGIONS), len(region_objects), len(per_sub_objects),
+        len(subscriptions),
     )
 
     # ------------------------------------------------------------------
@@ -361,6 +387,39 @@ def collect_regions_and_world(result, adapter_kind, subscriptions,
             "children, world parent, %d summary metrics",
             inst_obj.get_key().name, len(rg_objects), len(per_sub_objects),
             len(_WORLD_COUNT_METRICS) + 2,
+        )
+
+        # Native-parity subscription count: World -> ALL adapter instances.
+        # total_number_subscriptions is a ComputedMetric counting adapter
+        # instances reachable from the World. Under per-instance collect
+        # isolation, only the World-owning instance's inst->World edge sticks,
+        # so hand-linking just THIS instance yields 1. Fix (same trick as the
+        # region seed): every instance emits an adapter-instance node for EVERY
+        # enumerated subscription (identity SUB+TENANT, which merges with each
+        # real instance) and parents it to the World — so the World owner
+        # contributes all of them and the count reflects every subscription.
+        #
+        # Single-tenant assumption: all subs share this instance's tenant
+        # (true here — one service principal, one tenant). A multi-tenant
+        # deployment would need each subscription's own tenantId instead.
+        linked_insts = 0
+        for s_id, s_obj in sub_lookup.items():
+            if not s_id:
+                continue
+            w_inst = result.object(
+                adapter_kind=adapter_kind,
+                object_kind=OBJ_ADAPTER_INSTANCE,
+                name=(s_obj.get_key().name if s_obj else s_id),
+                identifiers=make_identifiers([
+                    (IDENT_SUBSCRIPTION_ID, s_id),
+                    (IDENT_TENANT_ID, inst_tenant),
+                ], OBJ_ADAPTER_INSTANCE),
+            )
+            w_inst.add_parent(world_obj)
+            linked_insts += 1
+        logger.info(
+            "Linked %d adapter-instance node(s) to World (full-set, for the "
+            "native total_number_subscriptions rollup)", linked_insts,
         )
     else:
         logger.info(

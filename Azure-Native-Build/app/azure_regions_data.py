@@ -1,0 +1,68 @@
+"""All Azure region display names + geo coordinates, embedded from
+content/regions/azureregions.json so the adapter container can seed the
+full AZURE_REGION set at runtime without depending on the content path.
+
+Native parity: the stock pak seeds ALL regions (globe pins) regardless of
+whether resources exist there. Names match the home-tab globe join and our
+_GOV_REGION_GEO Gov names, so in-use Gov regions merge by name.
+Regenerate with: python3 scripts/gen-region-data.py (if added)."""
+
+# (display_name, latitude, longitude)
+ALL_AZURE_REGIONS = [
+    ("Azure East US", 37.3719, -79.8164),
+    ("Azure East US 2", 37.12322, -78.49277),
+    ("Azure South Central US", 29.4167, -98.5),
+    ("Azure West US 2", 47.233, -119.852),
+    ("Azure West US 3", 33.44844, -112.07414),
+    ("Azure Australia East", -33.86, 151.2094),
+    ("Azure South East Asia", 1.283, 103.833),
+    ("Azure North Europe", 53.3478, -6.2597),
+    ("Azure Sweden Central", 60.67488, 17.14127),
+    ("Azure UK South", 51.48933, -0.14406),
+    ("Azure West Europe", 52.3667, 4.9),
+    ("Azure Central US", 41.92167, -93.31227),
+    ("Azure South Africa North", -26.205, 28.04972),
+    ("Azure Central India", 18.5822, 73.9197),
+    ("Azure East Asia", 22.267, 114.188),
+    ("Azure Japan East", 35.68, 139.77),
+    ("Azure Korea Central", 37.56668, 126.97829),
+    ("Azure Canada Central", 43.653, -79.383),
+    ("Azure France Central", 48.85889, 2.32004),
+    ("Azure Germany West Central", 50.11064, 8.68209),
+    ("Azure Norway East", 59.913868, 10.752245),
+    ("Azure Switzerland North", 47.451542, 8.564572),
+    ("Azure UAE North", 25.266666, 55.316666),
+    ("Azure Brazil South", -23.55, -46.633),
+    ("Azure East US 2 EUAP", 36.6681, -78.3889),
+    ("Azure North Central US", 41.8819, -87.6278),
+    ("Azure West US", 37.783, -122.417),
+    ("Azure Central US EUAP", 41.595, -93.625),
+    ("Azure West Central US", 43.17003, -107.56853),
+    ("Azure South Africa West", -34.075691, 18.843266),
+    ("Azure Australia Central", -35.3075, 149.1244),
+    ("Azure Australia Central 2", -35.28765, 149.08789),
+    ("Azure Australia Southeast", -36.59861, 144.67801),
+    ("Azure Japan West", 34.6939, 135.5022),
+    ("Azure South India", 12.9822, 80.1636),
+    ("Azure Canada East", 46.817, -71.217),
+    ("Azure UK West", 51.48165, -3.17919),
+    ("Azure UAE Central", 24.466667, 54.366669),
+    ("Azure South Central India", 17.38879, 78.46106),
+    ("Azure West India", 19.088, 72.868),
+    ("Azure Brazil Southeast", -22.90278, -43.2075),
+    ("Azure Norway West", 58.969975, 5.733107),
+    ("Azure Germany North", 53.073635, 8.806422),
+    ("Azure France South", 43.8345, 2.1972),
+    ("Azure Switzerland West", 46.204391, 6.143158),
+    ("Azure Jio India West", 22.470701, 70.05773),
+    ("Azure Jio India Central", 21.146633, 79.08886),
+    ("Azure Korea South", 35.1796, 129.0756),
+    ("Azure Sweden South", 55.64274, 13.2114),
+    ("Azure GovCloud (US Gov Arizona)", 34.42527, -111.7046),
+    ("Azure GovCloud (US Gov Texas)", 31.56443, -99.208076),
+    ("Azure GovCloud (US Gov Virginia)", 37.623159, -78.39411),
+    ("Azure GovCloud (US DoD Central)", 42.41475, -92.561731),
+    ("Azure GovCloud (US DoD East)", 37.70926, -77.84588),
+    ("Azure Global", None, None),
+    ("Azure US GovCloud Global", None, None),
+]
