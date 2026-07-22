@@ -249,6 +249,51 @@ def main():
         ks = collections.Counter(kind_of(k) for k in rels(v["identifier"], "CHILD", token))
         print(f"  VM {sn(v):18} children={dict(ks)}")
 
+    print("\n" + "=" * 72)
+    print("PART 5 — Walk UP from a VM to the World: where does the chain break?")
+    print("=" * 72)
+    print("  (BFS up via PARENT, max depth 8; shows if AZURE_WORLD is reachable)")
+    sample_vms = [v for v in list_kind("AZURE_VIRTUAL_MACHINE", token)
+                  if status_of(v) == "DATA_RECEIVING"][:6]
+    for v in sample_vms:
+        seen = set()
+        frontier = [(v["identifier"], kind_of(v), 0)]
+        seen.add(v["identifier"])
+        reached_world = False
+        levels = collections.defaultdict(set)
+        while frontier:
+            rid, knd, depth = frontier.pop(0)
+            if depth > 0:
+                levels[depth].add(knd)
+            if knd == "AZURE_WORLD":
+                reached_world = True
+            if depth >= 8:
+                continue
+            for p in rels(rid, "PARENT", token):
+                pid = p["identifier"]
+                if pid not in seen:
+                    seen.add(pid)
+                    frontier.append((pid, kind_of(p), depth + 1))
+        chain = " | ".join(f"L{d}:{sorted(levels[d])}" for d in sorted(levels))
+        tag = "WORLD REACHED" if reached_world else "*** WORLD NOT REACHED ***"
+        print(f"  VM {sn(v):16} {tag}")
+        print(f"       ancestors: {chain}")
+
+    print("\n" + "=" * 72)
+    print("PART 6 — Do the under-World instances have RG / region-per-sub children?")
+    print("=" * 72)
+    print("  (World shows instances as children, but if they have NO RG/RPS")
+    print("   children the downward chain to VMs is severed below the instance)")
+    worlds = list_kind("AZURE_WORLD", token)
+    for w in worlds:
+        for ik in rels(w["identifier"], "CHILD", token):
+            if kind_of(ik) != "MicrosoftAzureAdapter Instance":
+                continue
+            ck = collections.Counter(kind_of(c) for c in rels(ik["identifier"], "CHILD", token))
+            has_down = any(k in ck for k in ("AZURE_RESOURCE_GROUP", "AZURE_REGION_PER_SUB"))
+            flag = "" if has_down else "  *** NO RG/RPS CHILDREN — chain severed here ***"
+            print(f"  instance {sn(ik):16} children={dict(ck)}{flag}")
+
 
 if __name__ == "__main__":
     main()
