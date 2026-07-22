@@ -280,52 +280,53 @@ def collect_regions_and_world(result, adapter_kind, subscriptions,
     )
 
     # ------------------------------------------------------------------
-    # 5. AZURE_WORLD — topology root only. Do NOT push summary counts here.
+    # 5. Region tier under the World (instances are left to the PLATFORM).
     #
-    #    On the native AZURE_WORLD kind, EVERY summary|total_number_* metric
-    #    (and summary|active_number_vms) is a ComputedMetric — Aria rolls it
-    #    up itself by counting objects across the shared-World subtree at
-    #    depth 10 (e.g. total_number_subscriptions = count of
-    #    "MicrosoftAzureAdapter Instance" objects; total_number_regions =
-    #    count of AZURE_REGION objects).
+    # BREAKTHROUGH (2026-07-22, commit 958e8b8): removing ALL adapter-side World
+    # manipulation let the PLATFORM auto-parent the adapter INSTANCES under the
+    # type-8 world, each carrying its own RG subtree -> full VM->World
+    # drill-down (5/6 verified, 6th mid-collection). That win is preserved:
+    # step 6 does NOT touch the World — the platform owns instance parenting.
     #
-    #    This adapter runs as one instance PER SUBSCRIPTION, and all
-    #    instances write to the same singleton "Azure World" object. Pushing
-    #    a per-instance value here (len(subscriptions) == 1 for a per-sub
-    #    instance, or this instance's local kind_counts) just clobbers the
-    #    shared node — last writer wins — which is why "Azure World" reported
-    #    1 subscription instead of the global total. Leave the counts to the
-    #    native ComputedMetrics; the adapter only needs to create the World
-    #    object and wire the topology edges (step 6) so the rollups resolve.
+    # This step re-adds ONLY the region tier: reference the World (name matches
+    # the describe worldObjectName, so it should resolve to the platform's world
+    # object rather than a competing adapter copy) and seed the full 56-region
+    # globe set as children, with the in-use regions merging by name.
+    #
+    # COEXISTENCE TEST: after this build, confirm via the probe that the 6
+    # instances STAY auto-parented (Part 2/6). If re-introducing the World
+    # reference re-suppresses the platform (instances fall back to Universe),
+    # revert to 958e8b8 and drive the region globe from the azureregions.json
+    # content join instead of an adapter-created World.
     # ------------------------------------------------------------------
-    # ==================================================================
-    # PLATFORM-WORLD EXPERIMENT (2026-07-22)
-    # ------------------------------------------------------------------
-    # Do NOT hand-create the AZURE_WORLD object, do NOT seed regions onto it,
-    # and do NOT link instances to it (step 6). Prod (native) shows ALL 6
-    # adapter instances under one shared World, EACH carrying its own RG
-    # subtree — which is impossible via per-instance collect() when a single
-    # "owner" instance owns the shared World object (verified: only the owner's
-    # subtree connects; the other 5 instances are bare under World). Native
-    # therefore relies on the PLATFORM auto-parenting adapter instances under
-    # the type=8 / subType=6 / worldObjectName="Azure World" object declared in
-    # the describe. Hypothesis: our manual World creation was suppressing that
-    # platform behavior. This build removes all adapter-side World manipulation
-    # so the platform can take over.
-    #
-    # PASS  -> probe shows 6 real instances under a platform AZURE_WORLD WITH
-    #          their RG subtrees (VM->World drill-down whole). Then re-add
-    #          region->World seeding referencing the platform world.
-    # FAIL  -> instances stay under Universe / no World. Revert to b968f7f
-    #          (which gives the World COUNTS) and escalate to VMware.
-    # ==================================================================
-    world_obj = None
+    world_obj = result.object(
+        adapter_kind=adapter_kind,
+        object_kind=OBJ_WORLD,
+        name="Azure World",
+        identifiers=[],
+    )
+    from azure_regions_data import ALL_AZURE_REGIONS
+    for disp_name, lat, lon in ALL_AZURE_REGIONS:
+        r = result.object(
+            adapter_kind=adapter_kind,
+            object_kind=OBJ_REGION,
+            name=disp_name,
+            identifiers=[],
+        )
+        if lat is not None and lon is not None:
+            safe_property(r, "latitude", lat)
+            safe_property(r, "longitude", lon)
+            safe_property(r, "geolocation|latitude", lat)
+            safe_property(r, "geolocation|longitude", lon)
+        r.add_parent(world_obj)
+    # In-use regions (with region_code + resource children) merge by name.
+    for region_obj in region_objects.values():
+        region_obj.add_parent(world_obj)
+
     logger.info(
-        "PLATFORM-WORLD EXPERIMENT: adapter created NO AZURE_WORLD / region / "
-        "instance World-links this cycle (%d in-use regions, %d region-per-sub, "
-        "%d sub(s) this instance) — relying on platform type-8 world "
-        "auto-parenting",
-        len(region_objects), len(per_sub_objects), len(subscriptions),
+        "Re-seeded %d regions under World (globe); instances left to the "
+        "platform (no adapter inst->World links). %d region-per-sub, %d sub(s).",
+        len(ALL_AZURE_REGIONS), len(per_sub_objects), len(subscriptions),
     )
 
     # ------------------------------------------------------------------
