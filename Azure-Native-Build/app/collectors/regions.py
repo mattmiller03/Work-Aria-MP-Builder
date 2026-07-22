@@ -280,31 +280,27 @@ def collect_regions_and_world(result, adapter_kind, subscriptions,
     )
 
     # ------------------------------------------------------------------
-    # 5. Region tier under the World (instances are left to the PLATFORM).
+    # 5. Region OBJECTS for the globe — NO adapter World, NO World links.
     #
-    # BREAKTHROUGH (2026-07-22, commit 958e8b8): removing ALL adapter-side World
-    # manipulation let the PLATFORM auto-parent the adapter INSTANCES under the
-    # type-8 world, each carrying its own RG subtree -> full VM->World
-    # drill-down (5/6 verified, 6th mid-collection). That win is preserved:
-    # step 6 does NOT touch the World — the platform owns instance parenting.
+    # Settled experiment results:
+    #  - 958e8b8 (no adapter World at all): platform AUTO-PARENTS the 6 adapter
+    #    instances under its type-8 world, each with its full RG subtree ->
+    #    VM->World drill-down + subscription count both work. WIN.
+    #  - e6dff65 (re-added `result.object(AZURE_WORLD)` for regions): the World
+    #    object itself RE-SUPPRESSED the platform — all 6 instances fell back to
+    #    Universe, count 0. So we must NEVER hand-create AZURE_WORLD.
     #
-    # This step re-adds ONLY the region tier: reference the World (name matches
-    # the describe worldObjectName, so it should resolve to the platform's world
-    # object rather than a competing adapter copy) and seed the full 56-region
-    # globe set as children, with the in-use regions merging by name.
-    #
-    # COEXISTENCE TEST: after this build, confirm via the probe that the 6
-    # instances STAY auto-parented (Part 2/6). If re-introducing the World
-    # reference re-suppresses the platform (instances fall back to Universe),
-    # revert to 958e8b8 and drive the region globe from the azureregions.json
-    # content join instead of an adapter-created World.
+    # Therefore: keep the platform in charge of the World + instance parenting
+    # (step 6 does not touch the World), and only create the region OBJECTS for
+    # the home-tab globe. The globe joins AZURE_REGION objects to
+    # content/regions/azureregions.json by NAME for coords — it does NOT need a
+    # World parent. We create the full 56-region set (in-use regions merge by
+    # name) but DO NOT create or link a World. If the platform also auto-parents
+    # these region objects under its world (as it does the instances), the
+    # region tier comes for free; if not, the globe still renders and the
+    # subscription/VM chain stays intact.
     # ------------------------------------------------------------------
-    world_obj = result.object(
-        adapter_kind=adapter_kind,
-        object_kind=OBJ_WORLD,
-        name="Azure World",
-        identifiers=[],
-    )
+    world_obj = None
     from azure_regions_data import ALL_AZURE_REGIONS
     for disp_name, lat, lon in ALL_AZURE_REGIONS:
         r = result.object(
@@ -318,14 +314,12 @@ def collect_regions_and_world(result, adapter_kind, subscriptions,
             safe_property(r, "longitude", lon)
             safe_property(r, "geolocation|latitude", lat)
             safe_property(r, "geolocation|longitude", lon)
-        r.add_parent(world_obj)
-    # In-use regions (with region_code + resource children) merge by name.
-    for region_obj in region_objects.values():
-        region_obj.add_parent(world_obj)
+        # NO add_parent(world): creating/linking the World suppresses the
+        # platform's instance auto-parenting. Platform owns World parenting.
 
     logger.info(
-        "Re-seeded %d regions under World (globe); instances left to the "
-        "platform (no adapter inst->World links). %d region-per-sub, %d sub(s).",
+        "Created %d region objects for the globe (no adapter World — platform "
+        "owns World + instance parenting). %d region-per-sub, %d sub(s).",
         len(ALL_AZURE_REGIONS), len(per_sub_objects), len(subscriptions),
     )
 
