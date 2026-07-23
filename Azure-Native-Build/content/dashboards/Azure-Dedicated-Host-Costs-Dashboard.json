@@ -1,0 +1,239 @@
+{
+ "dashboards": [
+  {
+   "adapterName": "MicrosoftAzureAdapter",
+   "autoswitchEnabled": false,
+   "columnCount": 1,
+   "columnProportion": "1",
+   "creationTime": 1649839234684,
+   "dashboardNavigations": {},
+   "description": "All Azure dedicated hosts with cost data collected by the custom pack (retail hourly/monthly estimate + actual month-to-date and last-30-day cost).",
+   "disabled": false,
+   "docCenterKey": "vcom_668",
+   "gridsterMaxColumns": 12,
+   "hidden": false,
+   "homeTab": false,
+   "id": "539dff1e-fe19-4773-9017-6e2b4f2a85f9",
+   "importAttempts": 0,
+   "importComplete": true,
+   "lastUpdateTime": 1649901639060,
+   "lastUpdateUserId": "74eb59ef-6134-4ccf-ba7b-b6ffdd9efee5",
+   "locked": false,
+   "name": "Microsoft Azure/Azure Services/Azure Dedicated Host Costs",
+   "namePath": "Microsoft Azure/Azure Services",
+   "rank": 0,
+   "shared": true,
+   "states": [],
+   "temporary": false,
+   "userId": "74eb59ef-6134-4ccf-ba7b-b6ffdd9efee5",
+   "widgetInteractions": [],
+   "widgets": [
+    {
+     "collapsed": false,
+     "gridsterCoords": {
+      "h": 5,
+      "w": 12,
+      "x": 1,
+      "y": 1
+     },
+     "height": 260,
+     "id": "6a1959fb-b5bf-423d-a4e6-8b99f9218169",
+     "title": "Dedicated Host Cost (per host)",
+     "type": "Scoreboard",
+     "config": {
+      "boxColumns": 6,
+      "boxHeight": null,
+      "customFilter": {
+       "excludedResources": null,
+       "filter": [],
+       "includedResources": null
+      },
+      "depth": 1,
+      "labelSize": 16,
+      "maxCellCount": 500,
+      "mode": {
+       "layoutMode": "fixedView"
+      },
+      "oldMetricValues": false,
+      "periodLength": null,
+      "refreshContent": {
+       "refreshContent": false
+      },
+      "refreshInterval": 300,
+      "relationshipMode": {
+       "relationshipMode": 0
+      },
+      "resInteractionMode": null,
+      "resource": [],
+      "roundDecimals": 2,
+      "selfProvider": {
+       "selfProvider": true
+      },
+      "showDT": {
+       "showDT": false
+      },
+      "showMetricName": {
+       "showMetricName": true
+      },
+      "showMetricUnit": {
+       "showMetricUnit": false
+      },
+      "showResourceName": {
+       "showResourceName": true
+      },
+      "showSparkline": {
+       "showSparkline": false
+      },
+      "title": "Dedicated Host Cost (per host)",
+      "valueSize": 24,
+      "visualTheme": 6,
+      "metric": {
+       "mode": "resourceKind",
+       "subMode": "resourceKindAll",
+       "resourceKindMetrics": [
+        {
+         "colorMethod": 1,
+         "id": "extModel-eefae274",
+         "isStringMetric": false,
+         "label": "Monthly Estimate (retail)",
+         "link": "",
+         "metricKey": "monthly_rate_estimate",
+         "metricName": "Monthly Estimate (retail)",
+         "metricUnitId": "Auto",
+         "orangeBound": null,
+         "redBound": null,
+         "resourceKindId": "resourceKind:id:200_::_",
+         "resourceKindName": "Azure Dedicated Host",
+         "unit": "Auto",
+         "yellowBound": null
+        },
+        {
+         "colorMethod": 1,
+         "id": "extModel-eeaf8fb8",
+         "isStringMetric": false,
+         "label": "Hourly Rate (retail)",
+         "link": "",
+         "metricKey": "hourly_rate",
+         "metricName": "Hourly Rate (retail)",
+         "metricUnitId": "Auto",
+         "orangeBound": null,
+         "redBound": null,
+         "resourceKindId": "resourceKind:id:200_::_",
+         "resourceKindName": "Azure Dedicated Host",
+         "unit": "Auto",
+         "yellowBound": null
+        },
+        {
+         "colorMethod": 1,
+         "id": "extModel-b73858be",
+         "isStringMetric": false,
+         "label": "Cost Month-to-Date",
+         "link": "",
+         "metricKey": "cost_month_to_date",
+         "metricName": "Cost Month-to-Date",
+         "metricUnitId": "Auto",
+         "orangeBound": null,
+         "redBound": null,
+         "resourceKindId": "resourceKind:id:200_::_",
+         "resourceKindName": "Azure Dedicated Host",
+         "unit": "Auto",
+         "yellowBound": null
+        },
+        {
+         "colorMethod": 1,
+         "id": "extModel-1de50e07",
+         "isStringMetric": false,
+         "label": "Cost Last 30 Days",
+         "link": "",
+         "metricKey": "cost_last_30_days",
+         "metricName": "Cost Last 30 Days",
+         "metricUnitId": "Auto",
+         "orangeBound": null,
+         "redBound": null,
+         "resourceKindId": "resourceKind:id:200_::_",
+         "resourceKindName": "Azure Dedicated Host",
+         "unit": "Auto",
+         "yellowBound": null
+        }
+       ],
+       "resourceMetrics": []
+      }
+     }
+    },
+    {
+     "collapsed": false,
+     "gridsterCoords": {
+      "h": 8,
+      "w": 12,
+      "x": 1,
+      "y": 6
+     },
+     "height": 420,
+     "id": "1f1fe2f4-365c-46da-b52a-e7e9fc7e0afa",
+     "states": [],
+     "title": "All Dedicated Hosts",
+     "type": "ResourceList",
+     "config": {
+      "additionalColumns": [],
+      "customFilter": {
+       "excludedResources": null,
+       "filter": [],
+       "includedResources": null
+      },
+      "depth": 1,
+      "filterMode": "tagPicker",
+      "mode": "all",
+      "refreshContent": {
+       "refreshContent": false
+      },
+      "refreshInterval": 300,
+      "relationshipMode": {
+       "relationshipMode": -1
+      },
+      "resource": [],
+      "selectFirstRow": {
+       "selectFirstRow": false
+      },
+      "selfProvider": {
+       "selfProvider": false
+      },
+      "tagFilter": {
+       "path": [
+        "/source/kind/kind:resourceKind:id:200_::_"
+       ],
+       "value": {
+        "adapterInstance": [],
+        "adapterKind": [],
+        "bus": [],
+        "collector": [],
+        "day": [],
+        "exclaim": false,
+        "healthRange": [],
+        "kind": [
+         "resourceKind:id:200_::_"
+        ],
+        "maintenanceSchedule": [],
+        "state": [],
+        "status": [],
+        "tag": [],
+        "tier": []
+       }
+      },
+      "title": "All Dedicated Hosts"
+     }
+    }
+   ],
+   "isDefault": false
+  }
+ ],
+ "entries": {
+  "resourceKind": [
+   {
+    "adapterKindKey": "MicrosoftAzureAdapter",
+    "internalId": "resourceKind:id:200_::_",
+    "resourceKindKey": "AZURE_DEDICATE_HOST"
+   }
+  ]
+ },
+ "uuid": "d2d02b47-ebba-4148-8882-bb12cda96e41"
+}
