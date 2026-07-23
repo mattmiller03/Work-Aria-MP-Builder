@@ -300,24 +300,7 @@ def collect_regions_and_world(result, adapter_kind, subscriptions,
     # region tier comes for free; if not, the globe still renders and the
     # subscription/VM chain stays intact.
     # ------------------------------------------------------------------
-    # EXPERIMENT (2026-07-23): adapter-owned World, matching prod/native.
-    # Prod runs the native Java MicrosoftAzureAdapter as 6 SEPARATE instances
-    # (one per subscription) and its Azure World browses with all 6 subs +
-    # regions under it. So we replicate native's BEHAVIOR: create the World and
-    # EXPLICITLY parent both the regions (below) and the adapter instance
-    # (step 6) onto it. The e6dff65 attempt created the World + attached the
-    # regions but left the instance to the platform — which the World creation
-    # suppressed, so instances fell to Universe and the count went to 0. The
-    # only missing piece was the explicit instance->World edge (added in step 6).
-    # ACCEPTANCE TEST (probe): World shows 6 instance children AND count 6 AND
-    # the World browses top-down in the inventory tree. If it collapses to 1
-    # instance, per-instance isolation is real -> revert to 46cb606.
-    world_obj = result.object(
-        adapter_kind=adapter_kind,
-        object_kind=OBJ_WORLD,
-        name="Azure World",
-        identifiers=[],
-    )
+    world_obj = None
     from azure_regions_data import ALL_AZURE_REGIONS
     for disp_name, lat, lon in ALL_AZURE_REGIONS:
         r = result.object(
@@ -331,11 +314,12 @@ def collect_regions_and_world(result, adapter_kind, subscriptions,
             safe_property(r, "longitude", lon)
             safe_property(r, "geolocation|latitude", lat)
             safe_property(r, "geolocation|longitude", lon)
-        r.add_parent(world_obj)
+        # NO add_parent(world): creating/linking the World suppresses the
+        # platform's instance auto-parenting. Platform owns World parenting.
 
     logger.info(
-        "Created adapter-owned World + %d region children (globe). "
-        "%d region-per-sub, %d sub(s).",
+        "Created %d region objects for the globe (no adapter World — platform "
+        "owns World + instance parenting). %d region-per-sub, %d sub(s).",
         len(ALL_AZURE_REGIONS), len(per_sub_objects), len(subscriptions),
     )
 
@@ -359,19 +343,17 @@ def collect_regions_and_world(result, adapter_kind, subscriptions,
             ], OBJ_ADAPTER_INSTANCE),
         )
 
-        # Resource subtree UNDER the instance (Region-Per-Sub + RGs).
+        # Resource subtree UNDER the instance (Region-Per-Sub + RGs). The
+        # instance's World PARENT is intentionally NOT set here — the
+        # platform-world experiment relies on the platform to parent this
+        # instance under the type-8 world (see step 5). Each instance building
+        # its own subtree under its own instance object binds fine (same-instance
+        # ownership); the missing piece native gets from the platform is the
+        # instance->World edge.
         for per_sub_obj in per_sub_objects.values():
             per_sub_obj.add_parent(inst_obj)
         for rg_obj in rg_objects:
             rg_obj.add_parent(inst_obj)
-
-        # EXPERIMENT: the explicit instance->World edge e6dff65 never set.
-        # Same pattern that already attaches the regions to the World above —
-        # a locally-created child parented onto the shared, name-merged World
-        # object. This is what makes the World browsable top-down like prod's
-        # native MP (which does the equivalent in its Java collector).
-        if world_obj is not None:
-            inst_obj.add_parent(world_obj)
 
         # Same summary count metrics the native instance kind defines.
         for obj_kind, metric_key in _WORLD_COUNT_METRICS.items():
@@ -382,7 +364,7 @@ def collect_regions_and_world(result, adapter_kind, subscriptions,
 
         logger.info(
             "Reported adapter instance '%s': %d RG children, %d region-per-sub "
-            "children, %d summary metrics, parented under adapter-owned World",
+            "children, %d summary metrics (World parent left to platform)",
             inst_obj.get_key().name, len(rg_objects), len(per_sub_objects),
             len(_WORLD_COUNT_METRICS) + 2,
         )
