@@ -1,0 +1,70 @@
+{
+ "dashboards": [
+  {
+   "adapterName": "MicrosoftAzureAdapter",
+   "autoswitchEnabled": false,
+   "columnCount": 1,
+   "columnProportion": "1",
+   "creationTime": 1649839234684,
+   "dashboardNavigations": {},
+   "description": "All Azure dedicated hosts with cost data (table view).",
+   "disabled": false,
+   "docCenterKey": "vcom_668",
+   "gridsterMaxColumns": 12,
+   "hidden": false,
+   "homeTab": false,
+   "id": "929cb851-f790-4779-8a4c-a075e7785cf0",
+   "importAttempts": 0,
+   "importComplete": true,
+   "lastUpdateTime": 1649901639060,
+   "lastUpdateUserId": "74eb59ef-6134-4ccf-ba7b-b6ffdd9efee5",
+   "locked": false,
+   "name": "Microsoft Azure/Azure Services/Azure Dedicated Host Costs",
+   "namePath": "Microsoft Azure/Azure Services",
+   "rank": 0,
+   "shared": true,
+   "states": [],
+   "temporary": false,
+   "userId": "74eb59ef-6134-4ccf-ba7b-b6ffdd9efee5",
+   "widgetInteractions": [],
+   "widgets": [
+    {
+     "collapsed": false,
+     "gridsterCoords": {
+      "h": 12,
+      "w": 12,
+      "x": 1,
+      "y": 1
+     },
+     "height": 600,
+     "id": "6d6a90c6-42b4-4153-a2a7-c9c215a6cb5d",
+     "title": "Azure Dedicated Host Costs",
+     "type": "View",
+     "config": {
+      "chartViewItems": [],
+      "isUpdatedView": true,
+      "refreshContent": {
+       "refreshContent": false
+      },
+      "refreshInterval": 300,
+      "resource": null,
+      "selectFirstRow": {
+       "selectFirstRow": false
+      },
+      "selfProvider": {
+       "selfProvider": true
+      },
+      "title": "Azure Dedicated Host Costs",
+      "traversalSpecId": "",
+      "viewDefinitionId": "843e2896-1561-4f5e-8334-23ca166734c6"
+     }
+    }
+   ],
+   "isDefault": false
+  }
+ ],
+ "entries": {
+  "resourceKind": []
+ },
+ "uuid": "bdda6793-a155-4803-97e6-c93d55cdf9c8"
+}
