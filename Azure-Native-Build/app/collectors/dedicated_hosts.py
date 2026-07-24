@@ -631,6 +631,9 @@ def collect_dedicated_hosts(client: AzureClient, result, adapter_kind: str,
                 safe_property(host_obj, "hourly_rate", hourly_rate)
                 safe_property(host_obj, "monthly_rate_estimate",
                               round(hourly_rate * 730, 2))
+                # Cost metrics (chartable in Heatmap/Top-N)
+                host_obj.with_metric("cost_hourly_usd", float(hourly_rate))
+                host_obj.with_metric("cost_monthly_usd", round(float(hourly_rate) * 730, 2))
 
                 # Tags
                 host_tags = host.get("tags", {})
@@ -652,6 +655,10 @@ def collect_dedicated_hosts(client: AzureClient, result, adapter_kind: str,
                                   host_costs.get("cost_currency") or "USD")
                     safe_property(host_obj, "cost_last_30_days",
                                   host_costs.get("cost_last_30_days", 0.0))
+                    host_obj.with_metric("cost_mtd_usd",
+                                         float(host_costs.get("cost_month_to_date", 0.0)))
+                    host_obj.with_metric("cost_30day_usd",
+                                         float(host_costs.get("cost_last_30_days", 0.0)))
                 except Exception as e:
                     logger.warning("Cost enrichment failed for host %s: %s",
                                    host_name, e)

@@ -615,6 +615,13 @@ def get_adapter_definition():
     dh.define_numeric_property("cost_month_to_date", "Cost Month To Date")
     dh.define_string_property("cost_currency", "Cost Currency")
     dh.define_numeric_property("cost_last_30_days", "Cost Last 30 Days")
+    # Cost METRICS (flat keys, no pipe -> preserved across native describe.xml
+    # substitution; enables Heatmap/Top-N charting + cost trend over time.
+    # Properties above are kept for the table/scoreboard views.)
+    dh.define_metric("cost_hourly_usd", "Hourly Cost (USD)")
+    dh.define_metric("cost_monthly_usd", "Monthly Cost (USD)")
+    dh.define_metric("cost_mtd_usd", "Cost Month-To-Date (USD)")
+    dh.define_metric("cost_30day_usd", "Cost Last 30 Days (USD)")
     # Resource Health
     dh.define_string_property("health_availability_state", "Health Availability State")
     dh.define_string_property("health_detailed_status", "Health Detailed Status")
