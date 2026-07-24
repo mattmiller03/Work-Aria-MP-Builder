@@ -12,6 +12,7 @@ Proxy must be able to reach prices.azure.com over HTTPS.
 """
 
 import logging
+import re
 from typing import Optional
 
 import requests
@@ -179,6 +180,28 @@ FALLBACK_PRICES = {
     # NVsv3_Type1 family
     "NVsv3_Type1": 5.0160,
 }
+
+
+def _normalize_sku(name):
+    """Canonical form for tolerant SKU matching: strip spaces/underscores/
+    hyphens and lowercase, so 'DSv3-Type1', 'Dsv3_Type1', and
+    'DCsv2 Type 1' all compare equal to their table counterparts."""
+    return re.sub(r"[\s_\-]+", "", name or "").lower()
+
+
+def match_price(prices, sku_name):
+    """Look up an hourly rate from a {sku: rate} map, tolerant of case,
+    separator (_ vs -), and space differences between Azure's returned
+    sku.name and the price-table keys. Returns 0.0 if no match."""
+    if not sku_name or not prices:
+        return 0.0
+    if sku_name in prices:  # fast exact path
+        return prices[sku_name]
+    target = _normalize_sku(sku_name)
+    for key, rate in prices.items():
+        if _normalize_sku(key) == target:
+            return rate
+    return 0.0
 
 
 def get_dedicated_host_prices(region: str) -> dict:

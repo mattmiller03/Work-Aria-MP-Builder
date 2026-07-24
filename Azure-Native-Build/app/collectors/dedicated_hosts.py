@@ -12,7 +12,7 @@ from constants import (
 )
 from helpers import (make_identifiers, extract_resource_group,
                      reference_resource_group, safe_property, sanitize_tag_key)
-from pricing import get_dedicated_host_prices
+from pricing import get_dedicated_host_prices, match_price
 
 logger = logging.getLogger(__name__)
 
@@ -626,8 +626,17 @@ def collect_dedicated_hosts(client: AzureClient, result, adapter_kind: str,
                                        price_region, e)
                         region_prices[price_region] = {}
 
-                hourly_rate = region_prices.get(price_region, {}).get(
-                    sku_name, 0.0)
+                _price_map = region_prices.get(price_region, {})
+                hourly_rate = match_price(_price_map, sku_name)
+                if hourly_rate == 0.0 and sku_name:
+                    logger.warning(
+                        "No price match for dedicated host SKU %r in region "
+                        "%r (price table has %d SKUs; sample keys: %s)",
+                        sku_name, price_region, len(_price_map),
+                        list(_price_map)[:6])
+                else:
+                    logger.info("Dedicated host SKU %r -> $%.4f/hr (region %r)",
+                                sku_name, hourly_rate, price_region)
                 safe_property(host_obj, "hourly_rate", hourly_rate)
                 safe_property(host_obj, "monthly_rate_estimate",
                               round(hourly_rate * 730, 2))
